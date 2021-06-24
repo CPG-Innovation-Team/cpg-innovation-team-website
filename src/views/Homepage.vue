@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="350" show-arrows-on-hover>
       <v-carousel-item v-for="(color, i) in colors" :key="color">
         <v-sheet :color="color" height="100%" tile>
