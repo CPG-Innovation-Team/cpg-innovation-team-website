@@ -1,12 +1,12 @@
 <template>
-  <div class="career">
+  <div>
     <div class="career-title">招聘信息</div>
     <v-app>
       <v-container>
         <v-row>
           <v-spacer></v-spacer>
           <v-select
-            class="dropdown"
+            class="career-dropdown"
             :items="position"
             filled
             label="职位"
@@ -16,7 +16,7 @@
           ></v-select>
           <v-spacer></v-spacer>
           <v-select
-            class="dropdown"
+            class="career-dropdown"
             :items="city"
             filled
             label="城市"
@@ -26,7 +26,7 @@
           ></v-select>
           <v-spacer></v-spacer>
           <v-select
-            class="dropdown"
+            class="career-dropdown"
             :items="type"
             filled
             label="类型"
@@ -37,10 +37,10 @@
           <v-spacer></v-spacer>
         </v-row>
 
-        <div class="job-title">最新发布</div>
+        <div class="job-listing-title">最新发布</div>
         <div class="job-listing">
-          <div v-for="job in this.sort(this.filteredJobs).slice(page * 10 - 10, page * 10)" :key="job.id">
-            <v-card class="mx-auto pa-md-4" max-width="1000">
+          <div v-for="job in this.sort(this.filteredJobs).slice(pageNumber * 10 - 10, pageNumber * 10)" :key="job.id">
+            <v-card class="job-listing-card mx-auto pa-md-4" max-width="1000">
               <v-card-text>
                 <p class="text-h4 text--primary">{{ job.title }}</p>
                 <p>{{ job.department }} | {{ job.city }} | {{ job.type }} | {{ job.time }}</p>
@@ -60,7 +60,7 @@
 
         <div class="page-pagination">
           <v-pagination
-            v-model="page"
+            v-model="pageNumber"
             total-visible="10"
             :length="getPageLength()"
             @input="handlePageChange"
@@ -82,13 +82,13 @@ export default {
     position: ['全部职位', '技术类', '人力资源类', '产品类'],
     city: ['全部城市', '上海', '深圳', '广州', '北京'],
     type: ['全部类型', '校园招聘', '社会招聘'],
-    page: 1,
+    pageNumber: 1,
     jobs,
     filteredJobs: [],
   }),
   created() {
     this.filteredJobs = this.sort(jobs);
-    this.page = parseInt(this.$route.query.page, 10) || 1;
+    this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
     filter() {
@@ -121,11 +121,11 @@ export default {
       return Math.ceil(this.filteredJobs.length / 10);
     },
     handlePageChange(value) {
-      this.page = value;
+      this.pageNumber = value;
       this.$router.push({
         path: '/recruitmentInfo',
         query: {
-          page: this.page,
+          page: this.pageNumber,
         },
       });
     },
@@ -153,18 +153,18 @@ export default {
   margin-top: 80px;
 }
 
-.dropdown {
+.career-dropdown {
   width: 100px;
 }
 
-.job-title {
+.job-listing-title {
   font-size: 30px;
   color: black;
   margin-top: 50px;
   margin-left: 80px;
 }
 
-.mx-auto {
+.job-listing-card {
   margin-top: 30px;
 }
 
