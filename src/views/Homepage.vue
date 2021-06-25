@@ -11,7 +11,7 @@
     </v-carousel>
 
     <v-container>
-      <h1 id="news-header">News</h1>
+      <h1 class="news-header">News</h1>
       <v-row>
         <v-col md="4" sm="6" xs="12">
           <v-container>
@@ -69,8 +69,8 @@ export default {
 };
 </script>
 
-<style>
-#news-header {
+<style scoped>
+.news-header {
   text-align: center;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header />
+    <HeaderNav />
     <v-main>
       <router-view />
     </v-main>
@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import Header from './components/HeaderNav.vue';
+import HeaderNav from './components/HeaderNav.vue';
 
 export default {
   name: 'App',
   components: {
-    Header,
+    HeaderNav,
   },
 
   data: () => ({

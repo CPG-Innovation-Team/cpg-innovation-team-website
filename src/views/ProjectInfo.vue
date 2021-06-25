@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1 style="text-align: center">Projects</h1>
+    <h1>Projects</h1>
     <v-container>
       <v-img src="https://picsum.photos/500/300?image=91" id="project-head-img" max-height="400" />
 
       <v-container>
         <v-row>
-          <v-col>
+          <v-col class="project-col">
             <v-hover v-slot="{ hover }">
               <v-card class="mx-auto" color="grey lighten-4" max-width="600">
                 <v-card-title class="text-h4"> Lorem Ipsum </v-card-title>
@@ -25,7 +25,8 @@
               </v-card>
             </v-hover>
           </v-col>
-          <v-col>
+
+          <v-col class="project-col">
             <v-hover v-slot="{ hover }">
               <v-card class="mx-auto" color="grey lighten-4" max-width="600">
                 <v-card-title class="text-h4"> Lorem Ipsum </v-card-title>
@@ -46,7 +47,7 @@
             </v-hover>
           </v-col>
 
-          <v-col>
+          <v-col class="project-col">
             <v-hover v-slot="{ hover }">
               <v-card class="mx-auto" color="grey lighten-4" max-width="600">
                 <v-card-title class="text-h4"> Lorem Ipsum </v-card-title>
@@ -75,15 +76,16 @@
 <script>
 export default {
   name: 'Project',
-  data: () => ({
-    model: 0,
-    colors: ['primary', 'secondary', 'yellow darken-2', 'red', 'orange'],
-  }),
+  data: () => ({}),
 };
 </script>
 
-<style lang="scss">
-.col {
+<style lang="scss" scoped>
+h1 {
+  text-align: center;
+}
+
+.project-col {
   padding: 0px;
 }
 
