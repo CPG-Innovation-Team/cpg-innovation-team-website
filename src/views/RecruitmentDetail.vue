@@ -1,5 +1,5 @@
 <template>
-  <div class="career-detail">
+  <div>
     <v-row no-gutters>
       <v-col md="8" offset-md="2">
         <v-row class="career-header" no-gutters>
