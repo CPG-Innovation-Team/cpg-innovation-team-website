@@ -29,18 +29,18 @@
     <div class="social-media-title">关注我们</div>
     <div class="social-media-image">
       <a class="social-media-link" href="https://facebook.com">
-        <img class="social-media-icon" src="../assets/icon-fb-icon.png" />
+        <img class="social-media-icon" src="../assets/icon-fb.png" />
       </a>
       <a class="social-media-link" href="https://instagram.com">
-        <img class="social-media-icon" src="../assets/icon-ins-icon.png" />
+        <img class="social-media-icon" src="../assets/icon-ins.png" />
       </a>
       <a class="social-media-link" href="https://twitter.com">
-        <img class="social-media-icon" src="../assets/icon-twitter-icon.png" />
+        <img class="social-media-icon" src="../assets/icon-twitter.png" />
       </a>
       <a class="social-media-link" href="https://linkedin.com">
-        <img class="social-media-icon" src="../assets/icon-linkedin-icon.png" />
+        <img class="social-media-icon" src="../assets/icon-linkedin.png" />
       </a>
-      <img class="social-media-code" src="../assets/img-qrcode-image.png" />
+      <img class="social-media-code" src="../assets/img-qrcode.png" />
     </div>
   </div>
 </template>
