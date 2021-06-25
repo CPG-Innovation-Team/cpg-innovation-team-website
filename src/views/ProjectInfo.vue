@@ -88,8 +88,6 @@ export default {
 }
 
 .project-list {
-  height: inherit;
-  height: 500px;
   ul {
     align-self: center;
     list-style: none;
