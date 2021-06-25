@@ -64,8 +64,8 @@ export default {
   margin-top: 100px;
 
   .career-detail-title {
-    font-size: 32px;
     margin-left: auto;
+    font-size: 32px;
     font-weight: bold;
     color: black;
   }
@@ -78,11 +78,11 @@ export default {
 
 .career-sub-title {
   font-size: 23px;
+  font-weight: bold;
+  color: black;
   margin-left: auto;
   margin-top: 50px;
   margin-bottom: 30px;
-  font-weight: bold;
-  color: black;
 }
 
 .career-detail-content {

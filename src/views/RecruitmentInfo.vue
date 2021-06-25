@@ -82,8 +82,6 @@ export default {
     position: ['全部职位', '技术类', '人力资源类', '产品类'],
     city: ['全部城市', '上海', '深圳', '广州', '北京'],
     type: ['全部类型', '校园招聘', '社会招聘'],
-    alignments: ['start'],
-    reveal: false,
     page: 1,
     jobs,
     filteredJobs: [],
@@ -147,12 +145,12 @@ export default {
 <style lang="scss" scoped>
 .career-title {
   font-size: 30px;
-  margin-left: 250px;
   font-style: italic;
-  margin-bottom: 50px;
-  margin-top: 80px;
   font-weight: bold;
   color: black;
+  margin-left: 250px;
+  margin-bottom: 50px;
+  margin-top: 80px;
 }
 
 .dropdown {
