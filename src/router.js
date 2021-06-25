@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from './views/Homepage.vue';
 import AboutUs from './views/AboutUs.vue';
+import ProjectInfo from './views/ProjectInfo.vue';
 import TeamInfo from './views/TeamInfo.vue';
 import RecruitmentInfo from './views/RecruitmentInfo.vue';
 import RecruitmentDetail from './views/RecruitmentDetail.vue';
@@ -18,6 +19,11 @@ const routes = [
     path: '/aboutUs',
     name: 'AboutUs',
     component: AboutUs,
+  },
+  {
+    path: '/projectInfo',
+    name: 'ProjectInfo',
+    component: ProjectInfo,
   },
   {
     path: '/teamInfo',
