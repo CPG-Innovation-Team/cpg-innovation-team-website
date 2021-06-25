@@ -40,7 +40,7 @@
       <a class="social-media-link" href="https://linkedin.com">
         <img class="social-media-icon" src="../assets/icon-linkedin.png" />
       </a>
-      <img class="social-media-code" src="../assets/qrcode.png" />
+      <img class="social-media-code" src="../assets/img-qrcode.png" />
     </div>
   </div>
 </template>
