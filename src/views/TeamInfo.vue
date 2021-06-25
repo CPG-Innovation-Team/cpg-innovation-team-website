@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="video-container">
-      <video id="video" src="../assets/video.mp4" width="100%" autoplay loop preload="auto" muted></video>
+      <video id="video" src="../assets/video-example-video.mp4" width="100%" autoplay loop preload="auto" muted></video>
       <div class="video-overlay">
         <div class="video-content">
           正大集团成立于1921年<br />
@@ -17,7 +17,7 @@
     <div class="team-title">团队介绍</div>
     <div class="team-profile-container">
       <div class="team-profile">
-        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <img class="team-profile-image" src="../assets/img-avatar-image.jpeg" />
         <div class="team-profile-name">马化腾</div>
         <div class="team-profile-position">
           <p>主要创办人</p>
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="team-profile">
-        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <img class="team-profile-image" src="../assets/img-avatar-image.jpeg" />
         <div class="team-profile-name">马化腾</div>
         <div class="team-profile-position">
           <p>主要创办人</p>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="team-profile">
-        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <img class="team-profile-image" src="../assets/img-avatar-image.jpeg" />
         <div class="team-profile-name">马化腾</div>
         <div class="team-profile-position">
           <p>主要创办人</p>
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="team-profile">
-        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <img class="team-profile-image" src="../assets/img-avatar-image.jpeg" />
         <div class="team-profile-name">马化腾</div>
         <div class="team-profile-position">
           <p>主要创办人</p>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="team-profile">
-        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <img class="team-profile-image" src="../assets/img-avatar-image.jpeg" />
         <div class="team-profile-name">马化腾</div>
         <div class="team-profile-position">
           <p>主要创办人</p>
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="team-profile">
-        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <img class="team-profile-image" src="../assets/img-avatar-image.jpeg" />
         <div class="team-profile-name">马化腾</div>
         <div class="team-profile-position">
           <p>主要创办人</p>
