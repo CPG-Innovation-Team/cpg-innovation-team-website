@@ -8,10 +8,10 @@
 
     <v-toolbar-items>
       <v-btn text><router-link to="/">Home</router-link></v-btn>
-      <v-btn text><router-link to="/about">About</router-link></v-btn>
-      <v-btn text><router-link to="/projects">Projects</router-link></v-btn>
-      <v-btn text><router-link to="/recuitment">Recuitment</router-link></v-btn>
-      <v-btn text><router-link to="/team">Team</router-link></v-btn>
+      <v-btn text><router-link to="/aboutUs">About</router-link></v-btn>
+      <v-btn text><router-link to="/projectInfo">Projects</router-link></v-btn>
+      <v-btn text><router-link to="/recruitmentInfo">Recuitment</router-link></v-btn>
+      <v-btn text><router-link to="/teamInfo">Team</router-link></v-btn>
       <v-btn text><router-link to="/contact">Contact</router-link></v-btn>
     </v-toolbar-items>
 
