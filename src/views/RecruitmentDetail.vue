@@ -52,7 +52,7 @@ export default {
     index: 0,
   }),
   created() {
-    if (this.$route.query.id > 0 && this.$route.query.id < jobs.length) {
+    if (this.$route.query.id - 1 >= 0 && this.$route.query.id - 1 < jobs.length) {
       this.index = this.$route.query.id - 1;
     }
   },

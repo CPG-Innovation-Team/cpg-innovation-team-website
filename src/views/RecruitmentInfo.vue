@@ -39,7 +39,7 @@
 
         <div class="job-title">最新发布</div>
         <div class="job-listing">
-          <div v-for="job in this.filteredJobs.slice(page * 10 - 10, page * 10)" :key="job.id">
+          <div v-for="job in this.sort(this.filteredJobs).slice(page * 10 - 10, page * 10)" :key="job.id">
             <v-card class="mx-auto pa-md-4" max-width="1000">
               <v-card-text>
                 <p class="text-h4 text--primary">{{ job.title }}</p>
@@ -84,7 +84,7 @@ export default {
     type: ['全部类型', '校园招聘', '社会招聘'],
     alignments: ['start'],
     reveal: false,
-    page: 2,
+    page: 1,
     jobs,
     filteredJobs: [],
   }),
@@ -94,7 +94,6 @@ export default {
   },
   methods: {
     filter() {
-      this.page = 1;
       this.filteredJobs = this.jobs.filter((job) => {
         if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
           return job.position === this.positionVal && job.city === this.cityVal && job.type === this.typeVal;
