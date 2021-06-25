@@ -15,51 +15,51 @@
     </div>
 
     <div class="team-title">团队介绍</div>
-    <div class="team-introduction-container">
-      <div class="profile">
-        <img class="image" src="../assets/avatar.jpeg" />
-        <div class="name">马化腾</div>
-        <div class="position">
+    <div class="team-profile-container">
+      <div class="team-profile">
+        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <div class="team-profile-name">马化腾</div>
+        <div class="team-profile-position">
           <p>主要创办人</p>
           <p>董事会主席兼首席执行官</p>
         </div>
       </div>
-      <div class="profile">
-        <img class="image" src="../assets/avatar.jpeg" />
-        <div class="name">马化腾</div>
-        <div class="position">
+      <div class="team-profile">
+        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <div class="team-profile-name">马化腾</div>
+        <div class="team-profile-position">
           <p>主要创办人</p>
           <p>董事会主席兼首席执行官</p>
         </div>
       </div>
-      <div class="profile">
-        <img class="image" src="../assets/avatar.jpeg" />
-        <div class="name">马化腾</div>
-        <div class="position">
+      <div class="team-profile">
+        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <div class="team-profile-name">马化腾</div>
+        <div class="team-profile-position">
           <p>主要创办人</p>
           <p>董事会主席兼首席执行官</p>
         </div>
       </div>
-      <div class="profile">
-        <img class="image" src="../assets/avatar.jpeg" />
-        <div class="name">马化腾</div>
-        <div class="position">
+      <div class="team-profile">
+        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <div class="team-profile-name">马化腾</div>
+        <div class="team-profile-position">
           <p>主要创办人</p>
           <p>董事会主席兼首席执行官</p>
         </div>
       </div>
-      <div class="profile">
-        <img class="image" src="../assets/avatar.jpeg" />
-        <div class="name">马化腾</div>
-        <div class="position">
+      <div class="team-profile">
+        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <div class="team-profile-name">马化腾</div>
+        <div class="team-profile-position">
           <p>主要创办人</p>
           <p>董事会主席兼首席执行官</p>
         </div>
       </div>
-      <div class="profile">
-        <img class="image" src="../assets/avatar.jpeg" />
-        <div class="name">马化腾</div>
-        <div class="position">
+      <div class="team-profile">
+        <img class="team-profile-image" src="../assets/avatar.jpeg" />
+        <div class="team-profile-name">马化腾</div>
+        <div class="team-profile-position">
           <p>主要创办人</p>
           <p>董事会主席兼首席执行官</p>
         </div>
@@ -133,31 +133,31 @@ export default {};
   color: black;
 }
 
-.team-introduction-container {
+.team-profile-container {
   display: flex;
   justify-content: center;
   flex-flow: row wrap;
   margin-left: 200px;
   margin-right: 200px;
 
-  .profile {
+  .team-profile {
     text-align: center;
     margin-bottom: 50px;
     padding-left: 80px;
     padding-right: 80px;
     padding-top: 60px;
 
-    .image {
+    .team-profile-image {
       width: 130px;
       margin-bottom: 20px;
     }
 
-    .name {
+    .team-profile-name {
       font-size: 18px;
       color: black;
     }
 
-    .position {
+    .team-profile-position {
       margin-top: 20px;
       font-size: 14px;
       line-height: 10px;
