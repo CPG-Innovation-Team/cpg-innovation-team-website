@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="350" show-arrows-on-hover>
       <v-carousel-item v-for="(color, i) in colors" :key="color">
         <v-sheet :color="color" height="100%" tile>
@@ -11,7 +11,7 @@
     </v-carousel>
 
     <v-container>
-      <h1 id="news-header">News</h1>
+      <h1 class="news-header">News</h1>
       <v-row>
         <v-col md="4" sm="6" xs="12">
           <v-container>
@@ -69,8 +69,8 @@ export default {
 };
 </script>
 
-<style>
-#news-header {
+<style scoped>
+.news-header {
   text-align: center;
 }
 </style>

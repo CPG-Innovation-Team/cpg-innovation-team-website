@@ -1,15 +1,25 @@
 <template>
   <v-app>
-    <div id="nav">
-      <router-link to="/">Home</router-link> | <router-link to="/aboutUs">联系我们</router-link> |
-      <router-link to="/teamInfo">团队介绍</router-link>
-    </div>
-    <router-view />
+    <HeaderNav />
+    <v-main>
+      <router-view />
+    </v-main>
   </v-app>
 </template>
 
 <script>
-export default {};
+import HeaderNav from './components/HeaderNav.vue';
+
+export default {
+  name: 'App',
+  components: {
+    HeaderNav,
+  },
+
+  data: () => ({
+    //
+  }),
+};
 </script>
 
 <style lang="scss"></style>

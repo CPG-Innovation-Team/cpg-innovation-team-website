@@ -1,21 +1,18 @@
 <template>
-  <v-app-bar app color="blue lighten-2">
-    <template v-slot:img="{ props }">
-      <v-img v-bind="props" gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"></v-img>
-    </template>
-
+  <v-app-bar app color="blue darken-1">
     <v-spacer></v-spacer>
 
-    <v-app-bar-title style="align-self: center">Logo</v-app-bar-title>
-    <v-spacer></v-spacer>
+    <v-col cols="1">
+      <v-app-bar-title style="align-self: center">Logo</v-app-bar-title>
+    </v-col>
 
-    <v-toolbar-items>
-      <v-btn text><router-link to="/">Home</router-link></v-btn>
-      <v-btn text><router-link to="/about">About</router-link></v-btn>
-      <v-btn text><router-link to="/projects">Projects</router-link></v-btn>
-      <v-btn text><router-link to="/recuitment">Recuitment</router-link></v-btn>
-      <v-btn text><router-link to="/team">Team</router-link></v-btn>
-      <v-btn text><router-link to="/contact">Contact</router-link></v-btn>
+    <v-toolbar-items class="navbar">
+      <v-btn text><router-link class="nav-link" to="/">Home</router-link></v-btn>
+      <v-btn text><router-link class="nav-link" to="/aboutUs">About</router-link></v-btn>
+      <v-btn text><router-link class="nav-link" to="/projectInfo">Projects</router-link></v-btn>
+      <v-btn text><router-link class="nav-link" to="/recruitmentInfo">Recruitment</router-link></v-btn>
+      <v-btn text><router-link class="nav-link" to="/teamInfo">Team</router-link></v-btn>
+      <v-btn text><router-link class="nav-link" to="/contact">Contact</router-link></v-btn>
     </v-toolbar-items>
 
     <v-spacer></v-spacer>
@@ -27,7 +24,7 @@
 
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" light v-bind="attrs" v-on="on">中文<v-icon>mdi-chevron-down</v-icon></v-btn>
+        <v-btn small color="blue lighten-1" v-bind="attrs" v-on="on">中文<v-icon>mdi-chevron-down</v-icon></v-btn>
       </template>
       <v-list>
         <v-list-item-group color="primary">
@@ -43,20 +40,17 @@
   </v-app-bar>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-};
-</script>
+<script></script>
 
-<style lang="scss">
-.v-toolbar__content .v-btn .v-btn__content a {
+<style lang="scss" scoped>
+.navbar .nav-link {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.87) !important;
+  color: rgba(0, 0, 0, 0.87);
 }
+
 #header-search {
-  border-radius: 4px !important;
-  background-color: rgb(232, 237, 255) !important;
+  border-radius: 4px;
+  background-color: rgb(232, 237, 255);
   height: 60%;
 }
 </style>
