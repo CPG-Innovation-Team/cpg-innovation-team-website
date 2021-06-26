@@ -46,6 +46,7 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  // add smooth scrollling to top when user navigating to a new route
   scrollBehavior() {
     return {
       x: 0,
