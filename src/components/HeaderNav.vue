@@ -17,8 +17,16 @@
 
     <v-spacer></v-spacer>
 
-    <input id="header-search" type="text" placeholder="search" />
-    <v-btn icon class="mr-1">
+    <input class="header-search" type="text" v-model="searchText" placeholder="search" @keyup.enter="search" />
+    <!-- <v-autocomplete
+      class="header-search"
+      v-model="searchText"
+      dense
+      filled
+      rounded
+      @keyup.enter="search"
+    ></v-autocomplete> -->
+    <v-btn icon class="mr-1" @click="search">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
@@ -40,7 +48,21 @@
   </v-app-bar>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      searchText: '',
+    };
+  },
+  methods: {
+    search() {
+      console.log(this.searchText);
+      this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .navbar .nav-link {
@@ -48,9 +70,9 @@
   color: rgba(0, 0, 0, 0.87);
 }
 
-#header-search {
+.header-search {
   border-radius: 4px;
   background-color: rgb(232, 237, 255);
-  height: 60%;
+  height: 40px;
 }
 </style>
