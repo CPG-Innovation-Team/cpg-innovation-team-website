@@ -93,6 +93,14 @@ export default {
   },
   methods: {
     filter() {
+      // when filtered, navigate to the first page
+      this.pageNumber = 1;
+      this.$router.push({
+        path: '/recruitmentInfo',
+        query: {
+          page: this.pageNumber,
+        },
+      });
       this.filteredJobs = this.jobs.filter((job) => {
         if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
           return job.position === this.positionVal && job.city === this.cityVal && job.type === this.typeVal;
