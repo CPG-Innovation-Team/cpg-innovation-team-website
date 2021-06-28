@@ -7,7 +7,7 @@
           <v-spacer></v-spacer>
           <v-select
             class="career-dropdown"
-            :items="position"
+            :items="positions"
             filled
             label="职位"
             v-model="positionVal"
@@ -17,7 +17,7 @@
           <v-spacer></v-spacer>
           <v-select
             class="career-dropdown"
-            :items="city"
+            :items="cities"
             filled
             label="城市"
             v-model="cityVal"
@@ -27,7 +27,7 @@
           <v-spacer></v-spacer>
           <v-select
             class="career-dropdown"
-            :items="type"
+            :items="types"
             filled
             label="类型"
             v-model="typeVal"
@@ -56,9 +56,10 @@
               </v-card-text>
             </v-card>
           </div>
+          <div class="job-listing-none" v-show="this.filteredJobs.length === 0">暂无职位信息</div>
         </div>
 
-        <div class="page-pagination">
+        <div class="page-pagination" v-show="this.filteredJobs.length !== 0">
           <v-pagination
             v-model="pageNumber"
             total-visible="10"
@@ -79,9 +80,9 @@ export default {
     positionVal: '全部职位',
     cityVal: '全部城市',
     typeVal: '全部类型',
-    position: ['全部职位', '技术类', '人力资源类', '产品类'],
-    city: ['全部城市', '上海', '深圳', '广州', '北京'],
-    type: ['全部类型', '校园招聘', '社会招聘'],
+    positions: ['全部职位', '技术类', '人力资源类', '产品类'],
+    cities: ['全部城市', '上海', '深圳', '广州', '北京'],
+    types: ['全部类型', '校园招聘', '社会招聘'],
     pageNumber: 1,
     jobs,
     filteredJobs: [],
@@ -166,6 +167,13 @@ export default {
 
 .job-listing-card {
   margin-top: 30px;
+}
+
+.job-listing-none {
+  text-align: center;
+  font-size: 25px;
+  color: gray;
+  margin-top: 80px;
 }
 
 .page-pagination {
