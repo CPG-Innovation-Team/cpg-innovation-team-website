@@ -2,6 +2,9 @@
   <div>
     <v-row no-gutters>
       <v-col md="8" offset-md="2">
+        <router-link class="back-link" to="/recruitmentInfo">
+          <v-btn class="back-button" color="normal">返回</v-btn>
+        </router-link>
         <v-row class="career-header" no-gutters>
           <v-col cols="8">
             <div class="career-detail-title">{{ jobs[index].title }}</div>
@@ -14,10 +17,12 @@
               <template v-slot:default="dialog">
                 <v-card>
                   <v-card-text>
-                    <div class="text-h4 pa-12">请发送简历至contact@example.com</div>
+                    <div class="text-h5 pa-12">请发送简历至contact@example.com</div>
                   </v-card-text>
                   <v-card-actions class="justify-end">
-                    <a href="mailto:contact@example.com"><v-btn depressed color="primary"> 发送简历 </v-btn></a>
+                    <a href="mailto:contact@example.com"
+                      ><v-btn class="send-button" depressed color="primary"> 发送简历 </v-btn></a
+                    >
                     <v-btn text @click="dialog.value = false">关闭</v-btn>
                   </v-card-actions>
                 </v-card>
@@ -60,8 +65,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.back-link {
+  text-decoration: none;
+}
+
+.back-button {
+  margin-top: 50px;
+}
+
 .career-header {
-  margin-top: 100px;
+  margin-top: 30px;
 
   .career-detail-title {
     margin-left: auto;
@@ -69,6 +82,10 @@ export default {
     font-weight: bold;
     color: black;
   }
+}
+
+.send-button {
+  margin-right: 10px;
 }
 
 .career-detail-tag {

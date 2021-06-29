@@ -174,10 +174,9 @@ export default {
 <style lang="scss" scoped>
 .career-title {
   font-size: 30px;
-  font-style: italic;
   font-weight: bold;
   color: black;
-  margin-left: 250px;
+  margin-left: 15%;
   margin-bottom: 50px;
   margin-top: 80px;
 }
@@ -190,7 +189,7 @@ export default {
   font-size: 30px;
   color: black;
   margin-top: 50px;
-  margin-left: 80px;
+  margin-left: 7%;
 }
 
 .job-listing-card {
