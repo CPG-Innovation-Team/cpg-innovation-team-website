@@ -4,37 +4,40 @@
     <v-app>
       <v-container>
         <v-row>
-          <v-spacer></v-spacer>
-          <v-select
-            class="career-dropdown"
-            :items="positions"
-            filled
-            label="职位"
-            v-model="positionVal"
-            @change="filter"
-            dense
-          ></v-select>
-          <v-spacer></v-spacer>
-          <v-select
-            class="career-dropdown"
-            :items="cities"
-            filled
-            label="城市"
-            v-model="cityVal"
-            @change="filter"
-            dense
-          ></v-select>
-          <v-spacer></v-spacer>
-          <v-select
-            class="career-dropdown"
-            :items="types"
-            filled
-            label="类型"
-            v-model="typeVal"
-            @change="filter"
-            dense
-          ></v-select>
-          <v-spacer></v-spacer>
+          <v-col :cols="8">
+            <v-row>
+              <v-spacer></v-spacer>
+              <v-select
+                class="career-dropdown"
+                :items="positions"
+                filled
+                label="职位"
+                v-model="positionVal"
+                @change="filter"
+                dense
+              ></v-select>
+              <v-spacer></v-spacer>
+              <v-select
+                class="career-dropdown"
+                :items="cities"
+                filled
+                label="城市"
+                v-model="cityVal"
+                @change="filter"
+                dense
+              ></v-select>
+              <v-spacer></v-spacer>
+              <v-select
+                class="career-dropdown"
+                :items="types"
+                filled
+                label="类型"
+                v-model="typeVal"
+                @change="filter"
+                dense
+              ></v-select> </v-row
+          ></v-col>
+          <v-col :cols="4"> </v-col>
         </v-row>
 
         <div class="job-listing-title">最新发布</div>
@@ -45,13 +48,16 @@
                 <p class="text-h4 text--primary">{{ job.title }}</p>
                 <p>{{ job.department }} | {{ job.city }} | {{ job.type }} | {{ job.time }}</p>
                 <v-row no-gutters>
-                  <div class="text--primary" style="width: 700px">
-                    {{ job.abstract }}
-                  </div>
-                  <v-spacer></v-spacer>
-                  <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id } }">
-                    <v-btn depressed color="primary"> 查看详情 </v-btn>
-                  </router-link>
+                  <v-col :cols="8">
+                    <div class="text--primary">
+                      {{ job.abstract }}
+                    </div>
+                  </v-col>
+                  <v-col class="text-right" :cols="4">
+                    <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id } }">
+                      <v-btn depressed color="primary"> 查看详情 </v-btn>
+                    </router-link>
+                  </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -182,7 +188,7 @@ export default {
 }
 
 .career-dropdown {
-  width: 100px;
+  width: 80px;
 }
 
 .job-listing-title {
