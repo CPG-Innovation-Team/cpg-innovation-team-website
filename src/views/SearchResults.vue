@@ -4,11 +4,11 @@
     <div class="search-results-filter">
       <div class="search-results-num">共找到{{ this.searchResults.length }}条结果</div>
       <v-row>
-        <div v-for="category in categories" :key="category.id">
-          <v-col>
-            <v-btn class="search-results-button" depressed color="primary"> {{ category }} </v-btn>
-          </v-col>
-        </div>
+        <v-chip-group class="filter-button" mandatory active-class="primary--text">
+          <v-chip v-for="category in categories" :key="category" @click="filter(category)">
+            {{ category }}
+          </v-chip>
+        </v-chip-group>
       </v-row>
     </div>
 
@@ -46,6 +46,7 @@ export default {
     return {
       searchText: this.$route.query.search,
       searchResults: [],
+      filteredResults: [],
       jobs,
       pageNumber: 1,
       categories: ['所有', '职位', '项目'],
@@ -91,6 +92,15 @@ export default {
     getPageLength() {
       return Math.ceil(this.searchResults.length / 10);
     },
+    filter(input) {
+      if (input !== '所有') {
+        this.filteredResults = this.searchResults.filter((item) => {
+          return item.tag === input;
+        });
+      } else {
+        this.filteredResults = this.searchResults;
+      }
+    },
   },
 };
 </script>
@@ -110,11 +120,15 @@ export default {
   margin-left: 220px;
 
   .search-results-num {
+    margin-left: 10px;
     font-size: 14px;
   }
 
-  .search-results-button {
+  .filter-button {
     margin-top: 10px;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 
