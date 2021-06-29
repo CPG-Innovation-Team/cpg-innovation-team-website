@@ -5,11 +5,13 @@
       <div class="video-overlay">
         <div class="video-content">
           正大集团成立于1921年<br />
-          是泰籍华人谢易初先生创办的知名跨国企业 <br />
+          是泰籍华人谢易初先生创办的知名跨国企业<br />
           正大集团秉承“利国、利民、利企业”的经营宗旨
         </div>
         <v-row align="center" justify="space-around">
-          <v-btn class="video-button" depressed color="primary"> 查看更多 </v-btn>
+          <a href="http://www.cpgroup.cn/column/%E6%AD%A3%E5%A4%A7%E9%9B%86%E5%9B%A2-83">
+            <v-btn class="video-button" depressed color="primary"> 查看更多 </v-btn>
+          </a>
         </v-row>
       </div>
     </div>
@@ -124,11 +126,10 @@ export default {};
 }
 
 .team-title {
-  margin-left: 250px;
+  text-align: center;
   margin-bottom: 50px;
   margin-top: 80px;
   font-size: 30px;
-  font-style: italic;
   font-weight: bold;
   color: black;
 }
@@ -137,23 +138,24 @@ export default {};
   display: flex;
   justify-content: center;
   flex-flow: row wrap;
-  margin-left: 200px;
-  margin-right: 200px;
+  margin-left: 15%;
+  margin-right: 15%;
 
   .team-profile {
     text-align: center;
     margin-bottom: 50px;
-    padding-left: 80px;
-    padding-right: 80px;
-    padding-top: 60px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 60px;
 
     .team-profile-image {
-      width: 130px;
+      width: 160px;
       margin-bottom: 20px;
     }
 
     .team-profile-name {
-      font-size: 18px;
+      font-size: 20px;
+      font-weight: bold;
       color: black;
     }
 
