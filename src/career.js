@@ -1,6 +1,7 @@
 const job = [
   {
     id: '001',
+    tag: '职位',
     title: 'CSIG15-智能平台产品部-AI产品前端开发（深圳）',
     position: '技术类',
     department: 'Innovation',
@@ -16,6 +17,7 @@ const job = [
   },
   {
     id: '002',
+    tag: '职位',
     title: '2后端开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -31,6 +33,7 @@ const job = [
   },
   {
     id: '003',
+    tag: '职位',
     title: '3人力资源实习生',
     position: '人力资源类',
     department: 'Innovation',
@@ -46,6 +49,7 @@ const job = [
   },
   {
     id: '004',
+    tag: '职位',
     title: '4全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -61,6 +65,7 @@ const job = [
   },
   {
     id: '005',
+    tag: '职位',
     title: '5产品实习生',
     position: '产品类',
     department: 'Innovation',
@@ -76,6 +81,7 @@ const job = [
   },
   {
     id: '006',
+    tag: '职位',
     title: '6全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -91,6 +97,7 @@ const job = [
   },
   {
     id: '007',
+    tag: '职位',
     title: '7全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -106,6 +113,7 @@ const job = [
   },
   {
     id: '008',
+    tag: '职位',
     title: '8全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -121,6 +129,7 @@ const job = [
   },
   {
     id: '009',
+    tag: '职位',
     title: '9全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -136,6 +145,7 @@ const job = [
   },
   {
     id: '010',
+    tag: '职位',
     title: '10全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -151,6 +161,7 @@ const job = [
   },
   {
     id: '011',
+    tag: '职位',
     title: '11全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -166,6 +177,7 @@ const job = [
   },
   {
     id: '012',
+    tag: '职位',
     title: '12全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -181,6 +193,7 @@ const job = [
   },
   {
     id: '013',
+    tag: '职位',
     title: '13全栈开发工程师',
     position: '技术类',
     department: 'Innovation',
