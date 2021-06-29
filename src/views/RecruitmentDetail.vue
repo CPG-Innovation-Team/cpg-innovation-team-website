@@ -2,8 +2,8 @@
   <div>
     <v-row class="career-header" no-gutters>
       <v-col cols="2" class="text-right">
-        <router-link class="back-link" to="/recruitmentInfo">
-          <v-btn class="back-button" color="normal">返回</v-btn>
+        <router-link class="back-link" to>
+          <v-btn class="back-button" color="normal" @click="$router.back(-1)">返回</v-btn>
         </router-link>
       </v-col>
       <v-col cols="7">
