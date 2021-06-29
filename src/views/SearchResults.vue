@@ -1,19 +1,30 @@
 <template>
   <div>
-    <div class="search-results-title">{{ this.searchText }} -- 搜索结果</div>
-    <div class="search-results-filter">
-      <div class="search-results-num">共找到{{ this.searchResults.length }}条结果</div>
-      <v-row>
-        <v-chip-group class="filter-button" mandatory active-class="primary--text">
-          <v-chip v-for="category in categories" :key="category" @click="filter(category)">
-            {{ category }}
-          </v-chip>
-        </v-chip-group>
-      </v-row>
-    </div>
+    <v-row>
+      <v-col cols="2"> </v-col>
+      <v-col cols="8">
+        <div class="search-results-title">{{ this.searchText }} -- 搜索结果</div>
+        <div class="search-results-filter">
+          <div class="search-results-num">共找到{{ this.searchResults.length }}条结果</div>
+          <v-row>
+            <v-chip-group class="filter-button" mandatory active-class="primary--text">
+              <v-chip v-for="category in categories" :key="category" @click="filter(category)">
+                {{ category }}
+              </v-chip>
+            </v-chip-group>
+          </v-row>
+        </div></v-col
+      >
+      <v-col cols="2"> </v-col>
+    </v-row>
 
     <div v-for="item in this.searchResults.slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
-      <v-card class="search-results-card mx-auto pa-md-4" max-width="1000">
+      <v-card
+        class="search-results-card mx-auto pa-md-4"
+        max-width="1000"
+        hover="true"
+        @click="link(item.tag, item.id)"
+      >
         <v-card-text>
           <p class="text-h4 text--primary">{{ item.title }}</p>
           <p>{{ item.department }} | {{ item.city }} | {{ item.type }} | {{ item.time }}</p>
@@ -101,35 +112,37 @@ export default {
         this.filteredResults = this.searchResults;
       }
     },
+    link(tag, id) {
+      if (tag === '职位') {
+        this.$router.push({
+          path: '/recruitmentDetail',
+          query: { id },
+        });
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .search-results-title {
-  margin-left: 230px;
   margin-top: 80px;
   margin-bottom: 30px;
   font-size: 30px;
-  font-style: italic;
   font-weight: bold;
   color: black;
 }
 
-.search-results-filter {
-  margin-left: 220px;
+.search-results-num {
+  margin-left: 10px;
+  font-size: 14px;
+}
 
-  .search-results-num {
-    margin-left: 10px;
-    font-size: 14px;
-  }
-
-  .filter-button {
-    margin-top: 10px;
-    margin-left: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+.filter-button {
+  margin-top: 10px;
+  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .search-results-card {
