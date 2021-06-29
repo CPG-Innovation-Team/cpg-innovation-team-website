@@ -22,7 +22,7 @@
       <v-card
         class="search-results-card mx-auto pa-md-4"
         max-width="1000"
-        hover="true"
+        :hover="true"
         @click="link(item.tag, item.id)"
       >
         <v-card-text>

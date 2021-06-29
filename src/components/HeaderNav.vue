@@ -17,15 +17,14 @@
 
     <v-spacer></v-spacer>
 
-    <input class="header-search" type="text" v-model="searchText" placeholder="search" @keyup.enter="search" />
-    <!-- <v-autocomplete
+    <v-autocomplete
       class="header-search"
-      v-model="searchText"
+      :search-input.sync="searchTemp"
       dense
       filled
       rounded
       @keyup.enter="search"
-    ></v-autocomplete> -->
+    ></v-autocomplete>
     <v-btn icon class="mr-1" @click="search">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
@@ -53,7 +52,13 @@ export default {
   data() {
     return {
       searchText: '',
+      searchTemp: '',
     };
+  },
+  watch: {
+    searchTemp(input) {
+      this.searchText = input;
+    },
   },
   methods: {
     search() {
