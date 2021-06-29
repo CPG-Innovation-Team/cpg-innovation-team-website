@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="video-container">
-      <video id="video" src="../assets/video-example.mp4" width="100%" autoplay loop preload="auto" muted></video>
+      <video class="video" src="../assets/video-example.mp4" width="100%" autoplay loop preload="auto" muted></video>
       <div class="video-overlay">
         <div class="video-content">
           正大集团成立于1921年<br />
@@ -94,7 +94,8 @@ export default {};
   .video-content {
     margin-top: 250px;
     color: white;
-    font-size: 40px;
+    font-size: 45px;
+    font-weight: bold;
     text-align: center;
   }
 
