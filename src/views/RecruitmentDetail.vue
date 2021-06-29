@@ -112,7 +112,7 @@ export default {
 
 .career-detail-content {
   font-size: 15px;
-  white-space: pre-wrap;
+  white-space: pre-line;
   line-height: 28px;
   margin-bottom: 80px;
 }

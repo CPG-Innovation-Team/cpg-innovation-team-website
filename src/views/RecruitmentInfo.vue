@@ -49,9 +49,7 @@
                 <p>{{ job.department }} | {{ job.city }} | {{ job.type }} | {{ job.time }}</p>
                 <v-row no-gutters>
                   <v-col :cols="8">
-                    <div class="text--primary">
-                      {{ job.abstract }}
-                    </div>
+                    <div class="text--primary">{{ job.responsibility.substring(0, 120) }}...</div>
                   </v-col>
                   <v-col class="text-right" :cols="4">
                     <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id } }">
@@ -86,7 +84,7 @@ export default {
     positionVal: '全部职位',
     cityVal: '全部城市',
     typeVal: '全部类型',
-    positions: ['全部职位', '技术类', '人力资源类', '产品类'],
+    positions: ['全部职位', '技术类', '人力资源类', '产品类', '设计类'],
     cities: ['全部城市', '上海', '深圳', '广州', '北京'],
     types: ['全部类型', '校园招聘', '社会招聘'],
     pageNumber: 1,
