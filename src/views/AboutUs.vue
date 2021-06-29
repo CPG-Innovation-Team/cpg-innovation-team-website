@@ -64,11 +64,10 @@ export default {
 
 <style lang="scss" scoped>
 .about-title {
-  margin-left: 250px;
+  text-align: center;
   margin-top: 80px;
-  margin-bottom: 50px;
+  margin-bottom: 80px;
   font-size: 30px;
-  font-style: italic;
   font-weight: bold;
   color: black;
 }
@@ -79,6 +78,7 @@ export default {
   align-items: center;
 
   .map {
+    margin-left: 20px;
     margin-right: 80px;
     width: 400px;
     height: 250px;
@@ -103,7 +103,7 @@ export default {
 }
 
 .social-media-title {
-  margin-top: 80px;
+  margin-top: 100px;
   color: black;
   font-size: 30px;
   text-align: center;
