@@ -25,7 +25,6 @@
       filled
       rounded
       :hide-no-data="true"
-      hide-selected
       @keyup.enter="search"
     >
       <template v-slot:item="{ item }">
@@ -74,7 +73,6 @@ export default {
   },
   methods: {
     search() {
-      console.log(this.searchText);
       this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
     },
     getSearchItems() {

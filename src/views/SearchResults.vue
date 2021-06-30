@@ -18,7 +18,7 @@
       <v-col cols="2"> </v-col>
     </v-row>
 
-    <div v-for="item in this.searchResults.slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
+    <div v-for="item in this.filteredResults.slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
       <v-card
         class="search-results-card mx-auto pa-md-4"
         max-width="1000"
@@ -37,8 +37,8 @@
       </v-card>
     </div>
 
-    <div class="search-results-none" v-show="this.searchResults.length === 0">暂无相关信息</div>
-    <div class="page-pagination" v-show="this.searchResults.length !== 0">
+    <div class="search-results-none" v-show="this.filteredResults.length === 0">暂无相关信息</div>
+    <div class="page-pagination" v-show="this.filteredResults.length !== 0">
       <v-pagination
         v-model="pageNumber"
         total-visible="10"
@@ -70,6 +70,10 @@ export default {
         this.searchResults.push(jobs[i]);
       }
     }
+    if (this.searchText === null) {
+      this.searchResults = jobs;
+    }
+    this.filteredResults = this.searchResults;
     // save results to session storage
     sessionStorage.searchText = this.searchText;
     sessionStorage.searchResults = JSON.stringify(this.searchResults);
@@ -103,7 +107,9 @@ export default {
     getPageLength() {
       return Math.ceil(this.searchResults.length / 10);
     },
+    // filters the search results
     filter(input) {
+      console.log('here');
       if (input !== '所有') {
         this.filteredResults = this.searchResults.filter((item) => {
           return item.tag === input;
@@ -112,6 +118,7 @@ export default {
         this.filteredResults = this.searchResults;
       }
     },
+    // redirect to the corresponding page when user clicks on card item
     link(tag, id) {
       if (tag === '职位') {
         this.$router.push({
@@ -141,8 +148,6 @@ export default {
 .filter-button {
   margin-top: 10px;
   margin-left: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .search-results-card {
