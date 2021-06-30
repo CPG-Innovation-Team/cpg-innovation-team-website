@@ -1,12 +1,14 @@
 <template>
   <div>
-    <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="350" show-arrows-on-hover>
-      <v-carousel-item v-for="(color, i) in colors" :key="color">
-        <v-sheet :color="color" height="100%" tile>
-          <v-row class="fill-height" align="center" justify="center">
-            <div class="text-h2">Slide {{ i + 1 }}</div>
-          </v-row>
-        </v-sheet>
+    <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="400" show-arrows-on-hover>
+      <v-carousel-item
+        v-for="(img, i) in carouselsImg"
+        :key="i"
+        v-bind:src="img"
+        reverse-transition="fade-transition"
+        transition="fade-transition"
+      >
+        <v-img contain v-bind:src="img.src" />
       </v-carousel-item>
     </v-carousel>
 
@@ -60,11 +62,18 @@
 </template>
 
 <script>
+const img1 = require('../assets/carousel-img1.jpeg');
+const img2 = require('../assets/carousel-img2.jpeg');
+const img3 = require('../assets/carousel-img3.jpeg');
+const img4 = require('../assets/carousel-img4.jpeg');
+const img5 = require('../assets/carousel-img5.jpeg');
+const img6 = require('../assets/carousel-img6.jpeg');
+
 export default {
   name: 'Home',
   data: () => ({
     model: 0,
-    colors: ['primary', 'secondary', 'yellow darken-2', 'red', 'orange'],
+    carouselsImg: [img1, img2, img3, img4, img5, img6],
   }),
 };
 </script>

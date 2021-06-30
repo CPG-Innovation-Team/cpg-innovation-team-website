@@ -1,16 +1,12 @@
 <template>
   <div>
     <v-app-bar app color="blue darken-1">
-      <v-spacer></v-spacer>
-
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-col cols="1">
-        <v-app-bar-title style="align-self: center">Logo</v-app-bar-title>
-      </v-col>
+      <v-img class="logo" src="../assets/CP-logo.png" alt="CP-logo" />
 
-      <v-toolbar-items class="navbar hidden-sm-and-down" v-for="router in routers" :key="router.index">
-        <router-link class="nav-link" v-bind:to="router.link">
+      <v-toolbar-items class="navbar hidden-sm-and-down">
+        <router-link v-for="router in routers" :key="router.index" class="nav-link" v-bind:to="router.link">
           <v-btn text>{{ router.name }}</v-btn>
         </router-link>
       </v-toolbar-items>
@@ -24,7 +20,9 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn small color="blue lighten-1" v-bind="attrs" v-on="on">中文<v-icon>mdi-chevron-down</v-icon></v-btn>
+          <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on"
+            >中文<v-icon>mdi-chevron-down</v-icon></v-btn
+          >
         </template>
         <v-list>
           <v-list-item-group color="primary">
@@ -41,14 +39,8 @@
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          class="navbar"
-          active-class="deep-purple--text text--accent-4"
-          v-for="router in routers"
-          :key="router.index"
-        >
-          <v-list-item>
+        <v-list-item-group v-model="group" class="navbar" active-class="deep-purple--text text--accent-4">
+          <v-list-item v-for="router in routers" :key="router.index">
             <v-list-item-content>
               <router-link class="nav-link" v-bind:to="router.link">{{ router.name }}</router-link>
             </v-list-item-content>
@@ -83,13 +75,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.navbar .nav-link {
-  text-decoration: none;
-  color: rgba(0, 0, 0, 0.87);
-  text-align: center;
-  height: inherit;
-  button {
+.logo {
+  margin: 0 5% 0 8%;
+  align-self: center;
+  max-height: 45px;
+  max-width: 45px;
+}
+
+.navbar {
+  // margin-right: 4%;
+  .nav-link {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
     height: inherit;
+    button {
+      height: inherit;
+    }
   }
 }
 
@@ -97,6 +99,8 @@ export default {
   border-radius: 4px;
   background-color: rgb(232, 237, 255);
   height: 60%;
+  min-width: 100px;
   width: 18%;
+  padding: 5px;
 }
 </style>
