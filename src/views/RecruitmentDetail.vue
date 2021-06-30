@@ -29,9 +29,7 @@
           </template>
           <template v-slot:default="dialog">
             <v-card>
-              <v-card-text>
-                <div class="text-h5 pa-12">请发送简历至contact@example.com</div>
-              </v-card-text>
+              <v-card-text class="text-h5 pa-12"> 请发送简历至contact@example.com </v-card-text>
               <v-card-actions class="justify-end">
                 <a href="mailto:contact@example.com"
                   ><v-btn class="send-button" depressed color="primary"> 发送简历 </v-btn></a
