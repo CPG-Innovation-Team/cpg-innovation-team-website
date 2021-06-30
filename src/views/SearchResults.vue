@@ -27,10 +27,10 @@
       >
         <v-card-text>
           <p class="text-h4 text--primary">{{ item.title }}</p>
-          <p>{{ item.department }} | {{ item.city }} | {{ item.type }} | {{ item.time }}</p>
+          <p>{{ item.department }} | {{ item.time }}</p>
           <v-row no-gutters>
             <div class="text--primary" style="width: 700px">
-              {{ item.abstract }}
+              {{ item.abstract || item.content }}
             </div>
           </v-row>
         </v-card-text>
@@ -51,6 +51,7 @@
 
 <script>
 const jobs = require('../career');
+const projects = require('../project');
 
 export default {
   data() {
@@ -64,14 +65,21 @@ export default {
     };
   },
   created() {
-    // matching results
+    // matching job results
     for (let i = 0; i < jobs.length; i += 1) {
       if (jobs[i].title.indexOf(this.searchText) !== -1) {
         this.searchResults.push(jobs[i]);
       }
     }
+    // matching project results
+    for (let i = 0; i < projects.length; i += 1) {
+      if (projects[i].title.indexOf(this.searchText) !== -1) {
+        this.searchResults.push(projects[i]);
+      }
+    }
     if (this.searchText === null) {
       this.searchResults = jobs;
+      this.searchResults.push(projects);
     }
     this.filteredResults = this.searchResults;
     // save results to session storage

@@ -28,7 +28,9 @@
       @keyup.enter="search"
     >
       <template v-slot:item="{ item }">
-        <router-link class="redirect-link" :to="'/recruitmentDetail?id=' + getID(item)">{{ item }}</router-link>
+        <router-link class="redirect-link" :to="'/recruitmentDetail?id=' + getID(item)">
+          {{ item }}
+        </router-link>
       </template>
     </v-autocomplete>
     <v-btn icon class="mr-1" @click="search">
@@ -109,5 +111,6 @@ export default {
 .redirect-link {
   text-decoration: none;
   color: black;
+  font-size: 14px;
 }
 </style>
