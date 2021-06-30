@@ -52,7 +52,7 @@
                     <div class="text--primary">{{ job.responsibility.substring(0, 120) }}...</div>
                   </v-col>
                   <v-col class="text-right" :cols="4">
-                    <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id } }">
+                    <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id.substring(1) } }">
                       <v-btn depressed color="primary"> 查看详情 </v-btn>
                     </router-link>
                   </v-col>

@@ -30,7 +30,7 @@
           <p>{{ item.department }} | {{ item.time }}</p>
           <v-row no-gutters>
             <div class="text--primary" style="width: 700px">
-              {{ item.abstract || item.content }}
+              {{ item.responsibility || item.content }}
             </div>
           </v-row>
         </v-card-text>
@@ -50,8 +50,8 @@
 </template>
 
 <script>
-const jobs = require('../career');
-const projects = require('../project');
+const jobs = require('../data/career');
+const projects = require('../data/project');
 
 export default {
   data() {
@@ -143,7 +143,13 @@ export default {
       if (tag === '职位') {
         this.$router.push({
           path: '/recruitmentDetail',
-          query: { id },
+          query: { id: id.substring(1) },
+        });
+      }
+      if (tag === '项目') {
+        this.$router.push({
+          path: '/projectInfo',
+          query: { id: id.substring(1) },
         });
       }
     },

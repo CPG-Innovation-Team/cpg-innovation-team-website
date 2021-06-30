@@ -56,7 +56,7 @@
 </template>
 
 <script>
-const jobs = require('../career');
+const jobs = require('../data/career');
 
 export default {
   data() {

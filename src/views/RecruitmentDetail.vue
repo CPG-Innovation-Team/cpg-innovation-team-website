@@ -3,7 +3,7 @@
     <v-row class="career-header" no-gutters>
       <v-col cols="2" class="text-right">
         <router-link class="back-link" to>
-          <v-btn class="back-button" color="normal" @click="$router.back(-1)">返回</v-btn>
+          <v-btn class="back-button" color="normal" @click="$router.back(1)">返回</v-btn>
         </router-link>
       </v-col>
       <v-col cols="7">
@@ -52,15 +52,15 @@ export default {
     jobs,
     index: 0,
   }),
-  // force refresh the page when at the same route
-  beforeRouteUpdate(to, from, next) {
-    next();
-    this.$router.go();
-  },
   created() {
     if (this.$route.query.id - 1 >= 0 && this.$route.query.id - 1 < jobs.length) {
       this.index = this.$route.query.id - 1;
     }
+  },
+  // force refresh the page when at the same route
+  beforeRouteUpdate(to, from, next) {
+    next();
+    this.$router.go();
   },
 };
 </script>
