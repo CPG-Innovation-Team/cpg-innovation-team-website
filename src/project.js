@@ -1,6 +1,7 @@
 const project = [
   {
     id: '001',
+    tag: '项目',
     title: '创新团队官网网站开发',
     department: 'Innovation',
     time: '2021-06-23',
@@ -9,6 +10,7 @@ const project = [
   },
   {
     id: '002',
+    tag: '项目',
     title: '后端前端后端前端',
     department: 'Innovation',
     time: '2021-02-23',
@@ -17,6 +19,7 @@ const project = [
   },
   {
     id: '003',
+    tag: '项目',
     title: 'TEST',
     department: 'Innovation',
     time: '2020-09-23',

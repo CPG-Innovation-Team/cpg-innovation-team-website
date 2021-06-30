@@ -95,6 +95,9 @@ export default {
     if (sessionStorage.searchResults) {
       this.searchResults = JSON.parse(sessionStorage.searchResults);
     }
+    // if (sessionStorage.selectedCategory) {
+    //   this.selectedCategory = sessionStorage.selectedCategory;
+    // }
   },
   // force refresh the page when at the same route
   beforeRouteUpdate(to, from, next) {
@@ -113,11 +116,10 @@ export default {
       });
     },
     getPageLength() {
-      return Math.ceil(this.searchResults.length / 10);
+      return Math.ceil(this.filteredResults.length / 10);
     },
     // filters the search results
     filter(input) {
-      console.log('here');
       if (input !== '所有') {
         this.filteredResults = this.searchResults.filter((item) => {
           return item.tag === input;
@@ -125,6 +127,16 @@ export default {
       } else {
         this.filteredResults = this.searchResults;
       }
+      // navigates to the first page when filter button is clicked
+      this.pageNumber = 1;
+      this.$router.push({
+        path: this.$router.currentRoute,
+        query: {
+          page: this.pageNumber,
+        },
+      });
+      // // save data in session storage
+      // sessionStorage.selectedCategory = this.selectedCategory;
     },
     // redirect to the corresponding page when user clicks on card item
     link(tag, id) {
