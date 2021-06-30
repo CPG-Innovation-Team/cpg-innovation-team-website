@@ -51,6 +51,11 @@ export default {
     jobs,
     index: 0,
   }),
+  // force refresh the page when at the same route
+  beforeRouteUpdate(to, from, next) {
+    next();
+    this.$router.go();
+  },
   created() {
     if (this.$route.query.id - 1 >= 0 && this.$route.query.id - 1 < jobs.length) {
       this.index = this.$route.query.id - 1;

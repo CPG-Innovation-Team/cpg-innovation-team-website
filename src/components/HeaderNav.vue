@@ -20,11 +20,18 @@
     <v-autocomplete
       class="header-search"
       :search-input.sync="searchTemp"
+      :items="searchItems"
       dense
       filled
       rounded
+      :hide-no-data="true"
+      hide-selected
       @keyup.enter="search"
-    ></v-autocomplete>
+    >
+      <template v-slot:item="{ item }">
+        <router-link class="redirect-link" :to="'/recruitmentDetail?id=' + getID(item)">{{ item }}</router-link>
+      </template>
+    </v-autocomplete>
     <v-btn icon class="mr-1" @click="search">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
@@ -48,22 +55,42 @@
 </template>
 
 <script>
+const jobs = require('../career');
+
 export default {
   data() {
     return {
       searchText: '',
       searchTemp: '',
+      searchItems: [],
+      jobs,
     };
   },
   watch: {
     searchTemp(input) {
       this.searchText = input;
+      this.getSearchItems();
     },
   },
   methods: {
     search() {
       console.log(this.searchText);
       this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
+    },
+    getSearchItems() {
+      for (let i = 0; i < jobs.length; i += 1) {
+        this.searchItems.push(jobs[i].title);
+      }
+      return this.searchItems;
+    },
+    getID(input) {
+      let index = -1;
+      for (let i = 0; i < jobs.length; i += 1) {
+        if (this.jobs[i].title.indexOf(input) !== -1) {
+          index = i + 1;
+        }
+      }
+      return index;
     },
   },
 };
@@ -79,5 +106,10 @@ export default {
   border-radius: 4px;
   background-color: rgb(232, 237, 255);
   height: 40px;
+}
+
+.redirect-link {
+  text-decoration: none;
+  color: black;
 }
 </style>
