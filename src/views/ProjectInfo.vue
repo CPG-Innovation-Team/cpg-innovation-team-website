@@ -6,60 +6,17 @@
 
       <v-container>
         <v-row>
-          <v-col class="project-col">
+          <v-col class="project-col" v-for="(project, i) in projects" :key="i">
             <v-hover v-slot="{ hover }">
               <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-                <v-card-title class="text-h4"> Lorem Ipsum </v-card-title>
-                <v-img :aspect-ratio="9 / 16" src="https://picsum.photos/500/300?image=60">
+                <v-card-title class="text-h4">{{ project.title }}</v-card-title>
+                <v-img :aspect-ratio="9 / 16" :src="project.img">
                   <v-slide-x-transition>
                     <div v-if="hover" class="d-flex white project-list" style="height: 100%; width: 100%">
                       <ul>
-                        <li><a>Fusce euismod cursus tempus</a></li>
-                        <li>Fusce vulputate nec purus quis gravida</li>
-                        <li>Etiam nec cursus elit</li>
-                        <li>Phasellus nec ullamcorper elit</li>
-                      </ul>
-                    </div>
-                  </v-slide-x-transition>
-                </v-img>
-              </v-card>
-            </v-hover>
-          </v-col>
-
-          <v-col class="project-col">
-            <v-hover v-slot="{ hover }">
-              <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-                <v-card-title class="text-h4"> Lorem Ipsum </v-card-title>
-                <v-img :aspect-ratio="9 / 16" src="https://picsum.photos/500/300?image=62">
-                  <v-slide-x-transition>
-                    <div v-if="hover" class="d-flex white project-list" style="height: 100%">
-                      <ul>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                      </ul>
-                    </div>
-                  </v-slide-x-transition>
-                </v-img>
-              </v-card>
-            </v-hover>
-          </v-col>
-
-          <v-col class="project-col">
-            <v-hover v-slot="{ hover }">
-              <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-                <v-card-title class="text-h4"> Lorem Ipsum </v-card-title>
-                <v-img :aspect-ratio="9 / 16" src="https://picsum.photos/500/300?image=65">
-                  <v-slide-x-transition>
-                    <div v-if="hover" class="d-flex white project-list" style="height: 100%">
-                      <ul>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
-                        <li>Lorem Ipsum</li>
+                        <li v-for="(link, j) in project.list" :key="j">
+                          <a>{{ link }}</a>
+                        </li>
                       </ul>
                     </div>
                   </v-slide-x-transition>
@@ -76,7 +33,25 @@
 <script>
 export default {
   name: 'Project',
-  data: () => ({}),
+  data: () => ({
+    projects: [
+      {
+        title: 'Lorem Ipsum',
+        img: 'https://picsum.photos/500/300?image=60',
+        list: ['item1', 'item2', 'item3'],
+      },
+      {
+        title: 'Lorem Ipsum',
+        img: 'https://picsum.photos/500/300?image=62',
+        list: ['item4', 'item5', 'item6'],
+      },
+      {
+        title: 'Lorem Ipsum',
+        img: 'https://picsum.photos/500/300?image=65',
+        list: ['item7', 'item8', 'item9'],
+      },
+    ],
+  }),
 };
 </script>
 
