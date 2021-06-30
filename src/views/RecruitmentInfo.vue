@@ -4,37 +4,40 @@
     <v-app>
       <v-container>
         <v-row>
-          <v-spacer></v-spacer>
-          <v-select
-            class="career-dropdown"
-            :items="positions"
-            filled
-            label="职位"
-            v-model="positionVal"
-            @change="filter"
-            dense
-          ></v-select>
-          <v-spacer></v-spacer>
-          <v-select
-            class="career-dropdown"
-            :items="cities"
-            filled
-            label="城市"
-            v-model="cityVal"
-            @change="filter"
-            dense
-          ></v-select>
-          <v-spacer></v-spacer>
-          <v-select
-            class="career-dropdown"
-            :items="types"
-            filled
-            label="类型"
-            v-model="typeVal"
-            @change="filter"
-            dense
-          ></v-select>
-          <v-spacer></v-spacer>
+          <v-col :cols="8">
+            <v-row>
+              <v-spacer></v-spacer>
+              <v-select
+                class="career-dropdown"
+                :items="positions"
+                filled
+                label="职位"
+                v-model="positionVal"
+                @change="filter"
+                dense
+              ></v-select>
+              <v-spacer></v-spacer>
+              <v-select
+                class="career-dropdown"
+                :items="cities"
+                filled
+                label="城市"
+                v-model="cityVal"
+                @change="filter"
+                dense
+              ></v-select>
+              <v-spacer></v-spacer>
+              <v-select
+                class="career-dropdown"
+                :items="types"
+                filled
+                label="类型"
+                v-model="typeVal"
+                @change="filter"
+                dense
+              ></v-select> </v-row
+          ></v-col>
+          <v-col :cols="4"> </v-col>
         </v-row>
 
         <div class="job-listing-title">最新发布</div>
@@ -45,13 +48,14 @@
                 <p class="text-h4 text--primary">{{ job.title }}</p>
                 <p>{{ job.department }} | {{ job.city }} | {{ job.type }} | {{ job.time }}</p>
                 <v-row no-gutters>
-                  <div class="text--primary" style="width: 700px">
-                    {{ job.abstract }}
-                  </div>
-                  <v-spacer></v-spacer>
-                  <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id } }">
-                    <v-btn depressed color="primary"> 查看详情 </v-btn>
-                  </router-link>
+                  <v-col :cols="8">
+                    <div class="text--primary">{{ job.responsibility.substring(0, 120) }}...</div>
+                  </v-col>
+                  <v-col class="text-right" :cols="4">
+                    <router-link :to="{ path: '/recruitmentDetail', query: { id: job.id } }">
+                      <v-btn depressed color="primary"> 查看详情 </v-btn>
+                    </router-link>
+                  </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -73,14 +77,14 @@
 </template>
 
 <script>
-const jobs = require('../career');
+const jobs = require('../data/career');
 
 export default {
   data: () => ({
     positionVal: '全部职位',
     cityVal: '全部城市',
     typeVal: '全部类型',
-    positions: ['全部职位', '技术类', '人力资源类', '产品类'],
+    positions: ['全部职位', '技术类', '人力资源类', '产品类', '设计类'],
     cities: ['全部城市', '上海', '深圳', '广州', '北京'],
     types: ['全部类型', '校园招聘', '社会招聘'],
     pageNumber: 1,
@@ -174,23 +178,22 @@ export default {
 <style lang="scss" scoped>
 .career-title {
   font-size: 30px;
-  font-style: italic;
   font-weight: bold;
   color: black;
-  margin-left: 250px;
+  margin-left: 15%;
   margin-bottom: 50px;
   margin-top: 80px;
 }
 
 .career-dropdown {
-  width: 100px;
+  width: 80px;
 }
 
 .job-listing-title {
   font-size: 30px;
   color: black;
   margin-top: 50px;
-  margin-left: 80px;
+  margin-left: 7%;
 }
 
 .job-listing-card {
