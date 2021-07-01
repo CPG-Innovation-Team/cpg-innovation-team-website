@@ -95,9 +95,6 @@ export default {
     if (sessionStorage.searchResults) {
       this.searchResults = JSON.parse(sessionStorage.searchResults);
     }
-    // if (sessionStorage.selectedCategory) {
-    //   this.selectedCategory = sessionStorage.selectedCategory;
-    // }
   },
   // force refresh the page when at the same route
   beforeRouteUpdate(to, from, next) {
@@ -135,8 +132,6 @@ export default {
           page: this.pageNumber,
         },
       });
-      // // save data in session storage
-      // sessionStorage.selectedCategory = this.selectedCategory;
     },
     // redirect to the corresponding page when user clicks on card item
     link(tag, id) {
