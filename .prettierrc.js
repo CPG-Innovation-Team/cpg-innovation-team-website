@@ -5,4 +5,5 @@ module.exports = {
   useTabs: false,
   semi: true,
   singleQuote: true,
+  arrowParens: 'always',
 };

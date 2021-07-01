@@ -1,5 +1,6 @@
-<template>
+<template v-slot:activator="{ on }">
   <div>
+    {{ $t('welcomeMsg') }}
     <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="400" show-arrows-on-hover>
       <v-carousel-item v-for="(img, i) in carouselsImg" :key="i" v-bind:src="img"> </v-carousel-item>
     </v-carousel>

@@ -21,16 +21,16 @@
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on"
-            >中文<v-icon>mdi-chevron-down</v-icon></v-btn
+            >{{ lang }}<v-icon>mdi-chevron-down</v-icon></v-btn
           >
         </template>
         <v-list>
           <v-list-item-group color="primary">
             <v-list-item>
-              <v-list-item-content>中文</v-list-item-content>
+              <v-list-item-content @click="changeToCN">中文</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content>English</v-list-item-content>
+              <v-list-item-content @click="changeToEN">Eng</v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -54,6 +54,7 @@
 <script>
 export default {
   data: () => ({
+    lang: 'Eng',
     drawer: false,
     group: null,
     routers: [
@@ -65,6 +66,16 @@ export default {
       { name: 'Contact', link: '/contact' },
     ],
   }),
+  methods: {
+    changeToCN() {
+      this.$i18n.locale = 'cn';
+      this.lang = '中文';
+    },
+    changeToEN() {
+      this.$i18n.locale = 'en';
+      this.lang = 'Eng';
+    },
+  },
 
   watch: {
     group() {
