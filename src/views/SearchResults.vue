@@ -28,10 +28,8 @@
         <v-card-text>
           <p class="text-h4 text--primary">{{ item.title }}</p>
           <p>{{ item.department }} | {{ item.time }}</p>
-          <v-row no-gutters>
-            <div class="text--primary" style="width: 700px">
-              {{ item.responsibility || item.content }}
-            </div>
+          <v-row class="text--primary" no-gutters>
+            {{ item.responsibility || item.content }}
           </v-row>
         </v-card-text>
       </v-card>
