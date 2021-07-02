@@ -3,7 +3,9 @@
     <v-app-bar app color="blue darken-1">
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-img class="logo" src="../assets/CP-logo.png" alt="CP-logo" />
+      <v-spacer class="hidden-sm-and-down"></v-spacer>
+
+      <router-link to="/"><v-img class="logo" src="../assets/CP-logo.png" alt="CP-logo" /></router-link>
 
       <v-toolbar-items class="navbar hidden-sm-and-down">
         <router-link v-for="router in routers" :key="router.index" class="nav-link" v-bind:to="router.link">
@@ -13,7 +15,7 @@
 
       <v-spacer></v-spacer>
 
-      <input class="header-search" type="text" placeholder="search" />
+      <input class="header-search" type="text" v-bind:placeholder="$t('search')" />
       <v-btn icon class="mr-1">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
@@ -39,7 +41,7 @@
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
-        <v-list-item-group v-model="group" class="navbar" active-class="deep-purple--text text--accent-4">
+        <v-list-item-group v-model="group" class="navbar" active-class="blue--text font-weight-bold">
           <v-list-item v-for="router in routers" :key="router.index">
             <v-list-item-content>
               <router-link class="nav-link" v-bind:to="router.link">{{ router.name }}</router-link>
@@ -54,17 +56,9 @@
 <script>
 export default {
   data: () => ({
-    lang: 'ENG',
+    lang: '中文',
     drawer: false,
     group: null,
-    // routers: [
-    //   { name: 'Home', link: '/' },
-    //   { name: 'About', link: '/aboutUs' },
-    //   { name: 'Projects', link: '/projectInfo' },
-    //   { name: 'Recruitment', link: '/recruitmentInfo' },
-    //   { name: 'Team', link: '/teamInfo' },
-    //   { name: 'Contact', link: '/contact' },
-    // ],
   }),
   methods: {
     changeToCN() {

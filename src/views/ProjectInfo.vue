@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Projects</h1>
     <v-container>
       <v-img src="https://picsum.photos/500/300?image=91" id="project-head-img" max-height="400" />
 

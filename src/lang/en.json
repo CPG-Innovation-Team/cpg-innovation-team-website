@@ -6,5 +6,21 @@
     "recruitment": "Recruitment",
     "team": "Team"
   },
-  "welcomeMsg": "Welcome"
+  "search": "Search",
+  "news": {
+    "header": "News",
+    "1": {
+      "title": "China Resources Group (CR) and Zhengda Group (CP) launched the Life Science Fund!",
+      "content": "The fund was jointly initiated and established by China Resources Group and Zhengda Group. It will use the shareholders' advantages in the pharmaceutical and medical fields to promote the \"bring in\" of world-leading products and technologies, and actively help China's life science achievements go out."
+    },
+    "2": {
+      "title": "\"CP\" made 17 rich people to become the world's richest experts",
+      "content": "Thailand’s China Daily reported on March 1 that the 2019 Hurun Global Rich List: Thailand’s wealth of US$1 billion jumped to the 9th place in the world. The Thai Chia Tai Group, controlled by the Xie Guomin family, is a truly multinational corporation that produces the world's richest people."
+    },
+    "3": {
+      "title": "The first high-tech fully automatic unmanned feed factory in Asia under the Chia Tai Group started today",
+      "content": "On December 9, 2019, Ms. Liu Tiehua, General Manager of Besze’s Legal Finance and Taxation Business Group, and Lawyer Jia Ting were invited to participate in the 240,000-ton feed/premix construction project of CPB (China) Biotechnology Co., Ltd., a subsidiary of CP Group. The groundbreaking ceremony witnessed another major investment initiative of CP Group in China."
+    }
+  },
+  "projects": {}
 }
