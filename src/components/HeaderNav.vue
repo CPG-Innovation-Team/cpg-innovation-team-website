@@ -80,28 +80,26 @@ export default {
       this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
     },
     getSearchItems() {
-      for (let i = 0; i < jobs.length; i += 1) {
-        this.searchItems.push(jobs[i].title);
-      }
-      for (let i = 0; i < projects.length; i += 1) {
-        this.searchItems.push(projects[i].title);
-      }
+      jobs.forEach((job) => {
+        this.searchItems.push(job.title);
+      });
+      projects.forEach((project) => {
+        this.searchItems.push(project.title);
+      });
       return this.searchItems;
     },
     getRouterLink(item) {
       let tag = '';
-      for (let i = 0; i < jobs.length; i += 1) {
-        if (this.jobs[i].title.indexOf(item) !== -1) {
+      jobs.forEach((job) => {
+        if (job.title.indexOf(item) !== -1) {
           tag = '职位';
-          break;
         }
-      }
-      for (let i = 0; i < projects.length; i += 1) {
-        if (this.projects[i].title.indexOf(item) !== -1) {
+      });
+      projects.forEach((project) => {
+        if (project.title.indexOf(item) !== -1) {
           tag = '项目';
-          break;
         }
-      }
+      });
       if (tag === '职位') {
         return '/recruitmentDetail?id=';
       }
@@ -112,16 +110,16 @@ export default {
     },
     getID(input) {
       let index = -1;
-      for (let i = 0; i < jobs.length; i += 1) {
-        if (this.jobs[i].title.indexOf(input) !== -1) {
+      jobs.forEach((job, i) => {
+        if (job.title.indexOf(input) !== -1) {
           index = i + 1;
         }
-      }
-      for (let i = 0; i < projects.length; i += 1) {
-        if (this.projects[i].title.indexOf(input) !== -1) {
+      });
+      projects.forEach((project, i) => {
+        if (project.title.indexOf(input) !== -1) {
           index = i + 1;
         }
-      }
+      });
       return index;
     },
   },
