@@ -1,3 +1,10 @@
 {
+  "navbar": {
+    "home": "首页",
+    "about": "关于",
+    "projects": "项目",
+    "recruitment": "招聘",
+    "team": "团队"
+  },
   "welcomeMsg": "你好"
 }

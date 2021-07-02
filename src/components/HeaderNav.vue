@@ -54,29 +54,39 @@
 <script>
 export default {
   data: () => ({
-    lang: 'Eng',
+    lang: 'ENG',
     drawer: false,
     group: null,
-    routers: [
-      { name: 'Home', link: '/' },
-      { name: 'About', link: '/aboutUs' },
-      { name: 'Projects', link: '/projectInfo' },
-      { name: 'Recruitment', link: '/recruitmentInfo' },
-      { name: 'Team', link: '/teamInfo' },
-      { name: 'Contact', link: '/contact' },
-    ],
+    // routers: [
+    //   { name: 'Home', link: '/' },
+    //   { name: 'About', link: '/aboutUs' },
+    //   { name: 'Projects', link: '/projectInfo' },
+    //   { name: 'Recruitment', link: '/recruitmentInfo' },
+    //   { name: 'Team', link: '/teamInfo' },
+    //   { name: 'Contact', link: '/contact' },
+    // ],
   }),
   methods: {
     changeToCN() {
-      this.$i18n.locale = 'cn';
+      this.$i18n.locale = 'zh-CN';
       this.lang = '中文';
     },
     changeToEN() {
-      this.$i18n.locale = 'en';
+      this.$i18n.locale = 'en-US';
       this.lang = 'Eng';
     },
   },
-
+  computed: {
+    routers() {
+      return [
+        { name: this.$t('navbar.home'), link: '/' },
+        { name: this.$t('navbar.about'), link: '/aboutUs' },
+        { name: this.$t('navbar.projects'), link: '/projectInfo' },
+        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
+        { name: this.$t('navbar.team'), link: '/teamInfo' },
+      ];
+    },
+  },
   watch: {
     group() {
       this.drawer = false;
