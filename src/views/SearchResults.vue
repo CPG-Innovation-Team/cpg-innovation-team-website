@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="2"> </v-col>
+      <v-col cols="2"></v-col>
       <v-col cols="8">
         <div class="search-results-title">{{ this.searchText }} -- 搜索结果</div>
         <div class="search-results-filter">
@@ -15,7 +15,7 @@
           </v-row>
         </div></v-col
       >
-      <v-col cols="2"> </v-col>
+      <v-col cols="2"></v-col>
     </v-row>
 
     <div v-for="item in this.filteredResults.slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
@@ -28,10 +28,8 @@
         <v-card-text>
           <p class="text-h4 text--primary">{{ item.title }}</p>
           <p>{{ item.department }} | {{ item.time }}</p>
-          <v-row no-gutters>
-            <div class="text--primary" style="width: 700px">
-              {{ item.responsibility || item.content }}
-            </div>
+          <v-row class="text--primary" no-gutters>
+            {{ item.responsibility || item.content }}
           </v-row>
         </v-card-text>
       </v-card>
@@ -66,40 +64,21 @@ export default {
   },
   created() {
     // matching job results
-    for (let i = 0; i < jobs.length; i += 1) {
-      if (jobs[i].title.indexOf(this.searchText) !== -1) {
-        this.searchResults.push(jobs[i]);
-      }
-    }
+    this.searchResults = jobs.filter((job) => {
+      return job.title.indexOf(this.searchText) !== -1;
+    });
     // matching project results
-    for (let i = 0; i < projects.length; i += 1) {
-      if (projects[i].title.indexOf(this.searchText) !== -1) {
-        this.searchResults.push(projects[i]);
-      }
-    }
+    this.searchResults = this.searchResults.concat(
+      projects.filter((project) => {
+        return project.title.indexOf(this.searchText) !== -1;
+      })
+    );
     if (this.searchText === null) {
       this.searchResults = jobs;
       this.searchResults.push(projects);
     }
     this.filteredResults = this.searchResults;
-    // save results to session storage
-    sessionStorage.searchText = this.searchText;
-    sessionStorage.searchResults = JSON.stringify(this.searchResults);
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
-  },
-  mounted() {
-    // retrive data from session storage
-    if (sessionStorage.searchText) {
-      this.searchText = sessionStorage.searchText;
-    }
-    if (sessionStorage.searchResults) {
-      this.searchResults = JSON.parse(sessionStorage.searchResults);
-    }
-  },
-  // force refresh the page when at the same route
-  beforeRouteUpdate(to, from, next) {
-    next();
-    this.$router.go();
   },
   methods: {
     handlePageChange(value) {

@@ -28,7 +28,7 @@
       @keyup.enter="search"
     >
       <template v-slot:item="{ item }">
-        <router-link class="redirect-link" :to="'/recruitmentDetail?id=' + getID(item)">
+        <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
           {{ item }}
         </router-link>
       </template>
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+const projects = require('../data/project');
 const jobs = require('../data/career');
 
 export default {
@@ -65,6 +66,7 @@ export default {
       searchTemp: '',
       searchItems: [],
       jobs,
+      projects,
     };
   },
   watch: {
@@ -81,12 +83,42 @@ export default {
       for (let i = 0; i < jobs.length; i += 1) {
         this.searchItems.push(jobs[i].title);
       }
+      for (let i = 0; i < projects.length; i += 1) {
+        this.searchItems.push(projects[i].title);
+      }
       return this.searchItems;
+    },
+    getRouterLink(item) {
+      let tag = '';
+      for (let i = 0; i < jobs.length; i += 1) {
+        if (this.jobs[i].title.indexOf(item) !== -1) {
+          tag = '职位';
+          break;
+        }
+      }
+      for (let i = 0; i < projects.length; i += 1) {
+        if (this.projects[i].title.indexOf(item) !== -1) {
+          tag = '项目';
+          break;
+        }
+      }
+      if (tag === '职位') {
+        return '/recruitmentDetail?id=';
+      }
+      if (tag === '项目') {
+        return '/projectInfo?id=';
+      }
+      return '/error';
     },
     getID(input) {
       let index = -1;
       for (let i = 0; i < jobs.length; i += 1) {
         if (this.jobs[i].title.indexOf(input) !== -1) {
+          index = i + 1;
+        }
+      }
+      for (let i = 0; i < projects.length; i += 1) {
+        if (this.projects[i].title.indexOf(input) !== -1) {
           index = i + 1;
         }
       }
