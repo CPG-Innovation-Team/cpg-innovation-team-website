@@ -22,9 +22,9 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on"
-            >{{ lang }}<v-icon>mdi-chevron-down</v-icon></v-btn
-          >
+          <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on">
+            {{ lang }}<v-icon>mdi-chevron-down</v-icon>
+          </v-btn>
         </template>
         <v-list>
           <v-list-item-group color="primary">
@@ -56,28 +56,28 @@
 <script>
 export default {
   data: () => ({
-    lang: '中文',
+    lang: "中文",
     drawer: false,
     group: null,
   }),
   methods: {
     changeToCN() {
-      this.$i18n.locale = 'zh-CN';
-      this.lang = '中文';
+      this.$i18n.locale = "zh-CN";
+      this.lang = "中文";
     },
     changeToEN() {
-      this.$i18n.locale = 'en-US';
-      this.lang = 'Eng';
+      this.$i18n.locale = "en-US";
+      this.lang = "Eng";
     },
   },
   computed: {
     routers() {
       return [
-        { name: this.$t('navbar.home'), link: '/' },
-        { name: this.$t('navbar.about'), link: '/aboutUs' },
-        { name: this.$t('navbar.projects'), link: '/projectInfo' },
-        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
-        { name: this.$t('navbar.team'), link: '/teamInfo' },
+        { name: this.$t("navbar.home"), link: "/" },
+        { name: this.$t("navbar.about"), link: "/aboutUs" },
+        { name: this.$t("navbar.projects"), link: "/projectInfo" },
+        { name: this.$t("navbar.recruitment"), link: "/recruitmentInfo" },
+        { name: this.$t("navbar.team"), link: "/teamInfo" },
       ];
     },
   },

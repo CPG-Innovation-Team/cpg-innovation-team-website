@@ -45,7 +45,7 @@
 </template>
 
 <script>
-const jobs = require('../data/career');
+const jobs = require("../data/career");
 
 export default {
   data: () => ({

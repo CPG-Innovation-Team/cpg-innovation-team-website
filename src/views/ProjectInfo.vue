@@ -31,23 +31,23 @@
 
 <script>
 export default {
-  name: 'Project',
+  name: "Project",
   data: () => ({
     projects: [
       {
-        title: 'Lorem Ipsum',
-        img: 'https://picsum.photos/500/300?image=60',
-        list: ['item1', 'item2', 'item3'],
+        title: "Lorem Ipsum",
+        img: "https://picsum.photos/500/300?image=60",
+        list: ["item1", "item2", "item3"],
       },
       {
-        title: 'Lorem Ipsum',
-        img: 'https://picsum.photos/500/300?image=62',
-        list: ['item4', 'item5', 'item6'],
+        title: "Lorem Ipsum",
+        img: "https://picsum.photos/500/300?image=62",
+        list: ["item4", "item5", "item6"],
       },
       {
-        title: 'Lorem Ipsum',
-        img: 'https://picsum.photos/500/300?image=65',
-        list: ['item7', 'item8', 'item9'],
+        title: "Lorem Ipsum",
+        img: "https://picsum.photos/500/300?image=65",
+        list: ["item7", "item8", "item9"],
       },
     ],
   }),

@@ -77,16 +77,16 @@
 </template>
 
 <script>
-const jobs = require('../data/career');
+const jobs = require("../data/career");
 
 export default {
   data: () => ({
-    positionVal: '全部职位',
-    cityVal: '全部城市',
-    typeVal: '全部类型',
-    positions: ['全部职位', '技术类', '人力资源类', '产品类', '设计类'],
-    cities: ['全部城市', '上海', '深圳', '广州', '北京'],
-    types: ['全部类型', '校园招聘', '社会招聘'],
+    positionVal: "全部职位",
+    cityVal: "全部城市",
+    typeVal: "全部类型",
+    positions: ["全部职位", "技术类", "人力资源类", "产品类", "设计类"],
+    cities: ["全部城市", "上海", "深圳", "广州", "北京"],
+    types: ["全部类型", "校园招聘", "社会招聘"],
     pageNumber: 1,
     jobs,
     filteredJobs: [],
@@ -115,31 +115,31 @@ export default {
       // when filtered, navigate to the first page
       this.pageNumber = 1;
       this.$router.push({
-        path: '/recruitmentInfo',
+        path: "/recruitmentInfo",
         query: {
           page: this.pageNumber,
         },
       });
       this.filteredJobs = this.jobs.filter((job) => {
-        if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
+        if (this.positionVal !== "全部职位" && this.cityVal !== "全部城市" && this.typeVal !== "全部类型") {
           return job.position === this.positionVal && job.city === this.cityVal && job.type === this.typeVal;
         }
-        if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市') {
+        if (this.positionVal !== "全部职位" && this.cityVal !== "全部城市") {
           return job.position === this.positionVal && job.city === this.cityVal;
         }
-        if (this.positionVal !== '全部职位' && this.typeVal !== '全部类型') {
+        if (this.positionVal !== "全部职位" && this.typeVal !== "全部类型") {
           return job.position === this.positionVal && job.type === this.typeVal;
         }
-        if (this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
+        if (this.cityVal !== "全部城市" && this.typeVal !== "全部类型") {
           return job.city === this.cityVal && job.type === this.typeVal;
         }
-        if (this.typeVal !== '全部类型') {
+        if (this.typeVal !== "全部类型") {
           return job.type === this.typeVal;
         }
-        if (this.positionVal !== '全部职位') {
+        if (this.positionVal !== "全部职位") {
           return job.position === this.positionVal;
         }
-        if (this.cityVal !== '全部城市') {
+        if (this.cityVal !== "全部城市") {
           return job.city === this.cityVal;
         }
         return jobs;
@@ -156,7 +156,7 @@ export default {
     handlePageChange(value) {
       this.pageNumber = value;
       this.$router.push({
-        path: '/recruitmentInfo',
+        path: "/recruitmentInfo",
         query: {
           page: this.pageNumber,
         },
@@ -165,8 +165,8 @@ export default {
     sort(arr) {
       const temp = arr.concat([]);
       temp.sort((a, b) => {
-        const t1 = new Date(Date.parse(a.time.replace(/-/g, '/')));
-        const t2 = new Date(Date.parse(b.time.replace(/-/g, '/')));
+        const t1 = new Date(Date.parse(a.time.replace(/-/g, "/")));
+        const t2 = new Date(Date.parse(b.time.replace(/-/g, "/")));
         return t2.getTime() - t1.getTime();
       });
       return temp;
