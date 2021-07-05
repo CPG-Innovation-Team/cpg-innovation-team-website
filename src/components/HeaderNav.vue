@@ -17,8 +17,23 @@
 
     <v-spacer></v-spacer>
 
-    <input id="header-search" type="text" placeholder="search" />
-    <v-btn icon class="mr-1">
+    <v-autocomplete
+      class="header-search"
+      :search-input.sync="searchTemp"
+      :items="searchItems"
+      dense
+      filled
+      rounded
+      :hide-no-data="true"
+      @keyup.enter="search"
+    >
+      <template v-slot:item="{ item }">
+        <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
+          {{ item }}
+        </router-link>
+      </template>
+    </v-autocomplete>
+    <v-btn icon class="mr-1" @click="search">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
@@ -40,7 +55,69 @@
   </v-app-bar>
 </template>
 
-<script></script>
+<script>
+const projects = require('../data/project');
+const jobs = require('../data/career');
+
+export default {
+  data() {
+    return {
+      searchText: '',
+      searchTemp: '',
+      searchItems: [],
+      jobs,
+      projects,
+    };
+  },
+  watch: {
+    searchTemp(input) {
+      this.searchText = input;
+      this.searchItems = [...this.getSearchItems(jobs), ...this.getSearchItems(projects)];
+    },
+  },
+  methods: {
+    search() {
+      this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
+    },
+    getSearchItems(arr) {
+      const output = [];
+      arr.forEach((item) => {
+        output.push(item.title);
+      });
+      return output;
+    },
+    getRouterLink(item) {
+      if (this.getTag(jobs, item) === '职位') {
+        return '/recruitmentDetail?id=';
+      }
+      if (this.getTag(projects, item) === '项目') {
+        return '/projectInfo?id=';
+      }
+      return '/error';
+    },
+    getTag(arr, title) {
+      let tag = '';
+      arr.forEach((item) => {
+        if (item.title.indexOf(title) !== -1) {
+          if (arr === jobs) tag = '职位';
+          if (arr === projects) tag = '项目';
+        }
+      });
+      return tag;
+    },
+    getID(input) {
+      let index = -1;
+      const arr = [...jobs, ...projects];
+      arr.forEach((item) => {
+        if (item.title.indexOf(input) !== -1) {
+          index = item.id.substring(1);
+        }
+      });
+      return index;
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .navbar .nav-link {
@@ -48,9 +125,15 @@
   color: rgba(0, 0, 0, 0.87);
 }
 
-#header-search {
+.header-search {
   border-radius: 4px;
   background-color: rgb(232, 237, 255);
   height: 60%;
+}
+
+.redirect-link {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
 }
 </style>

@@ -6,6 +6,7 @@ import ProjectInfo from './views/ProjectInfo.vue';
 import TeamInfo from './views/TeamInfo.vue';
 import RecruitmentInfo from './views/RecruitmentInfo.vue';
 import RecruitmentDetail from './views/RecruitmentDetail.vue';
+import SearchResults from './views/SearchResults.vue';
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/recruitmentDetail',
     name: 'RecruitmentDetail',
     component: RecruitmentDetail,
+  },
+  {
+    path: '/searchResults',
+    name: 'SearchResults',
+    component: SearchResults,
   },
 ];
 
