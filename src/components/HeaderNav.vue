@@ -72,52 +72,45 @@ export default {
   watch: {
     searchTemp(input) {
       this.searchText = input;
-      this.getSearchItems();
+      this.searchItems = this.getSearchItems(jobs).concat(this.getSearchItems(projects));
     },
   },
   methods: {
     search() {
       this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
     },
-    getSearchItems() {
-      jobs.forEach((job) => {
-        this.searchItems.push(job.title);
+    getSearchItems(arr) {
+      const output = [];
+      arr.forEach((item) => {
+        output.push(item.title);
       });
-      projects.forEach((project) => {
-        this.searchItems.push(project.title);
-      });
-      return this.searchItems;
+      return output;
     },
     getRouterLink(item) {
-      let tag = '';
-      jobs.forEach((job) => {
-        if (job.title.indexOf(item) !== -1) {
-          tag = '职位';
-        }
-      });
-      projects.forEach((project) => {
-        if (project.title.indexOf(item) !== -1) {
-          tag = '项目';
-        }
-      });
-      if (tag === '职位') {
+      if (this.getTag(jobs, item) === '职位') {
         return '/recruitmentDetail?id=';
       }
-      if (tag === '项目') {
+      if (this.getTag(projects, item) === '项目') {
         return '/projectInfo?id=';
       }
       return '/error';
     },
-    getID(input) {
-      let index = -1;
-      jobs.forEach((job, i) => {
-        if (job.title.indexOf(input) !== -1) {
-          index = i + 1;
+    getTag(arr, title) {
+      let tag = '';
+      arr.forEach((item) => {
+        if (item.title.indexOf(title) !== -1) {
+          if (arr === jobs) tag = '职位';
+          if (arr === projects) tag = '项目';
         }
       });
-      projects.forEach((project, i) => {
-        if (project.title.indexOf(input) !== -1) {
-          index = i + 1;
+      return tag;
+    },
+    getID(input) {
+      let index = -1;
+      const arr = jobs.concat(projects);
+      arr.forEach((item) => {
+        if (item.title.indexOf(input) !== -1) {
+          index = item.id.substring(1);
         }
       });
       return index;
