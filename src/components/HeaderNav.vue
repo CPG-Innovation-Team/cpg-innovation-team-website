@@ -72,7 +72,7 @@ export default {
   watch: {
     searchTemp(input) {
       this.searchText = input;
-      this.searchItems = this.getSearchItems(jobs).concat(this.getSearchItems(projects));
+      this.searchItems = [...this.getSearchItems(jobs), ...this.getSearchItems(projects)];
     },
   },
   methods: {
@@ -107,7 +107,7 @@ export default {
     },
     getID(input) {
       let index = -1;
-      const arr = jobs.concat(projects);
+      const arr = [...jobs, ...projects];
       arr.forEach((item) => {
         if (item.title.indexOf(input) !== -1) {
           index = item.id.substring(1);
@@ -128,7 +128,7 @@ export default {
 .header-search {
   border-radius: 4px;
   background-color: rgb(232, 237, 255);
-  height: 40px;
+  height: 60%;
 }
 
 .redirect-link {
