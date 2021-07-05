@@ -95,21 +95,6 @@ export default {
     this.filteredJobs = this.sort(jobs);
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
-  mounted() {
-    // retrive data from session storage
-    if (sessionStorage.positionVal) {
-      this.positionVal = sessionStorage.positionVal;
-    }
-    if (sessionStorage.cityVal) {
-      this.cityVal = sessionStorage.cityVal;
-    }
-    if (sessionStorage.typeVal) {
-      this.typeVal = sessionStorage.typeVal;
-    }
-    if (sessionStorage.filteredJobs) {
-      this.filteredJobs = JSON.parse(sessionStorage.filteredJobs);
-    }
-  },
   methods: {
     filter() {
       // when filtered, navigate to the first page
@@ -144,11 +129,6 @@ export default {
         }
         return jobs;
       });
-      // save data in session storage
-      sessionStorage.positionVal = this.positionVal;
-      sessionStorage.cityVal = this.cityVal;
-      sessionStorage.typeVal = this.typeVal;
-      sessionStorage.filteredJobs = JSON.stringify(this.filteredJobs);
     },
     getPageLength() {
       return Math.ceil(this.filteredJobs.length / 10);
