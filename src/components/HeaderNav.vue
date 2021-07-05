@@ -29,10 +29,10 @@
         <v-list>
           <v-list-item-group color="primary">
             <v-list-item>
-              <v-list-item-content @click="changeToCN">中文</v-list-item-content>
+              <v-list-item-content @click="changeLang('zh-CN', '中文')">中文</v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content @click="changeToEN">Eng</v-list-item-content>
+              <v-list-item-content @click="changeLang('en-US', 'Eng')">Eng</v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -56,28 +56,24 @@
 <script>
 export default {
   data: () => ({
-    lang: "中文",
+    lang: '中文',
     drawer: false,
     group: null,
   }),
   methods: {
-    changeToCN() {
-      this.$i18n.locale = "zh-CN";
-      this.lang = "中文";
-    },
-    changeToEN() {
-      this.$i18n.locale = "en-US";
-      this.lang = "Eng";
+    changeLang(locale, lang) {
+      this.$i18n.locale = locale;
+      this.lang = lang;
     },
   },
   computed: {
     routers() {
       return [
-        { name: this.$t("navbar.home"), link: "/" },
-        { name: this.$t("navbar.about"), link: "/aboutUs" },
-        { name: this.$t("navbar.projects"), link: "/projectInfo" },
-        { name: this.$t("navbar.recruitment"), link: "/recruitmentInfo" },
-        { name: this.$t("navbar.team"), link: "/teamInfo" },
+        { name: this.$t('navbar.home'), link: '/' },
+        { name: this.$t('navbar.about'), link: '/aboutUs' },
+        { name: this.$t('navbar.projects'), link: '/projectInfo' },
+        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
+        { name: this.$t('navbar.team'), link: '/teamInfo' },
       ];
     },
   },
