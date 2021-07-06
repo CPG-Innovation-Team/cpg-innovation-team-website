@@ -13,7 +13,7 @@
                 filled
                 label="职位"
                 v-model="positionVal"
-                @change="filter"
+                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
                 dense
               ></v-select>
               <v-spacer></v-spacer>
@@ -23,7 +23,7 @@
                 filled
                 label="城市"
                 v-model="cityVal"
-                @change="filter"
+                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
                 dense
               ></v-select>
               <v-spacer></v-spacer>
@@ -33,7 +33,7 @@
                 filled
                 label="类型"
                 v-model="typeVal"
-                @change="filter"
+                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
                 dense
               ></v-select> </v-row
           ></v-col>
@@ -96,38 +96,41 @@ export default {
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
-    filter() {
+    filter(arr, pVal, cVal, tVal) {
+      this.navigate(1);
+      return arr.filter((job) => {
+        if (pVal !== '全部职位' && cVal !== '全部城市' && tVal !== '全部类型') {
+          return job.position === pVal && job.city === cVal && job.type === tVal;
+        }
+        if (pVal !== '全部职位' && cVal !== '全部城市') {
+          return job.position === pVal && job.city === cVal;
+        }
+        if (pVal !== '全部职位' && tVal !== '全部类型') {
+          return job.position === pVal && job.type === tVal;
+        }
+        if (cVal !== '全部城市' && tVal !== '全部类型') {
+          return job.city === cVal && job.type === tVal;
+        }
+        if (tVal !== '全部类型') {
+          return job.type === tVal;
+        }
+        if (pVal !== '全部职位') {
+          return job.position === pVal;
+        }
+        if (cVal !== '全部城市') {
+          return job.city === cVal;
+        }
+        return arr;
+      });
+    },
+    navigate(num) {
       // when filtered, navigate to the first page
-      this.pageNumber = 1;
+      this.pageNumber = num;
       this.$router.push({
         path: '/recruitmentInfo',
         query: {
           page: this.pageNumber,
         },
-      });
-      this.filteredJobs = this.jobs.filter((job) => {
-        if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
-          return job.position === this.positionVal && job.city === this.cityVal && job.type === this.typeVal;
-        }
-        if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市') {
-          return job.position === this.positionVal && job.city === this.cityVal;
-        }
-        if (this.positionVal !== '全部职位' && this.typeVal !== '全部类型') {
-          return job.position === this.positionVal && job.type === this.typeVal;
-        }
-        if (this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
-          return job.city === this.cityVal && job.type === this.typeVal;
-        }
-        if (this.typeVal !== '全部类型') {
-          return job.type === this.typeVal;
-        }
-        if (this.positionVal !== '全部职位') {
-          return job.position === this.positionVal;
-        }
-        if (this.cityVal !== '全部城市') {
-          return job.city === this.cityVal;
-        }
-        return jobs;
       });
     },
     getPageLength(arr) {

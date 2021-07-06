@@ -8,7 +8,11 @@
           <div class="search-results-num">共找到{{ this.searchResults.length }}条结果</div>
           <v-row>
             <v-chip-group class="filter-button" mandatory active-class="primary--text">
-              <v-chip v-for="category in categories" :key="category" @click="filter(category)">
+              <v-chip
+                v-for="category in categories"
+                :key="category"
+                @click="filteredResults = filter(searchResults, category)"
+              >
                 {{ category }}
               </v-chip>
             </v-chip-group>
@@ -63,24 +67,20 @@ export default {
     };
   },
   created() {
-    // matching job results
-    this.searchResults = jobs.filter((job) => {
-      return job.title.indexOf(this.searchText) !== -1;
-    });
-    // matching project results
+    // matching search results
     this.searchResults = [
-      ...this.searchResults,
-      ...projects.filter((project) => {
-        return project.title.indexOf(this.searchText) !== -1;
-      }),
+      ...this.getSearchResults(jobs, this.searchText),
+      ...this.getSearchResults(projects, this.searchText),
     ];
-    if (this.searchText === null) {
-      this.searchResults = [...jobs, ...projects];
-    }
     this.filteredResults = this.searchResults;
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
+    getSearchResults(arr, input) {
+      return arr.filter((item) => {
+        return item.title.indexOf(input) !== -1;
+      });
+    },
     handlePageChange(value) {
       this.pageNumber = value;
       this.$router.push({
@@ -95,16 +95,18 @@ export default {
       return Math.ceil(arr.length / 10);
     },
     // filters the search results
-    filter(input) {
+    filter(arr, input) {
+      this.navigate(1);
       if (input !== '所有') {
-        this.filteredResults = this.searchResults.filter((item) => {
+        return arr.filter((item) => {
           return item.tag === input;
         });
-      } else {
-        this.filteredResults = this.searchResults;
       }
+      return arr;
+    },
+    navigate(num) {
       // navigates to the first page when filter button is clicked
-      this.pageNumber = 1;
+      this.pageNumber = num;
       this.$router.push({
         path: this.$router.currentRoute,
         query: {
