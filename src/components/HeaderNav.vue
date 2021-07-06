@@ -175,6 +175,7 @@ export default {
 
 .header-search {
   min-width: 120px;
+  width: 8%;
 }
 
 .redirect-link {
