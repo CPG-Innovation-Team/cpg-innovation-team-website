@@ -1,6 +1,7 @@
 const job = [
   {
-    id: '001',
+    id: 'c001',
+    tag: '职位',
     title: 'CSIG15-智能平台产品部-AI产品前端开发（深圳）',
     position: '技术类',
     department: 'Innovation',
@@ -25,7 +26,8 @@ const job = [
       '11、软件知识结构全面，基本功扎实。',
   },
   {
-    id: '002',
+    id: 'c002',
+    tag: '职位',
     title: 'MMO产品运营经理',
     position: '产品类',
     department: 'MMO',
@@ -43,7 +45,8 @@ const job = [
       '工作态度认真负责，具有良好的学习能力，抗压能力强，团队合作意识强。',
   },
   {
-    id: '003',
+    id: 'c003',
+    tag: '职位',
     title: '游戏数据分析实习生',
     position: '产品类',
     department: 'Game',
@@ -62,7 +65,8 @@ const job = [
       '4、熟悉常用的数据分析方法，熟练使用Excel进行数据分析，掌握SQL查询工具',
   },
   {
-    id: '004',
+    id: 'c004',
+    tag: '职位',
     title: '新手游戏资深3D场景美术设计师',
     position: '设计类',
     department: 'Game',
@@ -82,7 +86,8 @@ const job = [
       '擅长卡通风格者，有自己的设计理念和制作理念，能够设计制作符合美学要求和技术要求的优质模型。',
   },
   {
-    id: '005',
+    id: 'c005',
+    tag: '职位',
     title: '腾讯手游加速器高级交互设计师',
     position: '设计类',
     department: 'Game',
@@ -104,7 +109,8 @@ const job = [
       '富有激情、积极主动、关注细节、抗压能力强，学习能力强;英文能力强者更佳',
   },
   {
-    id: '006',
+    id: 'c006',
+    tag: '职位',
     title: '资深招聘经理',
     position: '人力资源类',
     department: 'WXG',
@@ -123,7 +129,8 @@ const job = [
       '4、良好的团队合作意识、抗压能力，开放的心态和主动的学习意识。',
   },
   {
-    id: '007',
+    id: 'c007',
+    tag: '职位',
     title: '渠道商业化平台产品经理',
     position: '人力资源类',
     department: 'S3',
@@ -142,7 +149,8 @@ const job = [
       '具备优秀的学习能力，思维开阔，敢于创新，责任心强，对互联网行业及招聘业务有热情。',
   },
   {
-    id: '008',
+    id: 'c008',
+    tag: '职位',
     title: '大数据开发实习生',
     position: '技术类',
     department: 'SRE',
@@ -160,7 +168,8 @@ const job = [
       '负责PCG大数据中台的运营自动化建设工作，持续提高大数据中台的运营能力和效率；',
   },
   {
-    id: '009',
+    id: 'c009',
+    tag: '职位',
     title: '视频商业化数据科学实习生',
     position: '技术类',
     department: 'Innovation',
@@ -180,7 +189,8 @@ const job = [
       '有使用SQL、R，Python，C/C++，Java等分析大型数据和建模的经验。',
   },
   {
-    id: '010',
+    id: 'c010',
+    tag: '职位',
     title: '高级硬件电子开发工程师',
     position: '技术类',
     department: 'WXG',
@@ -200,7 +210,8 @@ const job = [
       '7、 熟悉整机ESD，EMC整改，熟悉硬件开发流程，有大规模产品量产案例经验优先。',
   },
   {
-    id: '011',
+    id: 'c011',
+    tag: '职位',
     title: '商业创新web前端开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -221,7 +232,8 @@ const job = [
       '良好的思考习惯，逻辑思维清晰，责任心，工作激情，学习心态和沟通能力出色；',
   },
   {
-    id: '012',
+    id: 'c012',
+    tag: '职位',
     title: '国际IP 新手游-高级引擎开发工程师（大世界方向）',
     position: '技术类',
     department: 'IEG',
@@ -245,7 +257,8 @@ const job = [
       '熟悉商业游戏引擎源代码者优先，对动作游戏熟悉和热爱者优先。',
   },
   {
-    id: '013',
+    id: 'c013',
+    tag: '职位',
     title: '动漫平台Android开发工程实习生',
     position: '技术类',
     department: 'PCG',
@@ -265,7 +278,8 @@ const job = [
       '工作严谨负责，学习能力强，具备较强的团队精神，良好的表达和沟通能力，乐于学习新技术。',
   },
   {
-    id: '014',
+    id: 'c014',
+    tag: '职位',
     title: '创新项目推荐系统开发工程师',
     position: '技术类',
     department: 'Innovation',
@@ -285,7 +299,8 @@ const job = [
       '具备良好的沟通和表达能力，对信息流的用户体验有自己的想法，有较好的产品意识。',
   },
   {
-    id: '015',
+    id: 'c015',
+    tag: '职位',
     title: '游戏美术3D设计师',
     position: '设计类',
     department: 'IEG',
@@ -305,7 +320,8 @@ const job = [
       '抗压能力强，沟通表达良好，能主动融入团队，研究和掌握技术前沿并应用于工作中。',
   },
   {
-    id: '016',
+    id: 'c016',
+    tag: '职位',
     title: '微信境外支付港澳区域运营经理',
     position: '人力资源类',
     department: 'S2',
@@ -323,7 +339,8 @@ const job = [
       '其他要求：拥有粤语能力，英语熟练，掌握支付行业相关专业词汇，熟悉当地文化和商业情况、且有本地商户和服务商资源的优先考虑。',
   },
   {
-    id: '017',
+    id: 'c017',
+    tag: '职位',
     title: '组织发展经理',
     position: '产品类',
     department: 'S3',
