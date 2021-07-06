@@ -1,10 +1,8 @@
 <template>
   <div>
-    <v-row class="career-header" no-gutters>
+    <v-row no-gutters>
       <v-col cols="2" class="text-right">
-        <router-link class="back-link" to>
-          <v-btn class="back-button" color="normal" @click="$router.go(-1)">返回</v-btn>
-        </router-link>
+        <v-btn class="back-button" color="normal" @click="$router.go(-1)">返回</v-btn>
       </v-col>
       <v-col cols="7">
         <div class="career-detail-title">{{ jobs[index].title }}</div>
@@ -48,10 +46,12 @@
 const jobs = require('../data/career');
 
 export default {
-  data: () => ({
-    jobs,
-    index: 0,
-  }),
+  data() {
+    return {
+      jobs,
+      index: 0,
+    };
+  },
   created() {
     if (this.$route.query.id - 1 >= 0 && this.$route.query.id - 1 < jobs.length) {
       this.index = this.$route.query.id - 1;

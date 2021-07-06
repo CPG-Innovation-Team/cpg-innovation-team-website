@@ -67,7 +67,7 @@
           <v-pagination
             v-model="pageNumber"
             total-visible="10"
-            :length="getPageLength()"
+            :length="getPageLength(this.filteredJobs)"
             @input="handlePageChange"
           ></v-pagination>
         </div>
@@ -130,8 +130,8 @@ export default {
         return jobs;
       });
     },
-    getPageLength() {
-      return Math.ceil(this.filteredJobs.length / 10);
+    getPageLength(arr) {
+      return Math.ceil(arr.length / 10);
     },
     handlePageChange(value) {
       this.pageNumber = value;

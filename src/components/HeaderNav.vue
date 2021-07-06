@@ -77,7 +77,9 @@ export default {
   },
   methods: {
     search() {
-      this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
+      if (this.searchText !== null && this.searchText.trim() !== '') {
+        this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
+      }
     },
     getSearchItems(arr) {
       const output = [];
@@ -98,7 +100,7 @@ export default {
     getTag(arr, title) {
       let tag = '';
       arr.forEach((item) => {
-        if (item.title.indexOf(title) !== -1) {
+        if (item.title === title) {
           if (arr === jobs) tag = '职位';
           if (arr === projects) tag = '项目';
         }
@@ -109,7 +111,7 @@ export default {
       let index = -1;
       const arr = [...jobs, ...projects];
       arr.forEach((item) => {
-        if (item.title.indexOf(input) !== -1) {
+        if (item.title === input) {
           index = item.id.substring(1);
         }
       });

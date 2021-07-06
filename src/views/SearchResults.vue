@@ -40,7 +40,7 @@
       <v-pagination
         v-model="pageNumber"
         total-visible="10"
-        :length="getPageLength()"
+        :length="getPageLength(this.filteredResults)"
         @input="handlePageChange"
       ></v-pagination>
     </div>
@@ -68,14 +68,14 @@ export default {
       return job.title.indexOf(this.searchText) !== -1;
     });
     // matching project results
-    this.searchResults = this.searchResults.concat(
-      projects.filter((project) => {
+    this.searchResults = [
+      ...this.searchResults,
+      ...projects.filter((project) => {
         return project.title.indexOf(this.searchText) !== -1;
-      })
-    );
+      }),
+    ];
     if (this.searchText === null) {
-      this.searchResults = jobs;
-      this.searchResults.push(projects);
+      this.searchResults = [...jobs, ...projects];
     }
     this.filteredResults = this.searchResults;
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
@@ -91,8 +91,8 @@ export default {
         },
       });
     },
-    getPageLength() {
-      return Math.ceil(this.filteredResults.length / 10);
+    getPageLength(arr) {
+      return Math.ceil(arr.length / 10);
     },
     // filters the search results
     filter(input) {
@@ -113,19 +113,20 @@ export default {
       });
     },
     // redirect to the corresponding page when user clicks on card item
-    link(tag, id) {
+    getRouterLink(tag) {
       if (tag === '职位') {
-        this.$router.push({
-          path: '/recruitmentDetail',
-          query: { id: id.substring(1) },
-        });
+        return '/recruitmentDetail';
       }
       if (tag === '项目') {
-        this.$router.push({
-          path: '/projectInfo',
-          query: { id: id.substring(1) },
-        });
+        return '/projectInfo';
       }
+      return '/error';
+    },
+    link(tag, id) {
+      this.$router.push({
+        path: this.getRouterLink(tag),
+        query: { id: id.substring(1) },
+      });
     },
   },
 };
