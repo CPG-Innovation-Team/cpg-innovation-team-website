@@ -2,9 +2,7 @@
   <div>
     <v-row class="career-header" no-gutters>
       <v-col cols="2" class="text-right">
-        <router-link class="back-link" to>
-          <v-btn class="back-button" color="normal" @click="$router.go(-1)">返回</v-btn>
-        </router-link>
+        <v-btn class="back-button" color="normal" @click="$router.go(-1)">返回</v-btn>
       </v-col>
       <v-col cols="7">
         <div class="career-detail-title">{{ jobs[index].title }}</div>
@@ -61,10 +59,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.back-link {
-  text-decoration: none;
-}
-
 .back-button {
   margin-right: 40px;
   margin-left: 10px;

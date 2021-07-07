@@ -13,7 +13,7 @@
                 filled
                 label="职位"
                 v-model="positionVal"
-                @change="filter"
+                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
                 dense
               ></v-select>
               <v-spacer></v-spacer>
@@ -23,7 +23,7 @@
                 filled
                 label="城市"
                 v-model="cityVal"
-                @change="filter"
+                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
                 dense
               ></v-select>
               <v-spacer></v-spacer>
@@ -33,7 +33,7 @@
                 filled
                 label="类型"
                 v-model="typeVal"
-                @change="filter"
+                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
                 dense
               ></v-select> </v-row
           ></v-col>
@@ -67,7 +67,7 @@
           <v-pagination
             v-model="pageNumber"
             total-visible="10"
-            :length="getPageLength()"
+            :length="getPageLength(this.filteredJobs)"
             @input="handlePageChange"
           ></v-pagination>
         </div>
@@ -96,42 +96,45 @@ export default {
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
-    filter() {
+    filter(arr, positionVal, cityVal, typeVal) {
+      this.navigate(1);
+      return arr.filter((job) => {
+        if (positionVal !== '全部职位' && cityVal !== '全部城市' && typeVal !== '全部类型') {
+          return job.position === positionVal && job.city === cityVal && job.type === typeVal;
+        }
+        if (positionVal !== '全部职位' && cityVal !== '全部城市') {
+          return job.position === positionVal && job.city === cityVal;
+        }
+        if (positionVal !== '全部职位' && typeVal !== '全部类型') {
+          return job.position === positionVal && job.type === typeVal;
+        }
+        if (cityVal !== '全部城市' && typeVal !== '全部类型') {
+          return job.city === cityVal && job.type === typeVal;
+        }
+        if (typeVal !== '全部类型') {
+          return job.type === typeVal;
+        }
+        if (positionVal !== '全部职位') {
+          return job.position === positionVal;
+        }
+        if (cityVal !== '全部城市') {
+          return job.city === cityVal;
+        }
+        return arr;
+      });
+    },
+    navigate(num) {
       // when filtered, navigate to the first page
-      this.pageNumber = 1;
+      this.pageNumber = num;
       this.$router.push({
         path: '/recruitmentInfo',
         query: {
           page: this.pageNumber,
         },
       });
-      this.filteredJobs = this.jobs.filter((job) => {
-        if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
-          return job.position === this.positionVal && job.city === this.cityVal && job.type === this.typeVal;
-        }
-        if (this.positionVal !== '全部职位' && this.cityVal !== '全部城市') {
-          return job.position === this.positionVal && job.city === this.cityVal;
-        }
-        if (this.positionVal !== '全部职位' && this.typeVal !== '全部类型') {
-          return job.position === this.positionVal && job.type === this.typeVal;
-        }
-        if (this.cityVal !== '全部城市' && this.typeVal !== '全部类型') {
-          return job.city === this.cityVal && job.type === this.typeVal;
-        }
-        if (this.typeVal !== '全部类型') {
-          return job.type === this.typeVal;
-        }
-        if (this.positionVal !== '全部职位') {
-          return job.position === this.positionVal;
-        }
-        if (this.cityVal !== '全部城市') {
-          return job.city === this.cityVal;
-        }
-        return jobs;
-      });
     },
-    getPageLength() {
-      return Math.ceil(this.filteredJobs.length / 10);
+    getPageLength(arr) {
+      return Math.ceil(arr.length / 10);
     },
     handlePageChange(value) {
       this.pageNumber = value;

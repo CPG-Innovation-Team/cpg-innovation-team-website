@@ -8,7 +8,11 @@
           <div class="search-results-num">共找到{{ this.searchResults.length }}条结果</div>
           <v-row>
             <v-chip-group class="filter-button" mandatory active-class="primary--text">
-              <v-chip v-for="category in categories" :key="category" @click="filter(category)">
+              <v-chip
+                v-for="category in categories"
+                :key="category"
+                @click="filteredResults = filter(searchResults, category)"
+              >
                 {{ category }}
               </v-chip>
             </v-chip-group>
@@ -40,7 +44,7 @@
       <v-pagination
         v-model="pageNumber"
         total-visible="10"
-        :length="getPageLength()"
+        :length="getPageLength(this.filteredResults)"
         @input="handlePageChange"
       ></v-pagination>
     </div>
@@ -63,24 +67,20 @@ export default {
     };
   },
   created() {
-    // matching job results
-    this.searchResults = jobs.filter((job) => {
-      return job.title.indexOf(this.searchText) !== -1;
-    });
-    // matching project results
-    this.searchResults = this.searchResults.concat(
-      projects.filter((project) => {
-        return project.title.indexOf(this.searchText) !== -1;
-      })
-    );
-    if (this.searchText === null) {
-      this.searchResults = jobs;
-      this.searchResults.push(projects);
-    }
+    // matching search results
+    this.searchResults = [
+      ...this.getSearchResults(jobs, this.searchText),
+      ...this.getSearchResults(projects, this.searchText),
+    ];
     this.filteredResults = this.searchResults;
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
+    getSearchResults(arr, input) {
+      return arr.filter((item) => {
+        return item.title.indexOf(input) !== -1;
+      });
+    },
     handlePageChange(value) {
       this.pageNumber = value;
       this.$router.push({
@@ -91,20 +91,22 @@ export default {
         },
       });
     },
-    getPageLength() {
-      return Math.ceil(this.filteredResults.length / 10);
+    getPageLength(arr) {
+      return Math.ceil(arr.length / 10);
     },
     // filters the search results
-    filter(input) {
+    filter(arr, input) {
+      this.navigate(1);
       if (input !== '所有') {
-        this.filteredResults = this.searchResults.filter((item) => {
+        return arr.filter((item) => {
           return item.tag === input;
         });
-      } else {
-        this.filteredResults = this.searchResults;
       }
+      return arr;
+    },
+    navigate(num) {
       // navigates to the first page when filter button is clicked
-      this.pageNumber = 1;
+      this.pageNumber = num;
       this.$router.push({
         path: this.$router.currentRoute,
         query: {
@@ -113,19 +115,20 @@ export default {
       });
     },
     // redirect to the corresponding page when user clicks on card item
-    link(tag, id) {
+    getRouterLink(tag) {
       if (tag === '职位') {
-        this.$router.push({
-          path: '/recruitmentDetail',
-          query: { id: id.substring(1) },
-        });
+        return '/recruitmentDetail';
       }
       if (tag === '项目') {
-        this.$router.push({
-          path: '/projectInfo',
-          query: { id: id.substring(1) },
-        });
+        return '/projectInfo';
       }
+      return '/error';
+    },
+    link(tag, id) {
+      this.$router.push({
+        path: this.getRouterLink(tag),
+        query: { id: id.substring(1) },
+      });
     },
   },
 };
