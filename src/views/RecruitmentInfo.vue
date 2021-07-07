@@ -96,29 +96,29 @@ export default {
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
-    filter(arr, pVal, cVal, tVal) {
+    filter(arr, positionVal, cityVal, typeVal) {
       this.navigate(1);
       return arr.filter((job) => {
-        if (pVal !== '全部职位' && cVal !== '全部城市' && tVal !== '全部类型') {
-          return job.position === pVal && job.city === cVal && job.type === tVal;
+        if (positionVal !== '全部职位' && cityVal !== '全部城市' && typeVal !== '全部类型') {
+          return job.position === positionVal && job.city === cityVal && job.type === typeVal;
         }
-        if (pVal !== '全部职位' && cVal !== '全部城市') {
-          return job.position === pVal && job.city === cVal;
+        if (positionVal !== '全部职位' && cityVal !== '全部城市') {
+          return job.position === positionVal && job.city === cityVal;
         }
-        if (pVal !== '全部职位' && tVal !== '全部类型') {
-          return job.position === pVal && job.type === tVal;
+        if (positionVal !== '全部职位' && typeVal !== '全部类型') {
+          return job.position === positionVal && job.type === typeVal;
         }
-        if (cVal !== '全部城市' && tVal !== '全部类型') {
-          return job.city === cVal && job.type === tVal;
+        if (cityVal !== '全部城市' && typeVal !== '全部类型') {
+          return job.city === cityVal && job.type === typeVal;
         }
-        if (tVal !== '全部类型') {
-          return job.type === tVal;
+        if (typeVal !== '全部类型') {
+          return job.type === typeVal;
         }
-        if (pVal !== '全部职位') {
-          return job.position === pVal;
+        if (positionVal !== '全部职位') {
+          return job.position === positionVal;
         }
-        if (cVal !== '全部城市') {
-          return job.city === cVal;
+        if (cityVal !== '全部城市') {
+          return job.city === cityVal;
         }
         return arr;
       });
