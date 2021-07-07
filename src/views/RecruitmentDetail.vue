@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row no-gutters>
+    <v-row class="career-header" no-gutters>
       <v-col cols="2" class="text-right">
         <v-btn class="back-button" color="normal" @click="$router.go(-1)">返回</v-btn>
       </v-col>
@@ -46,12 +46,10 @@
 const jobs = require('../data/career');
 
 export default {
-  data() {
-    return {
-      jobs,
-      index: 0,
-    };
-  },
+  data: () => ({
+    jobs,
+    index: 0,
+  }),
   created() {
     if (this.$route.query.id - 1 >= 0 && this.$route.query.id - 1 < jobs.length) {
       this.index = this.$route.query.id - 1;
@@ -61,10 +59,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.back-link {
-  text-decoration: none;
-}
-
 .back-button {
   margin-right: 40px;
   margin-left: 10px;
