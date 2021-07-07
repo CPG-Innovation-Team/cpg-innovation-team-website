@@ -1,58 +1,72 @@
 <template>
-  <v-app-bar app color="blue darken-1">
-    <v-spacer></v-spacer>
+  <div>
+    <v-app-bar app color="blue darken-1">
+      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-    <v-col cols="1">
-      <v-app-bar-title style="align-self: center">Logo</v-app-bar-title>
-    </v-col>
+      <v-spacer class="hidden-sm-and-down"></v-spacer>
 
-    <v-toolbar-items class="navbar">
-      <v-btn text><router-link class="nav-link" to="/">Home</router-link></v-btn>
-      <v-btn text><router-link class="nav-link" to="/aboutUs">About</router-link></v-btn>
-      <v-btn text><router-link class="nav-link" to="/projectInfo">Projects</router-link></v-btn>
-      <v-btn text><router-link class="nav-link" to="/recruitmentInfo">Recruitment</router-link></v-btn>
-      <v-btn text><router-link class="nav-link" to="/teamInfo">Team</router-link></v-btn>
-      <v-btn text><router-link class="nav-link" to="/contact">Contact</router-link></v-btn>
-    </v-toolbar-items>
+      <router-link to="/"><v-img class="logo" src="../assets/img-cp-logo.png" alt="CP-logo" /></router-link>
 
-    <v-spacer></v-spacer>
-
-    <v-autocomplete
-      class="header-search"
-      :search-input.sync="searchTemp"
-      :items="searchItems"
-      dense
-      filled
-      rounded
-      :hide-no-data="true"
-      @keyup.enter="search"
-    >
-      <template v-slot:item="{ item }">
-        <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
-          {{ item }}
+      <v-toolbar-items class="navbar hidden-sm-and-down">
+        <router-link v-for="router in routers" :key="router.index" class="nav-link" v-bind:to="router.link">
+          <v-btn text>{{ router.name }}</v-btn>
         </router-link>
-      </template>
-    </v-autocomplete>
-    <v-btn icon class="mr-1" @click="search">
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
+      </v-toolbar-items>
 
-    <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn small color="blue lighten-1" v-bind="attrs" v-on="on">中文<v-icon>mdi-chevron-down</v-icon></v-btn>
-      </template>
-      <v-list>
-        <v-list-item-group color="primary">
-          <v-list-item>
-            <v-list-item-content>中文</v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>English</v-list-item-content>
+      <v-spacer></v-spacer>
+
+      <v-autocomplete
+        class="header-search"
+        :search-input.sync="searchTemp"
+        :items="searchItems"
+        dense
+        hide-details
+        solo
+        v-bind:placeholder="$t('search')"
+        :hide-no-data="true"
+        @keyup.enter="search"
+      >
+        <template v-slot:item="{ item }">
+          <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
+            {{ item }}
+          </router-link>
+        </template>
+      </v-autocomplete>
+      <v-btn icon class="mr-1" @click="search">
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on">
+            {{ lang }}<v-icon>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item-group color="primary">
+            <v-list-item>
+              <v-list-item-content @click="changeLang('zh-CN', '中文')">中文</v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content @click="changeLang('en-US', 'Eng')">Eng</v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-list nav dense>
+        <v-list-item-group v-model="group" class="navbar" active-class="blue--text font-weight-bold">
+          <v-list-item v-for="router in routers" :key="router.index">
+            <v-list-item-content>
+              <router-link class="nav-link" v-bind:to="router.link">{{ router.name }}</router-link>
+            </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-menu>
-  </v-app-bar>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
@@ -60,22 +74,31 @@ const projects = require('../data/project');
 const jobs = require('../data/career');
 
 export default {
-  data() {
-    return {
-      searchText: '',
-      searchTemp: '',
-      searchItems: [],
-      jobs,
-      projects,
-    };
-  },
+  data: () => ({
+    lang: '中文',
+    drawer: false,
+    group: null,
+    // search
+    searchText: '',
+    searchTemp: '',
+    searchItems: [],
+    jobs,
+    projects,
+  }),
   watch: {
+    group() {
+      this.drawer = false;
+    },
     searchTemp(input) {
       this.searchText = input;
       this.searchItems = [...this.getSearchItems(jobs), ...this.getSearchItems(projects)];
     },
   },
   methods: {
+    changeLang(locale, lang) {
+      this.$i18n.locale = locale;
+      this.lang = lang;
+    },
     search() {
       this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
     },
@@ -116,19 +139,43 @@ export default {
       return index;
     },
   },
+  computed: {
+    routers() {
+      return [
+        { name: this.$t('navbar.home'), link: '/' },
+        { name: this.$t('navbar.about'), link: '/aboutUs' },
+        { name: this.$t('navbar.projects'), link: '/projectInfo' },
+        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
+        { name: this.$t('navbar.team'), link: '/teamInfo' },
+      ];
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.navbar .nav-link {
-  text-decoration: none;
-  color: rgba(0, 0, 0, 0.87);
+.logo {
+  margin: 0 5% 0 8%;
+  align-self: center;
+  max-height: 45px;
+  max-width: 45px;
+}
+
+.navbar {
+  .nav-link {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+    height: inherit;
+    button {
+      height: inherit;
+    }
+  }
 }
 
 .header-search {
-  border-radius: 4px;
-  background-color: rgb(232, 237, 255);
-  height: 60%;
+  min-width: 120px;
+  width: 8%;
 }
 
 .redirect-link {
