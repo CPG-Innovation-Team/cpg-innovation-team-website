@@ -5,7 +5,7 @@
 
       <v-spacer class="hidden-sm-and-down"></v-spacer>
 
-      <router-link to="/"><v-img class="logo" src="../assets/CP-logo.png" alt="CP-logo" /></router-link>
+      <router-link to="/"><v-img class="logo" src="../assets/img-CP-logo.png" alt="CP-logo" /></router-link>
 
       <v-toolbar-items class="navbar hidden-sm-and-down">
         <router-link v-for="router in routers" :key="router.index" class="nav-link" v-bind:to="router.link">
