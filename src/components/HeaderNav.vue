@@ -131,7 +131,7 @@ export default {
       return tag;
     },
     getID(input) {
-      let index = -1;
+      let index;
       const arr = [...jobs, ...projects];
       arr.forEach((item) => {
         if (item.title === input) {
