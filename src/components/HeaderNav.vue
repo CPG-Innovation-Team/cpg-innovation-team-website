@@ -74,6 +74,7 @@ const projects = require('../data/project');
 const jobs = require('../data/career');
 
 export default {
+  name: 'HeaderNav',
   data: () => ({
     lang: '中文',
     drawer: false,
