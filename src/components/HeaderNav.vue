@@ -105,6 +105,7 @@ export default {
         this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
       }
     },
+    // get title
     getSearchItems(arr) {
       const output = [];
       arr.forEach((item) => {
@@ -112,6 +113,7 @@ export default {
       });
       return output;
     },
+    // determine if a link is project or recruitment
     getRouterLink(item) {
       if (this.getTag(jobs, item) === '职位') {
         return '/recruitmentDetail?id=';
@@ -124,7 +126,7 @@ export default {
     getTag(arr, title) {
       let tag = '';
       arr.forEach((item) => {
-        if (item.title === title) {
+        if (item.title.includes(title)) {
           if (arr === jobs) tag = '职位';
           if (arr === projects) tag = '项目';
         }
@@ -132,10 +134,10 @@ export default {
       return tag;
     },
     getID(input) {
-      let index = -1;
+      let index;
       const arr = [...jobs, ...projects];
       arr.forEach((item) => {
-        if (item.title === input) {
+        if (item.title.includes(input)) {
           index = item.id.substring(1);
         }
       });
