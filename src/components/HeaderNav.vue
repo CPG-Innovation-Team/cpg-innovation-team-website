@@ -111,34 +111,28 @@ export default {
       });
       return output;
     },
-    getRouterLink(item) {
-      if (this.getTag(jobs, item) === '职位') {
+    getRouterLink(searchItemTitle) {
+      if (this.getTag(jobs, searchItemTitle) === '职位') {
         return '/recruitmentDetail?id=';
       }
-      if (this.getTag(projects, item) === '项目') {
+      if (this.getTag(projects, searchItemTitle) === '项目') {
         return '/projectInfo?id=';
       }
       return '/error';
     },
-    getTag(arr, title) {
+    getTag(arr, searchItemTitle) {
       let tag = '';
       arr.forEach((item) => {
-        if (item.title === title) {
+        if (item.title === searchItemTitle) {
           if (arr === jobs) tag = '职位';
           if (arr === projects) tag = '项目';
         }
       });
       return tag;
     },
-    getID(input) {
-      let index = -1;
+    getID(searchItemTitle) {
       const arr = [...jobs, ...projects];
-      arr.forEach((item) => {
-        if (item.title === input) {
-          index = item.id.substring(1);
-        }
-      });
-      return index;
+      return arr.find((item) => item.title === searchItemTitle).id.substring(1);
     },
   },
   computed: {
