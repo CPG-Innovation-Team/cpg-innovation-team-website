@@ -96,23 +96,14 @@ export default {
     },
     // filters the search results
     filter(arr, input) {
-      this.navigate(1);
+      // navigates to the first page when filter() is clicked
+      if (this.pageNumber !== 1) this.handlePageChange(1);
       if (input !== '所有') {
         return arr.filter((item) => {
           return item.tag === input;
         });
       }
       return arr;
-    },
-    navigate(num) {
-      // navigates to the first page when filter button is clicked
-      this.pageNumber = num;
-      this.$router.push({
-        path: this.$router.currentRoute,
-        query: {
-          page: this.pageNumber,
-        },
-      });
     },
     // redirect to the corresponding page when user clicks on card item
     getRouterLink(tag) {
