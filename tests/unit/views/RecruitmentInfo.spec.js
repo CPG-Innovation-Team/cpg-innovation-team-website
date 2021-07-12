@@ -41,59 +41,71 @@ describe('Recruitment info page', () => {
     ];
 
     // 全部城市
-    const result1 = [
+    let result = [
       { id: '02', position: '产品类', city: '北京', type: '社会招聘' },
       { id: '03', position: '产品类', city: '深圳', type: '社会招聘' },
     ];
     let filteredArr = wrapper.vm.filter(arr, '产品类', '全部城市', '社会招聘');
-    expect(filteredArr).toStrictEqual(result1);
+    expect(filteredArr).toStrictEqual(result);
 
     // 全部职位
-    const result2 = [{ id: '03', position: '产品类', city: '深圳', type: '社会招聘' }];
+    result = [{ id: '03', position: '产品类', city: '深圳', type: '社会招聘' }];
     filteredArr = wrapper.vm.filter(arr, '全部职位', '深圳', '社会招聘');
-    expect(filteredArr).toStrictEqual(result2);
+    expect(filteredArr).toStrictEqual(result);
 
     // 全部类型
-    const result3 = [{ id: '04', position: '人力资源类', city: '广州', type: '校园招聘' }];
+    result = [{ id: '04', position: '人力资源类', city: '广州', type: '校园招聘' }];
     filteredArr = wrapper.vm.filter(arr, '人力资源类', '广州', '全部类型');
-    expect(filteredArr).toStrictEqual(result3);
+    expect(filteredArr).toStrictEqual(result);
 
     // custom
-    const result4 = [{ id: '02', position: '产品类', city: '北京', type: '社会招聘' }];
+    result = [{ id: '02', position: '产品类', city: '北京', type: '社会招聘' }];
     filteredArr = wrapper.vm.filter(arr, '产品类', '北京', '社会招聘');
-    expect(filteredArr).toStrictEqual(result4);
+    expect(filteredArr).toStrictEqual(result);
 
     // 全部城市、全部类型
-    const result5 = [
+    result = [
       { id: '02', position: '产品类', city: '北京', type: '社会招聘' },
       { id: '03', position: '产品类', city: '深圳', type: '社会招聘' },
     ];
     filteredArr = wrapper.vm.filter(arr, '产品类', '全部城市', '全部类型');
-    expect(filteredArr).toStrictEqual(result5);
+    expect(filteredArr).toStrictEqual(result);
 
     // 全部职位、全部类型
-    const result6 = [{ id: '01', position: '技术类', city: '上海', type: '社会招聘' }];
+    result = [{ id: '01', position: '技术类', city: '上海', type: '社会招聘' }];
     filteredArr = wrapper.vm.filter(arr, '全部职位', '上海', '全部类型');
-    expect(filteredArr).toStrictEqual(result6);
+    expect(filteredArr).toStrictEqual(result);
 
     // 全部职位、全部城市
-    const result7 = [
+    result = [
       { id: '01', position: '技术类', city: '上海', type: '社会招聘' },
       { id: '02', position: '产品类', city: '北京', type: '社会招聘' },
       { id: '03', position: '产品类', city: '深圳', type: '社会招聘' },
     ];
     filteredArr = wrapper.vm.filter(arr, '全部职位', '全部城市', '社会招聘');
-    expect(filteredArr).toStrictEqual(result7);
+    expect(filteredArr).toStrictEqual(result);
 
     // 全部职位、全部城市、全部类型
-    const result8 = [
+    result = [
       { id: '01', position: '技术类', city: '上海', type: '社会招聘' },
       { id: '02', position: '产品类', city: '北京', type: '社会招聘' },
       { id: '03', position: '产品类', city: '深圳', type: '社会招聘' },
       { id: '04', position: '人力资源类', city: '广州', type: '校园招聘' },
     ];
     filteredArr = wrapper.vm.filter(arr, '全部职位', '全部城市', '全部类型');
-    expect(filteredArr).toStrictEqual(result8);
+    expect(filteredArr).toStrictEqual(result);
+  });
+
+  it('When not on the first page, press filter() will redirects to page 1', () => {
+    wrapper.vm.handlePageChange(3);
+    const arr = [
+      { id: '01', position: '技术类', city: '上海', type: '社会招聘' },
+      { id: '02', position: '产品类', city: '北京', type: '社会招聘' },
+      { id: '03', position: '产品类', city: '深圳', type: '社会招聘' },
+      { id: '04', position: '人力资源类', city: '广州', type: '校园招聘' },
+    ];
+    wrapper.vm.filter(arr, '产品类', '全部城市', '社会招聘');
+    expect(router.currentRoute.fullPath).toBe('/recruitmentInfo?page=1');
   });
 
   it('Pass 3 as the num to handlePageChange() the router should redirects to page 3', async () => {
