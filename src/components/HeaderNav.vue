@@ -55,7 +55,7 @@
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" absolute temporary width="150">
       <v-list nav dense>
         <v-list-item-group v-model="group" class="navbar" active-class="blue--text font-weight-bold">
           <v-list-item v-for="router in routers" :key="router.index">
