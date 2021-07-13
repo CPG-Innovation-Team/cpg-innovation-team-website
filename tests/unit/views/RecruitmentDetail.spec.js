@@ -1,22 +1,18 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import RecruitmentDetail from '@/views/RecruitmentDetail.vue';
 
-const localVue = createLocalVue();
-
 describe('Recruitment detail page with valid query id', () => {
-  const $route = { path: '/recruitmentDetail', query: { id: '007' } };
-  const wrapper = shallowMount(RecruitmentDetail, { localVue, mocks: { $route } });
+  const localVue = createLocalVue();
 
   it('Get an existing query id and store it to index', () => {
+    const $route = { path: '/recruitmentDetail', query: { id: '007' } };
+    const wrapper = shallowMount(RecruitmentDetail, { localVue, mocks: { $route } });
     expect(wrapper.vm.index).toBe(6);
   });
-});
 
-describe('Recruitment detail page with invalid query id', () => {
-  const $route = { path: '/recruitmentDetail', query: { id: '999' } };
-  const wrapper = shallowMount(RecruitmentDetail, { localVue, mocks: { $route } });
-
-  it('Get an existing query id and store it to index', () => {
+  it('Return 0 when the query id is invalid', () => {
+    const $route = { path: '/recruitmentDetail', query: { id: '999' } };
+    const wrapper = shallowMount(RecruitmentDetail, { localVue, mocks: { $route } });
     expect(wrapper.vm.index).toBe(0);
   });
 });
