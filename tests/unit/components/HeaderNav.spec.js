@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import HeaderNav from '@/components/HeaderNav.vue';
+import i18n from '@/plugins/vue-i18n';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import VueI18n from 'vue-i18n';
@@ -12,23 +13,24 @@ Vue.use(Vuetify);
 Vue.use(VueI18n);
 Vue.use(VueRouter);
 
+// console.log(i18n.messages);
+
 describe('Navigation bar', () => {
   let wrapper;
-  const mockRoute = {
-    params: {
-      id: 1,
-    },
-  };
-  const mockRouter = {
-    push: jest.fn(),
-  };
+  // const mockRoute = {
+  //   params: {
+  //     id: 1,
+  //   },
+  // };
+  // const mockRouter = {
+  //   push: jest.fn(),
+  // };
   beforeEach(() => {
     wrapper = mount(HeaderNav, {
-      propsData: { searchText: 'asd' },
       mocks: {
-        $t: () => 'msg',
-        $router: mockRouter,
-        $route: mockRoute,
+        $t: (msg) => i18n.messages['zh-CN'][msg],
+        // $router: mockRouter,
+        // $route: mockRoute,
       },
       stubs: ['router-link', 'router-view'],
       vuetify,
@@ -57,15 +59,20 @@ describe('Navigation bar', () => {
     drawer.trigger('click');
     expect(wrapper.vm.drawer).toBe(true);
 
-    // const button = wrapper.find('.v-list-item__content .nav-link');
+    // console.log(wrapper.html());
+    // const button = wrapper.findAll('.nav-link .v-btn__content').at(0);
+    // console.log('text: ', button.html());
     // button.trigger('click');
     // expect(wrapper.vm.drawer).toBe(false);
   });
 
-  // it('change language', () => {
-  //   const button = wrapper.findAll('.v-list-item__content').at(5);
-  //   console.log(button.text());
-  //   button.trigger('click');
-  //   expect(wrapper.vm.lang).toBe('Eng');
-  // });
+  it('change language', () => {
+    // console.log(wrapper.vm.lang);
+    // const button = wrapper.findAll('.language-setting').at(0);
+    // button.trigger('click');
+    // console.log(wrapper.html());
+    // console.log(wrapper.classes('.v-list-item__content'));
+    // expect(wrapper.classes()).toContain('language-setting');
+    // expect(wrapper.vm.lang).toBe('Eng');
+  });
 });

@@ -43,7 +43,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item-group color="primary">
+          <v-list-item-group color="primary" test="language">
             <v-list-item>
               <v-list-item-content @click="changeLang('zh-CN', '中文')">中文</v-list-item-content>
             </v-list-item>
