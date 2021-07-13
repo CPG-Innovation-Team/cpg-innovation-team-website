@@ -97,7 +97,8 @@ export default {
   },
   methods: {
     filter(arr, positionVal, cityVal, typeVal) {
-      this.navigate(1);
+      // navigates to the first page when user filters the results
+      if (this.pageNumber !== 1) this.handlePageChange(1);
       return arr.filter((job) => {
         if (positionVal !== '全部职位' && cityVal !== '全部城市' && typeVal !== '全部类型') {
           return job.position === positionVal && job.city === cityVal && job.type === typeVal;
@@ -121,16 +122,6 @@ export default {
           return job.city === cityVal;
         }
         return arr;
-      });
-    },
-    navigate(num) {
-      // when filtered, navigate to the first page
-      this.pageNumber = num;
-      this.$router.push({
-        path: '/recruitmentInfo',
-        query: {
-          page: this.pageNumber,
-        },
       });
     },
     getPageLength(arr) {

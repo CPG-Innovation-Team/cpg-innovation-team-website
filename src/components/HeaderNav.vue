@@ -55,7 +55,7 @@
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" absolute temporary width="150">
       <v-list nav dense>
         <v-list-item-group v-model="group" class="navbar" active-class="blue--text font-weight-bold">
           <v-list-item v-for="router in routers" :key="router.index">
@@ -113,45 +113,38 @@ export default {
       });
       return output;
     },
-    // determine if a link is project or recruitment
-    getRouterLink(item) {
-      if (this.getTag(jobs, item) === '职位') {
+    getRouterLink(searchItemTitle) {
+      if (this.getTag(jobs, searchItemTitle) === '职位') {
         return '/recruitmentDetail?id=';
       }
-      if (this.getTag(projects, item) === '项目') {
+      if (this.getTag(projects, searchItemTitle) === '项目') {
         return '/projectInfo?id=';
       }
       return '/error';
     },
-    getTag(arr, title) {
+    getTag(arr, searchItemTitle) {
       let tag = '';
       arr.forEach((item) => {
-        if (item.title.includes(title)) {
+        if (item.title.includes(searchItemTitle)) {
           if (arr === jobs) tag = '职位';
           if (arr === projects) tag = '项目';
         }
       });
       return tag;
     },
-    getID(input) {
-      let index;
+    getID(searchItemTitle) {
       const arr = [...jobs, ...projects];
-      arr.forEach((item) => {
-        if (item.title.includes(input)) {
-          index = item.id.substring(1);
-        }
-      });
-      return index;
+      return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
   },
   computed: {
     routers() {
       return [
         { name: this.$t('navbar.home'), link: '/' },
-        { name: this.$t('navbar.about'), link: '/aboutUs' },
         { name: this.$t('navbar.projects'), link: '/projectInfo' },
-        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
         { name: this.$t('navbar.team'), link: '/teamInfo' },
+        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
+        { name: this.$t('navbar.about'), link: '/aboutUs' },
       ];
     },
   },

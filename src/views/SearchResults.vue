@@ -5,7 +5,9 @@
       <v-col cols="8">
         <div class="search-results-title">{{ this.searchText }} -- 搜索结果</div>
         <div class="search-results-filter">
-          <div class="search-results-num">共找到{{ this.searchResults.length }}条结果</div>
+          <div class="search-results-num">
+            共找到{{ this.searchResults.length }}条结果, 该标签显示{{ this.filteredResults.length }}条结果
+          </div>
           <v-row>
             <v-chip-group class="filter-button" mandatory active-class="primary--text">
               <v-chip
@@ -144,7 +146,7 @@ export default {
 }
 
 .search-results-num {
-  margin-left: 10px;
+  margin-left: 5px;
   font-size: 14px;
 }
 
