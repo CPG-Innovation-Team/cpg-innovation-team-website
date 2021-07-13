@@ -1,10 +1,10 @@
 {
   "navbar": {
     "home": "首页",
-    "about": "关于我们",
     "projects": "项目介绍",
+    "team": "团队介绍",
     "recruitment": "招聘信息",
-    "team": "团队成员"
+    "about": "关于我们"
   },
   "search": "搜索",
   "news": {
