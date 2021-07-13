@@ -139,10 +139,10 @@ export default {
     routers() {
       return [
         { name: this.$t('navbar.home'), link: '/' },
-        { name: this.$t('navbar.about'), link: '/aboutUs' },
         { name: this.$t('navbar.projects'), link: '/projectInfo' },
-        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
         { name: this.$t('navbar.team'), link: '/teamInfo' },
+        { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
+        { name: this.$t('navbar.about'), link: '/aboutUs' },
       ];
     },
   },
