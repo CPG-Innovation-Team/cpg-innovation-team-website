@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app color="blue darken-1">
-      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
       <v-spacer class="hidden-sm-and-down"></v-spacer>
 

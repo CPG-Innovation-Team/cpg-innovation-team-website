@@ -6,6 +6,7 @@ import VueI18n from 'vue-i18n';
 import VueRouter from 'vue-router';
 
 const vuetify = new Vuetify();
+const router = new VueRouter();
 
 Vue.use(Vuetify);
 Vue.use(VueI18n);
@@ -13,27 +14,33 @@ Vue.use(VueRouter);
 
 describe('Navigation bar', () => {
   let wrapper;
+  const mockRoute = {
+    params: {
+      id: 1,
+    },
+  };
+  const mockRouter = {
+    push: jest.fn(),
+  };
   beforeEach(() => {
     wrapper = mount(HeaderNav, {
-      propsData: {},
+      propsData: { searchText: 'asd' },
       mocks: {
         $t: () => 'msg',
+        $router: mockRouter,
+        $route: mockRoute,
       },
-      stubs: ['router-link'],
+      stubs: ['router-link', 'router-view'],
       vuetify,
+      router,
     });
   });
-  // it('funcation changeLang', () => {
-  //   wrapper.vm.changeLang('locale', 'zh-CH');
-  //   console.log(wrapper.vm.lang);
-  //   expect(wrapper.vm.lang).toBe('zh-CH');
-  // });
+
   it('HeaderNav is rendered', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('search functionality', () => {
-    console.log(wrapper.vm.lang);
+  it('functions for searching is returing correct values', () => {
     let link = wrapper.vm.getRouterLink('CSIG15');
     expect(link).toBe('/recruitmentDetail?id=');
     link = wrapper.vm.getRouterLink('创新团队官网网站开发');
@@ -45,7 +52,20 @@ describe('Navigation bar', () => {
     expect(id).toBe('001');
   });
 
-  it('routers', () => {
-    expect(wrapper.vm.routers[0].name).toBe('msg');
+  it('navigation drawer', () => {
+    const drawer = wrapper.find('.v-btn__content .v-icon');
+    drawer.trigger('click');
+    expect(wrapper.vm.drawer).toBe(true);
+
+    // const button = wrapper.find('.v-list-item__content .nav-link');
+    // button.trigger('click');
+    // expect(wrapper.vm.drawer).toBe(false);
   });
+
+  // it('change language', () => {
+  //   const button = wrapper.findAll('.v-list-item__content').at(5);
+  //   console.log(button.text());
+  //   button.trigger('click');
+  //   expect(wrapper.vm.lang).toBe('Eng');
+  // });
 });
