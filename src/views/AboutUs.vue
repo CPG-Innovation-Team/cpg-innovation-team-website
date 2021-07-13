@@ -6,7 +6,7 @@
         <bm-marker :position="markerCenter" @click="openInfoWindow(true)">
           <bm-info-window :show="showInfoWindow" @close="openInfoWindow(false)" @open="openInfoWindow(true)">
             <div class="address-window">
-              <p>公司名称</p>
+              <p>正大创新团队上海办公室</p>
               <a
                 href="https://map.baidu.com/poi/wework(%E6%96%B0%E7%96%86%E8%B7%AF518%E5%8F%B7)/@13522476.695830092,3642838.087485785,17.72z
                 ?uid=09d840c7bf78285bb64f5498&ugc_type=3&ugc_ver=1&device_ratio=2&compat=1&querytype=detailConInfo&da_src=shareurl"
@@ -18,8 +18,8 @@
         </bm-marker>
       </baidu-map>
       <div class="address-description">
-        <div class="address-sub-title">公司地址</div>
-        <div class="address-body">地址：新疆路518号</div>
+        <div class="address-sub-title">正大创新团队上海办公室</div>
+        <div class="address-body">地址：上海市静安区新疆路518号</div>
         <div class="address-body">邮箱：contact@example.com</div>
         <div class="address-body">总机联系电话：021-8888 8888</div>
         <div class="address-body">经理联系电话：021-8888 8888 转 8012</div>
