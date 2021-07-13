@@ -76,12 +76,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-flow: row wrap;
 
   .map {
-    margin-left: 20px;
-    margin-right: 80px;
     width: 400px;
     height: 250px;
+    margin: 10px;
   }
 
   .address-window {
@@ -90,6 +90,7 @@ export default {
   }
 
   .address-description {
+    margin: 50px;
     line-height: 30px;
 
     .address-sub-title {
@@ -103,7 +104,7 @@ export default {
 }
 
 .social-media-title {
-  margin-top: 100px;
+  margin-top: 80px;
   color: black;
   font-size: 30px;
   text-align: center;
@@ -116,6 +117,7 @@ export default {
   align-items: center;
   margin-top: 50px;
   margin-bottom: 100px;
+  flex-flow: row wrap;
 
   .social-media-link {
     margin: 20px;
@@ -127,7 +129,6 @@ export default {
   }
 
   .social-media-code {
-    margin-left: 60px;
     height: 140px;
   }
 }
