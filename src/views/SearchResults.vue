@@ -24,7 +24,7 @@
       <v-col cols="2"></v-col>
     </v-row>
 
-    <div v-for="item in this.filteredResults.slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
+    <div v-for="item in util.sort(this.filteredResults).slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
       <v-card
         class="search-results-card mx-auto pa-md-4"
         max-width="1000"
