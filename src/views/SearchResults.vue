@@ -24,8 +24,10 @@
             </div></v-col
           >
         </v-row>
-
-        <div v-for="item in this.filteredResults.slice(pageNumber * 10 - 10, pageNumber * 10)" :key="item.id">
+        <div
+          v-for="item in util.sort(this.filteredResults).slice(pageNumber * 10 - 10, pageNumber * 10)"
+          :key="item.id"
+        >
           <v-card
             class="search-results-card mx-auto pa-md-4"
             max-width="1000"
@@ -36,7 +38,7 @@
               <p class="text-h4 text--primary">{{ item.title }}</p>
               <p>{{ item.department }} | {{ item.time }}</p>
               <v-row class="text--primary" no-gutters>
-                {{ item.responsibility || item.content }}
+                {{ (item.responsibility || item.content).substring(0, 200) }}...
               </v-row>
             </v-card-text>
           </v-card>
@@ -47,7 +49,7 @@
           <v-pagination
             v-model="pageNumber"
             total-visible="10"
-            :length="getPageLength(this.filteredResults)"
+            :length="util.getPageLength(this.filteredResults)"
             @input="handlePageChange"
           ></v-pagination>
         </div>
@@ -57,12 +59,15 @@
 </template>
 
 <script>
+import util from '../util';
+
 const jobs = require('../data/career');
 const projects = require('../data/project');
 
 export default {
   data() {
     return {
+      util,
       searchText: this.$route.query.search,
       searchResults: [],
       filteredResults: [],
@@ -96,28 +101,16 @@ export default {
         },
       });
     },
-    getPageLength(arr) {
-      return Math.ceil(arr.length / 10);
-    },
     // filters the search results
     filter(arr, input) {
-      this.navigate(1);
+      // navigates to the first page when filter() is clicked
+      if (this.pageNumber !== 1) this.handlePageChange(1);
       if (input !== '所有') {
         return arr.filter((item) => {
           return item.tag === input;
         });
       }
       return arr;
-    },
-    navigate(num) {
-      // navigates to the first page when filter button is clicked
-      this.pageNumber = num;
-      this.$router.push({
-        path: this.$router.currentRoute,
-        query: {
-          page: this.pageNumber,
-        },
-      });
     },
     // redirect to the corresponding page when user clicks on card item
     getRouterLink(tag) {
