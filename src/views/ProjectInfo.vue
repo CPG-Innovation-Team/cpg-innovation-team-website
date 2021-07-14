@@ -2,7 +2,6 @@
   <div>
     <v-container>
       <v-img src="https://picsum.photos/500/300?image=91" id="project-head-img" max-height="400" />
-
       <v-container>
         <v-row>
           <v-col class="project-col" v-for="(project, i) in projects" :key="i">
@@ -14,7 +13,9 @@
                     <div v-if="hover" class="d-flex white project-list" style="height: 100%; width: 100%">
                       <ul>
                         <li v-for="(link, j) in project.list" :key="j">
-                          <a>{{ link }}</a>
+                          <router-link :to="{ path: '/projectDetail' }" style="text-decoration: none">
+                            {{ link }}
+                          </router-link>
                         </li>
                       </ul>
                     </div>
@@ -35,19 +36,19 @@ export default {
   data: () => ({
     projects: [
       {
-        title: 'Lorem Ipsum',
+        title: 'Project 1',
         img: 'https://picsum.photos/500/300?image=60',
-        list: ['item1', 'item2', 'item3'],
+        list: ['item1', 'item2', 'item3', 'item4', 'item5'],
       },
       {
-        title: 'Lorem Ipsum',
+        title: 'Project 2',
         img: 'https://picsum.photos/500/300?image=62',
-        list: ['item4', 'item5', 'item6'],
+        list: ['item6', 'item7', 'item8', 'item9', 'item10'],
       },
       {
-        title: 'Lorem Ipsum',
+        title: 'Project 3',
         img: 'https://picsum.photos/500/300?image=65',
-        list: ['item7', 'item8', 'item9'],
+        list: ['item11', 'item12', 'item13', 'item14', 'item15'],
       },
     ],
   }),
