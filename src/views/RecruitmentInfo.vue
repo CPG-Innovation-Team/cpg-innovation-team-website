@@ -3,8 +3,8 @@
     <div class="career-title">招聘信息</div>
     <v-app>
       <v-container>
-        <v-row>
-          <v-col class="d-flex" cols="6" sm="3">
+        <v-row class="dropdown-container">
+          <v-col class="d-flex" cols="6" md="3">
             <v-select
               class="career-dropdown"
               :items="positions"
@@ -15,7 +15,7 @@
               dense
             ></v-select>
           </v-col>
-          <v-col class="d-flex" cols="6" sm="3">
+          <v-col class="d-flex" cols="6" md="3">
             <v-select
               class="career-dropdown"
               :items="cities"
@@ -26,7 +26,7 @@
               dense
             ></v-select>
           </v-col>
-          <v-col class="d-flex" cols="6" sm="3">
+          <v-col class="d-flex" cols="6" md="3">
             <v-select
               class="career-dropdown"
               :items="types"
@@ -149,8 +149,13 @@ export default {
   margin-top: 80px;
 }
 
-.career-dropdown {
-  width: 80px;
+.dropdown-container {
+  margin-left: 4%;
+  margin-right: 4%;
+
+  .career-dropdown {
+    width: 80px;
+  }
 }
 
 .job-listing-title {
