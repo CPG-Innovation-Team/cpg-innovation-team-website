@@ -11,13 +11,7 @@ const router = new VueRouter();
 describe('Search results page', () => {
   const wrapper = shallowMount(SearchResults, { localVue, router, vuetify });
 
-  it('Pass an array of length 5 to getPageLength and should return 1', () => {
-    const arr = [1, 2, 3, 4, 5];
-    const length = wrapper.vm.getPageLength(arr);
-    expect(length).toBe(1);
-  });
-
-  it('Pass 5 as the num to handlePageChange() the router should redirects to page 5', async () => {
+  it('Pass 5 as the num to handlePageChange() the router should redirects to page 5 of search results page', async () => {
     wrapper.vm.handlePageChange(5);
     await wrapper.vm.$nextTick();
     expect(router.currentRoute.fullPath).toBe('/searchResults?page=5');
