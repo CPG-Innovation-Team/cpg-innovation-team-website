@@ -1,11 +1,34 @@
 <template>
   <div>
     <v-row class="career-header" no-gutters>
-      <v-col cols="2" class="text-right">
+      <v-col cols="12" sm="2">
         <v-btn class="back-button" color="normal" @click="$router.go(-1)">返回</v-btn>
       </v-col>
-      <v-col cols="7">
-        <div class="career-detail-title">{{ jobs[index].title }}</div>
+
+      <v-col cols="12" sm="8">
+        <v-row>
+          <v-col cols="12" sm="10">
+            <div class="career-detail-title">{{ jobs[index].title }}</div>
+          </v-col>
+          <v-col cols="12" sm="2" class="text-right">
+            <v-dialog transition="dialog-top-transition" max-width="600">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn class="more-button" color="primary" v-bind="attrs" v-on="on">申请岗位</v-btn>
+              </template>
+              <template v-slot:default="dialog">
+                <v-card>
+                  <v-card-text class="text-h6 pa-12"> 请发送简历至contact@example.com </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <a href="mailto:contact@example.com"
+                      ><v-btn class="send-button" depressed color="primary"> 发送简历 </v-btn></a
+                    >
+                    <v-btn class="close-button" text @click="dialog.value = false">关闭</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </v-col>
+        </v-row>
         <div class="career-detail-tag">
           {{ jobs[index].department }} | {{ jobs[index].position }} | {{ jobs[index].city }} |
           {{ jobs[index].time }}
@@ -20,24 +43,8 @@
           {{ jobs[index].requirements }}
         </div>
       </v-col>
-      <v-col cols="2">
-        <v-dialog transition="dialog-top-transition" max-width="600">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn class="more-button" color="primary" v-bind="attrs" v-on="on">申请岗位</v-btn>
-          </template>
-          <template v-slot:default="dialog">
-            <v-card>
-              <v-card-text class="text-h5 pa-12"> 请发送简历至contact@example.com </v-card-text>
-              <v-card-actions class="justify-end">
-                <a href="mailto:contact@example.com"
-                  ><v-btn class="send-button" depressed color="primary"> 发送简历 </v-btn></a
-                >
-                <v-btn class="close-button" text @click="dialog.value = false">关闭</v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
-      </v-col>
+
+      <v-col cols="12" sm="2"> </v-col>
     </v-row>
   </div>
 </template>
@@ -60,12 +67,15 @@ export default {
 
 <style lang="scss" scoped>
 .back-button {
-  margin-right: 40px;
-  margin-left: 10px;
+  margin: 2%;
+  margin-bottom: 10%;
 }
 
 .career-header {
-  margin-top: 80px;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 8%;
+  margin-bottom: 5%;
 
   .career-detail-title {
     margin-left: auto;
