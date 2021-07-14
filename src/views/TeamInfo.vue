@@ -92,37 +92,16 @@ export default {};
   }
 
   .video-content {
-    margin-top: 250px;
+    margin-top: 15%;
+    margin-bottom: 5%;
     color: white;
-    font-size: 45px;
+    font-size: 4vw;
     font-weight: bold;
     text-align: center;
   }
 
-  @media (max-width: 1200px) {
-    .video-content {
-      margin-top: 200px;
-      font-size: 30px;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .video-content {
-      margin-top: 150px;
-      font-size: 20px;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .video-content {
-      margin-top: 80px;
-      font-size: 15px;
-    }
-  }
-
   .video-button {
     text-align: center;
-    margin-top: 80px;
   }
 }
 
