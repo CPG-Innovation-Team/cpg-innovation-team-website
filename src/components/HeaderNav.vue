@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar app color="blue darken-1">
-      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
       <v-spacer class="hidden-sm-and-down"></v-spacer>
 
@@ -43,7 +43,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item-group color="primary">
+          <v-list-item-group color="primary" test="language">
             <v-list-item>
               <v-list-item-content @click="changeLang('zh-CN', '中文')">中文</v-list-item-content>
             </v-list-item>
@@ -55,7 +55,7 @@
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary width="150">
+    <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
         <v-list-item-group v-model="group" class="navbar" active-class="blue--text font-weight-bold">
           <v-list-item v-for="router in routers" :key="router.index">
@@ -74,6 +74,7 @@ const projects = require('../data/project');
 const jobs = require('../data/career');
 
 export default {
+  name: 'HeaderNav',
   data: () => ({
     lang: '中文',
     drawer: false,
@@ -104,6 +105,7 @@ export default {
         this.$router.push({ path: '/searchResults', query: { search: this.searchText } });
       }
     },
+    // get title
     getSearchItems(arr) {
       const output = [];
       arr.forEach((item) => {
@@ -123,7 +125,7 @@ export default {
     getTag(arr, searchItemTitle) {
       let tag = '';
       arr.forEach((item) => {
-        if (item.title === searchItemTitle) {
+        if (item.title.includes(searchItemTitle)) {
           if (arr === jobs) tag = '职位';
           if (arr === projects) tag = '项目';
         }
@@ -132,7 +134,7 @@ export default {
     },
     getID(searchItemTitle) {
       const arr = [...jobs, ...projects];
-      return arr.find((item) => item.title === searchItemTitle).id.substring(1);
+      return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
   },
   computed: {
