@@ -13,9 +13,8 @@ Vue.use(Vuetify);
 Vue.use(VueI18n);
 Vue.use(VueRouter);
 
-describe('Navigation bar', () => {
+describe('Navigation bar works on mobile and international works', () => {
   let wrapper;
-
   beforeEach(() => {
     wrapper = mount(HeaderNav, {
       mocks: {
@@ -43,7 +42,7 @@ describe('Navigation bar', () => {
     expect(id).toBe('001');
   });
 
-  it('navigation drawer', () => {
+  it('navigation drawer shows up when icon is clicked', () => {
     const drawer = wrapper.find('.v-btn__content .v-icon');
     drawer.trigger('click');
     expect(wrapper.vm.drawer).toBe(true);
