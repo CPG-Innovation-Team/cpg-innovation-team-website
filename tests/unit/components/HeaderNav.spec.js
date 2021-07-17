@@ -13,7 +13,7 @@ Vue.use(Vuetify);
 Vue.use(VueI18n);
 Vue.use(VueRouter);
 
-describe('Navigation bar works on mobile and international works', () => {
+describe('Navigation bar works on mobile and international languages works', () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(HeaderNav, {

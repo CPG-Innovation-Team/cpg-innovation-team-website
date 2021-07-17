@@ -12,11 +12,15 @@
                 <v-img :aspect-ratio="9 / 16" :src="project.img">
                   <v-slide-x-transition>
                     <div v-if="hover" class="d-flex white project-list" style="height: 100%; width: 100%">
-                      <ul>
-                        <li v-for="(link, j) in project.list" :key="j">
-                          <a>{{ link }}</a>
-                        </li>
-                      </ul>
+                      <v-card>
+                        <v-card-subtitle style="width: 80%; margin: auto"> 介绍 </v-card-subtitle>
+                        <v-card-text style="width: 80%; margin: auto">{{ project.intro }}</v-card-text>
+                        <ul>
+                          <li v-for="(link, j) in project.list" :key="j">
+                            <a>{{ link }}</a>
+                          </li>
+                        </ul>
+                      </v-card>
                     </div>
                   </v-slide-x-transition>
                 </v-img>
@@ -24,8 +28,8 @@
             </v-hover>
           </v-col>
         </v-row>
-
-        <row v-for="(project, i) in projects" :key="i" class="mobile hidden-md-and-up">
+        <!-- For Mobile Version -->
+        <v-row v-for="(project, i) in projects" :key="i" class="mobile hidden-md-and-up">
           <v-img :aspect-ratio="4 / 1" :src="project.img">
             <v-row>
               <v-col cols="8">
@@ -47,7 +51,7 @@
               <v-chip v-for="(link, j) in project.list" :key="j" color="blue" class="chip-link"> {{ link }} </v-chip>
             </v-card>
           </v-expand-transition>
-        </row>
+        </v-row>
       </v-container>
     </v-container>
   </div>
