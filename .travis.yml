@@ -5,6 +5,17 @@ script:
 - npm run lint
 - npm run test:unit
 - npm run build
+deploy:
+  provider: s3
+  access_key_id: $AWS_KEY_ID
+  secret_access_key: $AWS_KEY_SECRET
+  bucket: cpg-innovation-website
+  local_dir: dist
+  region: us-west-1
+  acl: public_read
+  on:
+    repo: CPG-Innovation-Team/cpg-innovation-team-website
+  skip_cleanup: 'true'
 notifications:
   webhooks: https://open.feishu.cn/officialapp/notify/c4a1011904c5dc2efb332f1f80d817a88c8d829a2976d8c2c6f8bc4230c6e715
 
