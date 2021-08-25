@@ -2,12 +2,11 @@
   <div class="header-container">
     <img class="nav-img" src="../assets/img-carousel2.jpg" />
 
-    <div class="nav-text">
+    <div class="header-text">
       <p class="title-en">CP Group Innovation Center</p>
       <p class="title-cn">正大创新中心</p>
       <p class="subtitle">正大集团股权投资事业部，关注产业链、科技、健康、消费四大投资主题。</p>
       <v-btn color="#FFC60D" depressed>浏览项目</v-btn>
-      <i class="em-flag-ad"></i>
     </div>
 
     <v-app-bar class="nav-container" app flat>
@@ -49,7 +48,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-toolbar-items class="navbar hidden-sm-and-down">
+      <v-toolbar-items class="nav-menu hidden-sm-and-down">
         <button class="nav-btn" v-for="router in routers" :key="router.index">
           <router-link class="nav-link" v-bind:to="router.link">
             {{ router.name }}
@@ -83,17 +82,28 @@
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on">
-            {{ lang }}<v-icon>mdi-chevron-down</v-icon>
-          </v-btn>
+          <div class="language-setting" v-bind="attrs" v-on="on">
+            <country-flag class="flag" country="cn" size="normal" rounded />
+            <v-icon>mdi-chevron-down</v-icon>
+          </div>
         </template>
         <v-list>
           <v-list-item-group color="primary" test="language">
             <v-list-item>
-              <v-list-item-content @click="changeLang('zh-CN', '中文')">中文</v-list-item-content>
+              <v-list-item-content @click="changeLang('zh-CN', '中文')">
+                <div class="language-selection">
+                  <country-flag class="flag" country="cn" size="normal" rounded />
+                  <span class="language-text">简体中文</span>
+                </div>
+              </v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-list-item-content @click="changeLang('en-US', 'Eng')">Eng</v-list-item-content>
+              <v-list-item-content @click="changeLang('en-US', 'Eng')">
+                <div class="language-selection">
+                  <country-flag class="flag" country="gb" size="normal" rounded />
+                  <span class="language-text">English(UK)</span>
+                </div>
+              </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -115,6 +125,8 @@
 </template>
 
 <script>
+import CountryFlag from 'vue-country-flag';
+
 const projects = require('../data/project');
 const jobs = require('../data/career');
 
@@ -131,6 +143,9 @@ export default {
     jobs,
     projects,
   }),
+  components: {
+    CountryFlag,
+  },
   watch: {
     group() {
       this.drawer = false;
@@ -199,32 +214,7 @@ export default {
 <style lang="scss" scoped>
 .header-container {
   position: relative;
-  .nav-img {
-    width: 100%;
-    height: 400px;
-    opacity: 2;
-  }
-  .nav-container {
-    background-color: rgba(0, 0, 0, 0) !important;
-  }
-  .navbar {
-    /* .nav-link {
-      text-decoration: none;
-      text-align: center;
-      height: inherit; */
-    button {
-      padding: 0 16px;
-      cursor: default;
-      a {
-        text-decoration: none;
-        color: white;
-        &:hover {
-          color: #ffc60d;
-        }
-      }
-    }
-  }
-  .nav-text {
+  .header-text {
     color: white;
     position: absolute;
     top: 25%;
@@ -242,6 +232,42 @@ export default {
     .subtitle {
       font-size: 1.2rem;
       font-weight: 900;
+    }
+  }
+  .nav-img {
+    width: 100%;
+    height: 400px;
+    opacity: 2;
+  }
+  .nav-container {
+    background-color: rgba(0, 0, 0, 0) !important;
+    .nav-menu {
+      /* .nav-link {
+      text-decoration: none;
+      text-align: center;
+      height: inherit; */
+      button {
+        padding: 0 16px;
+        cursor: default;
+        a {
+          text-decoration: none;
+          color: white;
+          &:hover {
+            color: #ffc60d;
+          }
+        }
+      }
+    }
+
+    .language-setting {
+      display: flex;
+      align-self: center;
+    }
+    .language-selection {
+      display: flex;
+      .anguage-text {
+        margin: auto;
+      }
     }
   }
 }
