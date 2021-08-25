@@ -9,7 +9,7 @@
       <v-btn color="#FFC60D" depressed>浏览项目</v-btn>
     </div>
 
-    <v-app-bar class="nav-container" app flat>
+    <v-app-bar class="nav-container" app flat hide-on-scroll>
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
       <!-- <v-spacer class="hidden-sm-and-down"></v-spacer> -->
