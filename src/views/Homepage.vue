@@ -6,18 +6,22 @@
     </v-carousel> -->
 
     <v-container fluid>
-      <h1 class="news-header">{{ $t('news.header') }}</h1>
+      <h1 class="news-header mb-12">{{ $t('news.header') }}</h1>
       <v-row>
         <v-col md="4" sm="6" xs="12" v-for="(news, i) in news" :key="i">
           <v-container>
-            <v-card>
+            <v-card class="card" outlined style="border: none; border-radius: 0">
               <v-img :src="news.img" />
-              <v-card-title>{{ news.title }}</v-card-title>
-              <v-card-text>
+              <div class="data">
+                7 Aug 2021 | by Finola Aline
+                <span class="category">分类</span>
+              </div>
+              <v-card-title class="title">{{ news.title }}</v-card-title>
+              <v-card-text class="content">
                 {{ news.content }}
               </v-card-text>
-              <v-card-text>
-                <v-chip><a>More</a></v-chip>
+              <v-card-text class="pa-0">
+                <a>阅读<v-icon color="#FFC60D">mdi-chevron-right</v-icon></a>
               </v-card-text>
             </v-card>
           </v-container>
@@ -67,8 +71,42 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .news-header {
   text-align: center;
+}
+
+.card {
+  border: none;
+  .data {
+    font-size: 0.72rem;
+    font-weight: 550;
+    margin: 8px 0;
+    .category {
+      float: right;
+    }
+  }
+  .title {
+    padding: 0;
+  }
+  .content {
+    padding: 0;
+    margin: 8px 0;
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  a {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: black;
+  }
 }
 </style>
