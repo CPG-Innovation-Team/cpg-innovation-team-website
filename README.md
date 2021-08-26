@@ -1,6 +1,10 @@
 # 正大创新团队官方网站前端项目
 
-## 操作命令
+## 系统依赖
+### 需要安装 [Node.js](https://nodejs.org)
+### 在版本 Node.js 14.17 上稳定运行
+
+## 操作命令 
 ### 首次运行或有依赖变更时执行安装 `npm install`
 ### 启动本地服务 `npm run serve`
 ### 编译生产环境代码包 `npm run build`

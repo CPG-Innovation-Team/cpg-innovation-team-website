@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import RecruitmentDetail from '@/views/RecruitmentDetail.vue';
 
-describe('Recruitment detail page with valid query id', () => {
+describe('Recruitment detail page with query id', () => {
   const localVue = createLocalVue();
 
   it('Get an existing query id and store it to index', () => {

@@ -3,51 +3,50 @@
     <div class="career-title">招聘信息</div>
     <v-app>
       <v-container>
-        <v-row>
-          <v-col :cols="8">
-            <v-row>
-              <v-spacer></v-spacer>
-              <v-select
-                class="career-dropdown"
-                :items="positions"
-                filled
-                label="职位"
-                v-model="positionVal"
-                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
-                dense
-              ></v-select>
-              <v-spacer></v-spacer>
-              <v-select
-                class="career-dropdown"
-                :items="cities"
-                filled
-                label="城市"
-                v-model="cityVal"
-                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
-                dense
-              ></v-select>
-              <v-spacer></v-spacer>
-              <v-select
-                class="career-dropdown"
-                :items="types"
-                filled
-                label="类型"
-                v-model="typeVal"
-                @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
-                dense
-              ></v-select> </v-row
-          ></v-col>
-          <v-col :cols="4"> </v-col>
+        <v-row class="dropdown-container">
+          <v-col class="d-flex" cols="6" md="3">
+            <v-select
+              class="career-dropdown"
+              :items="positions"
+              filled
+              label="职位"
+              v-model="positionVal"
+              @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
+              dense
+            ></v-select>
+          </v-col>
+          <v-col class="d-flex" cols="6" md="3">
+            <v-select
+              class="career-dropdown"
+              :items="cities"
+              filled
+              label="城市"
+              v-model="cityVal"
+              @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
+              dense
+            ></v-select>
+          </v-col>
+          <v-col class="d-flex" cols="6" md="3">
+            <v-select
+              class="career-dropdown"
+              :items="types"
+              filled
+              label="类型"
+              v-model="typeVal"
+              @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
+              dense
+            ></v-select>
+          </v-col>
         </v-row>
 
         <div class="job-listing-title">最新发布</div>
         <div class="job-listing">
-          <div v-for="job in this.sort(this.filteredJobs).slice(pageNumber * 10 - 10, pageNumber * 10)" :key="job.id">
+          <div v-for="job in util.sort(this.filteredJobs).slice(pageNumber * 10 - 10, pageNumber * 10)" :key="job.id">
             <v-card class="job-listing-card mx-auto pa-md-4" max-width="1000">
               <v-card-text>
                 <p class="text-h4 text--primary">{{ job.title }}</p>
                 <p>{{ job.department }} | {{ job.city }} | {{ job.type }} | {{ job.time }}</p>
-                <v-row no-gutters>
+                <v-row class="job-content-container" no-gutters>
                   <v-col :cols="8">
                     <div class="text--primary">{{ job.responsibility.substring(0, 120) }}...</div>
                   </v-col>
@@ -67,7 +66,7 @@
           <v-pagination
             v-model="pageNumber"
             total-visible="10"
-            :length="getPageLength(this.filteredJobs)"
+            :length="util.getPageLength(this.filteredJobs)"
             @input="handlePageChange"
           ></v-pagination>
         </div>
@@ -77,10 +76,13 @@
 </template>
 
 <script>
+import util from '../util';
+
 const jobs = require('../data/career');
 
 export default {
   data: () => ({
+    util,
     positionVal: '全部职位',
     cityVal: '全部城市',
     typeVal: '全部类型',
@@ -92,7 +94,7 @@ export default {
     filteredJobs: [],
   }),
   created() {
-    this.filteredJobs = this.sort(jobs);
+    this.filteredJobs = util.sort(jobs);
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
@@ -124,9 +126,6 @@ export default {
         return arr;
       });
     },
-    getPageLength(arr) {
-      return Math.ceil(arr.length / 10);
-    },
     handlePageChange(value) {
       this.pageNumber = value;
       this.$router.push({
@@ -135,15 +134,6 @@ export default {
           page: this.pageNumber,
         },
       });
-    },
-    sort(arr) {
-      const temp = arr.concat([]);
-      temp.sort((a, b) => {
-        const t1 = new Date(Date.parse(a.time.replace(/-/g, '/')));
-        const t2 = new Date(Date.parse(b.time.replace(/-/g, '/')));
-        return t2.getTime() - t1.getTime();
-      });
-      return temp;
     },
   },
 };
@@ -159,8 +149,13 @@ export default {
   margin-top: 80px;
 }
 
-.career-dropdown {
-  width: 80px;
+.dropdown-container {
+  margin-left: 4%;
+  margin-right: 4%;
+
+  .career-dropdown {
+    width: 80px;
+  }
 }
 
 .job-listing-title {
@@ -172,6 +167,11 @@ export default {
 
 .job-listing-card {
   margin-top: 30px;
+
+  .job-content-container {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .job-listing-none {
