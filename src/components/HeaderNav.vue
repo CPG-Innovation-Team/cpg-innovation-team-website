@@ -80,27 +80,27 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn> -->
 
-      <v-menu offset-y>
+      <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
           <div class="language-setting" v-bind="attrs" v-on="on">
-            <country-flag class="flag" country="cn" size="normal" rounded />
+            <country-flag class="flag" :country="flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
         </template>
-        <v-list>
+        <v-list class="language-list" dense>
           <v-list-item-group color="primary" test="language">
-            <v-list-item>
-              <v-list-item-content @click="changeLang('zh-CN', '中文')">
+            <v-list-item class="pr-2 pl-2">
+              <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
                 <div class="language-selection">
-                  <country-flag class="flag" country="cn" size="normal" rounded />
+                  <country-flag class="flag" country="cn" />
                   <span class="language-text">简体中文</span>
                 </div>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item>
-              <v-list-item-content @click="changeLang('en-US', 'Eng')">
+            <v-list-item class="pr-2 pl-2">
+              <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'gb')">
                 <div class="language-selection">
-                  <country-flag class="flag" country="gb" size="normal" rounded />
+                  <country-flag class="flag" country="gb" />
                   <span class="language-text">English(UK)</span>
                 </div>
               </v-list-item-content>
@@ -134,6 +134,7 @@ export default {
   name: 'HeaderNav',
   data: () => ({
     lang: '中文',
+    flag: 'cn',
     drawer: false,
     group: null,
     // search
@@ -156,9 +157,10 @@ export default {
     },
   },
   methods: {
-    changeLang(locale, lang) {
+    changeLang(locale, lang, flag) {
       this.$i18n.locale = locale;
       this.lang = lang;
+      this.flag = flag;
     },
     search() {
       if (this.searchText !== null && this.searchText.trim() !== '') {
@@ -258,16 +260,28 @@ export default {
         }
       }
     }
-
     .language-setting {
       display: flex;
       align-self: center;
     }
-    .language-selection {
-      display: flex;
-      .anguage-text {
-        margin: auto;
-      }
+  }
+}
+
+.flag {
+  border-radius: 6px;
+}
+
+.language-list {
+  /* border-radius: 10px !important; */
+  /* box-shadow: none !important; */
+  .language-selection {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    .language-text {
+      display: inline-block;
+      vertical-align: middle;
+      line-height: normal;
     }
   }
 }
