@@ -2,7 +2,31 @@
   <div>
     <HeaderNav :color="'black'" />
     <v-main>
-      <div class="about-title">联系我们</div>
+      <div class="header">
+        <v-container>
+          <v-row>
+            <v-col>
+              <div class="about-title">联系我们</div>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col>
+              <span>Address</span>
+              <div class="detail">上海市静安区新疆路518号</div>
+            </v-col>
+            <v-col>
+              <span>Phone</span>
+              <div class="detail">021-8888 8888</div>
+            </v-col>
+            <v-col>
+              <span>E-mail</span>
+              <div class="detail">contact@example.com</div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+
       <div class="address-container">
         <baidu-map class="map" :center="windowCenter" :zoom="16">
           <bm-marker :position="markerCenter" @click="openInfoWindow(true)">
@@ -19,30 +43,28 @@
             </bm-info-window>
           </bm-marker>
         </baidu-map>
-        <div class="address-description">
-          <div class="address-sub-title">正大创新团队上海办公室</div>
-          <div class="address-body">地址：上海市静安区新疆路518号</div>
-          <div class="address-body">邮箱：contact@example.com</div>
-          <div class="address-body">总机联系电话：021-8888 8888</div>
-          <div class="address-body">经理联系电话：021-8888 8888 转 8012</div>
-        </div>
       </div>
 
-      <div class="social-media-title">关注我们</div>
-      <div class="social-media-image">
-        <a class="social-media-link" href="https://facebook.com">
-          <img class="social-media-icon" src="../assets/icon-fb.png" />
-        </a>
-        <a class="social-media-link" href="https://instagram.com">
-          <img class="social-media-icon" src="../assets/icon-ins.png" />
-        </a>
-        <a class="social-media-link" href="https://twitter.com">
-          <img class="social-media-icon" src="../assets/icon-twitter.png" />
-        </a>
-        <a class="social-media-link" href="https://linkedin.com">
-          <img class="social-media-icon" src="../assets/icon-linkedin.png" />
-        </a>
-        <img class="social-media-code" src="../assets/img-qrcode.png" />
+      <div class="feedback-form">
+        <div class="pl-3" style="font-size: 1.12rem; font-weight: 700">Write to us</div>
+        <v-form>
+          <v-container>
+            <v-row>
+              <v-col cols="6" class="pb-0">
+                <v-text-field dense hide-details label="Name" outlined></v-text-field>
+              </v-col>
+              <v-col cols="6" class="pb-0">
+                <v-text-field dense hide-details label="E-mail" outlined></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-textarea dense hide-details outlined label="Website" hint="Hint text"></v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-btn depressed class="ml-3" color="black"><span style="color: white">Send</span></v-btn>
+        </v-form>
       </div>
     </v-main>
   </div>
@@ -71,13 +93,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.about-title {
-  text-align: center;
-  margin-top: 80px;
-  margin-bottom: 80px;
-  font-size: 30px;
-  font-weight: bold;
-  color: black;
+.header {
+  margin: 40px 150px;
+  .about-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+  span {
+    color: gray;
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+  .detail {
+    padding-top: 8px;
+  }
+}
+
+.feedback-form {
+  margin: 80px auto;
+  width: 550px;
 }
 
 .address-container {
@@ -87,8 +121,8 @@ export default {
   flex-flow: row wrap;
 
   .map {
-    width: 400px;
-    height: 250px;
+    width: 100%;
+    height: 300px;
     margin: 10px;
   }
 
@@ -108,36 +142,6 @@ export default {
     .address-body {
       font-size: 14px;
     }
-  }
-}
-
-.social-media-title {
-  margin-top: 80px;
-  color: black;
-  font-size: 30px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.social-media-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  margin-bottom: 100px;
-  flex-flow: row wrap;
-
-  .social-media-link {
-    margin: 20px;
-  }
-
-  .social-media-icon {
-    width: 50px;
-    height: 50px;
-  }
-
-  .social-media-code {
-    height: 140px;
   }
 }
 </style>
