@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="video-container">
+      <HeaderNav />
       <video class="video" src="../assets/video-example.mp4" width="100%" autoplay loop preload="auto" muted></video>
       <div class="video-overlay">
         <div class="video-content">
@@ -16,62 +17,70 @@
       </div>
     </div>
 
-    <div class="team-title">团队介绍</div>
-    <div class="team-profile-container">
-      <div class="team-profile">
-        <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-        <div class="team-profile-name">马化腾</div>
-        <div class="team-profile-position">
-          <p>主要创办人</p>
-          <p>董事会主席兼首席执行官</p>
+    <v-main>
+      <div class="team-title">团队介绍</div>
+      <div class="team-profile-container">
+        <div class="team-profile">
+          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
+          <div class="team-profile-name">马化腾</div>
+          <div class="team-profile-position">
+            <p>主要创办人</p>
+            <p>董事会主席兼首席执行官</p>
+          </div>
+        </div>
+        <div class="team-profile">
+          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
+          <div class="team-profile-name">马化腾</div>
+          <div class="team-profile-position">
+            <p>主要创办人</p>
+            <p>董事会主席兼首席执行官</p>
+          </div>
+        </div>
+        <div class="team-profile">
+          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
+          <div class="team-profile-name">马化腾</div>
+          <div class="team-profile-position">
+            <p>主要创办人</p>
+            <p>董事会主席兼首席执行官</p>
+          </div>
+        </div>
+        <div class="team-profile">
+          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
+          <div class="team-profile-name">马化腾</div>
+          <div class="team-profile-position">
+            <p>主要创办人</p>
+            <p>董事会主席兼首席执行官</p>
+          </div>
+        </div>
+        <div class="team-profile">
+          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
+          <div class="team-profile-name">马化腾</div>
+          <div class="team-profile-position">
+            <p>主要创办人</p>
+            <p>董事会主席兼首席执行官</p>
+          </div>
+        </div>
+        <div class="team-profile">
+          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
+          <div class="team-profile-name">马化腾</div>
+          <div class="team-profile-position">
+            <p>主要创办人</p>
+            <p>董事会主席兼首席执行官</p>
+          </div>
         </div>
       </div>
-      <div class="team-profile">
-        <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-        <div class="team-profile-name">马化腾</div>
-        <div class="team-profile-position">
-          <p>主要创办人</p>
-          <p>董事会主席兼首席执行官</p>
-        </div>
-      </div>
-      <div class="team-profile">
-        <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-        <div class="team-profile-name">马化腾</div>
-        <div class="team-profile-position">
-          <p>主要创办人</p>
-          <p>董事会主席兼首席执行官</p>
-        </div>
-      </div>
-      <div class="team-profile">
-        <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-        <div class="team-profile-name">马化腾</div>
-        <div class="team-profile-position">
-          <p>主要创办人</p>
-          <p>董事会主席兼首席执行官</p>
-        </div>
-      </div>
-      <div class="team-profile">
-        <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-        <div class="team-profile-name">马化腾</div>
-        <div class="team-profile-position">
-          <p>主要创办人</p>
-          <p>董事会主席兼首席执行官</p>
-        </div>
-      </div>
-      <div class="team-profile">
-        <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-        <div class="team-profile-name">马化腾</div>
-        <div class="team-profile-position">
-          <p>主要创办人</p>
-          <p>董事会主席兼首席执行官</p>
-        </div>
-      </div>
-    </div>
+    </v-main>
   </div>
 </template>
 
 <script>
-export default {};
+import HeaderNav from '../components/HeaderNav.vue';
+
+export default {
+  components: {
+    HeaderNav,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -46,6 +46,10 @@ const routes = [
     name: 'SearchResults',
     component: SearchResults,
   },
+  {
+    path: '/blog',
+    name: 'Blog',
+  },
 ];
 
 const router = new VueRouter({

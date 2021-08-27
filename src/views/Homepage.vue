@@ -1,37 +1,52 @@
 <template>
   <div>
+    <div class="header-container">
+      <img class="nav-img" src="../assets/img-carousel2.jpg" />
+
+      <div class="header-text">
+        <p class="title-en">CP Group Innovation Center</p>
+        <p class="title-cn">正大创新中心</p>
+        <p class="subtitle">正大集团股权投资事业部，关注产业链、科技、健康、消费四大投资主题。</p>
+        <v-btn color="#FFC60D" depressed>浏览项目</v-btn>
+      </div>
+      <HeaderNav />
+    </div>
+
     <!-- Old version
     <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="400" show-arrows-on-hover>
       <v-carousel-item v-for="(img, i) in carouselsImg" :key="i" v-bind:src="img"> </v-carousel-item>
     </v-carousel> -->
-
-    <v-container fluid>
-      <h1 class="news-header mb-12">{{ $t('news.header') }}</h1>
-      <v-row>
-        <v-col md="4" sm="6" xs="12" v-for="(news, i) in news" :key="i">
-          <v-container>
-            <v-card class="card" outlined style="border: none; border-radius: 0">
-              <v-img :src="news.img" />
-              <div class="data">
-                7 Aug 2021 | by Finola Aline
-                <span class="category">分类</span>
-              </div>
-              <v-card-title class="title">{{ news.title }}</v-card-title>
-              <v-card-text class="content">
-                {{ news.content }}
-              </v-card-text>
-              <v-card-text class="pa-0">
-                <a>阅读<v-icon color="#FFC60D">mdi-chevron-right</v-icon></a>
-              </v-card-text>
-            </v-card>
-          </v-container>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-main>
+      <v-container fluid>
+        <h1 class="news-header mb-12">{{ $t('news.header') }}</h1>
+        <v-row>
+          <v-col md="4" sm="6" xs="12" v-for="(news, i) in news" :key="i">
+            <v-container>
+              <v-card class="card" outlined style="border: none; border-radius: 0">
+                <v-img :src="news.img" />
+                <div class="data">
+                  7 Aug 2021 | by Finola Aline
+                  <span class="category">分类</span>
+                </div>
+                <v-card-title class="title">{{ news.title }}</v-card-title>
+                <v-card-text class="content">
+                  {{ news.content }}
+                </v-card-text>
+                <v-card-text class="pa-0">
+                  <a>阅读<v-icon color="#FFC60D">mdi-chevron-right</v-icon></a>
+                </v-card-text>
+              </v-card>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
   </div>
 </template>
 
 <script>
+import HeaderNav from '../components/HeaderNav.vue';
+
 const car1 = require('../assets/img-carousel1.jpg');
 const car2 = require('../assets/img-carousel2.jpg');
 const car3 = require('../assets/img-carousel3.jpg');
@@ -47,6 +62,9 @@ export default {
     model: 0,
     carouselsImg: [car1, car2, car3, car4],
   }),
+  components: {
+    HeaderNav,
+  },
   computed: {
     news() {
       return [
@@ -72,6 +90,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header-container {
+  position: relative;
+  .header-text {
+    color: white;
+    position: absolute;
+    top: 25%;
+    left: 8%;
+    width: 42%;
+    .title-en {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .title-cn {
+      font-size: 2.6rem;
+      margin: 0;
+    }
+    .subtitle {
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+  }
+  .nav-img {
+    width: 100%;
+    height: 400px;
+    opacity: 2;
+  }
+}
+
 .news-header {
   text-align: center;
 }

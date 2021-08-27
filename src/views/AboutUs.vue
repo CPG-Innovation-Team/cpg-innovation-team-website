@@ -1,51 +1,56 @@
 <template>
-  <div class="about">
-    <div class="about-title">联系我们</div>
-    <div class="address-container">
-      <baidu-map class="map" :center="windowCenter" :zoom="16">
-        <bm-marker :position="markerCenter" @click="openInfoWindow(true)">
-          <bm-info-window :show="showInfoWindow" @close="openInfoWindow(false)" @open="openInfoWindow(true)">
-            <div class="address-window">
-              <p>正大创新团队上海办公室</p>
-              <a
-                href="https://map.baidu.com/poi/wework(%E6%96%B0%E7%96%86%E8%B7%AF518%E5%8F%B7)/@13522476.695830092,3642838.087485785,17.72z
+  <div>
+    <HeaderNav :color="'black'" />
+    <v-main>
+      <div class="about-title">联系我们</div>
+      <div class="address-container">
+        <baidu-map class="map" :center="windowCenter" :zoom="16">
+          <bm-marker :position="markerCenter" @click="openInfoWindow(true)">
+            <bm-info-window :show="showInfoWindow" @close="openInfoWindow(false)" @open="openInfoWindow(true)">
+              <div class="address-window">
+                <p>正大创新团队上海办公室</p>
+                <a
+                  href="https://map.baidu.com/poi/wework(%E6%96%B0%E7%96%86%E8%B7%AF518%E5%8F%B7)/@13522476.695830092,3642838.087485785,17.72z
                 ?uid=09d840c7bf78285bb64f5498&ugc_type=3&ugc_ver=1&device_ratio=2&compat=1&querytype=detailConInfo&da_src=shareurl"
-              >
-                到这里去
-              </a>
-            </div>
-          </bm-info-window>
-        </bm-marker>
-      </baidu-map>
-      <div class="address-description">
-        <div class="address-sub-title">正大创新团队上海办公室</div>
-        <div class="address-body">地址：上海市静安区新疆路518号</div>
-        <div class="address-body">邮箱：contact@example.com</div>
-        <div class="address-body">总机联系电话：021-8888 8888</div>
-        <div class="address-body">经理联系电话：021-8888 8888 转 8012</div>
+                >
+                  到这里去
+                </a>
+              </div>
+            </bm-info-window>
+          </bm-marker>
+        </baidu-map>
+        <div class="address-description">
+          <div class="address-sub-title">正大创新团队上海办公室</div>
+          <div class="address-body">地址：上海市静安区新疆路518号</div>
+          <div class="address-body">邮箱：contact@example.com</div>
+          <div class="address-body">总机联系电话：021-8888 8888</div>
+          <div class="address-body">经理联系电话：021-8888 8888 转 8012</div>
+        </div>
       </div>
-    </div>
 
-    <div class="social-media-title">关注我们</div>
-    <div class="social-media-image">
-      <a class="social-media-link" href="https://facebook.com">
-        <img class="social-media-icon" src="../assets/icon-fb.png" />
-      </a>
-      <a class="social-media-link" href="https://instagram.com">
-        <img class="social-media-icon" src="../assets/icon-ins.png" />
-      </a>
-      <a class="social-media-link" href="https://twitter.com">
-        <img class="social-media-icon" src="../assets/icon-twitter.png" />
-      </a>
-      <a class="social-media-link" href="https://linkedin.com">
-        <img class="social-media-icon" src="../assets/icon-linkedin.png" />
-      </a>
-      <img class="social-media-code" src="../assets/img-qrcode.png" />
-    </div>
+      <div class="social-media-title">关注我们</div>
+      <div class="social-media-image">
+        <a class="social-media-link" href="https://facebook.com">
+          <img class="social-media-icon" src="../assets/icon-fb.png" />
+        </a>
+        <a class="social-media-link" href="https://instagram.com">
+          <img class="social-media-icon" src="../assets/icon-ins.png" />
+        </a>
+        <a class="social-media-link" href="https://twitter.com">
+          <img class="social-media-icon" src="../assets/icon-twitter.png" />
+        </a>
+        <a class="social-media-link" href="https://linkedin.com">
+          <img class="social-media-icon" src="../assets/icon-linkedin.png" />
+        </a>
+        <img class="social-media-code" src="../assets/img-qrcode.png" />
+      </div>
+    </v-main>
   </div>
 </template>
 
 <script>
+import HeaderNav from '../components/HeaderNav.vue';
+
 export default {
   data() {
     return {
@@ -53,6 +58,9 @@ export default {
       markerCenter: { lng: 121.473138, lat: 31.248893 },
       showInfoWindow: true,
     };
+  },
+  components: {
+    HeaderNav,
   },
   methods: {
     openInfoWindow(input) {
