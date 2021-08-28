@@ -12,12 +12,8 @@
       <HeaderNav />
     </div>
 
-    <!-- Old version
-    <v-carousel v-model="model" cycle :interval="4000" delimiter-icon="mdi-minus" height="400" show-arrows-on-hover>
-      <v-carousel-item v-for="(img, i) in carouselsImg" :key="i" v-bind:src="img"> </v-carousel-item>
-    </v-carousel> -->
     <v-main>
-      <v-container fluid>
+      <v-container fluid class="mb-10">
         <h1 class="news-header mb-12">{{ $t('news.header') }}</h1>
         <v-row>
           <v-col md="4" sm="6" xs="12" v-for="(news, i) in news" :key="i">
@@ -47,21 +43,13 @@
 <script>
 import HeaderNav from '../components/HeaderNav.vue';
 
-const car1 = require('../assets/img-carousel1.jpg');
-const car2 = require('../assets/img-carousel2.jpg');
-const car3 = require('../assets/img-carousel3.jpg');
-const car4 = require('../assets/img-carousel4.jpg');
-
 const news1 = require('../assets/img-news1.jpg');
 const news2 = require('../assets/img-news2.jpg');
 const news3 = require('../assets/img-news3.jpg');
 
 export default {
   name: 'Home',
-  data: () => ({
-    model: 0,
-    carouselsImg: [car1, car2, car3, car4],
-  }),
+  data: () => ({}),
   components: {
     HeaderNav,
   },
@@ -139,9 +127,6 @@ export default {
   .content {
     padding: 0;
     margin: 8px 0;
-    /* white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

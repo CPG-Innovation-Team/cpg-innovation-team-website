@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="footer" color="black" app absolute>
+  <v-footer color="black" app absolute>
     <v-container>
       <v-row class="row" no-gutters justify="center">
         <router-link to="/">
