@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-container">
-      <img class="nav-img" src="../assets/img-carousel4.jpg" />
+      <img class="nav-img" src="../assets/img-carousel4.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-cn">博客</p>

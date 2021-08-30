@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-container">
-      <img class="nav-img" src="../assets/img-carousel1.jpg" />
+      <img class="nav-img" src="../assets/img-carousel1.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-en">Creater your best ides</p>

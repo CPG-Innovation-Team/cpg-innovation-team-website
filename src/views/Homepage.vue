@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-container">
-      <img class="nav-img" src="../assets/img-carousel2.jpg" />
+      <img class="nav-img" src="../assets/img-carousel2.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-en">CP Group Innovation Center</p>
