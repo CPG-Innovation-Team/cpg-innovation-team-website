@@ -176,7 +176,6 @@ export default {
       ];
     },
     cssProps() {
-      console.log(this.color);
       if (this.color) {
         return { '--themeColor': this.color };
       }

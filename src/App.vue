@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <router-view :key="$route.fullPath"></router-view>
-    <Footer />
+    <Footer v-show="!$route.fullPath.includes('admin')" />
   </v-app>
 </template>
 
@@ -13,7 +13,6 @@ export default {
   components: {
     Footer,
   },
-
   data: () => ({
     //
   }),

@@ -8,6 +8,8 @@ import RecruitmentInfo from './views/RecruitmentInfo.vue';
 import RecruitmentDetail from './views/RecruitmentDetail.vue';
 import SearchResults from './views/SearchResults.vue';
 import Blog from './views/Blog.vue';
+import Login from './views/admin/Login.vue';
+import Management from './views/admin/Management.vue';
 
 Vue.use(VueRouter);
 
@@ -51,6 +53,16 @@ const routes = [
     path: '/blog',
     name: 'Blog',
     component: Blog,
+  },
+  {
+    path: '/admin/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/admin/management',
+    name: 'Management',
+    component: Management,
   },
 ];
 
