@@ -9,7 +9,10 @@ import RecruitmentDetail from './views/RecruitmentDetail.vue';
 import SearchResults from './views/SearchResults.vue';
 import Blog from './views/Blog.vue';
 import Login from './views/admin/Login.vue';
-import Management from './views/admin/Management.vue';
+import Dashboard from './views/admin/Dashboard.vue';
+import Blogs from './views/admin/Blogs.vue';
+import Users from './views/admin/Users.vue';
+import Activities from './views/admin/Activities.vue';
 
 Vue.use(VueRouter);
 
@@ -60,9 +63,24 @@ const routes = [
     component: Login,
   },
   {
-    path: '/admin/management',
-    name: 'Management',
-    component: Management,
+    path: '/admin/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+  },
+  {
+    path: '/admin/blogs',
+    name: 'Blogs',
+    component: Blogs,
+  },
+  {
+    path: '/admin/users',
+    name: 'Users',
+    component: Users,
+  },
+  {
+    path: '/admin/activities',
+    name: 'Activities',
+    component: Activities,
   },
 ];
 
