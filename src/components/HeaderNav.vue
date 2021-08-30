@@ -245,6 +245,7 @@ export default {
         { name: this.$t('navbar.team'), link: '/teamInfo' },
         { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
         { name: this.$t('navbar.about'), link: '/aboutUs' },
+        { name: this.$t('navbar.blog'), link: '/blog' },
       ];
     },
     cssProps() {

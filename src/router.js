@@ -7,6 +7,7 @@ import TeamInfo from './views/TeamInfo.vue';
 import RecruitmentInfo from './views/RecruitmentInfo.vue';
 import RecruitmentDetail from './views/RecruitmentDetail.vue';
 import SearchResults from './views/SearchResults.vue';
+import Blog from './views/Blog.vue';
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,7 @@ const routes = [
   {
     path: '/blog',
     name: 'Blog',
+    component: Blog,
   },
 ];
 

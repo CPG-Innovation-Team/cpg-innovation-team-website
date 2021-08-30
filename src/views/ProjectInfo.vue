@@ -128,10 +128,6 @@ export default {
       font-weight: 900;
       margin-bottom: 6px;
     }
-    .title-cn {
-      font-size: 2.6rem;
-      margin: 0;
-    }
     .subtitle {
       font-size: 1.2rem;
       font-weight: 400;
