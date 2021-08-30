@@ -21,51 +21,51 @@
       <div class="team-title">团队介绍</div>
       <div class="team-profile-container">
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-          <div class="team-profile-name">马化腾</div>
+          <img class="team-profile-image" src="../assets/img-chenxi.jpeg" />
+          <div class="team-profile-name">陈曦</div>
           <div class="team-profile-position">
-            <p>主要创办人</p>
-            <p>董事会主席兼首席执行官</p>
+            <p>前端开发部</p>
+            <p>开发工程师</p>
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-          <div class="team-profile-name">马化腾</div>
+          <img class="team-profile-image" src="../assets/img-tony.png" />
+          <div class="team-profile-name">Tony 蒋元博</div>
           <div class="team-profile-position">
-            <p>主要创办人</p>
-            <p>董事会主席兼首席执行官</p>
+            <p>前端开发部</p>
+            <p>开发工程师</p>
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-          <div class="team-profile-name">马化腾</div>
+          <img class="team-profile-image" src="../assets/img-david.jpeg" />
+          <div class="team-profile-name">David 刘明洋</div>
           <div class="team-profile-position">
-            <p>主要创办人</p>
-            <p>董事会主席兼首席执行官</p>
+            <p>前端开发部</p>
+            <p>前端开发工程师</p>
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-          <div class="team-profile-name">马化腾</div>
+          <img class="team-profile-image" src="../assets/img-grace.jpeg" />
+          <div class="team-profile-name">Grace 陈昕悦</div>
           <div class="team-profile-position">
-            <p>主要创办人</p>
-            <p>董事会主席兼首席执行官</p>
+            <p>前端开发部</p>
+            <p>前端开发工程师</p>
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-          <div class="team-profile-name">马化腾</div>
+          <img class="team-profile-image" src="../assets/img-alice.png" />
+          <div class="team-profile-name">Alice 刘涵</div>
           <div class="team-profile-position">
-            <p>主要创办人</p>
-            <p>董事会主席兼首席执行官</p>
+            <p>产品研发部</p>
+            <p>产品经理</p>
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-avatar.jpeg" />
-          <div class="team-profile-name">马化腾</div>
+          <img class="team-profile-image" src="../assets/img-jack.png" />
+          <div class="team-profile-name">Jack 林子轩</div>
           <div class="team-profile-position">
-            <p>主要创办人</p>
-            <p>董事会主席兼首席执行官</p>
+            <p>产品研发部</p>
+            <p>产品经理</p>
           </div>
         </div>
       </div>
