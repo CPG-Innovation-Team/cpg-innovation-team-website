@@ -13,6 +13,8 @@ import Dashboard from './views/admin/Dashboard.vue';
 import Blogs from './views/admin/Blogs.vue';
 import Users from './views/admin/Users.vue';
 import Activities from './views/admin/Activities.vue';
+import CreateBlog from './views/admin/CreateBlog.vue';
+import ModifyBlog from './views/admin/ModifyBlog.vue';
 
 Vue.use(VueRouter);
 
@@ -71,6 +73,16 @@ const routes = [
     path: '/admin/blogs',
     name: 'Blogs',
     component: Blogs,
+  },
+  {
+    path: '/admin/blogs/create',
+    name: 'Blogs',
+    component: CreateBlog,
+  },
+  {
+    path: '/admin/blogs/:id',
+    name: 'Blogs',
+    component: ModifyBlog,
   },
   {
     path: '/admin/users',
