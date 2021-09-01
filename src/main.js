@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import BaiduMap from 'vue-baidu-map';
+import CountryFlag from 'vue-country-flag';
 import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify';
@@ -10,6 +11,7 @@ Vue.config.productionTip = false;
 Vue.use(BaiduMap, {
   ak: 'OLlbwIlG5ovWtUBiIMCQXH9jsAWGh54r',
 });
+Vue.component('country-flag', CountryFlag);
 
 new Vue({
   router,
