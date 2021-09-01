@@ -3,7 +3,7 @@
     <v-list dense nav class="py-0">
       <v-list-item two-line>
         <v-list-item-avatar to="/admin/profile">
-          <v-icon>mdi-account-circle</v-icon>
+          <img src="https://randomuser.me/api/portraits/men/81.jpg" />
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -37,6 +37,7 @@ export default {
         { title: 'Blogs', icon: 'mdi-post', link: '/admin/blogs' },
         { title: 'Users', icon: 'mdi-account-multiple', link: '/admin/users' },
         { title: 'Activity', icon: 'mdi-chart-areaspline-variant', link: '/admin/activities' },
+        { title: 'Profile', icon: 'mdi-account-circle', link: '/admin/profile' },
       ],
     };
   },

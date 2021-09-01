@@ -15,6 +15,7 @@ import Users from './views/admin/Users.vue';
 import Activities from './views/admin/Activities.vue';
 import CreateBlog from './views/admin/CreateBlog.vue';
 import ModifyBlog from './views/admin/ModifyBlog.vue';
+import Profile from './views/admin/Profile.vue';
 
 Vue.use(VueRouter);
 
@@ -93,6 +94,11 @@ const routes = [
     path: '/admin/activities',
     name: 'Activities',
     component: Activities,
+  },
+  {
+    path: '/admin/profile',
+    name: 'Profile',
+    component: Profile,
   },
 ];
 
