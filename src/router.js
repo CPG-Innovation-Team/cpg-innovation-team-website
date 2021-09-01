@@ -76,12 +76,12 @@ const routes = [
   },
   {
     path: '/admin/blogs/create',
-    name: 'Blogs',
+    name: 'CreateBlog',
     component: CreateBlog,
   },
   {
     path: '/admin/blogs/:id',
-    name: 'Blogs',
+    name: 'ModifyBlog',
     component: ModifyBlog,
   },
   {
