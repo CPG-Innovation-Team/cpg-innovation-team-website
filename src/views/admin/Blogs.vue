@@ -19,11 +19,7 @@
           </a>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
-        <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
+          <v-icon small class="ml-4" @click="deleteItem(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
     </v-main>
@@ -48,6 +44,7 @@ export default {
       { text: 'Author', value: 'author' },
       { text: 'Created', value: 'created' },
       { text: 'Last Modified', value: 'modified' },
+      { text: 'Views', value: 'views' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [
@@ -57,6 +54,7 @@ export default {
         author: 'AA',
         created: '04.02',
         modified: '06.12',
+        views: 13,
       },
       {
         id: '2',
@@ -64,6 +62,7 @@ export default {
         author: 'AA',
         created: '04.03',
         modified: '06.25',
+        views: 5,
       },
     ],
     editedIndex: -1,
