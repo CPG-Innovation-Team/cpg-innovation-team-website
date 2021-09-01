@@ -13,7 +13,12 @@
             </router-link>
           </v-toolbar>
         </template>
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.title`]="{ item }">
+          <a :href="`/admin/blogs/${item.id}`">
+            {{ item.title }}
+          </a>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
         </template>
@@ -47,12 +52,14 @@ export default {
     ],
     desserts: [
       {
+        id: '1',
         title: 'Frozen Yogurt',
         author: 'AA',
         created: '04.02',
         modified: '06.12',
       },
       {
+        id: '2',
         title: 'Amazing news',
         author: 'AA',
         created: '04.03',
