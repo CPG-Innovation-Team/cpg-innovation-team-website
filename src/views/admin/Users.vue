@@ -7,6 +7,16 @@
           <v-toolbar flat color="white">
             <v-toolbar-title>Users</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
+            <v-text-field
+              v-model="search"
+              placeholder="Search"
+              append-icon="mdi-magnify"
+              required
+              dense
+              hide-details
+              outlined
+            ></v-text-field>
+            <v-spacer></v-spacer>
           </v-toolbar>
         </template>
         <template v-slot:[`item.title`]="{ item }">
@@ -31,6 +41,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    search: '',
     headers: [
       {
         text: 'Name',

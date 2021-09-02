@@ -7,6 +7,7 @@
           <v-col>
             <v-card>
               <v-card-title>Traffic</v-card-title>
+              <Traffic />
             </v-card>
           </v-col>
         </v-row>
@@ -61,6 +62,7 @@
 
 <script>
 import AdminNav from '../../components/AdminNav.vue';
+import Traffic from '../../components/Charts/Traffic.vue';
 
 export default {
   data() {
@@ -89,6 +91,7 @@ export default {
   },
   components: {
     AdminNav,
+    Traffic,
   },
 };
 </script>

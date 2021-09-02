@@ -7,6 +7,17 @@
           <v-toolbar flat color="white">
             <v-toolbar-title>All Blogs</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
+
+            <v-text-field
+              v-model="search"
+              placeholder="Search"
+              append-icon="mdi-magnify"
+              required
+              dense
+              hide-details
+              outlined
+            ></v-text-field>
+
             <v-spacer></v-spacer>
             <router-link to="/admin/blogs/create">
               <v-btn color="primary" dark class="mb-2"> New Blog </v-btn>
@@ -35,6 +46,7 @@ export default {
   },
   data: () => ({
     dialog: false,
+    search: '',
     headers: [
       {
         text: 'Title',

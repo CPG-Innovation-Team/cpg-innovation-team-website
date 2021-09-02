@@ -13,15 +13,17 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="nav-menu hidden-sm-and-down">
-        <button class="nav-btn" v-for="router in routers" :key="router.index">
+        <button v-for="router in routers" :key="router.index">
           <router-link class="nav-link" v-bind:to="router.link">
             {{ router.name }}
           </router-link>
         </button>
       </v-toolbar-items>
-
       <v-spacer></v-spacer>
 
+      <button>
+        <router-link class="mr-3 login-btn" to="/login">Login</router-link>
+      </button>
       <!-- Search component
       <v-autocomplete
         class="header-search"
@@ -206,6 +208,12 @@ export default {
     display: flex;
     align-self: center;
   }
+}
+
+.login-btn {
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--themeColor);
 }
 
 .flag {
