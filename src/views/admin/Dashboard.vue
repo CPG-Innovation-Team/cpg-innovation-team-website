@@ -2,10 +2,10 @@
   <div class="layout">
     <AdminNav />
     <v-main style="background: whitesmoke">
-      <v-container>
+      <v-container fluid>
         <v-row>
           <v-col>
-            <v-card class="square">
+            <v-card>
               <v-card-title>Traffic</v-card-title>
             </v-card>
           </v-col>
@@ -13,7 +13,7 @@
 
         <v-row>
           <v-col>
-            <v-card class="square">
+            <v-card>
               <v-card-title>Recent</v-card-title>
               <v-simple-table dense>
                 <template>
@@ -41,7 +41,7 @@
 
         <v-row>
           <v-col>
-            <v-card class="square">
+            <v-card>
               <v-card-title>Hello</v-card-title>
             </v-card>
           </v-col>
@@ -49,7 +49,7 @@
 
         <v-row>
           <v-col>
-            <v-card class="square">
+            <v-card>
               <v-card-title>World</v-card-title>
             </v-card>
           </v-col>
@@ -96,11 +96,5 @@ export default {
 <style lang="scss" scoped>
 .layout {
   display: flex;
-}
-.square {
-  /* min-width: 200px;
-  max-width: 320px;
-  height: 200px; */
-  /* background: gray; */
 }
 </style>

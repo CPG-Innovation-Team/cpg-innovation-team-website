@@ -2,7 +2,7 @@
   <div class="layout">
     <AdminNav />
     <v-main>
-      <v-data-table :headers="headers" :items="desserts" sort-by="modified" class="elevation-1" style="height: 100vh">
+      <v-data-table :headers="headers" :items="blogs" sort-by="modified" class="elevation-1" style="height: 100vh">
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>All Blogs</v-toolbar-title>
@@ -38,7 +38,6 @@ export default {
     headers: [
       {
         text: 'Title',
-        align: 'start',
         value: 'title',
       },
       { text: 'Author', value: 'author' },
@@ -47,10 +46,10 @@ export default {
       { text: 'Views', value: 'views' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    desserts: [
+    blogs: [
       {
         id: '1',
-        title: 'Frozen Yogurt',
+        title: 'Monkey King',
         author: 'AA',
         created: '04.02',
         modified: '06.12',
