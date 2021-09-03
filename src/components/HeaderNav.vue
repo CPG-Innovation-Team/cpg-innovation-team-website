@@ -21,34 +21,13 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
-      <button>
-        <router-link class="mr-3 login-btn" to="/login">Login</router-link>
-      </button>
-      <!-- Search component
-      <v-autocomplete
-        class="header-search"
-        :search-input.sync="searchTemp"
-        :items="searchItems"
-        dense
-        hide-details
-        solo
-        v-bind:placeholder="$t('search')"
-        :hide-no-data="true"
-        @keyup.enter="search"
-      >
-        <template v-slot:item="{ item }">
-          <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
-            {{ item }}
-          </router-link>
-        </template>
-      </v-autocomplete>
-      <v-btn icon class="mr-1" @click="search">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn> -->
+      <router-link v-if="!login" class="login-btn mr-2" to="/login">
+        <v-btn outlined color="white"> {{ $t('navbar.login') }} </v-btn>
+      </router-link>
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="!login" class="language-setting" v-bind="attrs" v-on="on">
             <country-flag class="flag" :country="flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
@@ -74,6 +53,52 @@
           </v-list-item-group>
         </v-list>
       </v-menu>
+
+      <v-menu offset-y content-class="elevation-0" rounded="14">
+        <template v-slot:activator="{ on, attrs }">
+          <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
+            <v-avatar size="36">
+              <img src="https://randomuser.me/api/portraits/men/81.jpg" />
+            </v-avatar>
+            <v-icon>mdi-chevron-down</v-icon>
+          </div>
+        </template>
+        <v-list dense>
+          <v-subheader>Mike. D</v-subheader>
+          <v-list-item-group v-model="item" color="primary">
+            <v-list-item v-for="(item, i) in userMenu" :key="i">
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+
+      <!-- Search component
+      <v-autocomplete
+        class="header-search"
+        :search-input.sync="searchTemp"
+        :items="searchItems"
+        dense
+        hide-details
+        solo
+        v-bind:placeholder="$t('search')"
+        :hide-no-data="true"
+        @keyup.enter="search"
+      >
+        <template v-slot:item="{ item }">
+          <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
+            {{ item }}
+          </router-link>
+        </template>
+      </v-autocomplete>
+      <v-btn icon class="mr-1" @click="search">
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn> -->
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -99,6 +124,7 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
+    login: true,
     lang: '中文',
     flag: 'cn',
     drawer: false,
@@ -109,6 +135,14 @@ export default {
     searchItems: [],
     jobs,
     projects,
+    userMenu: [
+      { text: 'Profile', icon: 'mdi-flag' },
+      { text: 'My Blogs', icon: 'mdi-post' },
+      { text: 'Notification', icon: 'mdi-bell' },
+      { text: 'Setting', icon: 'mdi-cog' },
+      { text: 'Language', icon: 'mdi-translate' },
+      { text: 'Log out', icon: 'mdi-logout' },
+    ],
   }),
   props: ['color'],
   components: {
