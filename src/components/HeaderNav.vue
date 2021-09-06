@@ -1,20 +1,28 @@
 <template>
-  <div>
-    <v-app-bar app color="blue darken-1">
+  <div :style="cssProps">
+    <v-app-bar class="nav-container" app flat hide-on-scroll>
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
-      <v-spacer class="hidden-sm-and-down"></v-spacer>
+      <!-- <v-spacer class="hidden-sm-and-down"></v-spacer> -->
 
-      <router-link to="/"><v-img class="logo" src="../assets/img-cp-logo.png" alt="CP-logo" /></router-link>
+      <router-link to="/">
+        <img v-if="!color" class="ml-8" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
+        <img v-else class="ml-8" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
+      </router-link>
 
-      <v-toolbar-items class="navbar hidden-sm-and-down">
-        <router-link v-for="router in routers" :key="router.index" class="nav-link" v-bind:to="router.link">
-          <v-btn text>{{ router.name }}</v-btn>
-        </router-link>
+      <v-spacer></v-spacer>
+
+      <v-toolbar-items class="nav-menu hidden-sm-and-down">
+        <button class="nav-btn" v-for="router in routers" :key="router.index">
+          <router-link class="nav-link" v-bind:to="router.link">
+            {{ router.name }}
+          </router-link>
+        </button>
       </v-toolbar-items>
 
       <v-spacer></v-spacer>
 
+      <!-- Search component
       <v-autocomplete
         class="header-search"
         :search-input.sync="searchTemp"
@@ -34,21 +42,32 @@
       </v-autocomplete>
       <v-btn icon class="mr-1" @click="search">
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn> -->
 
-      <v-menu offset-y>
+      <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="language-setting" small color="blue lighten-1" v-bind="attrs" v-on="on">
-            {{ lang }}<v-icon>mdi-chevron-down</v-icon>
-          </v-btn>
+          <div class="language-setting" v-bind="attrs" v-on="on">
+            <country-flag class="flag" :country="flag" />
+            <v-icon>mdi-chevron-down</v-icon>
+          </div>
         </template>
-        <v-list>
+        <v-list dense>
           <v-list-item-group color="primary" test="language">
-            <v-list-item>
-              <v-list-item-content @click="changeLang('zh-CN', '中文')">中文</v-list-item-content>
+            <v-list-item class="pr-2 pl-2">
+              <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
+                <div class="language-selection">
+                  <country-flag class="flag" country="cn" />
+                  <span class="language-text">简体中文</span>
+                </div>
+              </v-list-item-content>
             </v-list-item>
-            <v-list-item>
-              <v-list-item-content @click="changeLang('en-US', 'Eng')">Eng</v-list-item-content>
+            <v-list-item class="pr-2 pl-2">
+              <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'gb')">
+                <div class="language-selection">
+                  <country-flag class="flag" country="gb" />
+                  <span class="language-text">English(UK)</span>
+                </div>
+              </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
@@ -70,6 +89,8 @@
 </template>
 
 <script>
+import CountryFlag from 'vue-country-flag';
+
 const projects = require('../data/project');
 const jobs = require('../data/career');
 
@@ -77,6 +98,7 @@ export default {
   name: 'HeaderNav',
   data: () => ({
     lang: '中文',
+    flag: 'cn',
     drawer: false,
     group: null,
     // search
@@ -86,6 +108,10 @@ export default {
     jobs,
     projects,
   }),
+  props: ['color'],
+  components: {
+    CountryFlag,
+  },
   watch: {
     group() {
       this.drawer = false;
@@ -96,9 +122,10 @@ export default {
     },
   },
   methods: {
-    changeLang(locale, lang) {
+    changeLang(locale, lang, flag) {
       this.$i18n.locale = locale;
       this.lang = lang;
+      this.flag = flag;
     },
     search() {
       if (this.searchText !== null && this.searchText.trim() !== '') {
@@ -145,29 +172,55 @@ export default {
         { name: this.$t('navbar.team'), link: '/teamInfo' },
         { name: this.$t('navbar.recruitment'), link: '/recruitmentInfo' },
         { name: this.$t('navbar.about'), link: '/aboutUs' },
+        { name: this.$t('navbar.blog'), link: '/blog' },
       ];
+    },
+    cssProps() {
+      console.log(this.color);
+      if (this.color) {
+        return { '--themeColor': this.color };
+      }
+      return { '--themeColor': 'white' };
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.logo {
-  margin: 0 5% 0 8%;
-  align-self: center;
-  max-height: 45px;
-  max-width: 45px;
+.nav-container {
+  background-color: rgba(0, 0, 0, 0) !important;
+  .nav-menu {
+    button {
+      padding: 0 16px;
+      cursor: default;
+      a {
+        font-weight: bold;
+        text-decoration: none;
+        color: var(--themeColor);
+        &:hover {
+          color: #ffc60d;
+        }
+      }
+    }
+  }
+  .language-setting {
+    display: flex;
+    align-self: center;
+  }
 }
 
-.navbar {
-  .nav-link {
-    text-decoration: none;
-    color: rgba(0, 0, 0, 0.87);
-    text-align: center;
-    height: inherit;
-    button {
-      height: inherit;
-    }
+.flag {
+  border-radius: 6px;
+}
+
+.language-selection {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  .language-text {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
   }
 }
 

@@ -1,7 +1,10 @@
 <template>
   <div>
-    <div class="career-title">招聘信息</div>
-    <v-app>
+    <HeaderNav :color="'black'" />
+
+    <v-main>
+      <div class="career-title">招聘信息</div>
+
       <v-container>
         <v-row class="dropdown-container">
           <v-col class="d-flex" cols="6" md="3">
@@ -71,12 +74,13 @@
           ></v-pagination>
         </div>
       </v-container>
-    </v-app>
+    </v-main>
   </div>
 </template>
 
 <script>
 import util from '../util';
+import HeaderNav from '../components/HeaderNav.vue';
 
 const jobs = require('../data/career');
 
@@ -93,6 +97,9 @@ export default {
     jobs,
     filteredJobs: [],
   }),
+  components: {
+    HeaderNav,
+  },
   created() {
     this.filteredJobs = util.sort(jobs);
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
