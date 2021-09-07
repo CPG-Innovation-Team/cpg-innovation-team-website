@@ -124,7 +124,7 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    login: true,
+    login: false,
     lang: '中文',
     flag: 'cn',
     drawer: false,
@@ -136,7 +136,7 @@ export default {
     jobs,
     projects,
     userMenu: [
-      { text: 'Profile', icon: 'mdi-flag' },
+      { text: 'Profile', icon: 'mdi-account' },
       { text: 'My Blogs', icon: 'mdi-post' },
       { text: 'Notification', icon: 'mdi-bell' },
       { text: 'Setting', icon: 'mdi-cog' },

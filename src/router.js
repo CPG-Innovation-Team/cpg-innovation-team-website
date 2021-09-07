@@ -9,6 +9,7 @@ import RecruitmentDetail from './views/RecruitmentDetail.vue';
 import SearchResults from './views/SearchResults.vue';
 import Blog from './views/Blog.vue';
 import Login from './views/admin/Login.vue';
+import Signup from './views/admin/Signup.vue';
 import Dashboard from './views/admin/Dashboard.vue';
 import Blogs from './views/admin/Blogs.vue';
 import Users from './views/admin/Users.vue';
@@ -64,6 +65,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: Signup,
   },
   {
     path: '/admin/dashboard',
