@@ -19,65 +19,93 @@
               <v-col>
                 <div class="popular-item">
                   <img src="https://picsum.photos/seed/1/200/120" />
-                  <div>Title</div>
-                  <div>
-                    Avatar
-                    <div>Name</div>
-                    <div>Date</div>
+                  <div class="popular-title">What Make A Don't Want You To Know</div>
+                  <div class="user-info">
+                    <v-avatar class="avatar">
+                      <img src="https://picsum.photos/seed/q/200/" alt="John" />
+                    </v-avatar>
+                    <div>
+                      <div class="name">Beverly Doyle</div>
+
+                      <div class="date">21 Jan 2021</div>
+                    </div>
                   </div>
-                  <div>Description</div>
+                  <div class="description">
+                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
+                  </div>
                 </div>
               </v-col>
 
               <v-col>
                 <div class="popular-item">
                   <img src="https://picsum.photos/seed/2/200/120" />
-                  <div>Title</div>
-                  <div>
-                    Avatar
-                    <div>Name</div>
-                    <div>Date</div>
+                  <div class="popular-title">What Make A Don't Want You To Know</div>
+                  <div class="user-info">
+                    <v-avatar class="avatar">
+                      <img src="https://picsum.photos/seed/w/200/" alt="John" />
+                    </v-avatar>
+                    <div>
+                      <div class="name">Beverly Doyle</div>
+
+                      <div class="date">21 Jan 2021</div>
+                    </div>
                   </div>
-                  <div>Description</div>
+                  <div class="description">
+                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
+                  </div>
                 </div>
               </v-col>
 
               <v-col>
                 <div class="popular-item">
                   <img src="https://picsum.photos/seed/3/200/120" />
-                  <div>Title</div>
-                  <div>
-                    Avatar
-                    <div>Name</div>
-                    <div>Date</div>
+                  <div class="popular-title">What Make A Don't Want You To Know</div>
+                  <div class="user-info">
+                    <v-avatar class="avatar">
+                      <img src="https://picsum.photos/seed/e/200/" alt="John" />
+                    </v-avatar>
+                    <div>
+                      <div class="name">Beverly Doyle</div>
+
+                      <div class="date">21 Jan 2021</div>
+                    </div>
                   </div>
-                  <div>Description</div>
+                  <div class="description">
+                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
+                  </div>
                 </div>
               </v-col>
 
               <v-col>
                 <div class="popular-item">
                   <img src="https://picsum.photos/seed/4/200/120" />
-                  <div>Title</div>
-                  <div>
-                    Avatar
-                    <div>Name</div>
-                    <div>Date</div>
+                  <div class="popular-title">What Make A Don't Want You To Know</div>
+                  <div class="user-info">
+                    <v-avatar class="avatar">
+                      <img src="https://picsum.photos/seed/r/200/" alt="John" />
+                    </v-avatar>
+                    <div>
+                      <div class="name">Beverly Doyle</div>
+
+                      <div class="date">21 Jan 2021</div>
+                    </div>
                   </div>
-                  <div>Description</div>
+                  <div class="description">
+                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
+                  </div>
                 </div>
               </v-col>
             </v-row>
           </v-container>
         </div>
 
-        <div class="recent-container pt-10">
+        <div class="recent-container">
           <v-container>
             <h1 class="mb-5">Recent Post</h1>
             <v-row>
               <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" /> </v-col>
               <v-col>
-                <div>Title</div>
+                <div>Dangerous Time</div>
                 <div>
                   Avatar
                   <div>Name</div>
@@ -90,7 +118,7 @@
             <v-row>
               <v-col cols="3"> <img src="https://picsum.photos/seed/6/200/120" /> </v-col>
               <v-col>
-                <div>Title</div>
+                <div>The Elemental Blade</div>
                 <div>
                   Avatar
                   <div>Name</div>
@@ -102,7 +130,7 @@
             <v-row>
               <v-col cols="3"> <img src="https://picsum.photos/seed/7/200/120" /> </v-col>
               <v-col>
-                <div>Title</div>
+                <div>Ice of Ships</div>
                 <div>
                   Avatar
                   <div>Name</div>
@@ -176,19 +204,59 @@ export default {
     opacity: 2;
   }
 }
+
 .blogs-container {
   .popular-container {
-    min-height: 300px;
-    width: 100%;
+    padding-bottom: 40px;
     background: rgb(226, 226, 226);
     .popular-item {
+      max-width: 400px;
       img {
         border-radius: 5px;
+        width: 100%;
+      }
+      .popular-title {
+        font-size: 1rem;
+        font-weight: 650;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .user-info {
+        display: flex;
+        padding: 8px 0;
+        .avatar {
+          height: 38px !important;
+          width: 38px !important;
+          min-width: 38px !important;
+          margin-right: 8px;
+          align-self: center;
+        }
+        .name {
+          font-size: 0.96rem;
+          font-weight: 500;
+        }
+        .date {
+          font-size: 0.88rem;
+          font-weight: 380;
+        }
+      }
+      .description {
+        font-size: 0.88rem;
+        font-weight: 400;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
 
   .recent-container {
+    padding-top: 40px;
     background: silver;
     img {
       border-radius: 5px;
