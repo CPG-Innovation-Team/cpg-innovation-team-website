@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-container">
-      <img class="nav-img" src="../assets/img-carousel4.jpg" alt="header image" />
+      <img class="nav-img" src="../assets/img-carousel1.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-cn">博客</p>
@@ -9,7 +9,124 @@
       </div>
       <HeaderNav />
     </div>
-    <v-main> 12345 </v-main>
+
+    <v-main>
+      <div class="blogs-container">
+        <div class="popular-container">
+          <h1 style="text-align: center">Most Popular</h1>
+          <v-container>
+            <v-row>
+              <v-col>
+                <div class="popular-item">
+                  <img src="https://picsum.photos/seed/1/200/120" />
+                  <div>Title</div>
+                  <div>
+                    Avatar
+                    <div>Name</div>
+                    <div>Date</div>
+                  </div>
+                  <div>Description</div>
+                </div>
+              </v-col>
+
+              <v-col>
+                <div class="popular-item">
+                  <img src="https://picsum.photos/seed/2/200/120" />
+                  <div>Title</div>
+                  <div>
+                    Avatar
+                    <div>Name</div>
+                    <div>Date</div>
+                  </div>
+                  <div>Description</div>
+                </div>
+              </v-col>
+
+              <v-col>
+                <div class="popular-item">
+                  <img src="https://picsum.photos/seed/3/200/120" />
+                  <div>Title</div>
+                  <div>
+                    Avatar
+                    <div>Name</div>
+                    <div>Date</div>
+                  </div>
+                  <div>Description</div>
+                </div>
+              </v-col>
+
+              <v-col>
+                <div class="popular-item">
+                  <img src="https://picsum.photos/seed/4/200/120" />
+                  <div>Title</div>
+                  <div>
+                    Avatar
+                    <div>Name</div>
+                    <div>Date</div>
+                  </div>
+                  <div>Description</div>
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+        </div>
+
+        <div class="recent-container pt-10">
+          <v-container>
+            <h1 class="mb-5">Recent Post</h1>
+            <v-row>
+              <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" /> </v-col>
+              <v-col>
+                <div>Title</div>
+                <div>
+                  Avatar
+                  <div>Name</div>
+                  <div>Date</div>
+                </div>
+                <div>Description</div>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="3"> <img src="https://picsum.photos/seed/6/200/120" /> </v-col>
+              <v-col>
+                <div>Title</div>
+                <div>
+                  Avatar
+                  <div>Name</div>
+                  <div>Date</div>
+                </div>
+                <div>Description</div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="3"> <img src="https://picsum.photos/seed/7/200/120" /> </v-col>
+              <v-col>
+                <div>Title</div>
+                <div>
+                  Avatar
+                  <div>Name</div>
+                  <div>Date</div>
+                </div>
+                <div>Description</div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="3"> <img src="https://picsum.photos/seed/8/200/120" /> </v-col>
+              <v-col>
+                <div>Title</div>
+                <div>
+                  Avatar
+                  <div>Name</div>
+                  <div>Date</div>
+                </div>
+                <div>Description</div>
+              </v-col>
+            </v-row>
+          </v-container>
+        </div>
+      </div>
+    </v-main>
   </div>
 </template>
 
@@ -57,6 +174,25 @@ export default {
     width: 100%;
     height: 400px;
     opacity: 2;
+  }
+}
+.blogs-container {
+  .popular-container {
+    min-height: 300px;
+    width: 100%;
+    background: rgb(226, 226, 226);
+    .popular-item {
+      img {
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .recent-container {
+    background: silver;
+    img {
+      border-radius: 5px;
+    }
   }
 }
 </style>
