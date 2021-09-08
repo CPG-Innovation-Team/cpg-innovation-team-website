@@ -1,7 +1,9 @@
 <template>
   <div class="background">
     <div class="form-container">
-      <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
+      <router-link to="/">
+        <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
+      </router-link>
       <v-form ref="form" v-model="valid">
         <label>Username</label>
         <v-text-field v-model="username" type="email" required dense outlined></v-text-field>
