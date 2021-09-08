@@ -80,6 +80,7 @@ export default {
 <style lang="scss" scoped>
 .header-container {
   position: relative;
+  height: 400px;
   .header-text {
     color: white;
     position: absolute;
