@@ -20,10 +20,10 @@
                 <template>
                   <thead>
                     <tr>
-                      <th>User</th>
-                      <th>Action</th>
-                      <th>Title</th>
-                      <th>Time</th>
+                      <th scope="row">User</th>
+                      <th scope="row">Action</th>
+                      <th scope="row">Title</th>
+                      <th scope="row">Time</th>
                     </tr>
                   </thead>
                   <tbody>
