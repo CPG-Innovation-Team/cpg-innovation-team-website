@@ -124,7 +124,7 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    login: false,
+    login: true,
     lang: '中文',
     flag: 'cn',
     drawer: false,
