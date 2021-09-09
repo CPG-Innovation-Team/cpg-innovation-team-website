@@ -18,11 +18,11 @@
             <v-row>
               <v-col>
                 <div class="popular-item">
-                  <img src="https://picsum.photos/seed/1/200/120" />
+                  <img src="https://picsum.photos/seed/1/200/120" alt="sample img" />
                   <div class="popular-title">What Make A Don't Want You To Know</div>
                   <div class="user-info">
                     <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/q/200/" alt="John" />
+                      <img src="https://picsum.photos/seed/q/200/" alt="sample img" />
                     </v-avatar>
                     <div>
                       <div class="name">Beverly Doyle</div>
@@ -38,11 +38,11 @@
 
               <v-col>
                 <div class="popular-item">
-                  <img src="https://picsum.photos/seed/2/200/120" />
+                  <img src="https://picsum.photos/seed/2/200/120" alt="sample img" />
                   <div class="popular-title">What Make A Don't Want You To Know</div>
                   <div class="user-info">
                     <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/w/200/" alt="John" />
+                      <img src="https://picsum.photos/seed/w/200/" alt="sample img" />
                     </v-avatar>
                     <div>
                       <div class="name">Beverly Doyle</div>
@@ -58,11 +58,11 @@
 
               <v-col>
                 <div class="popular-item">
-                  <img src="https://picsum.photos/seed/3/200/120" />
+                  <img src="https://picsum.photos/seed/3/200/120" alt="sample img" />
                   <div class="popular-title">What Make A Don't Want You To Know</div>
                   <div class="user-info">
                     <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/e/200/" alt="John" />
+                      <img src="https://picsum.photos/seed/e/200/" alt="sample img" />
                     </v-avatar>
                     <div>
                       <div class="name">Beverly Doyle</div>
@@ -78,11 +78,11 @@
 
               <v-col>
                 <div class="popular-item">
-                  <img src="https://picsum.photos/seed/4/200/120" />
+                  <img src="https://picsum.photos/seed/4/200/120" alt="sample img" />
                   <div class="popular-title">What Make A Don't Want You To Know</div>
                   <div class="user-info">
                     <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/r/200/" alt="John" />
+                      <img src="https://picsum.photos/seed/r/200/" alt="sample img" />
                     </v-avatar>
                     <div>
                       <div class="name">Beverly Doyle</div>
@@ -113,12 +113,12 @@
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)">
                 <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" /> </v-col>
+                  <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" alt="sample img" /> </v-col>
                   <v-col>
                     <div class="recent-title">What Make A Don't Want You To Know</div>
                     <div class="user-info">
                       <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/a/200/" alt="John" />
+                        <img src="https://picsum.photos/seed/a/200/" alt="sample img" />
                       </v-avatar>
                       <div>
                         <div class="name">Beverly Doyle</div>
@@ -133,12 +133,12 @@
                 </v-row>
 
                 <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/6/200/120" /> </v-col>
+                  <v-col cols="3"> <img src="https://picsum.photos/seed/6/200/120" alt="sample img" /> </v-col>
                   <v-col>
                     <div class="recent-title">What Make A Don't Want You To Know</div>
                     <div class="user-info">
                       <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/s/200/" alt="John" />
+                        <img src="https://picsum.photos/seed/s/200/" alt="sample img" />
                       </v-avatar>
                       <div>
                         <div class="name">Beverly Doyle</div>
@@ -153,12 +153,12 @@
                 </v-row>
 
                 <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/7/200/120" /> </v-col>
+                  <v-col cols="3"> <img src="https://picsum.photos/seed/7/200/120" alt="sample img" /> </v-col>
                   <v-col>
                     <div class="recent-title">What Make A Don't Want You To Know</div>
                     <div class="user-info">
                       <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/d/200/" alt="John" />
+                        <img src="https://picsum.photos/seed/d/200/" alt="sample img" />
                       </v-avatar>
                       <div>
                         <div class="name">Beverly Doyle</div>
@@ -173,12 +173,12 @@
                 </v-row>
 
                 <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/f/200/120" /> </v-col>
+                  <v-col cols="3"> <img src="https://picsum.photos/seed/f/200/120" alt="sample img" /> </v-col>
                   <v-col>
                     <div class="recent-title">What Make A Don't Want You To Know</div>
                     <div class="user-info">
                       <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/r/200/" alt="John" />
+                        <img src="https://picsum.photos/seed/r/200/" alt="sample img" />
                       </v-avatar>
                       <div>
                         <div class="name">Beverly Doyle</div>
