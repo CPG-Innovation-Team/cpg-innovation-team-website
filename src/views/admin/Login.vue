@@ -7,10 +7,17 @@
 
       <v-form ref="form" v-model="valid">
         <label>Email</label>
-        <v-text-field v-model="email" type="email" required dense outlined></v-text-field>
+        <v-text-field v-model="email" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
 
         <label>Password</label>
-        <v-text-field v-model="password" type="password" required hide-details dense outlined></v-text-field>
+        <v-text-field
+          v-model="password"
+          type="password"
+          :rules="[rules.required]"
+          required
+          dense
+          outlined
+        ></v-text-field>
 
         <p style="text-align: right; font-size: 0.9rem; margin-top: 8px">
           <a>Forgot password?</a>
@@ -18,7 +25,8 @@
         <p style="text-align: right; font-size: 0.9rem">
           Don't have an account? <router-link to="/signup">Sign up</router-link>
         </p>
-        <v-btn color="primary" style="float: right; margin-left: 100%">Login</v-btn>
+
+        <v-btn color="primary" style="float: right; margin-left: 100%" @click="validate">Login</v-btn>
       </v-form>
     </div>
   </div>
@@ -31,7 +39,19 @@ export default {
       valid: false,
       email: '',
       password: '',
+      rules: {
+        required: (v) => !!v || 'Required.',
+        min: (v) => v.length >= 8 || 'Min 8 characters',
+        emailMatch: () => `The email and password you entered don't match`,
+      },
     };
+  },
+  methods: {
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.$router.push('/');
+      }
+    },
   },
 };
 </script>
