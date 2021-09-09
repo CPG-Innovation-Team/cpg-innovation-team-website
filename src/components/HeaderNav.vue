@@ -65,13 +65,66 @@
         </template>
         <v-list dense>
           <v-subheader>Mike. D</v-subheader>
-          <v-list-item-group v-model="item" color="primary">
-            <v-list-item v-for="(item, i) in userMenu" :key="i">
+          <v-list-item-group color="primary">
+            <router-link to="/admin/dashboard" style="text-decoration: none">
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>My Blogs</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </router-link>
+
+            <v-menu offset-x left content-class="elevation-0">
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item v-bind="attrs" v-on="on">
+                  <v-list-item-icon>
+                    <v-icon>mdi-translate</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>Language</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+              <v-list dense>
+                <v-list-item-group color="primary" test="language">
+                  <v-list-item class="pr-2 pl-2">
+                    <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
+                      <div class="language-selection">
+                        <country-flag class="flag" country="cn" />
+                        <span class="language-text">简体中文</span>
+                      </div>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item class="pr-2 pl-2">
+                    <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'gb')">
+                      <div class="language-selection">
+                        <country-flag class="flag" country="gb" />
+                        <span class="language-text">English(UK)</span>
+                      </div>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-menu>
+
+            <v-list-item>
               <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
+                <v-icon>mdi-bell</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title v-text="item.text"></v-list-item-title>
+                <v-list-item-title>Notification</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item @click="login = false">
+              <v-list-item-icon>
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Logout</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -135,14 +188,6 @@ export default {
     searchItems: [],
     jobs,
     projects,
-    userMenu: [
-      { text: 'Profile', icon: 'mdi-account' },
-      { text: 'My Blogs', icon: 'mdi-post' },
-      { text: 'Notification', icon: 'mdi-bell' },
-      { text: 'Setting', icon: 'mdi-cog' },
-      { text: 'Language', icon: 'mdi-translate' },
-      { text: 'Log out', icon: 'mdi-logout' },
-    ],
   }),
   props: ['color'],
   components: {
