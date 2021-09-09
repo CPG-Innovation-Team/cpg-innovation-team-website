@@ -58,7 +58,7 @@
         <template v-slot:activator="{ on, attrs }">
           <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36">
-              <img src="https://randomuser.me/api/portraits/men/81.jpg" />
+              <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
             </v-avatar>
             <v-icon>mdi-chevron-down</v-icon>
           </div>

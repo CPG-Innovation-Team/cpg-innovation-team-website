@@ -3,7 +3,7 @@
     <v-list dense nav class="py-0">
       <v-list-item two-line>
         <v-list-item-avatar to="/admin/profile">
-          <img src="https://randomuser.me/api/portraits/men/81.jpg" />
+          <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
         </v-list-item-avatar>
 
         <v-list-item-content>
