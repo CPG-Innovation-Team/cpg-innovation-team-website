@@ -4,7 +4,7 @@
       <router-link to="/">
         <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
       </router-link>
-      <v-form ref="form" v-model="valid">
+      <v-form ref="form" v-model="valid" @submit.prevent="validate">
         <label>Username</label>
         <v-text-field v-model="username" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
 
@@ -35,7 +35,7 @@
           Already have an account? <router-link to="/login">Login</router-link>
         </p>
 
-        <v-btn color="primary" style="float: right; margin-left: 100%">Signup</v-btn>
+        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%">Signup</v-btn>
       </v-form>
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
       rules: {
         required: (v) => !!v || 'Required.',
         min: (v) => v.length >= 8 || 'Min 8 characters',
-        confirm: (v) => v.value === this.confirmedPwd || 'Your password need to be the same as above',
+        confirm: (v) => v === this.password || 'Your password need to be the same as above',
       },
     };
   },
