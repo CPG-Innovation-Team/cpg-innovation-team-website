@@ -6,16 +6,30 @@
       </router-link>
       <v-form ref="form" v-model="valid">
         <label>Username</label>
-        <v-text-field v-model="username" type="email" required dense outlined></v-text-field>
+        <v-text-field v-model="username" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
 
         <label>Email</label>
-        <v-text-field v-model="email" type="email" required dense outlined></v-text-field>
+        <v-text-field v-model="email" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
 
         <label>Password</label>
-        <v-text-field v-model="password" type="password" required dense outlined></v-text-field>
+        <v-text-field
+          v-model="password"
+          type="password"
+          :rules="[rules.required, rules.min]"
+          required
+          dense
+          outlined
+        ></v-text-field>
 
         <label>Confirm Password</label>
-        <v-text-field v-model="confirmedPwd" type="password" required hide-details dense outlined></v-text-field>
+        <v-text-field
+          v-model="confirmedPwd"
+          type="password"
+          :rules="[rules.required, rules.min, rules.confirm]"
+          required
+          dense
+          outlined
+        ></v-text-field>
 
         <p style="text-align: right; font-size: 0.9rem; margin-top: 8px">
           Already have an account? <router-link to="/login">Login</router-link>
@@ -36,7 +50,19 @@ export default {
       email: '',
       password: '',
       confirmedPwd: '',
+      rules: {
+        required: (v) => !!v || 'Required.',
+        min: (v) => v.length >= 8 || 'Min 8 characters',
+        confirm: (v) => v.value === this.confirmedPwd || 'Your password need to be the same as above',
+      },
     };
+  },
+  methods: {
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.$router.push('/');
+      }
+    },
   },
 };
 </script>
