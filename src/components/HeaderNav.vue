@@ -66,7 +66,7 @@
         <v-list dense>
           <v-subheader>Mike. D</v-subheader>
           <v-list-item-group color="primary">
-            <router-link to="/admin/dashboard" style="text-decoration: none">
+            <router-link to="/admin/profile" style="text-decoration: none">
               <v-list-item>
                 <v-list-item-icon>
                   <v-icon>mdi-account</v-icon>

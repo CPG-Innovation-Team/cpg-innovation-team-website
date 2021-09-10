@@ -1,15 +1,10 @@
 <template>
   <v-navigation-drawer v-model="drawer" color="gray" width="200" permanent>
     <v-list dense nav class="py-0">
-      <v-list-item two-line>
-        <v-list-item-avatar to="/admin/profile">
-          <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title>Mike.D</v-list-item-title>
-          <v-list-item-subtitle>Admin 1</v-list-item-subtitle>
-        </v-list-item-content>
+      <v-list-item>
+        <router-link to="/">
+          <img class="mt-3 ml-5" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
+        </router-link>
       </v-list-item>
 
       <v-divider></v-divider>
@@ -33,11 +28,11 @@ export default {
     return {
       drawer: true,
       routes: [
+        { title: 'Profile', icon: 'mdi-account-circle', link: '/admin/profile' },
         { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/admin/dashboard' },
         { title: 'Blogs', icon: 'mdi-post', link: '/admin/blogs' },
         { title: 'Users', icon: 'mdi-account-multiple', link: '/admin/users' },
         { title: 'Activity', icon: 'mdi-chart-areaspline-variant', link: '/admin/activities' },
-        { title: 'Profile', icon: 'mdi-account-circle', link: '/admin/profile' },
       ],
     };
   },
