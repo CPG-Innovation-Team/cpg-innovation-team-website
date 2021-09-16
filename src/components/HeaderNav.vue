@@ -207,6 +207,11 @@ export default {
       this.$i18n.locale = locale;
       this.lang = lang;
       this.flag = flag;
+      if (locale === 'zh-CN') {
+        document.title = '正大创新中心';
+      } else if (locale === 'en-US') {
+        document.title = 'CP Group Innovation Center';
+      }
     },
     search() {
       if (this.searchText !== null && this.searchText.trim() !== '') {
