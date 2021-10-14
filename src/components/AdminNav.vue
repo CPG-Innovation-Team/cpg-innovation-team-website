@@ -18,6 +18,32 @@
           <v-list-item-title>{{ route.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-group prepend-icon="mdi-post">
+        <template v-slot:activator>
+          <v-list-item-title>Blogs</v-list-item-title>
+        </template>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Published</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Pending</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
