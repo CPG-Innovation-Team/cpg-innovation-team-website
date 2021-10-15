@@ -27,7 +27,50 @@
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div v-if="!login" class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
+            <v-avatar size="36">
+              <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
+            </v-avatar>
+          </div>
+        </template>
+        <v-list dense>
+          <v-subheader>Mike. D</v-subheader>
+          <v-list-item-group color="primary">
+            <router-link to="/admin/profile" style="text-decoration: none">
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>My Blogs</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </router-link>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-bell</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Notification</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item @click="login = false">
+              <v-list-item-icon>
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
+
+      <v-menu offset-y content-class="elevation-0" rounded="14">
+        <template v-slot:activator="{ on, attrs }">
+          <div class="language-setting" v-bind="attrs" v-on="on">
             <country-flag class="flag" :country="flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
@@ -48,83 +91,6 @@
                   <country-flag class="flag" country="gb" />
                   <span class="language-text">English(UK)</span>
                 </div>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-menu>
-
-      <v-menu offset-y content-class="elevation-0" rounded="14">
-        <template v-slot:activator="{ on, attrs }">
-          <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
-            <v-avatar size="36">
-              <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
-            </v-avatar>
-            <v-icon>mdi-chevron-down</v-icon>
-          </div>
-        </template>
-        <v-list dense>
-          <v-subheader>Mike. D</v-subheader>
-          <v-list-item-group color="primary">
-            <router-link to="/admin/profile" style="text-decoration: none">
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-account</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title>My Blogs</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </router-link>
-
-            <v-menu offset-x left content-class="elevation-0">
-              <template v-slot:activator="{ on, attrs }">
-                <v-list-item v-bind="attrs" v-on="on">
-                  <v-list-item-icon>
-                    <v-icon>mdi-translate</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title>Language</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
-              <v-list dense>
-                <v-list-item-group color="primary" test="language">
-                  <v-list-item class="pr-2 pl-2">
-                    <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
-                      <div class="language-selection">
-                        <country-flag class="flag" country="cn" />
-                        <span class="language-text">简体中文</span>
-                      </div>
-                    </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item class="pr-2 pl-2">
-                    <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'gb')">
-                      <div class="language-selection">
-                        <country-flag class="flag" country="gb" />
-                        <span class="language-text">English(UK)</span>
-                      </div>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-menu>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-bell</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Notification</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-list-item @click="login = false">
-              <v-list-item-icon>
-                <v-icon>mdi-logout</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Logout</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -298,6 +264,7 @@ export default {
 
 .flag {
   border-radius: 6px;
+  margin-right: -10px;
 }
 
 .language-selection {
