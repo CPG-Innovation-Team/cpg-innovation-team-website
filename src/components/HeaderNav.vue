@@ -207,6 +207,7 @@ export default {
       this.$i18n.locale = locale;
       this.lang = lang;
       this.flag = flag;
+      document.title = this.$t('title');
     },
     search() {
       if (this.searchText !== null && this.searchText.trim() !== '') {
