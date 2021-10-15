@@ -70,7 +70,7 @@
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="!login" class="language-setting" v-bind="attrs" v-on="on">
             <country-flag class="flag" :country="flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
