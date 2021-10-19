@@ -16,85 +16,27 @@
           <h1 style="text-align: center">Most Popular</h1>
           <v-container>
             <v-row>
-              <v-col>
-                <div class="popular-item">
-                  <img src="https://picsum.photos/seed/1/200/120" alt="sample img" />
-                  <div class="popular-title">What Make A Don't Want You To Know</div>
-                  <div class="user-info">
-                    <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/q/200/" alt="sample img" />
-                    </v-avatar>
-                    <div>
-                      <div class="name">Beverly Doyle</div>
+              <div v-for="blog in blogs" :key="blog.id">
+                <v-col>
+                  <div class="popular-item">
+                    <img src="https://picsum.photos/seed/1/200/120" alt="sample img" />
+                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn } }">
+                      <div class="popular-title">{{ blog.title }}</div>
+                    </router-link>
+                    <div class="user-info">
+                      <v-avatar class="avatar">
+                        <img src="https://picsum.photos/seed/q/200/" alt="sample img" />
+                      </v-avatar>
+                      <div>
+                        <div class="name">{{ blog.author }}</div>
 
-                      <div class="date">21 Jan 2021</div>
+                        <div class="date">21 Jan 2021</div>
+                      </div>
                     </div>
+                    <div class="description">{{ blog.content.substring(0, 30) }}...</div>
                   </div>
-                  <div class="description">
-                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                  </div>
-                </div>
-              </v-col>
-
-              <v-col>
-                <div class="popular-item">
-                  <img src="https://picsum.photos/seed/2/200/120" alt="sample img" />
-                  <div class="popular-title">What Make A Don't Want You To Know</div>
-                  <div class="user-info">
-                    <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/w/200/" alt="sample img" />
-                    </v-avatar>
-                    <div>
-                      <div class="name">Beverly Doyle</div>
-
-                      <div class="date">21 Jan 2021</div>
-                    </div>
-                  </div>
-                  <div class="description">
-                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                  </div>
-                </div>
-              </v-col>
-
-              <v-col>
-                <div class="popular-item">
-                  <img src="https://picsum.photos/seed/3/200/120" alt="sample img" />
-                  <div class="popular-title">What Make A Don't Want You To Know</div>
-                  <div class="user-info">
-                    <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/e/200/" alt="sample img" />
-                    </v-avatar>
-                    <div>
-                      <div class="name">Beverly Doyle</div>
-
-                      <div class="date">21 Jan 2021</div>
-                    </div>
-                  </div>
-                  <div class="description">
-                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                  </div>
-                </div>
-              </v-col>
-
-              <v-col>
-                <div class="popular-item">
-                  <img src="https://picsum.photos/seed/4/200/120" alt="sample img" />
-                  <div class="popular-title">What Make A Don't Want You To Know</div>
-                  <div class="user-info">
-                    <v-avatar class="avatar">
-                      <img src="https://picsum.photos/seed/r/200/" alt="sample img" />
-                    </v-avatar>
-                    <div>
-                      <div class="name">Beverly Doyle</div>
-
-                      <div class="date">21 Jan 2021</div>
-                    </div>
-                  </div>
-                  <div class="description">
-                    The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                  </div>
-                </div>
-              </v-col>
+                </v-col>
+              </div>
             </v-row>
           </v-container>
         </div>
@@ -112,89 +54,28 @@
 
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)">
-                <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" alt="sample img" /> </v-col>
-                  <v-col>
-                    <div class="recent-title">What Make A Don't Want You To Know</div>
-                    <div class="user-info">
-                      <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/a/200/" alt="sample img" />
-                      </v-avatar>
-                      <div>
-                        <div class="name">Beverly Doyle</div>
-
-                        <div class="date">21 Jan 2021</div>
+                <div v-for="blog in blogs" :key="blog.id">
+                  <v-row>
+                    <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" alt="sample img" /> </v-col>
+                    <v-col>
+                      <div class="recent-title">{{ blog.title }}</div>
+                      <div class="user-info">
+                        <v-avatar class="avatar">
+                          <img src="https://picsum.photos/seed/a/200/" alt="sample img" />
+                        </v-avatar>
+                        <div>
+                          <div class="name">{{ blog.author }}</div>
+                          <div class="date">21 Jan 2021</div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="description">
-                      The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                    </div>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/6/200/120" alt="sample img" /> </v-col>
-                  <v-col>
-                    <div class="recent-title">What Make A Don't Want You To Know</div>
-                    <div class="user-info">
-                      <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/s/200/" alt="sample img" />
-                      </v-avatar>
-                      <div>
-                        <div class="name">Beverly Doyle</div>
-
-                        <div class="date">21 Jan 2021</div>
-                      </div>
-                    </div>
-                    <div class="description">
-                      The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                    </div>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/7/200/120" alt="sample img" /> </v-col>
-                  <v-col>
-                    <div class="recent-title">What Make A Don't Want You To Know</div>
-                    <div class="user-info">
-                      <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/d/200/" alt="sample img" />
-                      </v-avatar>
-                      <div>
-                        <div class="name">Beverly Doyle</div>
-
-                        <div class="date">21 Jan 2021</div>
-                      </div>
-                    </div>
-                    <div class="description">
-                      The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                    </div>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="3"> <img src="https://picsum.photos/seed/f/200/120" alt="sample img" /> </v-col>
-                  <v-col>
-                    <div class="recent-title">What Make A Don't Want You To Know</div>
-                    <div class="user-info">
-                      <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/r/200/" alt="sample img" />
-                      </v-avatar>
-                      <div>
-                        <div class="name">Beverly Doyle</div>
-
-                        <div class="date">21 Jan 2021</div>
-                      </div>
-                    </div>
-                    <div class="description">
-                      The changing of down comforters to cotton bedspreads always meant the squirrels had returned.
-                    </div>
-                  </v-col>
-                </v-row>
+                      <div class="description">{{ blog.content.substring(0, 120) }}...</div>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-tab-item>
             </v-tabs-items>
 
-            <v-pagination class="mt-10" v-model="page" length="6" color="black"></v-pagination>
+            <v-pagination class="mt-10" v-model="page" :length="util.getPageLength(blogs)" color="black"></v-pagination>
           </v-container>
         </div>
       </div>
@@ -203,17 +84,64 @@
 </template>
 
 <script>
+import axios from 'axios';
+import util from '../util';
 import HeaderNav from '../components/HeaderNav.vue';
 
 export default {
   data() {
     return {
+      util,
       category: '',
       page: 1,
+      token: '',
+      blogs: [],
     };
   },
   components: {
     HeaderNav,
+  },
+  async created() {
+    await axios
+      .post('http://localhost:8080/login', {
+        username: 'chenxi666',
+        passwd: '$2a$10$20xO1elb7k5Cb2hZ5M5rluKKnrYARDSdOni04U30EeROKjm4oj00a',
+      })
+      .then((response) => {
+        this.token = response.data.data.Token;
+      });
+    await axios
+      .post(
+        'http://localhost:8080/admin/article/list',
+        {
+          isAllMyselfArticles: true,
+          article: {
+            state: 1,
+          },
+        },
+        {
+          headers: {
+            token: this.token,
+          },
+        }
+      )
+      .then((response) => {
+        for (let i = 0; i < response.data.data.ArticleDetailList.length; i += 1) {
+          this.blogs.push({
+            title: response.data.data.ArticleDetailList[i].Title,
+            tags: response.data.data.ArticleDetailList[i].Tags,
+            content: response.data.data.ArticleDetailList[i].Content,
+            viewNum: response.data.data.ArticleDetailList[i].ViewNum,
+            cmtNum: response.data.data.ArticleDetailList[i].ViewNum,
+            author: response.data.data.ArticleDetailList[i].Author,
+            sn: response.data.data.ArticleDetailList[i].Sn,
+            uid: response.data.data.ArticleDetailList[i].Uid,
+            state: response.data.data.ArticleDetailList[i].State,
+            cover: response.data.data.ArticleDetailList[i].Cover,
+            likes: response.data.data.ArticleDetailList[i].ZanNum,
+          });
+        }
+      });
   },
   methods: {},
 };
