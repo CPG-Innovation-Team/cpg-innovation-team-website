@@ -21,13 +21,13 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
-      <router-link v-if="!login" class="login-btn mr-2" to="/login">
+      <router-link v-if="!username" class="login-btn mr-2" to="/login">
         <v-btn outlined color="white"> {{ $t('navbar.login') }} </v-btn>
       </router-link>
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div v-if="!login" class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="!username" class="language-setting" v-bind="attrs" v-on="on">
             <country-flag class="flag" :country="flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
@@ -56,7 +56,7 @@
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="username" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36">
               <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
             </v-avatar>
@@ -177,7 +177,7 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    login: true,
+    username: '',
     lang: '中文',
     flag: 'cn',
     drawer: false,
