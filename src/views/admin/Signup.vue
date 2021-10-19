@@ -35,13 +35,15 @@
           Already have an account? <router-link to="/login">Login</router-link>
         </p>
 
-        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%">Signup</v-btn>
+        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="register">Signup</v-btn>
       </v-form>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -61,6 +63,20 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.$router.push('/');
+      }
+    },
+    async register() {
+      if (this.password === this.confirmedPwd) {
+        await axios
+          .post('http://localhost:8080/register', {
+            username: this.username,
+            email: this.email,
+            passwd: this.password,
+          })
+          .then((response) => {
+            console.log(response);
+            // this.token = response.data.data.Token;
+          });
       }
     },
   },
