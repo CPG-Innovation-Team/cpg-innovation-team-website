@@ -7,7 +7,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>Mike.D</v-list-item-title>
+          <v-list-item-title>{{ username }}</v-list-item-title>
           <v-list-item-subtitle>Admin 1</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -39,7 +41,34 @@ export default {
         { title: 'Activity', icon: 'mdi-chart-areaspline-variant', link: '/admin/activities' },
         { title: 'Profile', icon: 'mdi-account-circle', link: '/admin/profile' },
       ],
+      username: '',
+      token: '',
     };
+  },
+  async created() {
+    await axios
+      .post('http://localhost:8080/login', {
+        username: 'chenxi666',
+        passwd: '$2a$10$20xO1elb7k5Cb2hZ5M5rluKKnrYARDSdOni04U30EeROKjm4oj00a',
+      })
+      .then((response) => {
+        this.token = response.data.data.Token;
+      });
+    await axios
+      .post(
+        'http://localhost:8080/admin/user/query/info',
+        {
+          username: 'chenxi666',
+        },
+        {
+          headers: {
+            token: this.token,
+          },
+        }
+      )
+      .then((response) => {
+        this.username = response.data.data.UserName;
+      });
   },
 };
 </script>
