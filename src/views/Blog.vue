@@ -193,8 +193,8 @@
                 </v-row>
               </v-tab-item>
             </v-tabs-items>
-
-            <v-pagination class="mt-10" v-model="page" length="6" color="black"></v-pagination>
+            <!-- eslint-disable-next-line -->
+            <v-pagination class="mt-10" v-model="page" length=6 color="black"></v-pagination>
           </v-container>
         </div>
       </div>
