@@ -24,38 +24,47 @@
               {{ blog.content }}
             </div>
           </div>
-          <v-card class="ma-4">
-            <v-subheader> Comments </v-subheader>
+          <v-divider></v-divider>
+          <div class="blog-comment">
+            <v-card class="ma-4" min-width="800">
+              <v-subheader> Comments </v-subheader>
 
-            <v-list two-line>
-              <template v-for="n in comments.length">
-                <v-list-item :key="n">
-                  <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
+              <v-list two-line>
+                <template v-for="n in comments.length">
+                  <v-list-item :key="n">
+                    <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
 
-                  <v-list-item-content>
-                    <v-list-item-title>{{ comments[n - 1].createdAt }}</v-list-item-title>
+                    <v-list-item-content>
+                      <v-list-item-title>{{ comments[n - 1].createdAt }}</v-list-item-title>
 
-                    <v-list-item-subtitle>
-                      {{ comments[n - 1].content }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
+                      <v-list-item-subtitle>
+                        {{ comments[n - 1].content }}
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action :key="n">
+                      <v-icon v-if="!isClicked" color="grey lighten-1" @click="likeComment(n)">
+                        mdi-heart-outline
+                      </v-icon>
+                      <v-icon v-else color="yellow darken-3"> mdi-heart </v-icon>
+                    </v-list-item-action>
+                  </v-list-item>
 
-                <v-divider v-if="n !== 6" :key="`divider-${n}`" inset></v-divider>
-              </template>
-            </v-list>
+                  <v-divider v-if="n !== 10" :key="`divider-${n}`" inset></v-divider>
+                </template>
+              </v-list>
 
-            <v-textarea
-              class="ma-4"
-              v-model="comment"
-              required
-              hide-details
-              dense
-              outlined
-              label="comment"
-            ></v-textarea>
-            <v-btn class="mb-4 ml-4" color="blue darken-1" text> Send </v-btn>
-          </v-card></v-col
+              <v-textarea
+                class="ma-4"
+                v-model="comment"
+                required
+                hide-details
+                dense
+                outlined
+                label="comment"
+              ></v-textarea>
+              <v-btn class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)"> Send </v-btn>
+            </v-card>
+          </div></v-col
         >
       </v-row>
     </v-main>
@@ -74,20 +83,16 @@ export default {
       sn: '',
       comments: [],
       comment: '',
+      isClicked: false,
     };
   },
   components: {
     HeaderNav,
   },
   async created() {
-    await axios
-      .post('http://localhost:8080/login', {
-        username: 'chenxi666',
-        passwd: '$2a$10$20xO1elb7k5Cb2hZ5M5rluKKnrYARDSdOni04U30EeROKjm4oj00a',
-      })
-      .then((response) => {
-        this.token = response.data.data.Token;
-      });
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
       await axios
@@ -114,7 +119,31 @@ export default {
             createdAt: response.data.data.CreatedAt,
           };
         });
+      await this.getComments();
+    }
+  },
+  methods: {
+    async sendComment(comment) {
       await axios
+        .post(
+          'http://localhost:8080/comment/add',
+          {
+            sn: parseInt(this.sn, 10),
+            content: comment,
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => console.log(response));
+      this.comments = [];
+      await this.getComments();
+      this.comment = '';
+    },
+    getComments() {
+      axios
         .post(
           'http://localhost:8080/comment/list',
           {
@@ -128,18 +157,27 @@ export default {
         )
         .then((response) => {
           for (let i = 1; i <= Object.keys(response.data.data).length; i += 1) {
+            const date = new Date(response.data.data[i].CreatedAt);
+            const formatOptions = {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            };
+            const dateString = date.toLocaleDateString('en-US', formatOptions);
             this.comments.push({
               cid: response.data.data[i].Cid,
               content: response.data.data[i].Content,
-              createdAt: response.data.data[i].CreatedAt,
+              createdAt: dateString.replace(',', '').replace('PM', 'p.m.').replace('AM', 'a.m.'),
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
             });
           }
         });
-    }
+    },
   },
-  methods: {},
 };
 </script>
 
@@ -178,11 +216,10 @@ export default {
 }
 
 .blog-container {
-  width: 600px;
   margin-top: 3%;
-  margin-left: 15%;
-  margin-right: 15%;
-  text-align: center;
+  margin-left: 20%;
+  margin-right: 20%;
+  text-align: left;
   word-wrap: break-word;
 }
 
@@ -191,5 +228,11 @@ export default {
   white-space: pre-line;
   line-height: 28px;
   margin-bottom: 80px;
+}
+
+.blog-comment {
+  display: flex;
+  justify-content: center;
+  margin-top: 3%;
 }
 </style>

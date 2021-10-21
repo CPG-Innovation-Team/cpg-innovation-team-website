@@ -102,14 +102,9 @@ export default {
     HeaderNav,
   },
   async created() {
-    await axios
-      .post('http://localhost:8080/login', {
-        username: 'chenxi666',
-        passwd: '$2a$10$20xO1elb7k5Cb2hZ5M5rluKKnrYARDSdOni04U30EeROKjm4oj00a',
-      })
-      .then((response) => {
-        this.token = response.data.data.Token;
-      });
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
     await axios
       .post(
         'http://localhost:8080/admin/article/list',
@@ -186,10 +181,9 @@ export default {
     padding: 40px 0;
     background: rgb(226, 226, 226);
     .popular-item {
-      max-width: 400px;
+      width: 200px;
       img {
         border-radius: 5px;
-        width: 100%;
       }
       .popular-title {
         font-size: 1rem;

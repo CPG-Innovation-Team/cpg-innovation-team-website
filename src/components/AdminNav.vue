@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
@@ -67,29 +65,12 @@ export default {
     };
   },
   async created() {
-    await axios
-      .post('http://localhost:8080/login', {
-        username: 'chenxi666',
-        passwd: '$2a$10$20xO1elb7k5Cb2hZ5M5rluKKnrYARDSdOni04U30EeROKjm4oj00a',
-      })
-      .then((response) => {
-        this.token = response.data.data.Token;
-      });
-    await axios
-      .post(
-        'http://localhost:8080/admin/user/query/info',
-        {
-          username: 'chenxi666',
-        },
-        {
-          headers: {
-            token: this.token,
-          },
-        }
-      )
-      .then((response) => {
-        this.username = response.data.data.UserName;
-      });
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    if (localStorage.username) {
+      this.username = localStorage.username;
+    }
   },
 };
 </script>

@@ -21,20 +21,20 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
-      <router-link v-if="!username" class="login-btn mr-2" to="/login">
+      <router-link v-if="!token" class="login-btn mr-2" to="/login">
         <v-btn outlined color="white"> {{ $t('navbar.login') }} </v-btn>
       </router-link>
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="token" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36">
               <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
             </v-avatar>
           </div>
         </template>
         <v-list dense>
-          <v-subheader>Mike. D</v-subheader>
+          <v-subheader>{{ username }}</v-subheader>
           <v-list-item-group color="primary">
             <router-link to="/admin/profile" style="text-decoration: none">
               <v-list-item>
@@ -143,7 +143,7 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    username: '',
+    token: '',
     lang: '中文',
     flag: 'cn',
     drawer: false,
@@ -154,10 +154,20 @@ export default {
     searchItems: [],
     jobs,
     projects,
+    login: false,
+    username: '',
   }),
   props: ['color'],
   components: {
     CountryFlag,
+  },
+  created() {
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    if (localStorage.username) {
+      this.username = localStorage.username;
+    }
   },
   watch: {
     group() {
