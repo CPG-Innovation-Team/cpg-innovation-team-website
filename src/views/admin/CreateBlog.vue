@@ -21,7 +21,6 @@
                   <span>Cover</span>
                 </v-col>
                 <v-col>
-                  <!-- <v-file-input label="Upload image" hide-details dense outlined></v-file-input> -->
                   <v-text-field v-model="cover" required hide-details dense outlined></v-text-field>
                 </v-col>
               </v-row>
@@ -71,20 +70,16 @@ export default {
       cover: '',
       content: '',
       tag: '',
+      token: '',
     };
   },
   components: {
     AdminNav,
   },
-  async created() {
-    await axios
-      .post('http://localhost:8080/login', {
-        username: 'chenxi666',
-        passwd: '$2a$10$20xO1elb7k5Cb2hZ5M5rluKKnrYARDSdOni04U30EeROKjm4oj00a',
-      })
-      .then((response) => {
-        this.token = response.data.data.Token;
-      });
+  created() {
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
   },
   methods: {
     submit() {
