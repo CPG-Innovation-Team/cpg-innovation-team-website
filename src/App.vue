@@ -13,10 +13,6 @@ export default {
   components: {
     Footer,
   },
-  data: () => ({
-    //
-  }),
+  data: () => ({}),
 };
 </script>
-
-<style lang="scss"></style>
