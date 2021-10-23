@@ -43,7 +43,6 @@
 
 <script>
 import axios from 'axios';
-// import bcrypt from 'bcryptjs';
 
 export default {
   data() {
@@ -64,16 +63,14 @@ export default {
       }
     },
     async login(username, password) {
-      // const salt = bcrypt.genSaltSync(10);
-      // console.log(bcrypt.hashSync(password, salt));
-      // console.log(bcrypt.compareSync(password, bcrypt.hashSync(password, salt)));
+      console.log(password);
       await axios
         .post('http://localhost:8080/login', {
           username,
-          // passwd: bcrypt.hashSync(password, salt),
           passwd: password,
         })
         .then((response) => {
+          console.log(response);
           if (response.data.message === 'OK') {
             localStorage.token = response.data.data.Token;
             localStorage.username = this.username;
