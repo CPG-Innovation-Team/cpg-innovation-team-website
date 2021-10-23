@@ -35,17 +35,20 @@
                     <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
 
                     <v-list-item-content>
-                      <v-list-item-title>{{ comments[n - 1].createdAt }}</v-list-item-title>
+                      <v-list-item-title>{{ comments[n - 1].uid }}</v-list-item-title>
 
                       <v-list-item-subtitle>
                         {{ comments[n - 1].content }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action :key="n">
-                      <v-icon v-if="!isClicked" color="grey lighten-1" @click="likeComment(n)">
+                      <v-list-item-subtitle>
+                        {{ comments[n - 1].createdAt }}
+                      </v-list-item-subtitle>
+                      <v-icon v-if="!comments[n - 1].likeIsClicked" color="grey lighten-1" @click="likeComment(n - 1)">
                         mdi-heart-outline
                       </v-icon>
-                      <v-icon v-else color="yellow darken-3"> mdi-heart </v-icon>
+                      <v-icon v-else color="yellow darken-3" @click="likeComment(n - 1)"> mdi-heart </v-icon>
                     </v-list-item-action>
                   </v-list-item>
 
@@ -83,7 +86,6 @@ export default {
       sn: '',
       comments: [],
       comment: '',
-      isClicked: false,
     };
   },
   components: {
@@ -166,16 +168,20 @@ export default {
               minute: '2-digit',
               hour12: true,
             };
-            const dateString = date.toLocaleDateString('en-US', formatOptions);
+            const dateString = date.toLocaleDateString('zh-Hans-CN', formatOptions);
             this.comments.push({
               cid: response.data.data[i].Cid,
               content: response.data.data[i].Content,
               createdAt: dateString.replace(',', '').replace('PM', 'p.m.').replace('AM', 'a.m.'),
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
+              likeIsClicked: false,
             });
           }
         });
+    },
+    likeComment(n) {
+      this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
     },
   },
 };
