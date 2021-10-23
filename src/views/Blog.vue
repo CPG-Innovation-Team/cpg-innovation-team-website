@@ -12,7 +12,7 @@
 
     <v-main class="pt-0">
       <div class="blogs-container">
-        <div class="popular-container">
+        <div v-if="!isExpired" class="popular-container">
           <h1 style="text-align: center">Most Popular</h1>
           <v-container>
             <v-row>
@@ -52,6 +52,8 @@
               <v-tab>Agriculture</v-tab>
             </v-tabs>
 
+            <div v-if="isExpired">Please log in to see the contents.</div>
+
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)">
                 <div v-for="blog in blogs" :key="blog.id">
@@ -75,9 +77,34 @@
               </v-tab-item>
             </v-tabs-items>
 
-            <v-pagination class="mt-10" v-model="page" :length="util.getPageLength(blogs)" color="black"></v-pagination>
+            <v-pagination
+              v-if="blogs.length !== 0"
+              class="mt-10"
+              v-model="page"
+              :length="util.getPageLength(blogs)"
+              color="black"
+            ></v-pagination>
           </v-container>
         </div>
+        <v-row justify="space-around">
+          <v-col cols="auto">
+            <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
+              <template>
+                <v-card>
+                  <v-card-text>
+                    <div class="text-h6 pa-6">Your login session has expired, please log in again.</div>
+                  </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <v-btn text @click="dialog = false">Close</v-btn>
+                    <router-link class="login-btn mr-2" to="/login">
+                      <v-btn text>Log in</v-btn>
+                    </router-link>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </v-col>
+        </v-row>
       </div>
     </v-main>
   </div>
@@ -96,6 +123,8 @@ export default {
       page: 1,
       token: '',
       blogs: [],
+      isExpired: false,
+      dialog: false,
     };
   },
   components: {
@@ -121,20 +150,26 @@ export default {
         }
       )
       .then((response) => {
-        for (let i = 0; i < response.data.data.ArticleDetailList.length; i += 1) {
-          this.blogs.push({
-            title: response.data.data.ArticleDetailList[i].Title,
-            tags: response.data.data.ArticleDetailList[i].Tags,
-            content: response.data.data.ArticleDetailList[i].Content,
-            viewNum: response.data.data.ArticleDetailList[i].ViewNum,
-            cmtNum: response.data.data.ArticleDetailList[i].ViewNum,
-            author: response.data.data.ArticleDetailList[i].Author,
-            sn: response.data.data.ArticleDetailList[i].Sn,
-            uid: response.data.data.ArticleDetailList[i].Uid,
-            state: response.data.data.ArticleDetailList[i].State,
-            cover: response.data.data.ArticleDetailList[i].Cover,
-            likes: response.data.data.ArticleDetailList[i].ZanNum,
-          });
+        console.log(response);
+        if (response.data.message === 'Token is expired.' || response.data.message === 'Invalid Token.') {
+          this.isExpired = true;
+          this.dialog = true;
+        } else {
+          for (let i = 0; i < response.data.data.ArticleDetailList.length; i += 1) {
+            this.blogs.push({
+              title: response.data.data.ArticleDetailList[i].Title,
+              tags: response.data.data.ArticleDetailList[i].Tags,
+              content: response.data.data.ArticleDetailList[i].Content,
+              viewNum: response.data.data.ArticleDetailList[i].ViewNum,
+              cmtNum: response.data.data.ArticleDetailList[i].ViewNum,
+              author: response.data.data.ArticleDetailList[i].Author,
+              sn: response.data.data.ArticleDetailList[i].Sn,
+              uid: response.data.data.ArticleDetailList[i].Uid,
+              state: response.data.data.ArticleDetailList[i].State,
+              cover: response.data.data.ArticleDetailList[i].Cover,
+              likes: response.data.data.ArticleDetailList[i].ZanNum,
+            });
+          }
         }
       });
   },
