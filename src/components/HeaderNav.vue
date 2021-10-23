@@ -56,7 +56,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="login = false">
+            <v-list-item @click="logout">
               <v-list-item-icon>
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import CountryFlag from 'vue-country-flag';
 
 const projects = require('../data/project');
@@ -220,6 +221,23 @@ export default {
     getID(searchItemTitle) {
       const arr = [...jobs, ...projects];
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
+    },
+    logout() {
+      axios
+        .post(
+          'http://localhost:8080/admin/logout',
+          {},
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.token = '';
+          localStorage.clear();
+        });
     },
   },
   computed: {
