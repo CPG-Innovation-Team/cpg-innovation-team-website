@@ -155,7 +155,7 @@ export default {
           this.isExpired = true;
           this.dialog = true;
         } else {
-          response.data.data.ArticleDetailList.array.forEach((blog) => {
+          response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,
               tags: blog.Tags,
