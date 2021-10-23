@@ -96,7 +96,6 @@ export default {
           })
           .then((response) => {
             console.log(response);
-            // this.token = response.data.data.Token;
           });
       }
     },

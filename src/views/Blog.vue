@@ -155,21 +155,21 @@ export default {
           this.isExpired = true;
           this.dialog = true;
         } else {
-          for (let i = 0; i < response.data.data.ArticleDetailList.length; i += 1) {
+          response.data.data.ArticleDetailList.array.forEach((blog) => {
             this.blogs.push({
-              title: response.data.data.ArticleDetailList[i].Title,
-              tags: response.data.data.ArticleDetailList[i].Tags,
-              content: response.data.data.ArticleDetailList[i].Content,
-              viewNum: response.data.data.ArticleDetailList[i].ViewNum,
-              cmtNum: response.data.data.ArticleDetailList[i].ViewNum,
-              author: response.data.data.ArticleDetailList[i].Author,
-              sn: response.data.data.ArticleDetailList[i].Sn,
-              uid: response.data.data.ArticleDetailList[i].Uid,
-              state: response.data.data.ArticleDetailList[i].State,
-              cover: response.data.data.ArticleDetailList[i].Cover,
-              likes: response.data.data.ArticleDetailList[i].ZanNum,
+              title: blog.Title,
+              tags: blog.Tags,
+              content: blog.Content,
+              viewNum: blog.ViewNum,
+              cmtNum: blog.ViewNum,
+              author: blog.Author,
+              sn: blog.Sn,
+              uid: blog.Uid,
+              state: blog.State,
+              cover: blog.Cover,
+              likes: blog.ZanNum,
             });
-          }
+          });
         }
       });
   },

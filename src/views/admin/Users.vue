@@ -181,9 +181,7 @@ export default {
         }
       )
       .then((response) => {
-        for (let i = 0; i < response.data.data.length; i += 1) {
-          this.users.push(response.data.data[i]);
-        }
+        response.data.data.forEach((user) => this.users.push(user));
       });
     this.getAllRoles();
     this.getAllPermissions();
@@ -232,11 +230,7 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response);
-            if (response.data.message === 'OK') this.successDialog = true;
-            else {
-              this.failureDialog = true;
-            }
+            this.setDialogStatus(response);
           });
       }
 
@@ -255,11 +249,7 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response);
-            if (response.data.message === 'OK') this.successDialog = true;
-            else {
-              this.failureDialog = true;
-            }
+            this.setDialogStatus(response);
           });
       }
     },
@@ -277,11 +267,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          if (response.data.message === 'OK') this.successDialog = true;
-          else {
-            this.failureDialog = true;
-          }
+          this.setDialogStatus(response);
         });
       this.getAllRoles();
     },
@@ -344,11 +330,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          if (response.data.message === 'OK') this.successDialog = true;
-          else {
-            this.failureDialog = true;
-          }
+          this.setDialogStatus(response);
         });
       this.getAllRoles();
     },
@@ -366,11 +348,7 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          if (response.data.message === 'OK') this.successDialog = true;
-          else {
-            this.failureDialog = true;
-          }
+          this.setDialogStatus(response);
         });
       this.getAllPermissions();
     },
@@ -387,9 +365,9 @@ export default {
         )
         .then((response) => {
           this.roles = [];
-          for (let i = 0; i < Object.keys(response.data.data).length; i += 1) {
-            this.roles.push(Object.keys(response.data.data)[i]);
-          }
+          Object.keys(response.data.data).forEach((role) => {
+            this.roles.push(role);
+          });
         });
     },
     async getAllPermissions() {
@@ -405,10 +383,16 @@ export default {
         )
         .then((response) => {
           this.permissions = [];
-          for (let i = 0; i < Object.keys(response.data.data).length; i += 1) {
-            this.permissions.push(Object.keys(response.data.data)[i]);
-          }
+          Object.keys(response.data.data).forEach((permission) => {
+            this.permissions.push(permission);
+          });
         });
+    },
+    setDialogStatus(response) {
+      if (response.data.message === 'OK') this.successDialog = true;
+      else {
+        this.failureDialog = true;
+      }
     },
   },
 };
