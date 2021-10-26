@@ -6,8 +6,15 @@
       </router-link>
 
       <v-form ref="form" v-model="valid" @submit.prevent="validate">
-        <label>Email</label>
-        <v-text-field v-model="email" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
+        <label>Username</label>
+        <v-text-field
+          v-model="username"
+          type="username"
+          :rules="[rules.required]"
+          required
+          dense
+          outlined
+        ></v-text-field>
 
         <label>Password</label>
         <v-text-field
@@ -26,18 +33,22 @@
           Don't have an account? <router-link to="/signup">Sign up</router-link>
         </p>
 
-        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%">Login</v-btn>
+        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="login(username, password)"
+          >Login</v-btn
+        >
       </v-form>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       valid: false,
-      email: '',
+      username: '',
       password: '',
       rules: {
         required: (v) => !!v || 'Required.',
@@ -50,6 +61,23 @@ export default {
       if (this.$refs.form.validate()) {
         this.$router.push('/');
       }
+    },
+    async login(username, password) {
+      console.log(password);
+      await axios
+        .post('http://localhost:8080/login', {
+          username,
+          passwd: password,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.message === 'OK') {
+            localStorage.token = response.data.data.Token;
+            localStorage.username = this.username;
+          } else {
+            console.log('incorrect password');
+          }
+        });
     },
   },
 };
