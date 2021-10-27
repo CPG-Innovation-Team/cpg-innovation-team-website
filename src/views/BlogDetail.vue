@@ -7,8 +7,8 @@
         <p class="title-cn">{{ blog.title }}</p>
         <p class="subtitle">Author: {{ blog.author }}</p>
         <div>
-          Likes: 4
-          <v-btn icon color="pink">
+          Likes: {{ likes }}
+          <v-btn icon color="pink" @click="likeArticle()">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
         </div>
@@ -82,6 +82,8 @@ export default {
   data() {
     return {
       token: '',
+      likes: 0,
+      currentLikes: 0,
       blog: [],
       sn: '',
       comments: [],
@@ -121,7 +123,8 @@ export default {
             createdAt: response.data.data.CreatedAt,
           };
         });
-      await this.getComments();
+      this.getComments();
+      this.getArticleLikes();
     }
   },
   methods: {
@@ -182,6 +185,65 @@ export default {
     },
     likeComment(n) {
       this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
+    },
+    likeArticle() {
+      axios
+        .post(
+          'http://localhost:8080/like',
+          {
+            sn: parseInt(this.sn, 10),
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then(async () => {
+          this.currentLikes = this.likes;
+          await this.getArticleLikes();
+          if (this.currentLikes === this.likes) {
+            axios
+              .post(
+                'http://localhost:8080/like/cancel',
+                {
+                  sn: parseInt(this.sn, 10),
+                },
+                {
+                  headers: {
+                    token: this.token,
+                  },
+                }
+              )
+              .then(() => {
+                this.getArticleLikes();
+              });
+          }
+        });
+    },
+    async getArticleLikes() {
+      await axios
+        .post(
+          'http://localhost:8080/admin/article/list',
+          {
+            isAllMyselfArticles: true,
+            article: {
+              state: 1,
+            },
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => {
+          response.data.data.ArticleDetailList.forEach((blog) => {
+            if (blog.Sn.toString() === this.sn) {
+              this.likes = blog.ZanNum;
+            }
+          });
+        });
     },
   },
 };
