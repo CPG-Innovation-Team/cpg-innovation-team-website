@@ -48,7 +48,8 @@
                       <v-icon v-if="!comments[n - 1].likeIsClicked" color="grey lighten-1" @click="likeComment(n - 1)">
                         mdi-heart-outline
                       </v-icon>
-                      <v-icon v-else color="yellow darken-3" @click="likeComment(n - 1)"> mdi-heart </v-icon>
+                      <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
+                      <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
                     </v-list-item-action>
                   </v-list-item>
 
@@ -185,6 +186,39 @@ export default {
     },
     likeComment(n) {
       this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
+      axios
+        .post(
+          'http://localhost:8080/like',
+          {
+            comment_id: this.comments[n].cid,
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then(() => {
+          this.comments[n].zanNum += 1;
+        });
+    },
+    unlikeComment(n) {
+      this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
+      axios
+        .post(
+          'http://localhost:8080/like/cancel',
+          {
+            comment_id: this.comments[n].cid,
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then(() => {
+          this.comments[n].zanNum -= 1;
+        });
     },
     likeArticle() {
       axios
