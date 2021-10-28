@@ -16,7 +16,7 @@ import Blogs from './views/admin/Blogs.vue';
 import Users from './views/admin/Users.vue';
 import Activities from './views/admin/Activities.vue';
 import CreateBlog from './views/admin/CreateBlog.vue';
-import ModifyBlog from './views/admin/ModifyBlog.vue';
+import ApproveBlog from './views/admin/ApproveBlog.vue';
 import Profile from './views/admin/Profile.vue';
 
 Vue.use(VueRouter);
@@ -93,9 +93,9 @@ const routes = [
     component: CreateBlog,
   },
   {
-    path: '/admin/blogs/:id',
-    name: 'ModifyBlog',
-    component: ModifyBlog,
+    path: '/admin/approve',
+    name: 'ApprovalBlog',
+    component: ApproveBlog,
   },
   {
     path: '/admin/users',

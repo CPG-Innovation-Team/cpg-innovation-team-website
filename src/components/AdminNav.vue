@@ -21,7 +21,7 @@
 
       <v-list-group prepend-icon="mdi-post">
         <template v-slot:activator>
-          <v-list-item-title>Blogs</v-list-item-title>
+          <v-list-item-title>Approve</v-list-item-title>
         </template>
 
         <v-list-item link>
@@ -34,7 +34,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item link :to="`/admin/approve`">
           <v-list-item-icon>
             <v-icon></v-icon>
           </v-list-item-icon>
