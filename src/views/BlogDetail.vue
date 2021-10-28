@@ -32,27 +32,73 @@
               <v-list two-line>
                 <template v-for="n in comments.length">
                   <v-list-item :key="n">
-                    <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
+                    <v-col>
+                      <v-row>
+                        <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
 
-                    <v-list-item-content>
-                      <v-list-item-title>{{ comments[n - 1].uid }}</v-list-item-title>
+                        <v-list-item-content>
+                          <v-list-item-title>{{ comments[n - 1].uid }}</v-list-item-title>
 
-                      <v-list-item-subtitle>
-                        {{ comments[n - 1].content }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action :key="n">
-                      <v-list-item-subtitle>
-                        {{ comments[n - 1].createdAt }}
-                      </v-list-item-subtitle>
-                      <v-icon v-if="!comments[n - 1].likeIsClicked" color="grey lighten-1" @click="likeComment(n - 1)">
-                        mdi-heart-outline
-                      </v-icon>
-                      <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
-                      <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
-                    </v-list-item-action>
+                          <v-list-item-subtitle>
+                            {{ comments[n - 1].content }}
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-list-item-action :key="n">
+                          <v-list-item-subtitle>
+                            {{ comments[n - 1].createdAt }}
+                          </v-list-item-subtitle>
+                          <v-col class="text-right">
+                            <v-icon> mdi-delete </v-icon>
+                            <v-icon
+                              v-if="!comments[n - 1].likeIsClicked"
+                              color="grey lighten-1"
+                              @click="likeComment(n - 1)"
+                            >
+                              mdi-heart-outline
+                            </v-icon>
+                            <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
+                            <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
+                          </v-col>
+                          <v-btn color="primary" @click="replyIsClicked(n)">Reply</v-btn>
+                        </v-list-item-action>
+                      </v-row>
+                      <v-subheader v-if="comments[n - 1].replies.length > 0"> Replies </v-subheader>
+                      <div v-show="comment_index === n" :key="n">
+                        <v-textarea
+                          class="ma-4"
+                          v-model="reply"
+                          required
+                          hide-details
+                          dense
+                          outlined
+                          label="reply"
+                        ></v-textarea>
+                        <v-btn
+                          class="mb-4 ml-4"
+                          color="blue darken-1"
+                          text
+                          @click="sendReply(comments[n - 1].cid, reply)"
+                        >
+                          Send
+                        </v-btn>
+                      </div>
+                      <v-row>
+                        <v-list>
+                          <template v-for="i in comments[n - 1].replies.length">
+                            <v-list-item :key="i">
+                              <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
+                              <v-list-item-content>
+                                <v-list-item-title>{{ comments[n - 1].replies[i - 1].UID }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                  {{ comments[n - 1].replies[i - 1].Content }}
+                                </v-list-item-subtitle>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-list>
+                      </v-row>
+                    </v-col>
                   </v-list-item>
-
                   <v-divider v-if="n !== 10" :key="`divider-${n}`" inset></v-divider>
                 </template>
               </v-list>
@@ -87,8 +133,10 @@ export default {
       currentLikes: 0,
       blog: [],
       sn: '',
+      comment_index: -1,
       comments: [],
       comment: '',
+      reply: '',
     };
   },
   components: {
@@ -148,6 +196,28 @@ export default {
       await this.getComments();
       this.comment = '';
     },
+    async sendReply(cid, reply) {
+      await axios
+        .post(
+          'http://localhost:8080/comment/reply',
+          {
+            commentId: cid,
+            content: reply,
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.comments = [];
+          this.getComments();
+          this.reply = '';
+          this.comment_index = -1;
+        });
+    },
     getComments() {
       axios
         .post(
@@ -180,6 +250,7 @@ export default {
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
               likeIsClicked: false,
+              replies: response.data.data[i].ReplyList,
             });
           }
         });
@@ -278,6 +349,9 @@ export default {
             }
           });
         });
+    },
+    replyIsClicked(n) {
+      this.comment_index = n;
     },
   },
 };
