@@ -8,6 +8,7 @@ import RecruitmentInfo from './views/RecruitmentInfo.vue';
 import RecruitmentDetail from './views/RecruitmentDetail.vue';
 import SearchResults from './views/SearchResults.vue';
 import Blog from './views/Blog.vue';
+import BlogDetail from './views/BlogDetail.vue';
 import Login from './views/admin/Login.vue';
 import Signup from './views/admin/Signup.vue';
 import Dashboard from './views/admin/Dashboard.vue';
@@ -60,6 +61,11 @@ const routes = [
     path: '/blog',
     name: 'Blog',
     component: Blog,
+  },
+  {
+    path: '/blogDetail',
+    name: 'BlogDetail',
+    component: BlogDetail,
   },
   {
     path: '/login',
@@ -125,7 +131,7 @@ const router = new VueRouter({
 // handle navigation duplication for router push
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(() => {});
+  return originalPush.call(this, location);
 };
 
 export default router;

@@ -60,7 +60,17 @@ export default {
         { title: 'Users', icon: 'mdi-account-multiple', link: '/admin/users' },
         { title: 'Activity', icon: 'mdi-chart-areaspline-variant', link: '/admin/activities' },
       ],
+      username: '',
+      token: '',
     };
+  },
+  async created() {
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    if (localStorage.username) {
+      this.username = localStorage.username;
+    }
   },
 };
 </script>

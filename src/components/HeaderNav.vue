@@ -3,8 +3,6 @@
     <v-app-bar class="nav-container" app flat hide-on-scroll>
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
-      <!-- <v-spacer class="hidden-sm-and-down"></v-spacer> -->
-
       <router-link to="/">
         <img v-if="!color" class="ml-8" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
         <img v-else class="ml-8" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
@@ -21,20 +19,20 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
 
-      <router-link v-if="!login" class="login-btn mr-2" to="/login">
+      <router-link v-if="!token" class="login-btn mr-2" to="/login">
         <v-btn outlined color="white"> {{ $t('navbar.login') }} </v-btn>
       </router-link>
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
-          <div v-if="login" class="language-setting" v-bind="attrs" v-on="on">
+          <div v-if="token" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36">
               <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
             </v-avatar>
           </div>
         </template>
         <v-list dense>
-          <v-subheader>Mike. D</v-subheader>
+          <v-subheader>{{ username }}</v-subheader>
           <v-list-item-group color="primary">
             <router-link to="/admin/profile" style="text-decoration: none">
               <v-list-item>
@@ -56,7 +54,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item @click="login = false">
+            <v-list-item @click="logout">
               <v-list-item-icon>
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
@@ -96,28 +94,6 @@
           </v-list-item-group>
         </v-list>
       </v-menu>
-
-      <!-- Search component
-      <v-autocomplete
-        class="header-search"
-        :search-input.sync="searchTemp"
-        :items="searchItems"
-        dense
-        hide-details
-        solo
-        v-bind:placeholder="$t('search')"
-        :hide-no-data="true"
-        @keyup.enter="search"
-      >
-        <template v-slot:item="{ item }">
-          <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
-            {{ item }}
-          </router-link>
-        </template>
-      </v-autocomplete>
-      <v-btn icon class="mr-1" @click="search">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn> -->
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -135,6 +111,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import CountryFlag from 'vue-country-flag';
 
 const projects = require('../data/project');
@@ -143,7 +120,7 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    login: true,
+    token: '',
     lang: '中文',
     flag: 'cn',
     drawer: false,
@@ -154,10 +131,20 @@ export default {
     searchItems: [],
     jobs,
     projects,
+    login: false,
+    username: '',
   }),
   props: ['color'],
   components: {
     CountryFlag,
+  },
+  created() {
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    if (localStorage.username) {
+      this.username = localStorage.username;
+    }
   },
   watch: {
     group() {
@@ -210,6 +197,23 @@ export default {
     getID(searchItemTitle) {
       const arr = [...jobs, ...projects];
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
+    },
+    logout() {
+      axios
+        .post(
+          'http://localhost:8080/admin/logout',
+          {},
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.token = '';
+          localStorage.clear();
+        });
     },
   },
   computed: {
