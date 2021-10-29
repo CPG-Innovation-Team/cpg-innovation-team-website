@@ -8,8 +8,8 @@
             <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="sample img" />
           </v-avatar>
           <div>
-            <div class="name">Mike.D</div>
-            <div class="level d-flex">Super Manager<v-icon class="ml-2">mdi-information</v-icon></div>
+            <div class="name">{{ username }}</div>
+            <div class="level d-flex">{{ showRole() }}<v-icon class="ml-2">mdi-information</v-icon></div>
           </div>
         </div>
 
@@ -56,20 +56,147 @@
           <v-card-title>Security</v-card-title>
           <div>...</div>
         </div>
+
+        <v-card>
+          <v-card-title> Profile </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="uid" disabled label="uid"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="username" label="username"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="email" label="email"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="isRoot" label="root level"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="nickname" label="nickname"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="state" label="state"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="gender" label="gender"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="introduction" label="introduction"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field v-model="avatar" label="avatar"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" sm="6" md="6"
+                >Enter your password:<v-text-field
+                  v-model="password"
+                  label="password"
+                  required
+                  :rules="[rules.required]"
+                ></v-text-field></v-col
+            ></v-row>
+            <v-card-actions>
+              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
       </v-container>
     </v-main>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      username: '',
+      email: '',
+      isRoot: '',
+      uid: '',
+      nickname: '',
+      state: '',
+      gender: '',
+      introduction: '',
+      avatar: '',
+      token: '',
+      password: '',
+      rules: {
+        required: (v) => !!v || 'Required.',
+      },
+    };
   },
   components: {
     AdminNav,
+  },
+  async created() {
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    if (localStorage.username) {
+      this.username = localStorage.username;
+    }
+    await axios
+      .post(
+        'http://localhost:8080/admin/user/query/info',
+        {
+          username: this.username,
+        },
+        {
+          headers: {
+            token: this.token,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        this.username = response.data.data.UserName;
+        this.email = response.data.data.Email;
+        this.isRoot = response.data.data.IsRoot;
+        this.uid = response.data.data.UID;
+        this.nickname = response.data.data.Nickname;
+        this.state = response.data.data.State;
+        this.gender = response.data.data.Gender;
+        this.introduction = response.data.data.Introduce;
+        this.avatar = response.data.data.Avatar;
+      });
+  },
+  methods: {
+    save() {
+      axios
+        .post(
+          'http://localhost:8080/admin/user/update/info',
+          {
+            uid: this.uid,
+            username: this.username,
+            email: this.email,
+            passCode: '123456',
+            passwd: this.password,
+            nickname: this.nickname,
+            avatar: this.avatar,
+            gender: this.gender,
+            introduce: this.introduction,
+            state: this.state,
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => console.log(response));
+    },
+    showRole() {
+      if (this.isRoot === 1) {
+        return 'Super Manager';
+      }
+      return 'User';
+    },
   },
 };
 </script>

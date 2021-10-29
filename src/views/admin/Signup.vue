@@ -6,7 +6,24 @@
       </router-link>
       <v-form ref="form" v-model="valid" @submit.prevent="validate">
         <label>Username</label>
-        <v-text-field v-model="username" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
+        <v-text-field
+          v-model="username"
+          type="username"
+          :rules="[rules.required]"
+          required
+          dense
+          outlined
+        ></v-text-field>
+
+        <label>Nickname</label>
+        <v-text-field
+          v-model="nickname"
+          type="nickname"
+          :rules="[rules.required]"
+          required
+          dense
+          outlined
+        ></v-text-field>
 
         <label>Email</label>
         <v-text-field v-model="email" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
@@ -35,18 +52,22 @@
           Already have an account? <router-link to="/login">Login</router-link>
         </p>
 
-        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%">Signup</v-btn>
+        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="register">Signup</v-btn>
       </v-form>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       valid: false,
       username: '',
+      nickname: '',
+      passCode: '123456',
       email: '',
       password: '',
       confirmedPwd: '',
@@ -61,6 +82,21 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.$router.push('/');
+      }
+    },
+    async register() {
+      if (this.password === this.confirmedPwd) {
+        await axios
+          .post('http://localhost:8080/register', {
+            username: this.username,
+            nickname: this.nickname,
+            email: this.email,
+            passCode: this.passCode,
+            passwd: this.password,
+          })
+          .then((response) => {
+            console.log(response);
+          });
       }
     },
   },
