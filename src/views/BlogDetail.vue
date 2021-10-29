@@ -331,7 +331,6 @@ export default {
         .post(
           'http://localhost:8080/admin/article/list',
           {
-            isAllMyselfArticles: true,
             article: {
               state: 1,
             },
