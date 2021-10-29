@@ -16,21 +16,27 @@
           <h1 style="text-align: center">Most Popular</h1>
           <v-container>
             <v-row>
-              <div v-for="blog in blogs" :key="blog.id">
+              <div v-for="(blog, index) in blogs" :key="index">
                 <v-col>
                   <div class="popular-item">
-                    <img src="https://picsum.photos/seed/1/200/120" alt="sample img" />
+                    <img
+                      :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                      alt="sample img"
+                    />
                     <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn } }">
                       <div class="popular-title">{{ blog.title }}</div>
                     </router-link>
                     <div class="user-info">
                       <v-avatar class="avatar">
-                        <img src="https://picsum.photos/seed/q/200/" alt="sample img" />
+                        <img
+                          :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                          alt="sample img"
+                        />
                       </v-avatar>
                       <div>
                         <div class="name">{{ blog.author }}</div>
 
-                        <div class="date">21 Jan 2021</div>
+                        <div class="date">Likes: {{ blog.likes }}</div>
                       </div>
                     </div>
                     <div class="description">{{ blog.content.substring(0, 30) }}...</div>
@@ -56,18 +62,26 @@
 
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)">
-                <div v-for="blog in blogs" :key="blog.id">
+                <div v-for="(blog, index) in blogs" :key="index">
                   <v-row>
-                    <v-col cols="3"> <img src="https://picsum.photos/seed/5/200/120" alt="sample img" /> </v-col>
+                    <v-col cols="3">
+                      <img
+                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                        alt="sample img"
+                      />
+                    </v-col>
                     <v-col>
                       <div class="recent-title">{{ blog.title }}</div>
                       <div class="user-info">
                         <v-avatar class="avatar">
-                          <img src="https://picsum.photos/seed/a/200/" alt="sample img" />
+                          <img
+                            :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                            alt="sample img"
+                          />
                         </v-avatar>
                         <div>
                           <div class="name">{{ blog.author }}</div>
-                          <div class="date">21 Jan 2021</div>
+                          <div class="date">Likes: {{ blog.likes }}</div>
                         </div>
                       </div>
                       <div class="description">{{ blog.content.substring(0, 120) }}...</div>
@@ -138,7 +152,6 @@ export default {
       .post(
         'http://localhost:8080/admin/article/list',
         {
-          isAllMyselfArticles: true,
           article: {
             state: 1,
           },
