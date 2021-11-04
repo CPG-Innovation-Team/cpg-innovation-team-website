@@ -48,7 +48,6 @@
                             {{ comments[n - 1].createdAt }}
                           </v-list-item-subtitle>
                           <v-col class="text-right">
-                            <v-icon> mdi-delete </v-icon>
                             <v-icon
                               v-if="!comments[n - 1].likeIsClicked"
                               color="grey lighten-1"
