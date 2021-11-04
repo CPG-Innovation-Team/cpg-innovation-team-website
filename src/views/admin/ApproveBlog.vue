@@ -95,10 +95,6 @@ export default {
         },
         { text: 'Tags', value: 'tags' },
         { text: 'Content', value: 'content' },
-        { text: 'View num', value: 'viewNum' },
-        { text: 'Comment num', value: 'cmtNum' },
-        { text: 'Likes num', value: 'likes' },
-        { text: 'State', value: 'state' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       approveDialog: false,
@@ -113,10 +109,10 @@ export default {
     if (localStorage.token) {
       this.token = localStorage.token;
     }
-    this.getArticleList();
+    this.getBlogList();
   },
   methods: {
-    async getArticleList() {
+    async getBlogList() {
       await axios
         .post(
           'http://localhost:8080/admin/article/list',
@@ -137,14 +133,9 @@ export default {
               title: blog.Title,
               tags: blog.Tags,
               content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
               author: blog.Author,
-              sn: blog.Sn,
               uid: blog.Uid,
-              state: blog.State,
               cover: blog.Cover,
-              likes: blog.ZanNum,
             });
           });
         });
