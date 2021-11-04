@@ -3,8 +3,6 @@
     <v-app-bar class="nav-container" app flat hide-on-scroll>
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
-      <!-- <v-spacer class="hidden-sm-and-down"></v-spacer> -->
-
       <router-link to="/">
         <img v-if="!color" class="ml-8" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
         <img v-else class="ml-8" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
@@ -96,28 +94,6 @@
           </v-list-item-group>
         </v-list>
       </v-menu>
-
-      <!-- Search component
-      <v-autocomplete
-        class="header-search"
-        :search-input.sync="searchTemp"
-        :items="searchItems"
-        dense
-        hide-details
-        solo
-        v-bind:placeholder="$t('search')"
-        :hide-no-data="true"
-        @keyup.enter="search"
-      >
-        <template v-slot:item="{ item }">
-          <router-link class="redirect-link" :to="getRouterLink(item) + getID(item)">
-            {{ item }}
-          </router-link>
-        </template>
-      </v-autocomplete>
-      <v-btn icon class="mr-1" @click="search">
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn> -->
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>

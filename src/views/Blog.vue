@@ -193,14 +193,16 @@ export default {
 <style lang="scss" scoped>
 .header-container {
   position: relative;
-  height: 400px;
+  min-height: 400px;
+  background-color: #e2e2e2;
+  text-align: center;
   .header-text {
     color: white;
     position: absolute;
     width: 600px;
     left: 50%;
     margin-left: -300px;
-    top: 50%;
+    top: 200px;
     margin-top: -80px;
     text-align: center;
     .title-en {
@@ -219,8 +221,7 @@ export default {
   }
   .nav-img {
     width: 100%;
-    height: 400px;
-    opacity: 2;
+    min-height: 400px;
   }
 }
 

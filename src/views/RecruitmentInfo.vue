@@ -109,28 +109,11 @@ export default {
       // navigates to the first page when user filters the results
       if (this.pageNumber !== 1) this.handlePageChange(1);
       return arr.filter((job) => {
-        if (positionVal !== '全部职位' && cityVal !== '全部城市' && typeVal !== '全部类型') {
-          return job.position === positionVal && job.city === cityVal && job.type === typeVal;
-        }
-        if (positionVal !== '全部职位' && cityVal !== '全部城市') {
-          return job.position === positionVal && job.city === cityVal;
-        }
-        if (positionVal !== '全部职位' && typeVal !== '全部类型') {
-          return job.position === positionVal && job.type === typeVal;
-        }
-        if (cityVal !== '全部城市' && typeVal !== '全部类型') {
-          return job.city === cityVal && job.type === typeVal;
-        }
-        if (typeVal !== '全部类型') {
-          return job.type === typeVal;
-        }
-        if (positionVal !== '全部职位') {
-          return job.position === positionVal;
-        }
-        if (cityVal !== '全部城市') {
-          return job.city === cityVal;
-        }
-        return arr;
+        return (
+          (positionVal === '全部职位' ? true : job.position === positionVal) &&
+          (cityVal === '全部城市' ? true : job.city === cityVal) &&
+          (typeVal === '全部类型' ? true : job.type === typeVal)
+        );
       });
     },
     handlePageChange(value) {
