@@ -1,4 +1,7 @@
 # 正大创新团队官方网站前端项目
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CPG-Innovation-Team_cpg-innovation-team-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CPG-Innovation-Team_cpg-innovation-team-website)
+[![CircleCI](https://circleci.com/gh/CPG-Innovation-Team/cpg-innovation-team-website/tree/master.svg?style=svg)](https://circleci.com/gh/CPG-Innovation-Team/cpg-innovation-team-website/tree/master)
+[![codecov](https://codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website/branch/master/graph/badge.svg?token=CA7DJRBY7X)](https://codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
 
 ## 系统依赖
 ### 需要安装 [Node.js](https://nodejs.org)
@@ -70,3 +73,8 @@
 └── tests
     └── unit    单元测试目录
 ```
+
+## 集成工具
+- 自动化构建部署 [CircleCI](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website)
+- 代码质量静态扫描 [SonarCloud](https://sonarcloud.io/project/overview?id=CPG-Innovation-Team_cpg-innovation-team-website)
+- 单元测试覆盖率报告 [Codecov](https://app.codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
