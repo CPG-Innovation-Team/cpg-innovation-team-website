@@ -154,16 +154,18 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response);
-        this.username = response.data.data.UserName;
-        this.email = response.data.data.Email;
-        this.isRoot = response.data.data.IsRoot;
-        this.uid = response.data.data.UID;
-        this.nickname = response.data.data.Nickname;
-        this.state = response.data.data.State;
-        this.gender = response.data.data.Gender;
-        this.introduction = response.data.data.Introduce;
-        this.avatar = response.data.data.Avatar;
+        if (response.data.data) {
+          console.log(response);
+          this.username = response.data.data.UserName;
+          this.email = response.data.data.Email;
+          this.isRoot = response.data.data.IsRoot;
+          this.uid = response.data.data.UID;
+          this.nickname = response.data.data.Nickname;
+          this.state = response.data.data.State;
+          this.gender = response.data.data.Gender;
+          this.introduction = response.data.data.Introduce;
+          this.avatar = response.data.data.Avatar;
+        }
       });
   },
   methods: {
