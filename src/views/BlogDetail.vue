@@ -111,7 +111,9 @@
                 outlined
                 label="comment"
               ></v-textarea>
-              <v-btn class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)"> Send </v-btn>
+              <v-btn id="sendComment" class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)">
+                Send
+              </v-btn>
             </v-card>
           </div></v-col
         >
