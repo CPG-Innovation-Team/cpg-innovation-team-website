@@ -8,13 +8,14 @@
             <v-toolbar-title>All Active Blogs</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-text-field
-              v-model="search"
+              v-model="searchText"
               placeholder="Search"
               append-icon="mdi-magnify"
               required
               dense
               hide-details
               outlined
+              @keyup.enter="search(searchText)"
             ></v-text-field>
             <v-dialog v-model="deleteDialog" max-width="500px">
               <v-card>
@@ -37,7 +38,7 @@
                     <v-text-field v-model="cover" required hide-details dense outlined label="cover"></v-text-field>
                   </v-row>
                   <v-row class="ma-8">
-                    <v-text-field v-model="tags" required hide-details dense outlined label="tags"></v-text-field>
+                    <v-select :items="tagList" v-model="tags" clearable outlined label="tags"></v-select>
                   </v-row>
                   <v-row class="ma-8">
                     <v-textarea
@@ -103,7 +104,7 @@ export default {
     deleteDialog: false,
     updateDialog: false,
     editArticle: '',
-    search: '',
+    searchText: '',
     headers: [
       {
         text: 'Title',
@@ -124,6 +125,7 @@ export default {
     content: '',
     cover: '',
     tags: '',
+    tagList: ['All', 'Technology', 'Agriculture'],
   }),
   async created() {
     if (localStorage.token) {
@@ -133,6 +135,18 @@ export default {
     this.getDeletedArticleList();
   },
   methods: {
+    search(searchText) {
+      if (searchText === '') {
+        this.getArticleList();
+        this.getDeletedArticleList();
+      }
+      this.blogs = this.blogs.filter((blog) => {
+        return blog.title.includes(searchText);
+      });
+      this.deletedBlogs = this.deletedBlogs.filter((blog) => {
+        return blog.title.includes(searchText);
+      });
+    },
     close() {
       this.deleteDialog = false;
       this.updateDialog = false;
