@@ -53,7 +53,7 @@
 
             <v-tabs class="mb-5" v-model="category" background-color="transparent" color="black">
               <v-tabs-slider></v-tabs-slider>
-              <v-tab v-for="i in categories.length" :key="i" :href="`#tab-${i}`" @click="getCategoryBlogs(i - 1)">{{
+              <v-tab v-for="i in categories.length" :key="i" @click="getCategoryBlogs(i - 1)">{{
                 categories[i - 1]
               }}</v-tab>
             </v-tabs>
@@ -61,12 +61,7 @@
             <div v-if="isExpired">Please log in to see the contents.</div>
 
             <v-tabs-items v-model="category">
-              <v-tab-item
-                style="background: rgb(248, 247, 247)"
-                v-for="i in categories.length"
-                :key="i"
-                :value="`tab-${i}`"
-              >
+              <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
                 <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
                   <v-row>
                     <v-col cols="3">
