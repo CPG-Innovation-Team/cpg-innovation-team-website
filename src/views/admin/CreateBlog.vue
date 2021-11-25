@@ -30,7 +30,7 @@
                   <label>Tag</label>
                 </v-col>
                 <v-col>
-                  <v-text-field v-model="tag" required hide-details dense outlined></v-text-field>
+                  <v-select :items="tags" v-model="tag" clearable outlined></v-select>
                 </v-col>
               </v-row>
 
@@ -86,6 +86,7 @@ export default {
       cover: '',
       content: '',
       tag: '',
+      tags: ['All', 'Technology', 'Agriculture'],
       token: '',
       dialog: false,
     };
@@ -119,7 +120,6 @@ export default {
       this.dialog = true;
     },
     closeDialog() {
-      console.log('here');
       this.dialog = false;
       this.$router.push({
         path: '/admin/blogs',
