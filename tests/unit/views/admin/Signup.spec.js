@@ -12,7 +12,9 @@ const vuetify = new Vuetify();
 jest.mock('axios', () => ({
   post: jest.fn(() => Promise.resolve({ data: {} })),
 }));
-const $t = () => {};
+const $t = () => {
+  'msg';
+};
 
 describe('User sign up page', () => {
   it('Axios is rendered', () => {
