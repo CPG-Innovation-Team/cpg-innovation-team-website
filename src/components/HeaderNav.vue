@@ -142,6 +142,9 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
   },
   watch: {
     group() {
