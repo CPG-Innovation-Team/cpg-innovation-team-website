@@ -86,13 +86,11 @@ export default {
             passwd: password,
           })
           .then((response) => {
-            console.log(response);
             if (response.data.message === 'OK') {
               localStorage.token = response.data.data.Token;
               localStorage.username = this.username;
               this.userExisted = true;
             } else {
-              console.log('incorrect password');
               this.dialog = true;
             }
           });

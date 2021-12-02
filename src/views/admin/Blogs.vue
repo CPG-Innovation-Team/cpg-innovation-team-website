@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
@@ -120,7 +120,6 @@ export default {
     ],
     blogs: [],
     deletedBlogs: [],
-    token: '',
     title: '',
     content: '',
     cover: '',
@@ -128,30 +127,19 @@ export default {
     tagList: ['All', 'Technology', 'Agriculture'],
   }),
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     this.getArticleList();
     this.getDeletedArticleList();
   },
   methods: {
     async search(searchText) {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            isAllMyselfArticles: false,
-            article: {
-              title: searchText,
-              state: 1,
-            },
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          isAllMyselfArticles: false,
+          article: {
+            title: searchText,
+            state: 1,
           },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+        })
         .then((response) => {
           this.blogs = [];
           response.data.data.ArticleDetailList.forEach((blog) => {
@@ -188,65 +176,34 @@ export default {
       this.content = this.editArticle.content;
     },
     async updateArticle() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/update',
-          {
-            sn: this.editArticle.sn,
-            title: this.title,
-            cover: this.cover,
-            content: this.content,
-            tags: this.tags,
-            state: this.editArticle.state.toString(),
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
+      await util.post('http://localhost:8080/admin/article/update', {
+        sn: this.editArticle.sn,
+        title: this.title,
+        cover: this.cover,
+        content: this.content,
+        tags: this.tags,
+        state: this.editArticle.state.toString(),
+      });
       this.updateDialog = false;
       this.blogs = [];
       this.getArticleList();
     },
     async deleteArticle() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/delete',
-          {
-            sn: this.editArticle.sn,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
+      await util.post('http://localhost:8080/admin/article/delete', {
+        sn: this.editArticle.sn,
+      });
+
       this.deleteDialog = false;
       this.blogs = [];
       this.getArticleList();
     },
     async getArticleList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 1,
-            },
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          article: {
+            state: 1,
           },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+        })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
@@ -266,20 +223,12 @@ export default {
         });
     },
     async getDeletedArticleList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 3,
-            },
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          article: {
+            state: 3,
           },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+        })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.deletedBlogs.push({

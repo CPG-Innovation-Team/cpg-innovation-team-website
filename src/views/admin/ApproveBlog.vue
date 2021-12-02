@@ -100,13 +100,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
   data() {
     return {
-      token: '',
       blogs: [],
       headers: [
         {
@@ -127,39 +126,26 @@ export default {
     AdminNav,
   },
   created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     this.getBlogList();
   },
   methods: {
     async getBlogList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/review/query/article/list',
-          {},
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          const sn = Object.keys(response.data.data.ArticleMap);
-          let index = 0;
-          Object.values(response.data.data.ArticleMap).forEach((blog) => {
-            this.blogs.push({
-              sn: sn[index],
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              author: blog.Author,
-              uid: blog.Uid,
-              cover: blog.Cover,
-            });
-            index += 1;
+      await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
+        const sn = Object.keys(response.data.data.ArticleMap);
+        let index = 0;
+        Object.values(response.data.data.ArticleMap).forEach((blog) => {
+          this.blogs.push({
+            sn: sn[index],
+            title: blog.Title,
+            tags: blog.Tags,
+            content: blog.Content,
+            author: blog.Author,
+            uid: blog.Uid,
+            cover: blog.Cover,
           });
+          index += 1;
         });
+      });
     },
     getApproveArticle(item) {
       this.approveDialog = true;
@@ -167,31 +153,14 @@ export default {
     },
     async confirmAction() {
       if (this.approveAction === true) {
-        await axios
-          .post(
-            'http://localhost:8080/admin/review/article',
-            { sn: this.currentArticle.sn, state: true },
-            {
-              headers: {
-                token: this.token,
-              },
-            }
-          )
-          .then(() => {});
+        await util.post('http://localhost:8080/admin/review/article', { sn: this.currentArticle.sn, state: true });
         this.blogs = [];
         this.getBlogList();
       } else {
-        await axios
-          .post(
-            'http://localhost:8080/admin/review/article',
-            { sn: parseInt(this.currentArticle.sn, 10), state: false },
-            {
-              headers: {
-                token: this.token,
-              },
-            }
-          )
-          .then(() => {});
+        await util.post('http://localhost:8080/admin/review/article', {
+          sn: parseInt(this.currentArticle.sn, 10),
+          state: false,
+        });
         this.blogs = [];
         this.getBlogList();
       }
