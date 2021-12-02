@@ -143,19 +143,7 @@ export default {
         .then((response) => {
           this.blogs = [];
           response.data.data.ArticleDetailList.forEach((blog) => {
-            this.blogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
-              author: blog.Author,
-              sn: blog.Sn,
-              uid: blog.Uid,
-              state: blog.State,
-              cover: blog.Cover,
-              likes: blog.ZanNum,
-            });
+            this.updateBlogs(this.blogs, blog);
           });
         });
     },
@@ -206,19 +194,7 @@ export default {
         })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
-            this.blogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
-              author: blog.Author,
-              sn: blog.Sn,
-              uid: blog.Uid,
-              state: blog.State,
-              cover: blog.Cover,
-              likes: blog.ZanNum,
-            });
+            this.updateBlogs(this.blogs, blog);
           });
         });
     },
@@ -231,21 +207,24 @@ export default {
         })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
-            this.deletedBlogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
-              author: blog.Author,
-              sn: blog.Sn,
-              uid: blog.Uid,
-              state: blog.State,
-              cover: blog.Cover,
-              likes: blog.ZanNum,
-            });
+            this.updateBlogs(this.deletedBlogs, blog);
           });
         });
+    },
+    updateBlogs(blogs, blog) {
+      blogs.push({
+        title: blog.Title,
+        tags: blog.Tags,
+        content: blog.Content,
+        viewNum: blog.ViewNum,
+        cmtNum: blog.ViewNum,
+        author: blog.Author,
+        sn: blog.Sn,
+        uid: blog.Uid,
+        state: blog.State,
+        cover: blog.Cover,
+        likes: blog.ZanNum,
+      });
     },
   },
 };
