@@ -206,7 +206,6 @@ export default {
       )
       .then((response) => {
         if (response.data.data) {
-          console.log(response);
           this.username = response.data.data.UserName;
           this.email = response.data.data.Email;
           this.isRoot = response.data.data.IsRoot;
@@ -242,7 +241,7 @@ export default {
             },
           }
         )
-        .then((response) => console.log(response));
+        .then(() => {});
     },
     showRole() {
       if (this.isRoot === 1) {
