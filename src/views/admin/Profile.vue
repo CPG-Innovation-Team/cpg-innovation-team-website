@@ -99,7 +99,7 @@
                 ></v-text-field></v-col
             ></v-row>
             <v-card-actions>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="saveProfile"> Save </v-btn>
             </v-card-actions>
           </v-card-text>
         </v-card>
@@ -150,8 +150,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import AdminNav from '../../components/AdminNav.vue';
+import util from '../../util';
 
 export default {
   data() {
@@ -165,7 +165,6 @@ export default {
       gender: '',
       introduction: '',
       avatar: '',
-      token: '',
       password: '',
       oldPwd: '',
       newPwd: '',
@@ -186,62 +185,37 @@ export default {
     AdminNav,
   },
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     if (localStorage.username) {
       this.username = localStorage.username;
     }
-    await axios
-      .post(
-        'http://localhost:8080/admin/user/query/info',
-        {
-          username: this.username,
-        },
-        {
-          headers: {
-            token: this.token,
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data.data) {
-          this.username = response.data.data.UserName;
-          this.email = response.data.data.Email;
-          this.isRoot = response.data.data.IsRoot;
-          this.uid = response.data.data.UID;
-          this.nickname = response.data.data.Nickname;
-          this.state = response.data.data.State;
-          this.gender = response.data.data.Gender;
-          this.introduction = response.data.data.Introduce;
-          this.avatar = response.data.data.Avatar;
-        }
-      });
+    util.post('http://localhost:8080/admin/user/query/info', { username: this.username }).then((response) => {
+      if (response.data.data) {
+        this.username = response.data.data.UserName;
+        this.email = response.data.data.Email;
+        this.isRoot = response.data.data.IsRoot;
+        this.uid = response.data.data.UID;
+        this.nickname = response.data.data.Nickname;
+        this.state = response.data.data.State;
+        this.gender = response.data.data.Gender;
+        this.introduction = response.data.data.Introduce;
+        this.avatar = response.data.data.Avatar;
+      }
+    });
   },
   methods: {
-    save() {
-      axios
-        .post(
-          'http://localhost:8080/admin/user/update/info',
-          {
-            uid: this.uid,
-            username: this.username,
-            email: this.email,
-            passCode: '123456',
-            passwd: this.password,
-            nickname: this.nickname,
-            avatar: this.avatar,
-            gender: this.gender,
-            introduce: this.introduction,
-            state: this.state,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then(() => {});
+    saveProfile() {
+      util.post('http://localhost:8080/admin/user/update/info', {
+        uid: this.uid,
+        username: this.username,
+        email: this.email,
+        passCode: '123456',
+        passwd: this.password,
+        nickname: this.nickname,
+        avatar: this.avatar,
+        gender: this.gender,
+        introduce: this.introduction,
+        state: this.state,
+      });
     },
     showRole() {
       if (this.isRoot === 1) {
@@ -250,23 +224,15 @@ export default {
       return 'User';
     },
     savePwd() {
-      axios
-        .post(
-          'http://localhost:8080/admin/user/update/info',
-          {
-            uid: this.uid,
-            email: this.email,
-            username: this.username,
-            passCode: '123456',
-            passwd: this.newPwd,
-            nickname: this.nickname,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      util
+        .post('http://localhost:8080/admin/user/update/info', {
+          uid: this.uid,
+          email: this.email,
+          username: this.username,
+          passCode: '123456',
+          passwd: this.newPwd,
+          nickname: this.nickname,
+        })
         .then((response) => {
           this.confirmDialog = true;
           if (response.data.code === 10002) {

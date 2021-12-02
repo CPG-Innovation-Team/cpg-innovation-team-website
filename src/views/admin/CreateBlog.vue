@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
@@ -87,36 +87,20 @@ export default {
       content: '',
       tag: '',
       tags: ['All', 'Technology', 'Agriculture'],
-      token: '',
       dialog: false,
     };
   },
   components: {
     AdminNav,
   },
-  created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
-  },
   methods: {
     submit() {
-      axios
-        .post(
-          'http://localhost:8080/admin/article/add',
-          {
-            title: this.title,
-            cover: this.cover,
-            content: this.content,
-            tags: this.tag,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => console.log(response));
+      util.post('http://localhost:8080/admin/article/add', {
+        title: this.title,
+        cover: this.cover,
+        content: this.content,
+        tags: this.tag,
+      });
       this.dialog = true;
     },
     closeDialog() {

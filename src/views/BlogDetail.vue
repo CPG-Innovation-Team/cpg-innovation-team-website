@@ -121,13 +121,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../util';
 import HeaderNav from '../components/HeaderNav.vue';
 
 export default {
   data() {
     return {
-      token: '',
       likes: 0,
       currentLikes: 0,
       blog: [],
@@ -142,23 +141,12 @@ export default {
     HeaderNav,
   },
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/info',
-          {
-            sn: parseInt(this.sn, 10),
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      await util
+        .post('http://localhost:8080/admin/article/info', {
+          sn: parseInt(this.sn, 10),
+        })
         .then((response) => {
           this.blog = {
             title: response.data.data.Title,
@@ -177,40 +165,21 @@ export default {
   },
   methods: {
     async sendComment(comment) {
-      await axios
-        .post(
-          'http://localhost:8080/comment/add',
-          {
-            sn: parseInt(this.sn, 10),
-            content: comment,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => console.log(response));
+      await util.post('http://localhost:8080/comment/add', {
+        sn: parseInt(this.sn, 10),
+        content: comment,
+      });
       this.comments = [];
       await this.getComments();
       this.comment = '';
     },
     async sendReply(cid, reply) {
-      await axios
-        .post(
-          'http://localhost:8080/comment/reply',
-          {
-            commentId: cid,
-            content: reply,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
+      await util
+        .post('http://localhost:8080/comment/reply', {
+          commentId: cid,
+          content: reply,
+        })
+        .then(() => {
           this.comments = [];
           this.getComments();
           this.reply = '';
@@ -218,18 +187,10 @@ export default {
         });
     },
     getComments() {
-      axios
-        .post(
-          'http://localhost:8080/comment/list',
-          {
-            sn: parseInt(this.sn, 10),
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      util
+        .post('http://localhost:8080/comment/list', {
+          sn: parseInt(this.sn, 10),
+        })
         .then((response) => {
           for (let i = 1; i <= Object.keys(response.data.data).length; i += 1) {
             const date = new Date(response.data.data[i].CreatedAt);
@@ -256,69 +217,37 @@ export default {
     },
     likeComment(n) {
       this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
-      axios
-        .post(
-          'http://localhost:8080/like',
-          {
-            comment_id: this.comments[n].cid,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      util
+        .post('http://localhost:8080/like', {
+          comment_id: this.comments[n].cid,
+        })
         .then(() => {
           this.comments[n].zanNum += 1;
         });
     },
     unlikeComment(n) {
       this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
-      axios
-        .post(
-          'http://localhost:8080/like/cancel',
-          {
-            comment_id: this.comments[n].cid,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      util
+        .post('http://localhost:8080/like/cancel', {
+          comment_id: this.comments[n].cid,
+        })
         .then(() => {
           this.comments[n].zanNum -= 1;
         });
     },
     likeArticle() {
-      axios
-        .post(
-          'http://localhost:8080/like',
-          {
-            sn: parseInt(this.sn, 10),
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      util
+        .post('http://localhost:8080/like', {
+          sn: parseInt(this.sn, 10),
+        })
         .then(async () => {
           this.currentLikes = this.likes;
           await this.getArticleLikes();
           if (this.currentLikes === this.likes) {
-            axios
-              .post(
-                'http://localhost:8080/like/cancel',
-                {
-                  sn: parseInt(this.sn, 10),
-                },
-                {
-                  headers: {
-                    token: this.token,
-                  },
-                }
-              )
+            util
+              .post('http://localhost:8080/like/cancel', {
+                sn: parseInt(this.sn, 10),
+              })
               .then(() => {
                 this.getArticleLikes();
               });
@@ -326,20 +255,12 @@ export default {
         });
     },
     async getArticleLikes() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 1,
-            },
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          article: {
+            state: 1,
           },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+        })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
             if (blog.Sn.toString() === this.sn) {

@@ -125,7 +125,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import util from '../util';
 import HeaderNav from '../components/HeaderNav.vue';
 
@@ -136,7 +135,6 @@ export default {
       category: 'All',
       page: 1,
       categories: ['All', 'Technology', 'Agriculture'],
-      token: '',
       blogs: [],
       popularBlogs: [],
       catogorizedBlogs: [],
@@ -148,23 +146,12 @@ export default {
     HeaderNav,
   },
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
-    await axios
-      .post(
-        'http://localhost:8080/admin/article/list',
-        {
-          article: {
-            state: 1,
-          },
+    await util
+      .post('http://localhost:8080/admin/article/list', {
+        article: {
+          state: 1,
         },
-        {
-          headers: {
-            token: this.token,
-          },
-        }
-      )
+      })
       .then((response) => {
         if (response.data.message === 'Token is expired.' || response.data.message === 'Invalid Token.') {
           this.isExpired = true;
