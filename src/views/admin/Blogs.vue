@@ -135,17 +135,41 @@ export default {
     this.getDeletedArticleList();
   },
   methods: {
-    search(searchText) {
-      if (searchText === '') {
-        this.getArticleList();
-        this.getDeletedArticleList();
-      }
-      this.blogs = this.blogs.filter((blog) => {
-        return blog.title.includes(searchText);
-      });
-      this.deletedBlogs = this.deletedBlogs.filter((blog) => {
-        return blog.title.includes(searchText);
-      });
+    async search(searchText) {
+      await axios
+        .post(
+          'http://localhost:8080/admin/article/list',
+          {
+            isAllMyselfArticles: false,
+            article: {
+              title: searchText,
+              state: 1,
+            },
+          },
+          {
+            headers: {
+              token: this.token,
+            },
+          }
+        )
+        .then((response) => {
+          this.blogs = [];
+          response.data.data.ArticleDetailList.forEach((blog) => {
+            this.blogs.push({
+              title: blog.Title,
+              tags: blog.Tags,
+              content: blog.Content,
+              viewNum: blog.ViewNum,
+              cmtNum: blog.ViewNum,
+              author: blog.Author,
+              sn: blog.Sn,
+              uid: blog.Uid,
+              state: blog.State,
+              cover: blog.Cover,
+              likes: blog.ZanNum,
+            });
+          });
+        });
     },
     close() {
       this.deleteDialog = false;
