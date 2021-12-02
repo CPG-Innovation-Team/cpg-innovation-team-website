@@ -145,7 +145,6 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response.data.data.ArticleMap);
           const sn = Object.keys(response.data.data.ArticleMap);
           let index = 0;
           Object.values(response.data.data.ArticleMap).forEach((blog) => {
@@ -168,10 +167,6 @@ export default {
     },
     async confirmAction() {
       if (this.approveAction === true) {
-        console.log(this.currentArticle.sn);
-        console.log(parseFloat(this.currentArticle.sn));
-        console.log(Number.isSafeInteger(parseFloat(this.currentArticle.sn)));
-        console.log(Number.MAX_SAFE_INTEGER);
         await axios
           .post(
             'http://localhost:8080/admin/review/article',
@@ -182,9 +177,7 @@ export default {
               },
             }
           )
-          .then((response) => {
-            console.log(response);
-          });
+          .then(() => {});
         this.blogs = [];
         this.getBlogList();
       } else {
@@ -198,9 +191,7 @@ export default {
               },
             }
           )
-          .then((response) => {
-            console.log(response);
-          });
+          .then(() => {});
         this.blogs = [];
         this.getBlogList();
       }
