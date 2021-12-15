@@ -9,16 +9,18 @@ import i18n from './plugins/vue-i18n';
 
 Vue.config.productionTip = false;
 
-Vue.prototype.$rollbar = new Rollbar({
-  accessToken: process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-});
+if (process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN) {
+  Vue.prototype.$rollbar = new Rollbar({
+    accessToken: process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
 
-Vue.config.errorHandler = (err, vm) => {
-  vm.$rollbar.error(err);
-  throw err;
-};
+  Vue.config.errorHandler = (err, vm) => {
+    vm.$rollbar.error(err);
+    throw err;
+  };
+}
 
 // add the application key for accessing baidu map api
 Vue.use(BaiduMap, {

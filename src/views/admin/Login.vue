@@ -33,9 +33,7 @@
           Don't have an account? <router-link to="/signup">Sign up</router-link>
         </p>
 
-        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="login(username, password)"
-          >Login</v-btn
-        >
+        <v-btn color="primary" style="float: right; margin-left: 100%" @click="login(username, password)">Login</v-btn>
         <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
           <template>
             <v-card>
@@ -90,6 +88,7 @@ export default {
               localStorage.token = response.data.data.Token;
               localStorage.username = this.username;
               this.userExisted = true;
+              this.$router.push('/');
             } else {
               this.dialog = true;
             }
