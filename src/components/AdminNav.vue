@@ -59,6 +59,7 @@ export default {
         { title: 'Blogs', icon: 'mdi-post', link: '/admin/blogs' },
         { title: 'Users', icon: 'mdi-account-multiple', link: '/admin/users' },
         { title: 'Activity', icon: 'mdi-chart-areaspline-variant', link: '/admin/activities' },
+        { title: 'Notification', icon: 'mdi-bell', link: '/admin/notification' },
       ],
       username: '',
       token: '',

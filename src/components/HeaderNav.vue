@@ -1,6 +1,13 @@
 <template>
   <div :style="cssProps">
-    <v-app-bar class="nav-container" app flat hide-on-scroll>
+    <v-system-bar app color="purple">
+      <v-row justify="center" align="center">
+        <div class="notification">
+          News! Click on <a href="https://www.cpgroup.cn">www.cpgroup.cn</a> to check it out.
+        </div>
+      </v-row>
+    </v-system-bar>
+    <v-app-bar class="nav-container" app flat>
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
       <router-link to="/">
@@ -227,6 +234,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notification {
+  color: white;
+  font-size: 15px;
+}
+
 .nav-container {
   background-color: rgba(0, 0, 0, 0) !important;
   .nav-menu {
