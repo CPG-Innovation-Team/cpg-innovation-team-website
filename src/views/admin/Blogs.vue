@@ -193,6 +193,9 @@ export default {
           },
         })
         .then((response) => {
+          if (response.data.message === 'Invalid Token.') {
+            this.$router.push('/login');
+          }
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.updateBlogs(this.blogs, blog);
           });

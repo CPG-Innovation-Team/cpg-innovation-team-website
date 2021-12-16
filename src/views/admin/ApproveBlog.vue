@@ -158,6 +158,9 @@ export default {
   methods: {
     async getBlogList() {
       await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
+        if (response.data.message === 'Invalid Token.') {
+          this.$router.push('/login');
+        }
         const sn = Object.keys(response.data.data.ArticleMap);
         let index = 0;
         Object.values(response.data.data.ArticleMap).forEach((blog) => {
