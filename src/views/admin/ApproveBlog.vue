@@ -108,8 +108,8 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn text @click="approveComment(item)"> 审核通过 </v-btn>
-          <v-btn text @click="disapproveComment(item)"> 审核不通过 </v-btn>
+          <v-btn text @click="approveComment(item, true)"> 审核通过 </v-btn>
+          <v-btn text @click="approveComment(item, false)"> 审核不通过 </v-btn>
         </template>
       </v-data-table>
     </v-main>
@@ -206,13 +206,8 @@ export default {
         this.getBlogList();
       }
     },
-    async approveComment(item) {
-      await util.post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: true });
-      this.comments = [];
-      this.getCommentList();
-    },
-    async disapproveComment(item) {
-      await util.post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: false });
+    async approveComment(item, bool) {
+      await util.post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: bool });
       this.comments = [];
       this.getCommentList();
     },

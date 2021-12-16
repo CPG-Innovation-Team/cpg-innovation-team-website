@@ -262,7 +262,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           response.data.data.ArticleDetailList.forEach((blog) => {
             if (blog.Sn.toString() === this.sn) {
               this.likes = blog.ZanNum;
