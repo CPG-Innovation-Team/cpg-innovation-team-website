@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
@@ -167,7 +167,6 @@ export default {
     },
     username: '',
     uid: '',
-    token: '',
     roles: [],
     permissions: [],
     permission: '',
@@ -181,21 +180,10 @@ export default {
     deletePermissionName: '',
   }),
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
-    await axios
-      .post(
-        'http://localhost:8080/admin/user/query/list',
-        {
-          state: 1,
-        },
-        {
-          headers: {
-            token: this.token,
-          },
-        }
-      )
+    util
+      .post('http://localhost:8080/admin/user/query/list', {
+        state: 1,
+      })
       .then((response) => {
         if (response.data.data) {
           response.data.data.forEach((user) => this.users.push(user));
@@ -217,115 +205,67 @@ export default {
     },
     async save() {
       this.close();
-      await axios
-        .post(
-          'http://localhost:8080/admin/user/query/info',
-          {
-            username: this.username,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      await util
+        .post('http://localhost:8080/admin/user/query/info', {
+          username: this.username,
+        })
         .then((response) => {
           this.uid = response.data.data.UID;
         });
       if (this.selectedRole !== '' && this.selectedRole !== null) {
-        await axios
-          .post(
-            'http://localhost:8080/admin/auth/role/add/user',
-            {
-              rName: this.selectedRole,
-              uid: this.uid,
-            },
-            {
-              headers: {
-                token: this.token,
-              },
-            }
-          )
+        await util
+          .post('http://localhost:8080/admin/auth/role/add/user', {
+            rName: this.selectedRole,
+            uid: this.uid,
+          })
           .then((response) => {
             this.setDialogStatus(response);
           });
       }
       if (this.selectedRemoveRole !== '' && this.selectedRemoveRole !== null) {
-        await axios
-          .post(
-            'http://localhost:8080/admin/auth/role/remove/user',
-            {
-              rName: this.selectedRemoveRole,
-              uid: this.uid,
-            },
-            {
-              headers: {
-                token: this.token,
-              },
-            }
-          )
+        await util
+          .post('http://localhost:8080/admin/auth/role/remove/user', {
+            rName: this.selectedRemoveRole,
+            uid: this.uid,
+          })
           .then((response) => {
             this.setDialogStatus(response);
           });
       }
     },
     async saveRole(role) {
-      await axios
-        .post(
-          'http://localhost:8080/admin/auth/add/role',
-          {
-            rName: role,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      await util
+        .post('http://localhost:8080/admin/auth/add/role', {
+          rName: role,
+        })
         .then((response) => {
           this.setDialogStatus(response);
         });
+
       this.getAllRoles();
     },
     async savePermission(permission, uri) {
-      await axios
-        .post(
-          'http://localhost:8080/admin/auth/add/permission',
-          {
-            pName: permission,
-            uri,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      await util
+        .post('http://localhost:8080/admin/auth/add/permission', {
+          pName: permission,
+          uri,
+        })
         .then((response) => {
-          console.log(response);
           if (response.data.data === '接口权限添加成功！') this.successDialog = true;
           else {
             this.failureDialog = true;
           }
         });
+
       this.getAllPermissions();
     },
     savePermissionToRole(rname, pname) {
-      axios
-        .post(
-          'http://localhost:8080/admin/auth/role/add/permission',
-          {
-            rname,
-            pname,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      util
+        .post('http://localhost:8080/admin/auth/role/add/permission', {
+          rname,
+          pname,
+        })
         .then((response) => {
-          console.log(response);
           if (response.data.data === '添加成功') this.successDialog = true;
           else {
             this.failureDialog = true;
@@ -333,80 +273,40 @@ export default {
         });
     },
     async deleteRole(deleteRoleName) {
-      await axios
-        .post(
-          'http://localhost:8080/admin/auth/delete/role',
-          {
-            rName: deleteRoleName,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      await util
+        .post('http://localhost:8080/admin/auth/delete/role', {
+          rName: deleteRoleName,
+        })
         .then((response) => {
           this.setDialogStatus(response);
         });
       this.getAllRoles();
     },
     async deletePermission(deletePermissionName) {
-      await axios
-        .post(
-          'http://localhost:8080/admin/auth/delete/permission',
-          {
-            pName: deletePermissionName,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+      await util
+        .post('http://localhost:8080/admin/auth/delete/permission', {
+          pName: deletePermissionName,
+        })
         .then((response) => {
           this.setDialogStatus(response);
         });
       this.getAllPermissions();
     },
     async getAllRoles() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/auth/query/roles',
-          {},
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          this.roles = [];
-          if (response.data.data) {
-            Object.keys(response.data.data).forEach((role) => {
-              this.roles.push(role);
-            });
-          }
+      await util.post('http://localhost:8080/admin/auth/query/roles', {}).then((response) => {
+        this.roles = [];
+        Object.keys(response.data.data).forEach((role) => {
+          this.roles.push(role);
         });
+      });
     },
     async getAllPermissions() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/auth/query/permissions',
-          {},
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          this.permissions = [];
-          if (response.data.data) {
-            Object.keys(response.data.data).forEach((permission) => {
-              this.permissions.push(permission);
-            });
-          }
+      await util.post('http://localhost:8080/admin/auth/query/permissions', {}).then((response) => {
+        this.permissions = [];
+        Object.keys(response.data.data).forEach((permission) => {
+          this.permissions.push(permission);
         });
+      });
     },
     setDialogStatus(response) {
       if (response.data.message === 'OK') this.successDialog = true;

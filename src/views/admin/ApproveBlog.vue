@@ -9,8 +9,26 @@
             <v-dialog v-model="approveDialog" fullscreen>
               <v-card>
                 <v-col class="text-right pr-16 pt-8">
-                  <v-btn color="blue darken-1" text @click="confirmDialog = true"> 审核通过 </v-btn>
-                  <v-btn color="blue darken-1" text @click="confirmDialog = true"> 审核不通过 </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="
+                      confirmDialog = true;
+                      approveAction = true;
+                    "
+                  >
+                    审核通过
+                  </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="
+                      confirmDialog = true;
+                      approveAction = false;
+                    "
+                  >
+                    审核不通过
+                  </v-btn>
                 </v-col>
                 <v-card-text class="ml-16">
                   <v-col>
@@ -43,6 +61,7 @@
                           @click="
                             confirmDialog = false;
                             approveDialog = false;
+                            approveAction = false;
                           "
                         >
                           Cancel
@@ -53,6 +72,7 @@
                           @click="
                             confirmDialog = false;
                             approveDialog = false;
+                            confirmAction();
                           "
                         >
                           Confirm
@@ -72,7 +92,7 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn @click="approveArticle(item)"> 详情 </v-btn>
+          <v-btn @click="getApproveArticle(item)"> 详情 </v-btn>
         </template>
       </v-data-table>
     </v-main>
@@ -80,13 +100,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
   data() {
     return {
-      token: '',
       blogs: [],
       headers: [
         {
@@ -100,49 +119,51 @@ export default {
       approveDialog: false,
       confirmDialog: false,
       currentArticle: '',
+      approveAction: false,
     };
   },
   components: {
     AdminNav,
   },
   created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     this.getBlogList();
   },
   methods: {
     async getBlogList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 1,
-            },
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            this.blogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              author: blog.Author,
-              uid: blog.Uid,
-              cover: blog.Cover,
-            });
+      await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
+        const sn = Object.keys(response.data.data.ArticleMap);
+        let index = 0;
+        Object.values(response.data.data.ArticleMap).forEach((blog) => {
+          this.blogs.push({
+            sn: sn[index],
+            title: blog.Title,
+            tags: blog.Tags,
+            content: blog.Content,
+            author: blog.Author,
+            uid: blog.Uid,
+            cover: blog.Cover,
           });
+          index += 1;
         });
+      });
     },
-    approveArticle(item) {
+    getApproveArticle(item) {
       this.approveDialog = true;
       this.currentArticle = item;
+    },
+    async confirmAction() {
+      if (this.approveAction === true) {
+        await util.post('http://localhost:8080/admin/review/article', { sn: this.currentArticle.sn, state: true });
+        this.blogs = [];
+        this.getBlogList();
+      } else {
+        await util.post('http://localhost:8080/admin/review/article', {
+          sn: parseInt(this.currentArticle.sn, 10),
+          state: false,
+        });
+        this.blogs = [];
+        this.getBlogList();
+      }
     },
   },
 };

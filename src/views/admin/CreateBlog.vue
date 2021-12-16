@@ -30,7 +30,7 @@
                   <label>Tag</label>
                 </v-col>
                 <v-col>
-                  <v-text-field v-model="tag" required hide-details dense outlined></v-text-field>
+                  <v-select :items="tags" v-model="tag" clearable outlined></v-select>
                 </v-col>
               </v-row>
 
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
@@ -86,40 +86,24 @@ export default {
       cover: '',
       content: '',
       tag: '',
-      token: '',
+      tags: ['All', 'Technology', 'Agriculture'],
       dialog: false,
     };
   },
   components: {
     AdminNav,
   },
-  created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
-  },
   methods: {
     submit() {
-      axios
-        .post(
-          'http://localhost:8080/admin/article/add',
-          {
-            title: this.title,
-            cover: this.cover,
-            content: this.content,
-            tags: this.tag,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => console.log(response));
+      util.post('http://localhost:8080/admin/article/add', {
+        title: this.title,
+        cover: this.cover,
+        content: this.content,
+        tags: this.tag,
+      });
       this.dialog = true;
     },
     closeDialog() {
-      console.log('here');
       this.dialog = false;
       this.$router.push({
         path: '/admin/blogs',

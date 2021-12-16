@@ -111,8 +111,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import CountryFlag from 'vue-country-flag';
+import util from '../util';
 
 const projects = require('../data/project');
 const jobs = require('../data/career');
@@ -139,11 +139,11 @@ export default {
     CountryFlag,
   },
   created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     if (localStorage.username) {
       this.username = localStorage.username;
+    }
+    if (localStorage.token) {
+      this.token = localStorage.token;
     }
   },
   watch: {
@@ -199,21 +199,10 @@ export default {
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
     logout() {
-      axios
-        .post(
-          'http://localhost:8080/admin/logout',
-          {},
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          this.token = '';
-          localStorage.clear();
-        });
+      util.post('http://localhost:8080/admin/logout', {}).then(() => {
+        this.token = '';
+        localStorage.clear();
+      });
     },
   },
   computed: {

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
   getPageLength(arr) {
     return Math.ceil(arr.length / 10);
@@ -10,5 +12,21 @@ export default {
       return t2.getTime() - t1.getTime();
     });
     return temp;
+  },
+  post(url, parameters) {
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    return new Promise((resolve) => {
+      axios
+        .post(url, parameters, {
+          headers: {
+            token: this.token,
+          },
+        })
+        .then((response) => {
+          resolve(response);
+        });
+    });
   },
 };

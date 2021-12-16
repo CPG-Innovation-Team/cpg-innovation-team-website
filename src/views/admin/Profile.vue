@@ -99,7 +99,48 @@
                 ></v-text-field></v-col
             ></v-row>
             <v-card-actions>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="saveProfile"> Save </v-btn>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
+
+        <v-card class="mt-4">
+          <v-card-title> Modify password </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="12" sm="6" md="12">
+                <v-text-field v-model="oldPwd" label="旧密码"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="12">
+                <v-text-field
+                  v-model="newPwd"
+                  label="新密码"
+                  :rules="[rules.required, rules.min, rules.digitAlphabet]"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="12">
+                <v-text-field v-model="newPwdRepeat" label="再次输入新密码" :rules="[rules.match]"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-card-actions>
+              <v-col class="text-left">
+                <v-row>
+                  <div class="pwdAlert" v-show="validationIsFailed">旧密码错误</div>
+                </v-row>
+                <v-row>
+                  <v-btn color="blue darken-1" text @click="savePwd"> Confirm </v-btn>
+                  <v-dialog v-model="confirmDialog" max-width="500px">
+                    <v-card>
+                      <v-card-title v-if="isSaved"> 密码修改成功 </v-card-title>
+                      <v-card-title v-if="!isSaved"> 密码修改失败 </v-card-title>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="confirmDialog = false"> Confirm </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-row>
+              </v-col>
             </v-card-actions>
           </v-card-text>
         </v-card>
@@ -109,8 +150,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import AdminNav from '../../components/AdminNav.vue';
+import util from '../../util';
 
 export default {
   data() {
@@ -124,10 +165,19 @@ export default {
       gender: '',
       introduction: '',
       avatar: '',
-      token: '',
       password: '',
+      oldPwd: '',
+      newPwd: '',
+      newPwdRepeat: '',
+      confirmDialog: false,
+      isSaved: false,
+      validationIsFailed: false,
       rules: {
         required: (v) => !!v || 'Required.',
+        digitAlphabet: (v) =>
+          (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || 'The password must contain numbers and alphabets',
+        min: (v) => (v.length >= 6 && v.length <= 32) || 'Min 6 characters, max 32 characters',
+        match: (v) => v === this.newPwd || `The two passwords you entered don't match`,
       },
     };
   },
@@ -135,69 +185,62 @@ export default {
     AdminNav,
   },
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     if (localStorage.username) {
       this.username = localStorage.username;
     }
-    await axios
-      .post(
-        'http://localhost:8080/admin/user/query/info',
-        {
-          username: this.username,
-        },
-        {
-          headers: {
-            token: this.token,
-          },
-        }
-      )
-      .then((response) => {
-        if (response.data.data) {
-          console.log(response);
-          this.username = response.data.data.UserName;
-          this.email = response.data.data.Email;
-          this.isRoot = response.data.data.IsRoot;
-          this.uid = response.data.data.UID;
-          this.nickname = response.data.data.Nickname;
-          this.state = response.data.data.State;
-          this.gender = response.data.data.Gender;
-          this.introduction = response.data.data.Introduce;
-          this.avatar = response.data.data.Avatar;
-        }
-      });
+    util.post('http://localhost:8080/admin/user/query/info', { username: this.username }).then((response) => {
+      if (response.data.data) {
+        this.username = response.data.data.UserName;
+        this.email = response.data.data.Email;
+        this.isRoot = response.data.data.IsRoot;
+        this.uid = response.data.data.UID;
+        this.nickname = response.data.data.Nickname;
+        this.state = response.data.data.State;
+        this.gender = response.data.data.Gender;
+        this.introduction = response.data.data.Introduce;
+        this.avatar = response.data.data.Avatar;
+      }
+    });
   },
   methods: {
-    save() {
-      axios
-        .post(
-          'http://localhost:8080/admin/user/update/info',
-          {
-            uid: this.uid,
-            username: this.username,
-            email: this.email,
-            passCode: '123456',
-            passwd: this.password,
-            nickname: this.nickname,
-            avatar: this.avatar,
-            gender: this.gender,
-            introduce: this.introduction,
-            state: this.state,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => console.log(response));
+    saveProfile() {
+      util.post('http://localhost:8080/admin/user/update/info', {
+        uid: this.uid,
+        username: this.username,
+        email: this.email,
+        passCode: '123456',
+        passwd: this.password,
+        nickname: this.nickname,
+        avatar: this.avatar,
+        gender: this.gender,
+        introduce: this.introduction,
+        state: this.state,
+      });
     },
     showRole() {
       if (this.isRoot === 1) {
         return 'Super Manager';
       }
       return 'User';
+    },
+    savePwd() {
+      util
+        .post('http://localhost:8080/admin/user/update/info', {
+          uid: this.uid,
+          email: this.email,
+          username: this.username,
+          passCode: '123456',
+          passwd: this.newPwd,
+          nickname: this.nickname,
+        })
+        .then((response) => {
+          this.confirmDialog = true;
+          if (response.data.code === 10002) {
+            this.isSaved = false;
+          } else {
+            this.isSaved = true;
+          }
+        });
     },
   },
 };
@@ -264,5 +307,9 @@ export default {
   padding: 0 10px 20px 10px;
   border-radius: 2px;
   background: white;
+}
+
+.pwdAlert {
+  color: red;
 }
 </style>

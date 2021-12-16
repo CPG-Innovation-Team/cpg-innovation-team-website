@@ -8,13 +8,14 @@
             <v-toolbar-title>All Active Blogs</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-text-field
-              v-model="search"
+              v-model="searchText"
               placeholder="Search"
               append-icon="mdi-magnify"
               required
               dense
               hide-details
               outlined
+              @keyup.enter="search(searchText)"
             ></v-text-field>
             <v-dialog v-model="deleteDialog" max-width="500px">
               <v-card>
@@ -37,7 +38,7 @@
                     <v-text-field v-model="cover" required hide-details dense outlined label="cover"></v-text-field>
                   </v-row>
                   <v-row class="ma-8">
-                    <v-text-field v-model="tags" required hide-details dense outlined label="tags"></v-text-field>
+                    <v-select :items="tagList" v-model="tags" clearable outlined label="tags"></v-select>
                   </v-row>
                   <v-row class="ma-8">
                     <v-textarea
@@ -92,7 +93,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
@@ -103,7 +104,7 @@ export default {
     deleteDialog: false,
     updateDialog: false,
     editArticle: '',
-    search: '',
+    searchText: '',
     headers: [
       {
         text: 'Title',
@@ -119,20 +120,33 @@ export default {
     ],
     blogs: [],
     deletedBlogs: [],
-    token: '',
     title: '',
     content: '',
     cover: '',
     tags: '',
+    tagList: ['All', 'Technology', 'Agriculture'],
   }),
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     this.getArticleList();
     this.getDeletedArticleList();
   },
   methods: {
+    async search(searchText) {
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          isAllMyselfArticles: false,
+          article: {
+            title: searchText,
+            state: 1,
+          },
+        })
+        .then((response) => {
+          this.blogs = [];
+          response.data.data.ArticleDetailList.forEach((blog) => {
+            this.updateBlogs(this.blogs, blog);
+          });
+        });
+    },
     close() {
       this.deleteDialog = false;
       this.updateDialog = false;
@@ -150,115 +164,67 @@ export default {
       this.content = this.editArticle.content;
     },
     async updateArticle() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/update',
-          {
-            sn: this.editArticle.sn,
-            title: this.title,
-            cover: this.cover,
-            content: this.content,
-            tags: this.tags,
-            state: this.editArticle.state.toString(),
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
+      await util.post('http://localhost:8080/admin/article/update', {
+        sn: this.editArticle.sn,
+        title: this.title,
+        cover: this.cover,
+        content: this.content,
+        tags: this.tags,
+        state: this.editArticle.state.toString(),
+      });
       this.updateDialog = false;
       this.blogs = [];
       this.getArticleList();
     },
     async deleteArticle() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/delete',
-          {
-            sn: this.editArticle.sn,
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
+      await util.post('http://localhost:8080/admin/article/delete', {
+        sn: this.editArticle.sn,
+      });
+
       this.deleteDialog = false;
       this.blogs = [];
       this.getArticleList();
     },
     async getArticleList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 1,
-            },
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          article: {
+            state: 1,
           },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+        })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
-            this.blogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
-              author: blog.Author,
-              sn: blog.Sn,
-              uid: blog.Uid,
-              state: blog.State,
-              cover: blog.Cover,
-              likes: blog.ZanNum,
-            });
+            this.updateBlogs(this.blogs, blog);
           });
         });
     },
     async getDeletedArticleList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 3,
-            },
+      await util
+        .post('http://localhost:8080/admin/article/list', {
+          article: {
+            state: 3,
           },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
+        })
         .then((response) => {
           response.data.data.ArticleDetailList.forEach((blog) => {
-            this.deletedBlogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
-              author: blog.Author,
-              sn: blog.Sn,
-              uid: blog.Uid,
-              state: blog.State,
-              cover: blog.Cover,
-              likes: blog.ZanNum,
-            });
+            this.updateBlogs(this.deletedBlogs, blog);
           });
         });
+    },
+    updateBlogs(blogs, blog) {
+      blogs.push({
+        title: blog.Title,
+        tags: blog.Tags,
+        content: blog.Content,
+        viewNum: blog.ViewNum,
+        cmtNum: blog.ViewNum,
+        author: blog.Author,
+        sn: blog.Sn,
+        uid: blog.Uid,
+        state: blog.State,
+        cover: blog.Cover,
+        likes: blog.ZanNum,
+      });
     },
   },
 };

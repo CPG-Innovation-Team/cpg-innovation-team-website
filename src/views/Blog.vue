@@ -15,8 +15,8 @@
         <div v-if="!isExpired" class="popular-container">
           <h1 style="text-align: center">Most Popular</h1>
           <v-container>
-            <v-row>
-              <div v-for="(blog, index) in blogs" :key="index">
+            <v-row class="justify-center">
+              <div v-for="(blog, index) in popularBlogs.slice(0, 4)" :key="index">
                 <v-col>
                   <div class="popular-item">
                     <img
@@ -49,20 +49,20 @@
 
         <div class="recent-container">
           <v-container>
-            <h1>Recent Post</h1>
+            <h1>All Posts</h1>
 
             <v-tabs class="mb-5" v-model="category" background-color="transparent" color="black">
               <v-tabs-slider></v-tabs-slider>
-              <v-tab>All</v-tab>
-              <v-tab>Technology</v-tab>
-              <v-tab>Agriculture</v-tab>
+              <v-tab v-for="i in categories.length" :key="i" @click="getCategoryBlogs(i - 1)">{{
+                categories[i - 1]
+              }}</v-tab>
             </v-tabs>
 
             <div v-if="isExpired">Please log in to see the contents.</div>
 
             <v-tabs-items v-model="category">
-              <v-tab-item style="background: rgb(248, 247, 247)">
-                <div v-for="(blog, index) in blogs" :key="index">
+              <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
+                <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
                   <v-row>
                     <v-col cols="3">
                       <img
@@ -92,10 +92,10 @@
             </v-tabs-items>
 
             <v-pagination
-              v-if="blogs.length !== 0"
+              v-if="catogorizedBlogs.length !== 0"
               class="mt-10"
               v-model="page"
-              :length="util.getPageLength(blogs)"
+              :length="util.getPageLength(catogorizedBlogs)"
               color="black"
             ></v-pagination>
           </v-container>
@@ -125,7 +125,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import util from '../util';
 import HeaderNav from '../components/HeaderNav.vue';
 
@@ -133,10 +132,12 @@ export default {
   data() {
     return {
       util,
-      category: '',
+      category: 'All',
       page: 1,
-      token: '',
+      categories: ['All', 'Technology', 'Agriculture'],
       blogs: [],
+      popularBlogs: [],
+      catogorizedBlogs: [],
       isExpired: false,
       dialog: false,
     };
@@ -145,25 +146,13 @@ export default {
     HeaderNav,
   },
   async created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
-    await axios
-      .post(
-        'http://localhost:8080/admin/article/list',
-        {
-          article: {
-            state: 1,
-          },
+    await util
+      .post('http://localhost:8080/admin/article/list', {
+        article: {
+          state: 1,
         },
-        {
-          headers: {
-            token: this.token,
-          },
-        }
-      )
+      })
       .then((response) => {
-        console.log(response);
         if (response.data.message === 'Token is expired.' || response.data.message === 'Invalid Token.') {
           this.isExpired = true;
           this.dialog = true;
@@ -185,8 +174,29 @@ export default {
           });
         }
       });
+    this.getPopularBlogs();
+    this.catogorizedBlogs = this.blogs;
   },
-  methods: {},
+  methods: {
+    getPopularBlogs() {
+      this.popularBlogs = [...this.blogs];
+      this.popularBlogs.sort((a, b) => (a.likes < b.likes && 1) || -1);
+    },
+    getCategoryBlogs(category) {
+      this.page = 1;
+      if (category === 1) {
+        this.catogorizedBlogs = this.blogs.filter((blog) => {
+          return blog.tags === 'Technology';
+        });
+      } else if (category === 2) {
+        this.catogorizedBlogs = this.blogs.filter((blog) => {
+          return blog.tags === 'Agriculture';
+        });
+      } else {
+        this.catogorizedBlogs = this.blogs;
+      }
+    },
+  },
 };
 </script>
 
@@ -221,7 +231,7 @@ export default {
   }
   .nav-img {
     width: 100%;
-    min-height: 400px;
+    max-height: 400px;
   }
 }
 
