@@ -23,7 +23,7 @@
                       :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
                       alt="sample img"
                     />
-                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn } }">
+                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
                       <div class="popular-title">{{ blog.title }}</div>
                     </router-link>
                     <div class="user-info">
@@ -36,7 +36,7 @@
                       <div>
                         <div class="name">{{ blog.author }}</div>
 
-                        <div class="date">Likes: {{ blog.likes }}</div>
+                        <div class="likes">Likes: {{ blog.likes }}</div>
                       </div>
                     </div>
                     <div class="description">{{ blog.content.substring(0, 30) }}...</div>
@@ -81,7 +81,7 @@
                         </v-avatar>
                         <div>
                           <div class="name">{{ blog.author }}</div>
-                          <div class="date">Likes: {{ blog.likes }}</div>
+                          <div class="likes">Likes: {{ blog.likes }}</div>
                         </div>
                       </div>
                       <div class="description">{{ blog.content.substring(0, 120) }}...</div>
