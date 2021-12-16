@@ -44,11 +44,16 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
+      <v-list-item>
+        <v-btn class="ml-8 mt-8" text @click="logout"> Logout </v-btn>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
+import util from '../util';
+
 export default {
   data() {
     return {
@@ -72,6 +77,15 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
+  },
+  methods: {
+    logout() {
+      util.post('http://localhost:8080/admin/logout', {}).then(() => {
+        this.token = '';
+        localStorage.clear();
+        this.$router.push('/');
+      });
+    },
   },
 };
 </script>
