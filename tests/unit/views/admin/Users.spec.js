@@ -68,26 +68,4 @@ describe('Admin users page', () => {
       { headers: { token: '' } }
     );
   });
-
-  it('deleteRole() is triggered by button', async () => {
-    const button = wrapper.find('#deleteRole');
-    await button.trigger('click');
-
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/admin/auth/delete/role',
-      { rName: '' },
-      { headers: { token: '' } }
-    );
-  });
-
-  it('deletePermission() is triggered by button', async () => {
-    const button = wrapper.find('#deletePermission');
-    await button.trigger('click');
-
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/admin/auth/delete/permission',
-      { pName: '' },
-      { headers: { token: '' } }
-    );
-  });
 });
