@@ -11,7 +11,9 @@
           </v-radio-group>
           <v-text-field label="通知内容" :disabled="disabled" v-model="content"></v-text-field>
           <v-text-field label="通知跳转链接" :disabled="disabled" v-model="link"></v-text-field>
-          <v-btn :disabled="disabled" text color="blue">保存</v-btn>
+          <v-text-field label="通知开始时间" :disabled="disabled" v-model="startTime"></v-text-field>
+          <v-text-field label="通知结束时间" :disabled="disabled" v-model="endTime"></v-text-field>
+          <v-btn :disabled="disabled" text color="blue" @click="addNotification()">保存</v-btn>
         </v-card-text>
       </v-card>
     </v-main>
@@ -19,11 +21,19 @@
 </template>
 
 <script>
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
   data() {
-    return { value: 'notificationOn', disabled: false, content: '', link: '' };
+    return {
+      value: 'notificationOn',
+      disabled: false,
+      content: '',
+      link: '',
+      startTime: '',
+      endTime: '',
+    };
   },
   components: {
     AdminNav,
@@ -37,6 +47,20 @@ export default {
       } else {
         this.disabled = false;
       }
+    },
+    async addNotification() {
+      await util
+        .post('http://localhost:8080/admin/notify/add', {
+          type: 4,
+          content: `${this.content} @ ${this.link}!`,
+          uid: [],
+          state: 1,
+          beginTime: parseInt((new Date(this.startTime).getTime() / 1000).toFixed(0), 10).toString(),
+          endTime: parseInt((new Date(this.endTime).getTime() / 1000).toFixed(0), 10).toString(),
+        })
+        .then((response) => {
+          console.log(response);
+        });
     },
   },
 };

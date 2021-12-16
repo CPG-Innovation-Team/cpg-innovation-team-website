@@ -3,7 +3,7 @@
     <v-system-bar app color="purple">
       <v-row justify="center" align="center">
         <div class="notification">
-          News! Click on <a href="https://www.cpgroup.cn">www.cpgroup.cn</a> to check it out.
+          {{ notifications[notifications.length - 1].content.replace('"', '').replace('"', '') }}
         </div>
       </v-row>
     </v-system-bar>
@@ -140,6 +140,7 @@ export default {
     projects,
     login: false,
     username: '',
+    notifications: [{ content: '' }],
   }),
   props: ['color'],
   components: {
@@ -152,6 +153,7 @@ export default {
     if (localStorage.token) {
       this.token = localStorage.token;
     }
+    this.getNotification();
   },
   watch: {
     group() {
@@ -209,6 +211,14 @@ export default {
       util.post('http://localhost:8080/admin/logout', {}).then(() => {
         this.token = '';
         localStorage.clear();
+      });
+    },
+    getNotification() {
+      util.post('http://localhost:8080/admin/notify/query', {}).then((response) => {
+        this.notifications = [];
+        response.data.data.NotificationList.forEach((item) => {
+          this.notifications.push({ content: item.Content });
+        });
       });
     },
   },
