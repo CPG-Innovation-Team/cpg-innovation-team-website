@@ -43,7 +43,7 @@ describe('Admin users page', () => {
     expect(axios.post).toHaveBeenCalledWith(
       'http://localhost:8080/admin/user/query/list',
       { state: 1 },
-      { headers: { token: '' } }
+      { headers: { token: undefined } }
     );
   });
 
@@ -54,7 +54,7 @@ describe('Admin users page', () => {
     expect(axios.post).toHaveBeenCalledWith(
       'http://localhost:8080/admin/auth/add/role',
       { rName: '' },
-      { headers: { token: '' } }
+      { headers: { token: undefined } }
     );
   });
 
@@ -65,7 +65,7 @@ describe('Admin users page', () => {
     expect(axios.post).toHaveBeenCalledWith(
       'http://localhost:8080/admin/auth/add/permission',
       { pName: '', uri: '' },
-      { headers: { token: '' } }
+      { headers: { token: undefined } }
     );
   });
 });

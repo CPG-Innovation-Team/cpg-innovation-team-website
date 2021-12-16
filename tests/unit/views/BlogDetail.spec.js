@@ -33,7 +33,7 @@ describe('Blog detail page', () => {
         sn: NaN,
         content: '',
       },
-      { headers: { token: '' } }
+      { headers: { token: undefined } }
     );
   });
 });

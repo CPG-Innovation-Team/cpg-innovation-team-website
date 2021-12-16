@@ -46,7 +46,7 @@ describe('Admin profile page', () => {
       },
       {
         headers: {
-          token: '',
+          token: undefined,
         },
       }
     );

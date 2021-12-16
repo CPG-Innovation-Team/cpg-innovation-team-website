@@ -43,7 +43,7 @@ describe('Blog page', () => {
       },
       {
         headers: {
-          token: '',
+          token: undefined,
         },
       }
     );
