@@ -12,11 +12,14 @@ jobs:
       - checkout
       - node/install-packages
       - run:
-          name: lint
+          name: Run ESLint check
           command: npm run lint
       - run:
-          name: test
+          name: Run unit test
           command: npm run test:unit
+      - run:
+          name: Run E2E test
+          command: npm run test:e2e
   build-and-deploy-staging:
     docker:
       - image: cimg/node:14.17
