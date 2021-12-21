@@ -147,32 +147,27 @@ export default {
   },
   async created() {
     await util
-      .post('http://localhost:8080/admin/article/list', {
+      .post('http://localhost:8080/article/list', {
         article: {
           state: 1,
         },
       })
       .then((response) => {
-        if (response.data.message === 'Token is expired.' || response.data.message === 'Invalid Token.') {
-          this.isExpired = true;
-          this.dialog = true;
-        } else {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            this.blogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              viewNum: blog.ViewNum,
-              cmtNum: blog.ViewNum,
-              author: blog.Author,
-              sn: blog.Sn,
-              uid: blog.Uid,
-              state: blog.State,
-              cover: blog.Cover,
-              likes: blog.ZanNum,
-            });
+        response.data.data.ArticleDetailList.forEach((blog) => {
+          this.blogs.push({
+            title: blog.Title,
+            tags: blog.Tags,
+            content: blog.Content,
+            viewNum: blog.ViewNum,
+            cmtNum: blog.ViewNum,
+            author: blog.Author,
+            sn: blog.Sn,
+            uid: blog.Uid,
+            state: blog.State,
+            cover: blog.Cover,
+            likes: blog.ZanNum,
           });
-        }
+        });
       });
     this.getPopularBlogs();
     this.catogorizedBlogs = this.blogs;
