@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <div class="form-container">
+    <div class="form-container" data-test-id="login-form">
       <router-link to="/">
         <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
       </router-link>
