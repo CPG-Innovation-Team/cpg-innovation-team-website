@@ -57,9 +57,6 @@
                 categories[i - 1]
               }}</v-tab>
             </v-tabs>
-
-            <div v-if="isExpired">Please log in to see the contents.</div>
-
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
                 <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
@@ -100,25 +97,6 @@
             ></v-pagination>
           </v-container>
         </div>
-        <v-row justify="space-around">
-          <v-col cols="auto">
-            <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
-              <template>
-                <v-card>
-                  <v-card-text>
-                    <div class="text-h6 pa-6">Your login session has expired, please log in again.</div>
-                  </v-card-text>
-                  <v-card-actions class="justify-end">
-                    <v-btn text @click="dialog = false">Close</v-btn>
-                    <router-link class="login-btn mr-2" to="/login">
-                      <v-btn text>Log in</v-btn>
-                    </router-link>
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
-          </v-col>
-        </v-row>
       </div>
     </v-main>
   </div>
@@ -153,21 +131,23 @@ export default {
         },
       })
       .then((response) => {
-        response.data.data.ArticleDetailList.forEach((blog) => {
-          this.blogs.push({
-            title: blog.Title,
-            tags: blog.Tags,
-            content: blog.Content,
-            viewNum: blog.ViewNum,
-            cmtNum: blog.ViewNum,
-            author: blog.Author,
-            sn: blog.Sn,
-            uid: blog.Uid,
-            state: blog.State,
-            cover: blog.Cover,
-            likes: blog.ZanNum,
+        if (response.data.data.ArticleDetailList) {
+          response.data.data.ArticleDetailList.forEach((blog) => {
+            this.blogs.push({
+              title: blog.Title,
+              tags: blog.Tags,
+              content: blog.Content,
+              viewNum: blog.ViewNum,
+              cmtNum: blog.ViewNum,
+              author: blog.Author,
+              sn: blog.Sn,
+              uid: blog.Uid,
+              state: blog.State,
+              cover: blog.Cover,
+              likes: blog.ZanNum,
+            });
           });
-        });
+        }
       });
     this.getPopularBlogs();
     this.catogorizedBlogs = this.blogs;
