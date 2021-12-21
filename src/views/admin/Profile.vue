@@ -189,7 +189,7 @@ export default {
       this.username = localStorage.username;
     }
     util.post('http://localhost:8080/admin/user/query/info', { username: this.username }).then((response) => {
-      if (response.data.message === 'Invalid Token.') {
+      if (response.data.message === 'Invalid Token.' || response.data.message === 'Token is expired.') {
         this.$router.push('/login');
       } else if (response.data.data) {
         this.username = response.data.data.UserName;

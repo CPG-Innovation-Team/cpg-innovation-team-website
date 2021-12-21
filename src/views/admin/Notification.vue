@@ -59,7 +59,7 @@ export default {
           endTime: parseInt((new Date(this.endTime).getTime() / 1000).toFixed(0), 10).toString(),
         })
         .then((response) => {
-          if (response.data.message === 'Invalid Token.') {
+          if (response.data.message === 'Invalid Token.' || response.data.message === 'Token is expired.') {
             this.$router.push('/login');
           }
         });

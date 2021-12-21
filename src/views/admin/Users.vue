@@ -169,7 +169,7 @@ export default {
         state: 1,
       })
       .then((response) => {
-        if (response.data.message === 'Invalid Token.') {
+        if (response.data.message === 'Invalid Token.' || response.data.message === 'Token is expired.') {
           this.$router.push('/login');
         }
         response.data.data.forEach((user) => this.users.push(user));
