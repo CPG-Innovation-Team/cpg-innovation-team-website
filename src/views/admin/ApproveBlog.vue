@@ -158,7 +158,7 @@ export default {
   methods: {
     async getBlogList() {
       await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
-        if (response.data.message === 'Invalid Token.' || response.data.message === 'Token is expired.') {
+        if (util.checkValidToken(response) === false) {
           this.$router.push('/login');
         }
         const sn = Object.keys(response.data.data.ArticleMap);
