@@ -213,12 +213,14 @@ export default {
         localStorage.clear();
       });
     },
-    getNotification() {
-      util.post('http://localhost:8080/admin/notify/query', {}).then((response) => {
-        this.notifications = [];
-        response.data.data.NotificationList.forEach((item) => {
-          this.notifications.push({ content: item.Content });
-        });
+    async getNotification() {
+      await util.post('http://localhost:8080/admin/notify/query', {}).then((response) => {
+        this.notifications = [{ content: '' }];
+        if (response.data.data.NotificationList) {
+          response.data.data.NotificationList.forEach((item) => {
+            this.notifications.push({ content: item.Content });
+          });
+        }
       });
     },
   },
