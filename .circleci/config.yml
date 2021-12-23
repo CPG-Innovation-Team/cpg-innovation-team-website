@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Run E2E test
           command: |
-            apt-get install -y chromium-browser
+            sudo apt-get install -y chromium-browser
             npm run test:e2e
   build-and-deploy-staging:
     docker:
