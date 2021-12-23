@@ -84,7 +84,7 @@ export default {
             passwd: password,
           })
           .then((response) => {
-            if (response.data.message === 'OK') {
+            if (response.data.data.Token) {
               localStorage.token = response.data.data.Token;
               localStorage.username = this.username;
               this.userExisted = true;

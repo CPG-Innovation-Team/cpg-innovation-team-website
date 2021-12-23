@@ -92,7 +92,24 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn @click="getApproveArticle(item)"> 详情 </v-btn>
+          <v-btn text @click="getApproveArticle(item)"> 详情 </v-btn>
+        </template>
+      </v-data-table>
+
+      <v-data-table :headers="cheaders" :items="comments" sort-by="modified" class="elevation-1">
+        <template v-slot:top>
+          <v-toolbar flat color="white">
+            <v-toolbar-title>All Pending Comments</v-toolbar-title>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.content`]="{ item }">
+          <div class="text-truncate" style="max-width: 130px">
+            {{ item.content }}
+          </div>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn text @click="approveComment(item, true)"> 审核通过 </v-btn>
+          <v-btn text @click="approveComment(item, false)"> 审核不通过 </v-btn>
         </template>
       </v-data-table>
     </v-main>
@@ -107,12 +124,21 @@ export default {
   data() {
     return {
       blogs: [],
+      comments: [],
       headers: [
         {
           text: 'Title',
           value: 'title',
         },
         { text: 'Tags', value: 'tags' },
+        { text: 'Content', value: 'content' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      cheaders: [
+        {
+          text: 'uid',
+          value: 'uid',
+        },
         { text: 'Content', value: 'content' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
@@ -127,10 +153,14 @@ export default {
   },
   created() {
     this.getBlogList();
+    this.getCommentList();
   },
   methods: {
     async getBlogList() {
       await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
+        if (util.checkValidToken(response) === false) {
+          this.$router.push('/login');
+        }
         const sn = Object.keys(response.data.data.ArticleMap);
         let index = 0;
         Object.values(response.data.data.ArticleMap).forEach((blog) => {
@@ -144,6 +174,17 @@ export default {
             cover: blog.Cover,
           });
           index += 1;
+        });
+      });
+    },
+    async getCommentList() {
+      await util.post('http://localhost:8080/admin/review/query/comment/list', {}).then((response) => {
+        Object.values(response.data.data.CommentMap).forEach((comment) => {
+          this.comments.push({
+            content: comment.Content,
+            uid: comment.UID,
+            cid: comment.Cid,
+          });
         });
       });
     },
@@ -164,6 +205,11 @@ export default {
         this.blogs = [];
         this.getBlogList();
       }
+    },
+    async approveComment(item, bool) {
+      await util.post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: bool });
+      this.comments = [];
+      this.getCommentList();
     },
   },
 };

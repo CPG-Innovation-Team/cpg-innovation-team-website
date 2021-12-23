@@ -169,6 +169,9 @@ export default {
         state: 1,
       })
       .then((response) => {
+        if (util.checkValidToken(response) === false) {
+          this.$router.push('/login');
+        }
         response.data.data.forEach((user) => this.users.push(user));
       });
     this.getAllRoles();
