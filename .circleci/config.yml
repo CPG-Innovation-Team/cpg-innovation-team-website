@@ -19,7 +19,12 @@ jobs:
           command: npm run test:unit
       - run:
           name: Run E2E test
-          command: npm run test:e2e
+          command: |
+            apt-get install -yq libnss3 unzip openjdk-8-jre-headless xvfb libxi6 libgconf-2-4
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            curl -sS -o - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+            apt install -y ./google-chrome-stable_current_amd64.deb
+            npm run test:e2e
   build-and-deploy-staging:
     docker:
       - image: cimg/node:14.17
