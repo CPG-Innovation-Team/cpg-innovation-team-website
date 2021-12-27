@@ -147,7 +147,7 @@ export default {
       this.sn = this.$route.query.sn;
       await util
         .post('http://localhost:8080/admin/article/info', {
-          sn: parseInt(this.sn, 10),
+          sn: this.sn,
         })
         .then((response) => {
           this.blog = {
@@ -168,7 +168,7 @@ export default {
   methods: {
     async sendComment(comment) {
       await util.post('http://localhost:8080/comment/add', {
-        sn: parseInt(this.sn, 10),
+        sn: this.sn,
         content: comment,
       });
       this.comments = [];
@@ -191,7 +191,7 @@ export default {
     getComments() {
       util
         .post('http://localhost:8080/comment/list', {
-          sn: parseInt(this.sn, 10),
+          sn: this.sn,
         })
         .then((response) => {
           for (let i = 1; i <= Object.keys(response.data.data).length; i += 1) {
@@ -240,7 +240,7 @@ export default {
     likeArticle() {
       util
         .post('http://localhost:8080/like', {
-          sn: parseInt(this.sn, 10),
+          sn: this.sn,
         })
         .then(async () => {
           this.currentLikes = this.likes;

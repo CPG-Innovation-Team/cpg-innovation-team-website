@@ -23,7 +23,7 @@
                       :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
                       alt="sample img"
                     />
-                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn } }">
+                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
                       <div class="popular-title">{{ blog.title }}</div>
                     </router-link>
                     <div class="user-info">
@@ -36,7 +36,7 @@
                       <div>
                         <div class="name">{{ blog.author }}</div>
 
-                        <div class="date">Likes: {{ blog.likes }}</div>
+                        <div class="likes">Likes: {{ blog.likes }}</div>
                       </div>
                     </div>
                     <div class="description">{{ blog.content.substring(0, 30) }}...</div>
@@ -57,9 +57,6 @@
                 categories[i - 1]
               }}</v-tab>
             </v-tabs>
-
-            <div v-if="isExpired">Please log in to see the contents.</div>
-
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
                 <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
@@ -81,7 +78,7 @@
                         </v-avatar>
                         <div>
                           <div class="name">{{ blog.author }}</div>
-                          <div class="date">Likes: {{ blog.likes }}</div>
+                          <div class="likes">Likes: {{ blog.likes }}</div>
                         </div>
                       </div>
                       <div class="description">{{ blog.content.substring(0, 120) }}...</div>
@@ -100,25 +97,6 @@
             ></v-pagination>
           </v-container>
         </div>
-        <v-row justify="space-around">
-          <v-col cols="auto">
-            <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
-              <template>
-                <v-card>
-                  <v-card-text>
-                    <div class="text-h6 pa-6">Your login session has expired, please log in again.</div>
-                  </v-card-text>
-                  <v-card-actions class="justify-end">
-                    <v-btn text @click="dialog = false">Close</v-btn>
-                    <router-link class="login-btn mr-2" to="/login">
-                      <v-btn text>Log in</v-btn>
-                    </router-link>
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
-          </v-col>
-        </v-row>
       </div>
     </v-main>
   </div>
@@ -147,16 +125,13 @@ export default {
   },
   async created() {
     await util
-      .post('http://localhost:8080/admin/article/list', {
+      .post('http://localhost:8080/article/list', {
         article: {
           state: 1,
         },
       })
       .then((response) => {
-        if (response.data.message === 'Token is expired.' || response.data.message === 'Invalid Token.') {
-          this.isExpired = true;
-          this.dialog = true;
-        } else {
+        if (response.data.data.ArticleDetailList) {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,

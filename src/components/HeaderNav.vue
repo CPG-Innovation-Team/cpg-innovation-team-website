@@ -1,6 +1,13 @@
 <template>
   <div :style="cssProps">
-    <v-app-bar class="nav-container" app flat hide-on-scroll>
+    <v-system-bar app color="purple">
+      <v-row justify="center" align="center">
+        <div class="notification">
+          {{ notifications[notifications.length - 1].content.replace('"', '').replace('"', '') }}
+        </div>
+      </v-row>
+    </v-system-bar>
+    <v-app-bar class="nav-container" app flat>
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
 
       <router-link to="/">
@@ -133,6 +140,7 @@ export default {
     projects,
     login: false,
     username: '',
+    notifications: [{ content: '' }],
   }),
   props: ['color'],
   components: {
@@ -145,6 +153,7 @@ export default {
     if (localStorage.token) {
       this.token = localStorage.token;
     }
+    this.getNotification();
   },
   watch: {
     group() {
@@ -204,6 +213,16 @@ export default {
         localStorage.clear();
       });
     },
+    async getNotification() {
+      await util.post('http://localhost:8080/admin/notify/query', {}).then((response) => {
+        this.notifications = [{ content: '' }];
+        if (response.data.data.NotificationList) {
+          response.data.data.NotificationList.forEach((item) => {
+            this.notifications.push({ content: item.Content });
+          });
+        }
+      });
+    },
   },
   computed: {
     routers() {
@@ -227,6 +246,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notification {
+  color: white;
+  font-size: 15px;
+}
+
 .nav-container {
   background-color: rgba(0, 0, 0, 0) !important;
   .nav-menu {

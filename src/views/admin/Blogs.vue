@@ -187,15 +187,24 @@ export default {
     },
     async getArticleList() {
       await util
-        .post('http://localhost:8080/admin/article/list', {
-          article: {
-            state: 1,
+        .post(
+          'http://localhost:8080/admin/article/list',
+          {
+            article: {
+              state: 1,
+            },
           },
-        })
+          this.$router
+        )
         .then((response) => {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            this.updateBlogs(this.blogs, blog);
-          });
+          if (util.checkValidToken(response) === false) {
+            this.$router.push('/login');
+          }
+          if (response.data.data.ArticleDetailList) {
+            response.data.data.ArticleDetailList.forEach((blog) => {
+              this.updateBlogs(this.blogs, blog);
+            });
+          }
         });
     },
     async getDeletedArticleList() {
@@ -206,9 +215,11 @@ export default {
           },
         })
         .then((response) => {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            this.updateBlogs(this.deletedBlogs, blog);
-          });
+          if (response.data.data.ArticleDetailList) {
+            response.data.data.ArticleDetailList.forEach((blog) => {
+              this.updateBlogs(this.deletedBlogs, blog);
+            });
+          }
         });
     },
     updateBlogs(blogs, blog) {

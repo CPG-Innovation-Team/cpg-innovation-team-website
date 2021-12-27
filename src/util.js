@@ -29,4 +29,10 @@ export default {
         });
     });
   },
+  checkValidToken(response) {
+    if (response.data.code === 10003 || response.data.code === 10004) {
+      return false;
+    }
+    return true;
+  },
 };
