@@ -21,6 +21,7 @@ jobs:
           name: Run E2E test
           command: |
             sudo apt update
+            sudo apt-get install google-chrome-stable
             sudo apt-get install libnss3
             npm run test:e2e
   build-and-deploy-staging:
