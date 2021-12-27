@@ -30,7 +30,7 @@ describe('Blog detail page', () => {
     expect(axios.post).toHaveBeenCalledWith(
       'http://localhost:8080/comment/add',
       {
-        sn: NaN,
+        sn: '',
         content: '',
       },
       { headers: { token: undefined } }
