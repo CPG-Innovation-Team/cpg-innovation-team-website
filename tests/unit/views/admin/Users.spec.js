@@ -1,12 +1,9 @@
-import { shallowMount, mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Users from '@/views/admin/Users.vue';
 import VueRouter from 'vue-router';
-import Vuetify from 'vuetify';
 import Vue from 'vue';
-import axios from 'axios';
 
 const router = new VueRouter();
-const vuetify = new Vuetify();
 
 Vue.use(VueRouter);
 
@@ -15,7 +12,7 @@ jest.mock('axios', () => ({
 }));
 
 describe('Admin users page', () => {
-  let wrapper = shallowMount(Users, { router });
+  const wrapper = shallowMount(Users, { router });
   it('The adminNav is rendered', () => {
     expect(wrapper.exists()).toBe(true);
   });
@@ -33,39 +30,5 @@ describe('Admin users page', () => {
     expect(wrapper.vm.dialog).toBe(false);
     expect(wrapper.vm.successDialog).toBe(false);
     expect(wrapper.vm.failureDialog).toBe(false);
-  });
-
-  wrapper = mount(Users, { router, vuetify });
-  it('save() is triggered by button', async () => {
-    const button = wrapper.find('#save');
-    await button.trigger('click');
-
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/admin/user/query/list',
-      { state: 1 },
-      { headers: { token: undefined } }
-    );
-  });
-
-  it('saveRole() is triggered by button', async () => {
-    const button = wrapper.find('#saveRole');
-    await button.trigger('click');
-
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/admin/auth/add/role',
-      { rName: '' },
-      { headers: { token: undefined } }
-    );
-  });
-
-  it('savePermission() is triggered by button', async () => {
-    const button = wrapper.find('#savePermission');
-    await button.trigger('click');
-
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://localhost:8080/admin/auth/add/permission',
-      { pName: '', uri: '' },
-      { headers: { token: undefined } }
-    );
   });
 });
