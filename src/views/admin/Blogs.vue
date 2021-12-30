@@ -200,7 +200,7 @@ export default {
           if (util.checkValidToken(response) === false) {
             this.$router.push('/login');
           }
-          if (response.data.data.ArticleDetailList) {
+          if (response.data.data) {
             response.data.data.ArticleDetailList.forEach((blog) => {
               this.updateBlogs(this.blogs, blog);
             });
@@ -215,7 +215,7 @@ export default {
           },
         })
         .then((response) => {
-          if (response.data.data.ArticleDetailList) {
+          if (response.data.data) {
             response.data.data.ArticleDetailList.forEach((blog) => {
               this.updateBlogs(this.deletedBlogs, blog);
             });

@@ -13,6 +13,8 @@ jest.mock('axios', () => ({
   post: jest.fn(() => Promise.resolve({ data: {} })),
 }));
 
+document.body.setAttribute('data-app', true);
+
 describe('User login page', () => {
   it('Axios is rendered', () => {
     const wrapper = shallowMount(Login);
