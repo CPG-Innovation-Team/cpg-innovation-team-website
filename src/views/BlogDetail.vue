@@ -21,7 +21,7 @@
         <v-col>
           <div class="blog-container">
             <div class="blog-content">
-              {{ blog.content }}
+              <div v-html="blog.content"></div>
             </div>
           </div>
           <v-divider></v-divider>
