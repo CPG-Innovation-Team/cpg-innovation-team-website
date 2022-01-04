@@ -11,9 +11,37 @@
           </v-radio-group>
           <v-text-field label="通知内容" :disabled="disabled" v-model="content"></v-text-field>
           <v-text-field label="通知跳转链接" :disabled="disabled" v-model="link"></v-text-field>
-          <v-text-field label="通知开始时间" :disabled="disabled" v-model="startTime"></v-text-field>
-          <v-text-field label="通知结束时间" :disabled="disabled" v-model="endTime"></v-text-field>
-          <v-btn :disabled="disabled" text color="blue" @click="addNotification()">保存</v-btn>
+          <v-row align="center" justify="center">
+            <v-col>
+              <v-date-picker
+                v-model="startTime"
+                :min="new Date().toISOString().substr(0, 10)"
+                max="2023-12-31"
+                :disabled="disabled"
+                class="mt-4"
+              ></v-date-picker>
+            </v-col>
+            <v-col>
+              <v-text-field label="通知开始时间" disabled v-model="startTime"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row align="center" justify="center">
+            <v-col>
+              <v-col>
+                <v-date-picker
+                  v-model="endTime"
+                  :min="startTime"
+                  max="2023-12-31"
+                  :disabled="disabled"
+                  class="mt-4"
+                ></v-date-picker>
+              </v-col>
+            </v-col>
+            <v-col>
+              <v-text-field label="通知结束时间" disabled v-model="endTime"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-btn class="mt-4" :disabled="disabled" text color="blue" @click="addNotification()">保存</v-btn>
         </v-card-text>
       </v-card>
     </v-main>
@@ -55,8 +83,8 @@ export default {
           content: `${this.content} @ ${this.link}!`,
           uid: [],
           state: 1,
-          beginTime: parseInt((new Date(this.startTime).getTime() / 1000).toFixed(0), 10).toString(),
-          endTime: parseInt((new Date(this.endTime).getTime() / 1000).toFixed(0), 10).toString(),
+          beginTime: (Date.parse(`${this.startTime} 00:00:00`) / 1000).toString(),
+          endTime: (Date.parse(`${this.endTime} 23:59:59`) / 1000).toString(),
         })
         .then((response) => {
           if (util.checkValidToken(response) === false) {
