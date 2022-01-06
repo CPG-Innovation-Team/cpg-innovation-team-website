@@ -7,13 +7,13 @@
           <v-card-title> Update Article </v-card-title>
           <v-card-text>
             <v-row class="ma-8">
-              <v-text-field v-model="title" required hide-details dense outlined label="title"></v-text-field>
+              <v-text-field v-model="blog.title" required hide-details dense outlined label="title"></v-text-field>
             </v-row>
             <v-row class="ma-8">
-              <v-text-field v-model="cover" required hide-details dense outlined label="cover"></v-text-field>
+              <v-text-field v-model="blog.cover" required hide-details dense outlined label="cover"></v-text-field>
             </v-row>
             <v-row class="ma-8">
-              <v-select :items="tagList" v-model="tags" clearable outlined label="tags"></v-select>
+              <v-select :items="tagList" v-model="blog.tags" clearable outlined label="tags"></v-select>
             </v-row>
             <v-row class="ma-8">
               <editor
@@ -31,7 +31,7 @@
                         alignleft aligncenter alignright alignjustify | \
                         bullist numlist outdent indent | removeformat | help',
                 }"
-                v-model="content"
+                v-model="blog.content"
               />
             </v-row>
           </v-card-text>
@@ -54,12 +54,9 @@ import AdminNav from '../../components/AdminNav.vue';
 export default {
   data() {
     return {
-      valid: '',
-      title: '',
-      cover: '',
-      content: '',
-      tag: '',
-      tags: ['All', 'Technology', 'Agriculture'],
+      blog: '',
+      state: '',
+      tagList: ['All', 'Technology', 'Agriculture'],
       dialog: false,
     };
   },
@@ -67,21 +64,44 @@ export default {
     AdminNav,
     Editor,
   },
+  async created() {
+    if (this.$route.query) {
+      this.sn = this.$route.query.sn;
+      this.state = this.$route.query.state;
+      await util
+        .post('http://localhost:8080/admin/article/info', {
+          sn: this.sn,
+        })
+        .then((response) => {
+          this.blog = {
+            title: response.data.data.Title,
+            tags: response.data.data.Tags,
+            content: response.data.data.Content,
+            author: response.data.data.Author,
+            cover: response.data.data.Cover,
+            state: response.data.data.State,
+            updatedAt: response.data.data.UpdatedAt,
+            createdAt: response.data.data.CreatedAt,
+          };
+        });
+    }
+  },
   methods: {
-    submit() {
-      util.post('http://localhost:8080/admin/article/add', {
-        title: this.title,
-        cover: this.cover,
-        content: this.content,
-        tags: this.tag,
-      });
-      this.dialog = true;
-    },
-    closeDialog() {
-      this.dialog = false;
+    close() {
       this.$router.push({
         path: '/admin/blogs',
       });
+    },
+    async updateArticle() {
+      await util.post('http://localhost:8080/admin/article/update', {
+        sn: this.sn,
+        title: this.blog.title,
+        cover: this.blog.cover,
+        content: this.blog.content,
+        tags: this.blog.tags,
+        state: this.state,
+      });
+      this.close();
     },
   },
 };
