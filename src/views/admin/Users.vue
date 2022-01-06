@@ -172,7 +172,9 @@ export default {
         if (util.checkValidToken(response) === false) {
           this.$router.push('/login');
         }
-        response.data.data.forEach((user) => this.users.push(user));
+        if (response.data.data) {
+          response.data.data.forEach((user) => this.users.push(user));
+        }
       });
     this.getAllRoles();
     this.getAllPermissions();
