@@ -233,7 +233,6 @@ export default {
     },
     async getAllRoles() {
       await util.post('http://localhost:8080/admin/auth/query/roles', {}).then((response) => {
-        console.log(response);
         this.allRoles = response.data.data;
         console.log(this.allRoles);
         this.roles = [];
@@ -244,7 +243,6 @@ export default {
     },
     async getAllPermissions() {
       await util.post('http://localhost:8080/admin/auth/query/permissions', {}).then((response) => {
-        console.log(response);
         this.allPermissions = response.data.data;
         this.permissions = [];
         Object.keys(response.data.data).forEach((permission) => {
