@@ -19,6 +19,7 @@ import CreateBlog from './views/admin/CreateBlog.vue';
 import ApproveBlog from './views/admin/ApproveBlog.vue';
 import Profile from './views/admin/Profile.vue';
 import Notification from './views/admin/Notification.vue';
+import Permission from './views/admin/Permission.vue';
 
 Vue.use(VueRouter);
 
@@ -117,6 +118,11 @@ const routes = [
     path: '/admin/notification',
     name: 'Notification',
     component: Notification,
+  },
+  {
+    path: '/admin/permission',
+    name: 'Permission',
+    component: Permission,
   },
 ];
 
