@@ -39,7 +39,6 @@
                   <label>Content</label>
                 </v-col>
                 <v-col>
-                  <!-- <v-textarea v-model="content" required hide-details dense outlined></v-textarea> -->
                   <editor
                     apiKey="ze4be1i4t0rjy9pd5jmsfo4lhhmk39ok66qpxhs4cqhsg7b0"
                     :init="{
