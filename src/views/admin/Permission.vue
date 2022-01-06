@@ -33,7 +33,6 @@
               <v-col cols="12">
                 新增权限
                 <v-text-field v-model="permission" label="permission name"></v-text-field>
-                <!-- <v-text-field v-model="uri" label="uri"></v-text-field> -->
                 <v-select :items="uris" v-model="uri" label="uri" clearable></v-select>
                 <v-btn color="blue darken-1" text @click="savePermission(permission, uri)"> Save </v-btn>
               </v-col>
