@@ -130,46 +130,10 @@ export default {
     this.getAllPermissions();
   },
   methods: {
-    editItem(item) {
-      this.dialog = true;
-      this.editedItem = item;
-      this.username = item.username;
-    },
     close() {
       this.dialog = false;
       this.successDialog = false;
       this.failureDialog = false;
-    },
-    async save() {
-      this.close();
-      await util
-        .post('http://localhost:8080/admin/user/query/info', {
-          username: this.username,
-        })
-        .then((response) => {
-          this.uid = response.data.data.UID;
-        });
-      if (this.selectedRole !== '' && this.selectedRole !== null) {
-        await util
-          .post('http://localhost:8080/admin/auth/role/add/user', {
-            rName: this.selectedRole,
-            uid: this.uid,
-          })
-          .then((response) => {
-            this.setDialogStatus(response);
-          });
-      }
-
-      if (this.selectedRemoveRole !== '' && this.selectedRemoveRole !== null) {
-        await util
-          .post('http://localhost:8080/admin/auth/role/remove/user', {
-            rName: this.selectedRemoveRole,
-            uid: this.uid,
-          })
-          .then((response) => {
-            this.setDialogStatus(response);
-          });
-      }
     },
     async saveRole(role) {
       await util
@@ -233,7 +197,6 @@ export default {
     async getAllRoles() {
       await util.post('http://localhost:8080/admin/auth/query/roles', {}).then((response) => {
         this.allRoles = response.data.data;
-        console.log(this.allRoles);
         this.roles = [];
         Object.keys(response.data.data).forEach((role) => {
           this.roles.push(role);
