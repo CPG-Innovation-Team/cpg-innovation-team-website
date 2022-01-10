@@ -26,6 +26,26 @@
 
             <v-row>
               <v-col cols="12">
+                <v-card-title>所有角色及对应权限</v-card-title>
+                <div v-for="(permissions, role) in allRoles" :key="role.id">
+                  <v-card-subtitle> * 角色名称： {{ role }}</v-card-subtitle>
+                  <div class="display-content" v-for="permission in permissions" :key="permission.id">
+                    {{ getPermissionName(permission) }}
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-card-title>所有权限</v-card-title>
+                <div class="display-content" v-for="(permission, i) in permissions" :key="i">
+                  {{ i + 1 }}. {{ permission }}
+                </div>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
                 新增角色
                 <v-text-field v-model="role" label="role"></v-text-field>
                 <v-btn color="blue darken-1" text @click="saveRole(role)"> Save </v-btn>
@@ -59,25 +79,9 @@
             <v-row>
               <v-col cols="12">
                 角色添加权限
-                <v-select :items="roles" label="add role" v-model="rname" clearable></v-select>
-                <v-select :items="permissions" label="add permission" v-model="pname" clearable></v-select>
+                <v-select :items="roles" label="select role" v-model="rname" clearable></v-select>
+                <v-select :items="permissions" label="select permission" v-model="pname" clearable></v-select>
                 <v-btn color="blue darken-1" text @click="savePermissionToRole(rname, pname)"> Save </v-btn>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
-                <v-card-title>所有角色</v-card-title>
-                <div v-for="(roles, i) in allRoles" :key="roles.id">
-                  <v-card-subtitle> * 角色名称： {{ i }}</v-card-subtitle>
-                  <div v-for="role in roles" :key="role.id">{{ role }}</div>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12">
-                <v-card-title>所有权限</v-card-title>
-                <div v-for="(permission, i) in allPermissions" :key="permission.id">{{ i }} ：{{ permission }}</div>
               </v-col>
             </v-row>
           </v-card-text>
@@ -125,7 +129,6 @@ export default {
           this.$router.push('/login');
         }
       });
-    this.uris = ['/admin/article/add', '/admin/article/delete', '/admin/article/info', '/admin/article/list'];
     this.getAllRoles();
     this.getAllPermissions();
   },
@@ -173,6 +176,7 @@ export default {
             this.failureDialog = true;
           }
         });
+      this.getAllRoles();
     },
     async deleteRole(deleteRoleName) {
       await util
@@ -210,6 +214,7 @@ export default {
         Object.keys(response.data.data).forEach((permission) => {
           this.permissions.push(permission);
         });
+        this.uris = Object.values(this.allPermissions);
       });
     },
     setDialogStatus(response) {
@@ -218,6 +223,9 @@ export default {
         this.failureDialog = true;
       }
     },
+    getPermissionName(permission) {
+      return Object.keys(this.allPermissions).find((key) => this.allPermissions[key] === permission);
+    },
   },
 };
 </script>
@@ -225,5 +233,9 @@ export default {
 <style lang="scss" scoped>
 .layout {
   display: flex;
+}
+
+.display-content {
+  margin-left: 5%;
 }
 </style>
