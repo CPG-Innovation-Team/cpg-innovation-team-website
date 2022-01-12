@@ -262,11 +262,13 @@ export default {
           },
         })
         .then((response) => {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            if (blog.Sn.toString() === this.sn) {
-              this.likes = blog.ZanNum;
-            }
-          });
+          if (response.data.data) {
+            response.data.data.ArticleDetailList.forEach((blog) => {
+              if (blog.Sn.toString() === this.sn) {
+                this.likes = blog.ZanNum;
+              }
+            });
+          }
         });
     },
     replyIsClicked(n) {
