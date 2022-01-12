@@ -15,6 +15,7 @@
     "codecov": "^3.8.3",
     "core-js": "^3.6.5",
     "rollbar": "^2.24.0",
+    "sanitize-html": "^2.6.1",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
     "vue-chartjs": "^3.5.1",
