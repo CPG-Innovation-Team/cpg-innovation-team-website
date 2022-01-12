@@ -79,9 +79,6 @@ export default {
             content: response.data.data.Content,
             author: response.data.data.Author,
             cover: response.data.data.Cover,
-            state: response.data.data.State,
-            updatedAt: response.data.data.UpdatedAt,
-            createdAt: response.data.data.CreatedAt,
           };
         });
     }
