@@ -21,7 +21,7 @@
         <v-col>
           <div class="blog-container">
             <div class="blog-content">
-              <div v-html="blog.content"></div>
+              <div v-html="$sanitize(blog.content)"></div>
             </div>
           </div>
           <v-divider></v-divider>

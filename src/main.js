@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import BaiduMap from 'vue-baidu-map';
+import sanitizeHTML from 'sanitize-html';
 import CountryFlag from 'vue-country-flag';
 import Rollbar from 'rollbar';
 import App from './App.vue';
@@ -7,6 +8,7 @@ import router from './router';
 import vuetify from './plugins/vuetify';
 import i18n from './plugins/vue-i18n';
 
+Vue.prototype.$sanitize = sanitizeHTML;
 Vue.config.productionTip = false;
 
 if (process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN) {
