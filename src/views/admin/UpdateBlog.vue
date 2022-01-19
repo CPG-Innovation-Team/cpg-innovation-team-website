@@ -16,23 +16,7 @@
               <v-select :items="tagList" v-model="blog.tags" clearable outlined label="tags"></v-select>
             </v-row>
             <v-row class="ma-8">
-              <editor
-                apiKey="ze4be1i4t0rjy9pd5jmsfo4lhhmk39ok66qpxhs4cqhsg7b0"
-                :init="{
-                  height: 500,
-                  menubar: false,
-                  plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code help wordcount',
-                  ],
-                  toolbar:
-                    'undo redo | formatselect | bold italic backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        bullist numlist outdent indent | removeformat | help',
-                }"
-                v-model="blog.content"
-              />
+              <Editor :content="blog.content" v-model="content" />
             </v-row>
           </v-card-text>
           <v-card-actions>
@@ -47,7 +31,7 @@
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue';
+import Editor from '../../components/Editor.vue';
 import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
@@ -58,6 +42,7 @@ export default {
       state: '',
       tagList: ['All', 'Technology', 'Agriculture'],
       dialog: false,
+      content: '',
     };
   },
   components: {
@@ -94,7 +79,7 @@ export default {
         sn: this.sn,
         title: this.blog.title,
         cover: this.blog.cover,
-        content: this.blog.content,
+        content: this.content,
         tags: this.blog.tags,
         state: this.state,
       });

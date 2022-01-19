@@ -39,23 +39,7 @@
                   <label>Content</label>
                 </v-col>
                 <v-col>
-                  <editor
-                    apiKey="ze4be1i4t0rjy9pd5jmsfo4lhhmk39ok66qpxhs4cqhsg7b0"
-                    :init="{
-                      height: 500,
-                      menubar: false,
-                      plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount',
-                      ],
-                      toolbar:
-                        'undo redo | formatselect | bold italic backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        bullist numlist outdent indent | removeformat | help',
-                    }"
-                    v-model="content"
-                  />
+                  <Editor v-model="content" />
                 </v-col>
               </v-row>
 
@@ -91,7 +75,7 @@
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue';
+import Editor from '../../components/Editor.vue';
 import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
