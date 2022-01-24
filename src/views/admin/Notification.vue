@@ -11,9 +11,90 @@
           </v-radio-group>
           <v-text-field label="通知内容" :disabled="disabled" v-model="content"></v-text-field>
           <v-text-field label="通知跳转链接" :disabled="disabled" v-model="link"></v-text-field>
-          <v-text-field label="通知开始时间" :disabled="disabled" v-model="startTime"></v-text-field>
-          <v-text-field label="通知结束时间" :disabled="disabled" v-model="endTime"></v-text-field>
-          <v-btn :disabled="disabled" text color="blue" @click="addNotification()">保存</v-btn>
+          <v-row>
+            <v-col>
+              <v-menu
+                v-model="fromDateMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field label="开始日期" readonly :value="startDate" v-on="on"></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="startDate"
+                  no-title
+                  @input="fromDateMenu = false"
+                  :min="new Date().toISOString().substr(0, 10)"
+                  max="2023-12-31"
+                ></v-date-picker>
+              </v-menu> </v-col
+            ><v-col>
+              <v-menu
+                v-model="fromTimeMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field label="开始时间" readonly :value="startTime" v-on="on"></v-text-field>
+                </template>
+                <v-time-picker v-model="startTime" format="24hr" @input="fromTimeMenu = false"></v-time-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-menu
+                v-model="toDateMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field label="结束日期" readonly :value="endDate" v-on="on"></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="endDate"
+                  no-title
+                  @input="toDateMenu = false"
+                  :min="startDate"
+                  max="2023-12-31"
+                ></v-date-picker>
+              </v-menu> </v-col
+            ><v-col>
+              <v-menu
+                v-model="toTimeMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field label="结束时间" readonly :value="endTime" v-on="on"></v-text-field>
+                </template>
+                <v-time-picker
+                  v-model="endTime"
+                  format="24hr"
+                  @input="toTimeMenu = false"
+                  :min="minTime()"
+                ></v-time-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
+          <v-btn class="mt-4" :disabled="disabled" text color="blue" @click="addNotification()">保存</v-btn>
         </v-card-text>
       </v-card>
     </v-main>
@@ -31,8 +112,14 @@ export default {
       disabled: false,
       content: '',
       link: '',
-      startTime: '',
-      endTime: '',
+      startTime: null,
+      endTime: null,
+      startDate: null,
+      endDate: null,
+      fromDateMenu: false,
+      fromTimeMenu: false,
+      toDateMenu: false,
+      toTimeMenu: false,
     };
   },
   components: {
@@ -55,14 +142,20 @@ export default {
           content: `${this.content} @ ${this.link}!`,
           uid: [],
           state: 1,
-          beginTime: parseInt((new Date(this.startTime).getTime() / 1000).toFixed(0), 10).toString(),
-          endTime: parseInt((new Date(this.endTime).getTime() / 1000).toFixed(0), 10).toString(),
+          beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
+          endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
         })
         .then((response) => {
           if (util.checkValidToken(response) === false) {
             this.$router.push('/login');
           }
         });
+    },
+    minTime() {
+      if (this.startDate === this.endDate) {
+        return this.startTime;
+      }
+      return null;
     },
   },
 };

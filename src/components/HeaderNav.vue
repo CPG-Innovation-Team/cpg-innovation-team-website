@@ -1,6 +1,6 @@
 <template>
   <div :style="cssProps">
-    <v-system-bar app color="purple">
+    <v-system-bar v-if="notifications[notifications.length - 1].content !== ''" app color="purple">
       <v-row justify="center" align="center">
         <div class="notification">
           {{ notifications[notifications.length - 1].content.replace('"', '').replace('"', '') }}
