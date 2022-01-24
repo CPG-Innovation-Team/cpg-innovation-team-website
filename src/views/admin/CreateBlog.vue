@@ -39,7 +39,7 @@
                   <label>Content</label>
                 </v-col>
                 <v-col>
-                  <v-textarea v-model="content" required hide-details dense outlined></v-textarea>
+                  <Editor v-model="content" />
                 </v-col>
               </v-row>
 
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import Editor from '../../components/Editor.vue';
 import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
@@ -92,6 +93,7 @@ export default {
   },
   components: {
     AdminNav,
+    Editor,
   },
   methods: {
     submit() {
