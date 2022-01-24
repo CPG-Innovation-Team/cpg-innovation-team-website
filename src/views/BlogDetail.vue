@@ -21,7 +21,7 @@
         <v-col>
           <div class="blog-container">
             <div class="blog-content">
-              {{ blog.content }}
+              <div v-dompurify-html="blog.content"></div>
             </div>
           </div>
           <v-divider></v-divider>
@@ -264,11 +264,13 @@ export default {
           },
         })
         .then((response) => {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            if (blog.Sn.toString() === this.sn) {
-              this.likes = blog.ZanNum;
-            }
-          });
+          if (response.data.data) {
+            response.data.data.ArticleDetailList.forEach((blog) => {
+              if (blog.Sn.toString() === this.sn) {
+                this.likes = blog.ZanNum;
+              }
+            });
+          }
         });
     },
     replyIsClicked(n) {
@@ -322,7 +324,6 @@ export default {
 
 .blog-content {
   font-size: 15px;
-  white-space: pre-line;
   line-height: 28px;
   margin-bottom: 80px;
 }

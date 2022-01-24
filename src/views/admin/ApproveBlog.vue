@@ -43,7 +43,7 @@
                     <v-row> <v-card-title> 文章内容 </v-card-title></v-row>
                     <v-row>
                       <div class="blog-content">
-                        {{ currentArticle.content }}
+                        <div v-dompurify-html="currentArticle.content"></div>
                       </div>
                     </v-row>
                   </v-col>
@@ -88,7 +88,7 @@
         </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
-            {{ item.content }}
+            <div v-dompurify-html="item.content"></div>
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
@@ -222,7 +222,6 @@ export default {
 
 .blog-content {
   font-size: 15px;
-  white-space: pre-line;
   line-height: 28px;
   margin-bottom: 80px;
 }

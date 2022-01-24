@@ -27,38 +27,6 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="updateDialog" max-width="500px" fullscreen>
-              <v-card>
-                <v-card-title> Update Article </v-card-title>
-                <v-card-text>
-                  <v-row class="ma-8">
-                    <v-text-field v-model="title" required hide-details dense outlined label="title"></v-text-field>
-                  </v-row>
-                  <v-row class="ma-8">
-                    <v-text-field v-model="cover" required hide-details dense outlined label="cover"></v-text-field>
-                  </v-row>
-                  <v-row class="ma-8">
-                    <v-select :items="tagList" v-model="tags" clearable outlined label="tags"></v-select>
-                  </v-row>
-                  <v-row class="ma-8">
-                    <v-textarea
-                      v-model="content"
-                      required
-                      hide-details
-                      dense
-                      outlined
-                      auto-grow
-                      label="content"
-                    ></v-textarea>
-                  </v-row>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-                  <v-btn color="blue darken-1" text @click="updateArticle"> Save </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
             <v-spacer></v-spacer>
             <router-link to="/admin/blogs/create">
               <v-btn color="primary" dark class="mb-2"> New Blog </v-btn>
@@ -71,7 +39,9 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small class="ml-4" @click="editUpdateArticle(item)"> mdi-pencil </v-icon>
+          <router-link :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }">
+            <v-icon small class="ml-4"> mdi-pencil </v-icon>
+          </router-link>
           <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
@@ -83,6 +53,11 @@
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
           </v-toolbar>
+        </template>
+        <template v-slot:[`item.content`]="{ item }">
+          <div class="text-truncate" style="max-width: 130px">
+            {{ item.content }}
+          </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
@@ -102,8 +77,6 @@ export default {
   },
   data: () => ({
     deleteDialog: false,
-    updateDialog: false,
-    editArticle: '',
     searchText: '',
     headers: [
       {
@@ -120,11 +93,6 @@ export default {
     ],
     blogs: [],
     deletedBlogs: [],
-    title: '',
-    content: '',
-    cover: '',
-    tags: '',
-    tagList: ['All', 'Technology', 'Agriculture'],
   }),
   async created() {
     this.getArticleList();
@@ -149,32 +117,10 @@ export default {
     },
     close() {
       this.deleteDialog = false;
-      this.updateDialog = false;
     },
     editDeleteArticle(item) {
       this.deleteDialog = true;
       this.editArticle = item;
-    },
-    editUpdateArticle(item) {
-      this.updateDialog = true;
-      this.editArticle = item;
-      this.title = this.editArticle.title;
-      this.cover = this.editArticle.cover;
-      this.tags = this.editArticle.tags;
-      this.content = this.editArticle.content;
-    },
-    async updateArticle() {
-      await util.post('http://localhost:8080/admin/article/update', {
-        sn: this.editArticle.sn,
-        title: this.title,
-        cover: this.cover,
-        content: this.content,
-        tags: this.tags,
-        state: this.editArticle.state.toString(),
-      });
-      this.updateDialog = false;
-      this.blogs = [];
-      this.getArticleList();
     },
     async deleteArticle() {
       await util.post('http://localhost:8080/admin/article/delete', {
