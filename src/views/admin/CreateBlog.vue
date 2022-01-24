@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <AdminNav />
-    <v-main>
+    <v-main data-test-id="create-blog-page">
       <v-container fluid>
         <v-row class="mt-12">
           <v-col cols="12" sm="2"> </v-col>
@@ -12,7 +12,14 @@
                   <label>Title</label>
                 </v-col>
                 <v-col>
-                  <v-text-field v-model="title" required hide-details dense outlined></v-text-field>
+                  <v-text-field
+                    v-model="title"
+                    required
+                    hide-details
+                    dense
+                    outlined
+                    data-test-id="blog-title-input"
+                  ></v-text-field>
                 </v-col>
               </v-row>
 
@@ -21,7 +28,14 @@
                   <span>Cover</span>
                 </v-col>
                 <v-col>
-                  <v-text-field v-model="cover" required hide-details dense outlined></v-text-field>
+                  <v-text-field
+                    v-model="cover"
+                    required
+                    hide-details
+                    dense
+                    outlined
+                    data-test-id="blog-cover-input"
+                  ></v-text-field>
                 </v-col>
               </v-row>
 
@@ -30,7 +44,7 @@
                   <label>Tag</label>
                 </v-col>
                 <v-col>
-                  <v-select :items="tags" v-model="tag" clearable outlined></v-select>
+                  <v-select :items="tags" v-model="tag" clearable outlined data-test-id="blog-tag-input"></v-select>
                 </v-col>
               </v-row>
 
@@ -46,7 +60,7 @@
               <v-row>
                 <v-col class="text-right">
                   <v-btn color="normal" class="mr-4" @click="$router.go(-1)">Back</v-btn>
-                  <v-btn color="primary" @click="submit">Submit</v-btn>
+                  <v-btn color="primary" @click="submit" data-test-id="create-blog-submit">Submit</v-btn>
                 </v-col>
               </v-row>
             </v-form>
@@ -59,7 +73,7 @@
                         <div class="text-h6 pa-6">提交成功，进入审核状态</div>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="closeDialog()">Confirm</v-btn>
+                        <v-btn text @click="closeDialog()" data-test-id="confirm-button">Confirm</v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>

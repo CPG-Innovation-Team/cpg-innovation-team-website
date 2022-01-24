@@ -3,6 +3,8 @@ node_modules
 /dist
 /coverage
 
+/tests/e2e/reports/
+chromedriver.log
 
 # local env files
 .env.local
