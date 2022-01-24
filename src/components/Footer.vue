@@ -20,7 +20,7 @@
       </v-row>
 
       <v-row class="row" justify="center">
-        <span class="mr-5">Copyright &#169; 2021</span>
+        <span class="mr-5">Copyright &#169; 2022</span>
         <span class="ml-5">Terms & Conditions</span>
       </v-row>
     </v-container>
