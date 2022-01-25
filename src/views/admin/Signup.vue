@@ -86,17 +86,13 @@ export default {
     },
     async register() {
       if (this.password === this.confirmedPwd) {
-        await axios
-          .post('http://localhost:8080/register', {
-            username: this.username,
-            nickname: this.nickname,
-            email: this.email,
-            passCode: this.passCode,
-            passwd: this.password,
-          })
-          .then((response) => {
-            console.log(response);
-          });
+        await axios.post('http://localhost:8080/register', {
+          username: this.username,
+          nickname: this.nickname,
+          email: this.email,
+          passCode: this.passCode,
+          passwd: this.password,
+        });
       }
     },
   },

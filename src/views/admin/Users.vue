@@ -174,18 +174,22 @@ export default {
     },
     async getAllRoles() {
       await util.post('http://localhost:8080/admin/auth/query/roles', {}).then((response) => {
-        this.roles = [];
-        Object.keys(response.data.data).forEach((role) => {
-          this.roles.push(role);
-        });
+        if (response.data.data) {
+          this.roles = [];
+          Object.keys(response.data.data).forEach((role) => {
+            this.roles.push(role);
+          });
+        }
       });
     },
     async getAllPermissions() {
       await util.post('http://localhost:8080/admin/auth/query/permissions', {}).then((response) => {
-        this.permissions = [];
-        Object.keys(response.data.data).forEach((permission) => {
-          this.permissions.push(permission);
-        });
+        if (response.data.data) {
+          this.permissions = [];
+          Object.keys(response.data.data).forEach((permission) => {
+            this.permissions.push(permission);
+          });
+        }
       });
     },
     setDialogStatus(response) {

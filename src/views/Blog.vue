@@ -131,7 +131,7 @@ export default {
         },
       })
       .then((response) => {
-        if (response.data.data.ArticleDetailList) {
+        if (response.data.data) {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,
