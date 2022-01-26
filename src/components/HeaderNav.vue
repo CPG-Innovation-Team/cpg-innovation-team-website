@@ -15,8 +15,8 @@
       ></v-app-bar-nav-icon>
 
       <router-link to="/">
-        <img v-if="!color" class="ml-8" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
-        <img v-else class="ml-8" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
+        <img v-if="!color" class="ml-8 mt-2" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
+        <img v-else class="ml-8 mt-2" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
       </router-link>
 
       <v-spacer></v-spacer>
@@ -274,6 +274,16 @@ export default {
   .language-setting {
     display: flex;
     align-self: center;
+  }
+}
+
+.navbar {
+  .nav-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    margin-top: 10%;
+    margin-left: 2%;
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
+    <HeaderNav :color="'black'" />
     <div class="video-container">
-      <HeaderNav />
       <video class="video" src="../assets/video-example.mp4" width="100%" autoplay loop preload="auto" muted></video>
       <div class="video-overlay">
         <div class="video-content">
@@ -86,6 +86,7 @@ export default {
 <style lang="scss" scoped>
 .video-container {
   position: relative;
+  margin-top: 10vh;
 
   .video {
     position: relative;
@@ -117,7 +118,7 @@ export default {
 .team-title {
   text-align: center;
   margin-bottom: 50px;
-  margin-top: 80px;
+  margin-top: 10%;
   font-size: 30px;
   font-weight: bold;
   color: black;
@@ -135,7 +136,7 @@ export default {
     margin-bottom: 50px;
     margin-left: 50px;
     margin-right: 50px;
-    margin-top: 60px;
+    margin-top: 5%;
 
     .team-profile-image {
       width: 160px;

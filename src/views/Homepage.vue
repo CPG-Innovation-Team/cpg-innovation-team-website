@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HeaderNav />
     <div class="header-container">
       <img class="nav-img" src="../assets/img-carousel2.jpg" alt="header image" />
 
@@ -9,7 +10,6 @@
         <p class="subtitle">正大集团股权投资事业部，关注产业链、科技、健康、消费四大投资主题。</p>
         <v-btn color="#FFC60D" depressed>浏览项目</v-btn>
       </div>
-      <HeaderNav />
     </div>
 
     <v-main>
@@ -80,24 +80,23 @@ export default {
 <style lang="scss" scoped>
 .header-container {
   position: relative;
-  height: 400px;
+  height: auto;
   .header-text {
     color: white;
     position: absolute;
     top: 25%;
     left: 8%;
-    width: 42%;
     .title-en {
-      font-size: 1.2rem;
+      font-size: 15px;
       font-weight: bold;
       margin-bottom: 6px;
     }
     .title-cn {
-      font-size: 2.6rem;
+      font-size: 35px;
       margin: 0;
     }
     .subtitle {
-      font-size: 1.2rem;
+      font-size: 15px;
       font-weight: 900;
     }
   }
