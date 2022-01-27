@@ -58,11 +58,11 @@
                             <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
                             <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
                           </v-col>
-                          <v-btn color="primary" @click="replyIsClicked(n)">Reply</v-btn>
+                          <v-btn color="primary" @click="clickReply(n)">Reply</v-btn>
                         </v-list-item-action>
                       </v-row>
                       <v-subheader v-if="comments[n - 1].replies.length > 0"> Replies </v-subheader>
-                      <div v-show="comment_index === n" :key="n">
+                      <div v-show="comment_index === n && comments[n - 1].replyIsClicked === true" :key="n">
                         <v-textarea
                           class="ma-4"
                           v-model="reply"
@@ -111,9 +111,7 @@
                 outlined
                 label="comment"
               ></v-textarea>
-              <v-btn id="sendComment" class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)">
-                Send
-              </v-btn>
+              <v-btn class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)"> Send </v-btn>
             </v-card>
           </div></v-col
         >
@@ -167,26 +165,30 @@ export default {
   },
   methods: {
     async sendComment(comment) {
-      await util.post('http://localhost:8080/comment/add', {
-        sn: this.sn,
-        content: comment,
-      });
-      this.comments = [];
-      await this.getComments();
-      this.comment = '';
+      if (comment.trim() !== '') {
+        await util.post('http://localhost:8080/comment/add', {
+          sn: this.sn,
+          content: comment,
+        });
+        this.comments = [];
+        await this.getComments();
+        this.comment = '';
+      }
     },
     async sendReply(cid, reply) {
-      await util
-        .post('http://localhost:8080/comment/reply', {
-          commentId: cid,
-          content: reply,
-        })
-        .then(() => {
-          this.comments = [];
-          this.getComments();
-          this.reply = '';
-          this.comment_index = -1;
-        });
+      if (reply.trim() !== '') {
+        await util
+          .post('http://localhost:8080/comment/reply', {
+            commentId: cid,
+            content: reply,
+          })
+          .then(() => {
+            this.comments = [];
+            this.getComments();
+            this.reply = '';
+            this.comment_index = -1;
+          });
+      }
     },
     getComments() {
       util
@@ -212,6 +214,7 @@ export default {
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
               likeIsClicked: false,
+              replyIsClicked: false,
               replies: response.data.data[i].ReplyList,
             });
           }
@@ -248,7 +251,7 @@ export default {
           if (this.currentLikes === this.likes) {
             util
               .post('http://localhost:8080/like/cancel', {
-                sn: parseInt(this.sn, 10),
+                sn: this.sn,
               })
               .then(() => {
                 this.getArticleLikes();
@@ -273,8 +276,14 @@ export default {
           }
         });
     },
-    replyIsClicked(n) {
+    clickReply(n) {
       this.comment_index = n;
+      for (let i = 0; i < this.comments.length; i += 1) {
+        if (i !== n - 1) {
+          this.comments[i].replyIsClicked = false;
+        }
+      }
+      this.comments[n - 1].replyIsClicked = !this.comments[n - 1].replyIsClicked;
     },
   },
 };
