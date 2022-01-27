@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HeaderNav />
     <div class="header-container">
       <img class="nav-img" src="https://picsum.photos/2000/" alt="header image" />
 
@@ -7,7 +8,6 @@
         <p class="title-cn">博客</p>
         <p class="subtitle">正大创新项目中心博客</p>
       </div>
-      <HeaderNav />
     </div>
 
     <v-main class="pt-0">
@@ -18,29 +18,21 @@
             <v-row class="justify-center">
               <div v-for="(blog, index) in popularBlogs.slice(0, 4)" :key="index">
                 <v-col>
-                  <div class="popular-item">
-                    <img
-                      :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                      alt="sample img"
-                    />
-                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
-                      <div class="popular-title">{{ blog.title }}</div>
-                    </router-link>
-                    <div class="user-info">
-                      <v-avatar class="avatar">
-                        <img
-                          :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                          alt="sample img"
-                        />
-                      </v-avatar>
-                      <div>
-                        <div class="name">{{ blog.author }}</div>
-
+                  <v-card flat color="transparent">
+                    <div class="popular-item">
+                      <img
+                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                        alt="sample img"
+                      />
+                      <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                        <div class="popular-title">{{ blog.title }}</div>
+                      </router-link>
+                      <div class="user-info">
+                        <div class="name">作者：{{ blog.author }}</div>
                         <div class="likes">Likes: {{ blog.likes }}</div>
                       </div>
                     </div>
-                    <div class="description">{{ blog.content.substring(0, 30) }}...</div>
-                  </div>
+                  </v-card>
                 </v-col>
               </div>
             </v-row>
@@ -51,7 +43,7 @@
           <v-container>
             <h1>All Posts</h1>
 
-            <v-tabs class="mb-5" v-model="category" background-color="transparent" color="black">
+            <v-tabs class="mb-4" v-model="category" background-color="transparent" color="black">
               <v-tabs-slider></v-tabs-slider>
               <v-tab v-for="i in categories.length" :key="i" @click="getCategoryBlogs(i - 1)">{{
                 categories[i - 1]
@@ -60,30 +52,39 @@
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
                 <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
-                  <v-row>
-                    <v-col cols="3">
-                      <img
-                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                        alt="sample img"
-                      />
-                    </v-col>
+                  <v-card class="mt-4 pl-4" flat>
                     <v-col>
-                      <div class="recent-title">{{ blog.title }}</div>
-                      <div class="user-info">
-                        <v-avatar class="avatar">
-                          <img
-                            :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                            alt="sample img"
-                          />
-                        </v-avatar>
-                        <div>
-                          <div class="name">{{ blog.author }}</div>
-                          <div class="likes">Likes: {{ blog.likes }}</div>
-                        </div>
-                      </div>
-                      <div class="description">{{ blog.content.substring(0, 120) }}...</div>
+                      <v-row row-wrap>
+                        <v-card-text>
+                          <v-row no-gutters>
+                            <v-col cols="4">
+                              <v-img
+                                class="recent-img"
+                                :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                                alt="sample img"
+                              />
+                            </v-col>
+                            <v-col cols="8">
+                              <v-row class="recent-user-info">
+                                <v-avatar>
+                                  <img
+                                    :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                                    alt="sample img"
+                                  />
+                                </v-avatar>
+                                <p class="recent-user-author">{{ blog.author }}</p>
+                              </v-row>
+                              <v-row>
+                                <v-card-text class="recent-blog-content"
+                                  >{{ blog.content.substring(0, 100) }}...</v-card-text
+                                >
+                              </v-row>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-row>
                     </v-col>
-                  </v-row>
+                  </v-card>
                 </div>
               </v-tab-item>
             </v-tabs-items>
@@ -184,11 +185,11 @@ export default {
   .header-text {
     color: white;
     position: absolute;
-    width: 600px;
-    left: 50%;
-    margin-left: -300px;
-    top: 200px;
-    margin-top: -80px;
+    left: 0;
+    right: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+    top: 35%;
     text-align: center;
     .title-en {
       font-size: 1.2rem;
@@ -220,7 +221,8 @@ export default {
         border-radius: 5px;
       }
       .popular-title {
-        font-size: 1rem;
+        margin-left: 5%;
+        font-size: 20px;
         font-weight: 650;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -229,32 +231,7 @@ export default {
         text-overflow: ellipsis;
       }
       .user-info {
-        display: flex;
-        padding: 8px 0;
-        .avatar {
-          height: 38px !important;
-          width: 38px !important;
-          min-width: 38px !important;
-          margin-right: 8px;
-          align-self: center;
-        }
-        .name {
-          font-size: 0.96rem;
-          font-weight: 500;
-        }
-        .date {
-          font-size: 0.88rem;
-          font-weight: 380;
-        }
-      }
-      .description {
-        font-size: 0.88rem;
-        font-weight: 400;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        margin-left: 5%;
       }
     }
   }
@@ -262,9 +239,7 @@ export default {
   .recent-container {
     padding: 40px 0;
     background: rgb(248, 247, 247);
-    img {
-      border-radius: 5px;
-    }
+
     .recent-title {
       font-size: 1rem;
       font-weight: 650;
@@ -274,33 +249,22 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .user-info {
+    .recent-img {
+      border-radius: 5px;
+      max-width: 200px;
+    }
+    .recent-user-info {
+      margin-top: 2%;
+      margin-left: 10px;
       display: flex;
-      padding: 8px 0;
-      .avatar {
-        height: 38px !important;
-        width: 38px !important;
-        min-width: 38px !important;
-        margin-right: 8px;
-        align-self: center;
-      }
-      .name {
-        font-size: 0.96rem;
-        font-weight: 500;
-      }
-      .date {
-        font-size: 0.88rem;
-        font-weight: 380;
+      align-items: center;
+      .recent-user-author {
+        margin-left: 2%;
+        margin-top: 2%;
       }
     }
-    .description {
-      font-size: 0.88rem;
-      font-weight: 400;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .recent-blog-content {
+      margin-left: 10px;
     }
   }
 }
