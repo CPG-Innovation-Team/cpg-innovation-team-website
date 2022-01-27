@@ -9,8 +9,26 @@
             <v-dialog v-model="approveDialog" fullscreen>
               <v-card>
                 <v-col class="text-right pr-16 pt-8">
-                  <v-btn color="blue darken-1" text @click="confirmDialog = true"> 审核通过 </v-btn>
-                  <v-btn color="blue darken-1" text @click="confirmDialog = true"> 审核不通过 </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="
+                      confirmDialog = true;
+                      approveAction = true;
+                    "
+                  >
+                    审核通过
+                  </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="
+                      confirmDialog = true;
+                      approveAction = false;
+                    "
+                  >
+                    审核不通过
+                  </v-btn>
                 </v-col>
                 <v-card-text class="ml-16">
                   <v-col>
@@ -25,7 +43,7 @@
                     <v-row> <v-card-title> 文章内容 </v-card-title></v-row>
                     <v-row>
                       <div class="blog-content">
-                        {{ currentArticle.content }}
+                        <div v-dompurify-html="currentArticle.content"></div>
                       </div>
                     </v-row>
                   </v-col>
@@ -43,6 +61,7 @@
                           @click="
                             confirmDialog = false;
                             approveDialog = false;
+                            approveAction = false;
                           "
                         >
                           Cancel
@@ -53,6 +72,7 @@
                           @click="
                             confirmDialog = false;
                             approveDialog = false;
+                            confirmAction();
                           "
                         >
                           Confirm
@@ -68,11 +88,28 @@
         </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
+            <div v-dompurify-html="item.content"></div>
+          </div>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn text @click="getApproveArticle(item)"> 详情 </v-btn>
+        </template>
+      </v-data-table>
+
+      <v-data-table :headers="cheaders" :items="comments" sort-by="modified" class="elevation-1">
+        <template v-slot:top>
+          <v-toolbar flat color="white">
+            <v-toolbar-title>All Pending Comments</v-toolbar-title>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.content`]="{ item }">
+          <div class="text-truncate" style="max-width: 130px">
             {{ item.content }}
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn @click="approveArticle(item)"> 详情 </v-btn>
+          <v-btn text @click="approveComment(item, true)"> 审核通过 </v-btn>
+          <v-btn text @click="approveComment(item, false)"> 审核不通过 </v-btn>
         </template>
       </v-data-table>
     </v-main>
@@ -80,14 +117,14 @@
 </template>
 
 <script>
-import axios from 'axios';
+import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
 export default {
   data() {
     return {
-      token: '',
       blogs: [],
+      comments: [],
       headers: [
         {
           text: 'Title',
@@ -97,52 +134,82 @@ export default {
         { text: 'Content', value: 'content' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
+      cheaders: [
+        {
+          text: 'uid',
+          value: 'uid',
+        },
+        { text: 'Content', value: 'content' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
       approveDialog: false,
       confirmDialog: false,
       currentArticle: '',
+      approveAction: false,
     };
   },
   components: {
     AdminNav,
   },
   created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     this.getBlogList();
+    this.getCommentList();
   },
   methods: {
     async getBlogList() {
-      await axios
-        .post(
-          'http://localhost:8080/admin/article/list',
-          {
-            article: {
-              state: 1,
-            },
-          },
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            this.blogs.push({
-              title: blog.Title,
-              tags: blog.Tags,
-              content: blog.Content,
-              author: blog.Author,
-              uid: blog.Uid,
-              cover: blog.Cover,
-            });
+      await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
+        if (util.checkValidToken(response) === false) {
+          this.$router.push('/login');
+        }
+        const sn = Object.keys(response.data.data.ArticleMap);
+        let index = 0;
+        Object.values(response.data.data.ArticleMap).forEach((blog) => {
+          this.blogs.push({
+            sn: sn[index],
+            title: blog.Title,
+            tags: blog.Tags,
+            content: blog.Content,
+            author: blog.Author,
+            uid: blog.Uid,
+            cover: blog.Cover,
+          });
+          index += 1;
+        });
+      });
+    },
+    async getCommentList() {
+      await util.post('http://localhost:8080/admin/review/query/comment/list', {}).then((response) => {
+        Object.values(response.data.data.CommentMap).forEach((comment) => {
+          this.comments.push({
+            content: comment.Content,
+            uid: comment.UID,
+            cid: comment.Cid,
           });
         });
+      });
     },
-    approveArticle(item) {
+    getApproveArticle(item) {
       this.approveDialog = true;
       this.currentArticle = item;
+    },
+    async confirmAction() {
+      if (this.approveAction === true) {
+        await util.post('http://localhost:8080/admin/review/article', { sn: this.currentArticle.sn, state: true });
+        this.blogs = [];
+        this.getBlogList();
+      } else {
+        await util.post('http://localhost:8080/admin/review/article', {
+          sn: parseInt(this.currentArticle.sn, 10),
+          state: false,
+        });
+        this.blogs = [];
+        this.getBlogList();
+      }
+    },
+    async approveComment(item, bool) {
+      await util.post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: bool });
+      this.comments = [];
+      this.getCommentList();
     },
   },
 };
@@ -155,7 +222,6 @@ export default {
 
 .blog-content {
   font-size: 15px;
-  white-space: pre-line;
   line-height: 28px;
   margin-bottom: 80px;
 }

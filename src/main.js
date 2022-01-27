@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import BaiduMap from 'vue-baidu-map';
+import VueDOMPurifyHTML from 'vue-dompurify-html';
 import CountryFlag from 'vue-country-flag';
 import Rollbar from 'rollbar';
 import App from './App.vue';
@@ -9,16 +10,20 @@ import i18n from './plugins/vue-i18n';
 
 Vue.config.productionTip = false;
 
-Vue.prototype.$rollbar = new Rollbar({
-  accessToken: process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-});
+Vue.use(VueDOMPurifyHTML);
 
-Vue.config.errorHandler = (err, vm) => {
-  vm.$rollbar.error(err);
-  throw err;
-};
+if (process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN) {
+  Vue.prototype.$rollbar = new Rollbar({
+    accessToken: process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
+
+  Vue.config.errorHandler = (err, vm) => {
+    vm.$rollbar.error(err);
+    throw err;
+  };
+}
 
 // add the application key for accessing baidu map api
 Vue.use(BaiduMap, {

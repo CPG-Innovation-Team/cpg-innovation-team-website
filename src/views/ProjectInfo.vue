@@ -1,16 +1,16 @@
 <template>
   <div>
+    <HeaderNav />
     <div class="header-container">
       <img class="nav-img" src="../assets/img-carousel1.jpg" alt="header image" />
 
       <div class="header-text">
-        <p class="title-en">Creater your best ides</p>
+        <p class="title-en">Create your best ideas</p>
         <p class="subtitle">
           Resultant to some fault complete, annoying loves was of are idea painful denouncing who itself - it are enjoy.
         </p>
         <v-btn color="#FFC60D" depressed>Start now</v-btn>
       </div>
-      <HeaderNav />
     </div>
 
     <v-main>
@@ -115,14 +115,15 @@ export default {
 .header-container {
   position: relative;
   height: 400px;
+  width: 100%;
   .header-text {
     color: white;
     position: absolute;
-    width: 600px;
-    left: 50%;
-    margin-left: -300px;
-    top: 50%;
-    margin-top: -80px;
+    left: 0;
+    right: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+    top: 40%;
     text-align: center;
     .title-en {
       font-size: 2rem;

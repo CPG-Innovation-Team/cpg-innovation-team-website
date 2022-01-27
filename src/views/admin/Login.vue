@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <div class="form-container">
+    <div class="form-container" data-test-id="login-form">
       <router-link to="/">
         <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
       </router-link>
@@ -33,9 +33,19 @@
           Don't have an account? <router-link to="/signup">Sign up</router-link>
         </p>
 
-        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="login(username, password)"
-          >Login</v-btn
-        >
+        <v-btn color="primary" style="float: right; margin-left: 100%" @click="login(username, password)">Login</v-btn>
+        <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
+          <template>
+            <v-card>
+              <v-card-text>
+                <div class="text-h6 pa-6">输入信息有误，请重试</div>
+              </v-card-text>
+              <v-card-actions class="justify-end">
+                <v-btn text @click="dialog = false">Confirm</v-btn>
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
       </v-form>
     </div>
   </div>
@@ -50,6 +60,8 @@ export default {
       valid: false,
       username: '',
       password: '',
+      dialog: false,
+      userExisted: false,
       rules: {
         required: (v) => !!v || 'Required.',
         emailMatch: () => `The email and password you entered don't match`,
@@ -58,26 +70,30 @@ export default {
   },
   methods: {
     validate() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.userExisted === true) {
         this.$router.push('/');
       }
     },
     async login(username, password) {
-      console.log(password);
-      await axios
-        .post('http://localhost:8080/login', {
-          username,
-          passwd: password,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.data.message === 'OK') {
-            localStorage.token = response.data.data.Token;
-            localStorage.username = this.username;
-          } else {
-            console.log('incorrect password');
-          }
-        });
+      if (this.username === '' || this.password === '') {
+        this.dialog = true;
+      } else {
+        await axios
+          .post('http://localhost:8080/login', {
+            username,
+            passwd: password,
+          })
+          .then((response) => {
+            if (response.data.data.Token) {
+              localStorage.token = response.data.data.Token;
+              localStorage.username = this.username;
+              this.userExisted = true;
+              this.$router.push('/');
+            } else {
+              this.dialog = true;
+            }
+          });
+      }
     },
   },
 };

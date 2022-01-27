@@ -1,11 +1,22 @@
 <template>
   <div :style="cssProps">
-    <v-app-bar class="nav-container" app flat hide-on-scroll>
-      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = true"></v-app-bar-nav-icon>
+    <v-system-bar v-if="notifications[notifications.length - 1].content !== ''" app color="purple">
+      <v-row justify="center" align="center">
+        <div class="notification">
+          {{ notifications[notifications.length - 1].content.replace('"', '').replace('"', '') }}
+        </div>
+      </v-row>
+    </v-system-bar>
+    <v-app-bar class="nav-container" app flat>
+      <v-app-bar-nav-icon
+        class="hidden-md-and-up"
+        @click.stop="drawer = true"
+        data-test-id="menu-expand-icon"
+      ></v-app-bar-nav-icon>
 
       <router-link to="/">
-        <img v-if="!color" class="ml-8" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
-        <img v-else class="ml-8" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
+        <img v-if="!color" class="ml-8 mt-2" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
+        <img v-else class="ml-8 mt-2" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
       </router-link>
 
       <v-spacer></v-spacer>
@@ -20,18 +31,18 @@
       <v-spacer></v-spacer>
 
       <router-link v-if="!token" class="login-btn mr-2" to="/login">
-        <v-btn outlined color="white"> {{ $t('navbar.login') }} </v-btn>
+        <v-btn outlined color="white" data-test-id="login-btn"> {{ $t('navbar.login') }} </v-btn>
       </router-link>
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
           <div v-if="token" class="language-setting" v-bind="attrs" v-on="on">
-            <v-avatar size="36">
+            <v-avatar size="36" data-test-id="user-avatar">
               <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
             </v-avatar>
           </div>
         </template>
-        <v-list dense>
+        <v-list dense data-test-id="user-menu">
           <v-subheader>{{ username }}</v-subheader>
           <v-list-item-group color="primary">
             <router-link to="/admin/profile" style="text-decoration: none">
@@ -40,7 +51,7 @@
                   <v-icon>mdi-account</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title>My Blogs</v-list-item-title>
+                  <v-list-item-title data-test-id="user-blogs">My Blogs</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </router-link>
@@ -69,12 +80,12 @@
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
           <div class="language-setting" v-bind="attrs" v-on="on">
-            <country-flag class="flag" :country="flag" />
+            <country-flag class="flag" :country="flag" data-test-id="country-flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
         </template>
         <v-list dense>
-          <v-list-item-group color="primary" test="language">
+          <v-list-item-group color="primary" data-test-id="language-menu">
             <v-list-item class="pr-2 pl-2">
               <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
                 <div class="language-selection">
@@ -111,8 +122,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import CountryFlag from 'vue-country-flag';
+import util from '../util';
 
 const projects = require('../data/project');
 const jobs = require('../data/career');
@@ -133,18 +144,20 @@ export default {
     projects,
     login: false,
     username: '',
+    notifications: [{ content: '' }],
   }),
   props: ['color'],
   components: {
     CountryFlag,
   },
   created() {
-    if (localStorage.token) {
-      this.token = localStorage.token;
-    }
     if (localStorage.username) {
       this.username = localStorage.username;
     }
+    if (localStorage.token) {
+      this.token = localStorage.token;
+    }
+    this.getNotification();
   },
   watch: {
     group() {
@@ -199,21 +212,20 @@ export default {
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
     logout() {
-      axios
-        .post(
-          'http://localhost:8080/admin/logout',
-          {},
-          {
-            headers: {
-              token: this.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          this.token = '';
-          localStorage.clear();
-        });
+      util.post('http://localhost:8080/admin/logout', {}).then(() => {
+        this.token = '';
+        localStorage.clear();
+      });
+    },
+    async getNotification() {
+      await util.post('http://localhost:8080/admin/notify/query', {}).then((response) => {
+        this.notifications = [{ content: '' }];
+        if (response.data.data.NotificationList) {
+          response.data.data.NotificationList.forEach((item) => {
+            this.notifications.push({ content: item.Content });
+          });
+        }
+      });
     },
   },
   computed: {
@@ -238,6 +250,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notification {
+  color: white;
+  font-size: 15px;
+}
+
 .nav-container {
   background-color: rgba(0, 0, 0, 0) !important;
   .nav-menu {
@@ -257,6 +274,16 @@ export default {
   .language-setting {
     display: flex;
     align-self: center;
+  }
+}
+
+.navbar {
+  .nav-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    margin-top: 10%;
+    margin-left: 2%;
   }
 }
 

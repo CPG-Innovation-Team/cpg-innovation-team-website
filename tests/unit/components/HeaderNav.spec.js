@@ -47,4 +47,14 @@ describe('Navigation bar works on mobile and international languages works', () 
     drawer.trigger('click');
     expect(wrapper.vm.drawer).toBe(true);
   });
+
+  it('getSearchItems() returns the array of titles', () => {
+    const arr = [
+      { id: '001', title: '1' },
+      { id: '002', title: '2' },
+      { id: '002', title: '3' },
+    ];
+    const output = ['1', '2', '3'];
+    expect(wrapper.vm.getSearchItems(arr)).toEqual(output);
+  });
 });

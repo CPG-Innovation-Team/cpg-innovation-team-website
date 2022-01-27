@@ -46,9 +46,9 @@
       </div>
 
       <div class="feedback-form">
-        <div class="pl-3" style="font-size: 1.12rem; font-weight: 700">Write to us</div>
         <v-form>
           <v-container>
+            <div class="mb-4" style="font-size: 1.12rem; font-weight: 700">Write to us</div>
             <v-row>
               <v-col cols="6" class="pb-0">
                 <v-text-field dense hide-details label="Name" outlined></v-text-field>
@@ -62,8 +62,8 @@
                 <v-textarea dense hide-details outlined label="Website" hint="Hint text"></v-textarea>
               </v-col>
             </v-row>
+            <v-btn depressed class="mt-4" color="black"><span style="color: white">Send</span></v-btn>
           </v-container>
-          <v-btn depressed class="ml-3" color="black"><span style="color: white">Send</span></v-btn>
         </v-form>
       </div>
     </v-main>
@@ -94,7 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  margin: 40px 150px;
+  margin: 40px;
   .about-title {
     font-size: 1.35rem;
     font-weight: 800;
@@ -111,7 +111,7 @@ export default {
 
 .feedback-form {
   margin: 80px auto;
-  width: 550px;
+  width: 80%;
 }
 
 .address-container {
