@@ -35,4 +35,7 @@ export default {
     }
     return true;
   },
+  escapeHTML(html) {
+    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
+  },
 };
