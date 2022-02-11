@@ -34,7 +34,9 @@
                   <v-list-item :key="n">
                     <v-col>
                       <v-row>
-                        <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
+                        <v-list-item-avatar>
+                          <v-img src="https://randomuser.me/api/portraits/men/81.jpg"></v-img>
+                        </v-list-item-avatar>
 
                         <v-list-item-content>
                           <v-list-item-title>{{ comments[n - 1].uid }}</v-list-item-title>
