@@ -57,8 +57,9 @@
             <v-expand-transition>
               <v-card v-show="project.show">
                 <v-card-text>{{ project.intro }}</v-card-text>
-                <v-card-subtitle>项目</v-card-subtitle>
-                <v-chip v-for="(link, j) in project.list" :key="j" color="blue" class="chip-link"> {{ link }} </v-chip>
+                <v-chip v-for="(item, j) in project.list" :key="j" color="blue" class="chip-link">
+                  <a :href="item.link">{{ item.name }}</a>
+                </v-chip>
               </v-card>
             </v-expand-transition>
           </v-row>
@@ -166,6 +167,7 @@ h1 {
   .header {
     color: white;
     margin-top: 5%;
+    text-shadow: 1px 1px 2px black;
   }
   .chip-show {
     float: right;
@@ -176,6 +178,11 @@ h1 {
     color: white;
     margin: 10px;
     padding: 10px 20px;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
   }
 }
 
