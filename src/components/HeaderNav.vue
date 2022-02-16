@@ -7,7 +7,7 @@
         </div>
       </v-row>
     </v-system-bar>
-    <v-app-bar class="nav-container" app flat>
+    <v-app-bar class="nav-container" app flat :style="backgroundStyle">
       <v-app-bar-nav-icon
         class="hidden-md-and-up"
         @click.stop="drawer = true"
@@ -145,6 +145,7 @@ export default {
     login: false,
     username: '',
     notifications: [{ content: '' }],
+    backgroundOpacity: 0,
   }),
   props: ['color'],
   components: {
@@ -158,6 +159,8 @@ export default {
       this.token = localStorage.token;
     }
     this.getNotification();
+
+    window.addEventListener('scroll', this.handleScroll);
   },
   watch: {
     group() {
@@ -227,6 +230,16 @@ export default {
         }
       });
     },
+
+    handleScroll() {
+      if (window.scrollY === 0) {
+        this.backgroundOpacity = 0;
+      } else if (window.scrollY > 240) {
+        this.backgroundOpacity = 0.5;
+      } else {
+        this.backgroundOpacity = window.scrollY / 480;
+      }
+    },
   },
   computed: {
     routers() {
@@ -245,6 +258,12 @@ export default {
       }
       return { '--themeColor': 'white' };
     },
+    backgroundStyle() {
+      if (this.color) {
+        return { backgroundColor: `rgba(255, 255, 255, ${this.backgroundOpacity * 1.5} !important` };
+      }
+      return { backgroundColor: `rgba(0, 0, 0, ${this.backgroundOpacity} !important` };
+    },
   },
 };
 </script>
@@ -256,7 +275,7 @@ export default {
 }
 
 .nav-container {
-  background-color: rgba(0, 0, 0, 0) !important;
+  background-color: rgba(0, 0, 0, 0);
   .nav-menu {
     button {
       padding: 0 16px;
