@@ -5,15 +5,17 @@
       <img class="nav-img" src="../assets/img-carousel1.jpg" alt="header image" />
 
       <div class="header-text">
-        <p class="title-en">创新团队项目</p>
-        <p class="subtitle"></p>
-        <v-btn color="#FFC60D" depressed>探索更多</v-btn>
+        <p class="title-en">Create your best ideas</p>
+        <p class="subtitle">
+          Resultant to some fault complete, annoying loves was of are idea painful denouncing who itself - it are enjoy.
+        </p>
+        <v-btn color="#FFC60D" depressed>Start now</v-btn>
       </div>
     </div>
 
     <v-main>
       <v-container class="mb-10">
-        <v-img :src="projectBanner" id="project-head-img" max-height="400" />
+        <v-img src="https://picsum.photos/500/300?image=91" id="project-head-img" max-height="400" />
 
         <v-container>
           <v-row class="hidden-sm-and-down">
@@ -21,14 +23,15 @@
               <v-hover v-slot="{ hover }">
                 <v-card class="mx-auto" color="grey lighten-4" max-width="600">
                   <v-card-title class="text-h4">{{ project.title }}</v-card-title>
-                  <v-img :aspect-ratio="1" :src="project.img">
+                  <v-img :aspect-ratio="9 / 16" :src="project.img">
                     <v-slide-x-transition>
-                      <div v-if="hover" class="d-flex project-list" style="height: 100%; width: 100%">
+                      <div v-if="hover" class="d-flex white project-list" style="height: 100%; width: 100%">
                         <v-card>
-                          <v-card-text class="product-intro">{{ project.intro }}</v-card-text>
+                          <v-card-subtitle style="width: 80%; margin: auto"> 介绍 </v-card-subtitle>
+                          <v-card-text style="width: 80%; margin: auto">{{ project.intro }}</v-card-text>
                           <ul>
-                            <li v-for="(item, j) in project.list" :key="j">
-                              <a :href="item.link">{{ item.name }}</a>
+                            <li v-for="(link, j) in project.list" :key="j">
+                              <a>{{ link }}</a>
                             </li>
                           </ul>
                         </v-card>
@@ -56,6 +59,7 @@
 
             <v-expand-transition>
               <v-card v-show="project.show">
+                <v-card-subtitle>介绍</v-card-subtitle>
                 <v-card-text>{{ project.intro }}</v-card-text>
                 <v-card-subtitle>项目</v-card-subtitle>
                 <v-chip v-for="(link, j) in project.list" :key="j" color="blue" class="chip-link"> {{ link }} </v-chip>
@@ -71,36 +75,32 @@
 <script>
 import HeaderNav from '../components/HeaderNav.vue';
 
-const projectBanner = require('../assets/img-project-banner.jpg');
-const cpxBanner = require('../assets/img-cpx-banner.jpg');
-const cpcoinBanner = require('../assets/img-cpcoin-banner.png');
-const cppulseBanner = require('../assets/img-cppulse-banner.webp');
-
 export default {
   name: 'Project',
   data: () => ({
-    projectBanner,
     projects: [
       {
-        title: 'CPX',
-        img: cpxBanner,
-        list: [{ name: '点击前往', link: 'https://cpx.cpgroup.top' }],
+        title: 'Lorem Ipsum',
+        img: 'https://picsum.photos/500/300?image=60',
+        list: ['item1', 'item2', 'item3'],
         intro:
-          'CPX正大集团全球采购平台是核心产品，支持NFT数字资产及商店，与CP Pulse结合进行数据分析。可以视为正大集团对标亚马逊针对AWS的策略。',
+          "I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.",
         show: false,
       },
       {
-        title: 'CP Coin',
-        img: cpcoinBanner,
-        list: [{ name: '点击前往', link: 'https://coin.cpgroup.top' }],
-        intro: '延伸至区块链技术的忠诚度计划。CP Coin将结合NFT产品进一步探索金融科技和资产管理。',
+        title: 'Lorem Ipsum',
+        img: 'https://picsum.photos/500/300?image=62',
+        list: ['item4', 'item5', 'item6'],
+        intro:
+          "I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.",
         show: false,
       },
       {
-        title: 'CP Pulse',
-        img: cppulseBanner,
-        list: [{ name: '点击前往', link: 'https://pulse.cpgroup.top' }],
-        intro: '为食品商品打造的数据分析引擎，致力于为定价与商品资源分配做出合理决策',
+        title: 'Lorem Ipsum',
+        img: 'https://picsum.photos/500/300?image=65',
+        list: ['item7', 'item8', 'item9'],
+        intro:
+          "I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.",
         show: false,
       },
     ],
@@ -151,7 +151,6 @@ h1 {
 }
 
 .project-list {
-  opacity: 0.8;
   ul {
     align-self: center;
     list-style: none;
@@ -177,13 +176,5 @@ h1 {
     margin: 10px;
     padding: 10px 20px;
   }
-}
-
-.product-intro {
-  width: 80%;
-  line-height: 28px;
-  margin: 20px auto;
-  font-size: 16px;
-  font-weight: 600;
 }
 </style>
