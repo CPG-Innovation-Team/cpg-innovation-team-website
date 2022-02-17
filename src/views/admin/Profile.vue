@@ -91,8 +91,7 @@
             </v-row>
             <v-row>
               <v-col cols="12" sm="6" md="6"
-                ><p class="password-title">Enter your password to save changes:</p>
-                <v-text-field
+                >Enter your password:<v-text-field
                   v-model="password"
                   label="password"
                   required
@@ -207,20 +206,18 @@ export default {
   },
   methods: {
     saveProfile() {
-      if (this.password.trim() !== '') {
-        util.post('http://localhost:8080/admin/user/update/info', {
-          uid: this.uid,
-          username: this.username,
-          email: this.email,
-          passCode: '123456',
-          passwd: this.password,
-          nickname: this.nickname,
-          avatar: this.avatar,
-          gender: this.gender,
-          introduce: this.introduction,
-          state: this.state,
-        });
-      }
+      util.post('http://localhost:8080/admin/user/update/info', {
+        uid: this.uid,
+        username: this.username,
+        email: this.email,
+        passCode: '123456',
+        passwd: this.password,
+        nickname: this.nickname,
+        avatar: this.avatar,
+        gender: this.gender,
+        introduce: this.introduction,
+        state: this.state,
+      });
     },
     showRole() {
       if (this.isRoot === 1) {
@@ -229,25 +226,23 @@ export default {
       return 'User';
     },
     savePwd() {
-      if (this.oldPwd.trim() !== '' && this.newPwd.trim() !== '' && this.newPwdRepeat.trim() !== '') {
-        util
-          .post('http://localhost:8080/admin/user/update/info', {
-            uid: this.uid,
-            email: this.email,
-            username: this.username,
-            passCode: '123456',
-            passwd: this.newPwd,
-            nickname: this.nickname,
-          })
-          .then((response) => {
-            this.confirmDialog = true;
-            if (response.data.code === 10002) {
-              this.isSaved = false;
-            } else {
-              this.isSaved = true;
-            }
-          });
-      }
+      util
+        .post('http://localhost:8080/admin/user/update/info', {
+          uid: this.uid,
+          email: this.email,
+          username: this.username,
+          passCode: '123456',
+          passwd: this.newPwd,
+          nickname: this.nickname,
+        })
+        .then((response) => {
+          this.confirmDialog = true;
+          if (response.data.code === 10002) {
+            this.isSaved = false;
+          } else {
+            this.isSaved = true;
+          }
+        });
     },
   },
 };
@@ -317,10 +312,6 @@ export default {
 }
 
 .pwdAlert {
-  color: red;
-}
-
-.password-title {
   color: red;
 }
 </style>
