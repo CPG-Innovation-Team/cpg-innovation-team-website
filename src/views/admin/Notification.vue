@@ -136,22 +136,20 @@ export default {
       }
     },
     async addNotification() {
-      if (this.content.trim() !== '') {
-        await util
-          .post('http://localhost:8080/admin/notify/add', {
-            type: 4,
-            content: `${this.content} @ ${this.link}!`,
-            uid: [],
-            state: 1,
-            beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
-            endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
-          })
-          .then((response) => {
-            if (util.checkValidToken(response) === false) {
-              this.$router.push('/login');
-            }
-          });
-      }
+      await util
+        .post('http://localhost:8080/admin/notify/add', {
+          type: 4,
+          content: `${this.content} @ ${this.link}!`,
+          uid: [],
+          state: 1,
+          beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
+          endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
+        })
+        .then((response) => {
+          if (util.checkValidToken(response) === false) {
+            this.$router.push('/login');
+          }
+        });
     },
     minTime() {
       if (this.startDate === this.endDate) {
