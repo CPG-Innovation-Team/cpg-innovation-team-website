@@ -35,12 +35,7 @@ export default {
     }
     return true;
   },
-  /**
-   * converts tinymce html to plain text used to display on blog page
-   * @param {*} html
-   * @returns
-   */
   escapeHTML(html) {
-    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
+    return html.replace(/<(?:"[^"]{0,}"|'[^']{0,}'|[^'">]){0,}>/g, '');
   },
 };
