@@ -85,7 +85,7 @@
                               </v-row>
                               <v-row>
                                 <v-card-text class="recent-blog-content"
-                                  >{{ util.escapeHTML(blog.content).substring(0, 100) }}...</v-card-text
+                                  >{{ blog.content.substring(0, 100) }}...</v-card-text
                                 >
                               </v-row>
                             </v-col>
