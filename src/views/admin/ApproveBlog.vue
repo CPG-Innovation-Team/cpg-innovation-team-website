@@ -96,25 +96,6 @@
         </template>
       </v-data-table>
 
-      <v-dialog v-model="successDialog" max-width="500px">
-        <v-card>
-          <v-card-title> Success! </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="failureDialog" max-width="500px">
-        <v-card>
-          <v-card-title> Something went wrong... </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <v-data-table :headers="cheaders" :items="comments" sort-by="modified" class="elevation-1">
         <template v-slot:top>
           <v-toolbar flat color="white">
@@ -127,56 +108,8 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            text
-            @click="
-              commentDialog = true;
-              commentApproveBool = true;
-            "
-          >
-            审核通过
-          </v-btn>
-          <v-btn
-            text
-            @click="
-              commentDialog = true;
-              commentApproveBool = false;
-            "
-          >
-            审核不通过
-          </v-btn>
-          <v-dialog v-model="commentDialog" max-width="500px">
-            <v-card>
-              <v-card-title v-if="commentApproveBool === true"> 确认审核通过吗？ </v-card-title>
-              <v-card-title v-else> 确认审核不通过吗？ </v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="commentDialog = false"> Cancel </v-btn>
-                <v-btn
-                  v-if="commentApproveBool === true"
-                  color="blue darken-1"
-                  text
-                  @click="
-                    commentDialog = false;
-                    approveComment(item, true);
-                  "
-                >
-                  Confirm
-                </v-btn>
-                <v-btn
-                  v-else
-                  color="blue darken-1"
-                  text
-                  @click="
-                    commentDialog = false;
-                    approveComment(item, false);
-                  "
-                >
-                  Confirm
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <v-btn text @click="approveComment(item, true)"> 审核通过 </v-btn>
+          <v-btn text @click="approveComment(item, false)"> 审核不通过 </v-btn>
         </template>
       </v-data-table>
     </v-main>
@@ -193,24 +126,26 @@ export default {
       blogs: [],
       comments: [],
       headers: [
-        { text: 'Title', value: 'title' },
+        {
+          text: 'Title',
+          value: 'title',
+        },
         { text: 'Tags', value: 'tags' },
         { text: 'Content', value: 'content' },
-        { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
       cheaders: [
-        { text: 'uid', value: 'uid' },
+        {
+          text: 'uid',
+          value: 'uid',
+        },
         { text: 'Content', value: 'content' },
-        { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
       approveDialog: false,
       confirmDialog: false,
       currentArticle: '',
       approveAction: false,
-      successDialog: false,
-      failureDialog: false,
-      commentApproveBool: false,
-      commentDialog: false,
     };
   },
   components: {
@@ -233,7 +168,7 @@ export default {
             sn: sn[index],
             title: blog.Title,
             tags: blog.Tags,
-            content: util.escapeHTML(blog.Content),
+            content: blog.Content,
             author: blog.Author,
             uid: blog.Uid,
             cover: blog.Cover,
@@ -259,45 +194,22 @@ export default {
     },
     async confirmAction() {
       if (this.approveAction === true) {
-        await util
-          .post('http://localhost:8080/admin/review/article', { sn: this.currentArticle.sn, state: true })
-          .then((response) => {
-            this.checkSuccess(response);
-          });
+        await util.post('http://localhost:8080/admin/review/article', { sn: this.currentArticle.sn, state: true });
         this.blogs = [];
         this.getBlogList();
       } else {
-        await util
-          .post('http://localhost:8080/admin/review/article', {
-            sn: this.currentArticle.sn,
-            state: false,
-          })
-          .then((response) => {
-            this.checkSuccess(response);
-          });
+        await util.post('http://localhost:8080/admin/review/article', {
+          sn: parseInt(this.currentArticle.sn, 10),
+          state: false,
+        });
         this.blogs = [];
         this.getBlogList();
       }
     },
     async approveComment(item, bool) {
-      await util
-        .post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: bool })
-        .then((response) => {
-          this.checkSuccess(response);
-        });
+      await util.post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: bool });
       this.comments = [];
       this.getCommentList();
-    },
-    close() {
-      this.successDialog = false;
-      this.failureDialog = false;
-    },
-    checkSuccess(response) {
-      if (response.data.code === 10000) {
-        this.successDialog = true;
-      } else {
-        this.failureDialog = true;
-      }
     },
   },
 };
