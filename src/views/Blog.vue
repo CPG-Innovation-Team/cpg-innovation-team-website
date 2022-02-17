@@ -66,17 +66,26 @@
                             </v-col>
                             <v-col cols="8">
                               <v-row class="recent-user-info">
-                                <v-avatar>
-                                  <img
-                                    :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                                    alt="sample img"
-                                  />
-                                </v-avatar>
-                                <p class="recent-user-author">{{ blog.author }}</p>
+                                <v-col cols="8">
+                                  <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                                    <div class="recent-blog-title">{{ blog.title }}</div>
+                                  </router-link>
+                                </v-col>
+                                <v-col cols="4">
+                                  <v-row class="text-right align-center">
+                                    <v-avatar class="mr-4">
+                                      <img
+                                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
+                                        alt="sample img"
+                                      />
+                                    </v-avatar>
+                                    <p class="recent-user-author">作者: {{ blog.author }}</p>
+                                  </v-row>
+                                </v-col>
                               </v-row>
                               <v-row>
                                 <v-card-text class="recent-blog-content"
-                                  >{{ blog.content.substring(0, 100) }}...</v-card-text
+                                  >{{ util.escapeHTML(blog.content).substring(0, 100) }}...</v-card-text
                                 >
                               </v-row>
                             </v-col>
@@ -132,7 +141,7 @@ export default {
         },
       })
       .then((response) => {
-        if (response.data.data) {
+        if (response.data.data.ArticleDetailList) {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,
@@ -248,6 +257,9 @@ export default {
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .recent-blog-title {
+      font-size: 16px;
     }
     .recent-img {
       border-radius: 5px;
