@@ -162,6 +162,9 @@ export default {
 
     window.addEventListener('scroll', this.handleScroll);
   },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
   watch: {
     group() {
       this.drawer = false;
