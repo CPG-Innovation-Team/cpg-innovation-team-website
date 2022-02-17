@@ -36,6 +36,6 @@ export default {
     return true;
   },
   escapeHTML(html) {
-    return html.replace(/<(?:"[^"]{0,}"|'[^']{0,}'|[^'">]){0,}>/g, '');
+    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
   },
 };
