@@ -53,6 +53,7 @@
 
 <script>
 import axios from 'axios';
+import util from '../../util';
 
 export default {
   data() {
@@ -79,7 +80,7 @@ export default {
         this.dialog = true;
       } else {
         await axios
-          .post('http://localhost:8080/login', {
+          .post(`${util.getEnvUrl()}/login`, {
             username,
             passwd: password,
           })

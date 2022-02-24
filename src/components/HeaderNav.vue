@@ -218,13 +218,13 @@ export default {
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
     logout() {
-      util.post('http://localhost:8080/admin/logout', {}).then(() => {
+      util.post(`${util.getEnvUrl()}/admin/logout`, {}).then(() => {
         this.token = '';
         localStorage.clear();
       });
     },
     async getNotification() {
-      await util.post('http://localhost:8080/admin/notify/query', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
         this.notifications = [{ content: '' }];
         if (response.data.data.NotificationList) {
           response.data.data.NotificationList.forEach((item) => {

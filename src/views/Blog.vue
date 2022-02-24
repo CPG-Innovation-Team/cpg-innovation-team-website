@@ -135,13 +135,13 @@ export default {
   },
   async created() {
     await util
-      .post('http://localhost:8080/article/list', {
+      .post(`${util.getEnvUrl()}/article/list`, {
         article: {
           state: 1,
         },
       })
       .then((response) => {
-        if (response.data.data.ArticleDetailList) {
+        if (response.data.data) {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,

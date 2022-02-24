@@ -189,7 +189,7 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
-    util.post('http://localhost:8080/admin/user/query/info', { username: this.username }).then((response) => {
+    util.post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }).then((response) => {
       if (util.checkValidToken(response) === false) {
         this.$router.push('/login');
       } else if (response.data.data) {
@@ -208,7 +208,7 @@ export default {
   methods: {
     saveProfile() {
       if (this.password.trim() !== '') {
-        util.post('http://localhost:8080/admin/user/update/info', {
+        util.post(`${util.getEnvUrl()}/admin/user/update/info`, {
           uid: this.uid,
           username: this.username,
           email: this.email,
@@ -231,7 +231,7 @@ export default {
     savePwd() {
       if (this.oldPwd.trim() !== '' && this.newPwd.trim() !== '' && this.newPwdRepeat.trim() !== '') {
         util
-          .post('http://localhost:8080/admin/user/update/info', {
+          .post(`${util.getEnvUrl()}/admin/user/update/info`, {
             uid: this.uid,
             email: this.email,
             username: this.username,
