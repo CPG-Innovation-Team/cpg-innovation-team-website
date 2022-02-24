@@ -121,7 +121,7 @@ export default {
   }),
   async created() {
     util
-      .post('http://localhost:8080/admin/user/query/list', {
+      .post(`${util.getEnvUrl()}/admin/user/query/list`, {
         state: 1,
       })
       .then((response) => {
@@ -140,7 +140,7 @@ export default {
     },
     async saveRole(role) {
       await util
-        .post('http://localhost:8080/admin/auth/add/role', {
+        .post(`${util.getEnvUrl()}/admin/auth/add/role`, {
           rName: role,
         })
         .then((response) => {
@@ -151,7 +151,7 @@ export default {
     },
     async savePermission(permission, uri) {
       await util
-        .post('http://localhost:8080/admin/auth/add/permission', {
+        .post(`${util.getEnvUrl()}/admin/auth/add/permission`, {
           pName: permission,
           uri,
         })
@@ -166,7 +166,7 @@ export default {
     },
     savePermissionToRole(rname, pname) {
       util
-        .post('http://localhost:8080/admin/auth/role/add/permission', {
+        .post(`${util.getEnvUrl()}/admin/auth/role/add/permission`, {
           rname,
           pname,
         })
@@ -180,7 +180,7 @@ export default {
     },
     async deleteRole(deleteRoleName) {
       await util
-        .post('http://localhost:8080/admin/auth/delete/role', {
+        .post(`${util.getEnvUrl()}/admin/auth/delete/role`, {
           rName: deleteRoleName,
         })
         .then((response) => {
@@ -190,7 +190,7 @@ export default {
     },
     async deletePermission(deletePermissionName) {
       await util
-        .post('http://localhost:8080/admin/auth/delete/permission', {
+        .post(`${util.getEnvUrl()}/admin/auth/delete/permission`, {
           pName: deletePermissionName,
         })
         .then((response) => {
@@ -199,7 +199,7 @@ export default {
       this.getAllPermissions();
     },
     async getAllRoles() {
-      await util.post('http://localhost:8080/admin/auth/query/roles', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}).then((response) => {
         this.allRoles = response.data.data;
         this.roles = [];
         Object.keys(response.data.data).forEach((role) => {
@@ -208,7 +208,7 @@ export default {
       });
     },
     async getAllPermissions() {
-      await util.post('http://localhost:8080/admin/auth/query/permissions', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}).then((response) => {
         this.allPermissions = response.data.data;
         this.permissions = [];
         Object.keys(response.data.data).forEach((permission) => {

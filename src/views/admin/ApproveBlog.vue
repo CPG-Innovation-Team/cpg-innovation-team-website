@@ -222,7 +222,7 @@ export default {
   },
   methods: {
     async getBlogList() {
-      await util.post('http://localhost:8080/admin/review/query/article/list', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/review/query/article/list`, {}).then((response) => {
         if (util.checkValidToken(response) === false) {
           this.$router.push('/login');
         }
@@ -243,7 +243,7 @@ export default {
       });
     },
     async getCommentList() {
-      await util.post('http://localhost:8080/admin/review/query/comment/list', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/review/query/comment/list`, {}).then((response) => {
         Object.values(response.data.data.CommentMap).forEach((comment) => {
           this.comments.push({
             content: comment.Content,
@@ -260,7 +260,7 @@ export default {
     async confirmAction() {
       if (this.approveAction === true) {
         await util
-          .post('http://localhost:8080/admin/review/article', { sn: this.currentArticle.sn, state: true })
+          .post(`${util.getEnvUrl()}/admin/review/article`, { sn: this.currentArticle.sn, state: true })
           .then((response) => {
             this.checkSuccess(response);
           });
@@ -268,7 +268,7 @@ export default {
         this.getBlogList();
       } else {
         await util
-          .post('http://localhost:8080/admin/review/article', {
+          .post(`${util.getEnvUrl()}/admin/review/article`, {
             sn: this.currentArticle.sn,
             state: false,
           })
@@ -281,7 +281,7 @@ export default {
     },
     async approveComment(item, bool) {
       await util
-        .post('http://localhost:8080/admin/review/comment', { commentId: item.cid, state: bool })
+        .post(`${util.getEnvUrl()}/admin/review/comment`, { commentId: item.cid, state: bool })
         .then((response) => {
           this.checkSuccess(response);
         });

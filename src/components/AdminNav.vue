@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     logout() {
-      util.post('http://localhost:8080/admin/logout', {}).then(() => {
+      util.post(`${util.getEnvUrl()}/admin/logout`, {}).then(() => {
         this.token = '';
         localStorage.clear();
         this.$router.push('/');

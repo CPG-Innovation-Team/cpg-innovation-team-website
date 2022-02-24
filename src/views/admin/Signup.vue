@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios';
+import util from '../../util';
 
 export default {
   data() {
@@ -86,7 +87,7 @@ export default {
     },
     async register() {
       if (this.password === this.confirmedPwd) {
-        await axios.post('http://localhost:8080/register', {
+        await axios.post(`${util.getEnvUrl()}/register`, {
           username: this.username,
           nickname: this.nickname,
           email: this.email,
