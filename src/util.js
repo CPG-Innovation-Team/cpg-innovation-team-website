@@ -43,4 +43,7 @@ export default {
   escapeHTML(html) {
     return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
   },
+  getEnvUrl() {
+    return process.env.VUE_APP_SOCKET_URL;
+  },
 };
