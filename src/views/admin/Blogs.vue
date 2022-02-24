@@ -94,14 +94,14 @@ export default {
     blogs: [],
     deletedBlogs: [],
   }),
-  async created() {
+  created() {
     this.getArticleList();
     this.getDeletedArticleList();
   },
   methods: {
     async search(searchText) {
       await util
-        .post('http://localhost:8080/admin/article/list', {
+        .post(`${util.getEnvUrl()}/admin/article/list`, {
           isAllMyselfArticles: false,
           article: {
             title: searchText,
@@ -123,7 +123,7 @@ export default {
       this.editArticle = item;
     },
     async deleteArticle() {
-      await util.post('http://localhost:8080/admin/article/delete', {
+      await util.post(`${util.getEnvUrl()}/admin/article/delete`, {
         sn: this.editArticle.sn,
       });
 
@@ -134,7 +134,7 @@ export default {
     async getArticleList() {
       await util
         .post(
-          'http://localhost:8080/admin/article/list',
+          `${util.getEnvUrl()}/admin/article/list`,
           {
             article: {
               state: 1,
@@ -155,7 +155,7 @@ export default {
     },
     async getDeletedArticleList() {
       await util
-        .post('http://localhost:8080/admin/article/list', {
+        .post(`${util.getEnvUrl()}/admin/article/list`, {
           article: {
             state: 3,
           },

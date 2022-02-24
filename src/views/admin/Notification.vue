@@ -138,7 +138,7 @@ export default {
     async addNotification() {
       if (this.content.trim() !== '') {
         await util
-          .post('http://localhost:8080/admin/notify/add', {
+          .post(`${util.getEnvUrl()}/admin/notify/add`, {
             type: 4,
             content: `${this.content} @ ${this.link}!`,
             uid: [],

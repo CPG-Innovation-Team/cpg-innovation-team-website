@@ -54,7 +54,7 @@ export default {
       this.sn = this.$route.query.sn;
       this.state = this.$route.query.state;
       await util
-        .post('http://localhost:8080/admin/article/info', {
+        .post(`${util.getEnvUrl()}/admin/article/info`, {
           sn: this.sn,
         })
         .then((response) => {
@@ -75,7 +75,7 @@ export default {
       });
     },
     async updateArticle() {
-      await util.post('http://localhost:8080/admin/article/update', {
+      await util.post(`${util.getEnvUrl()}/admin/article/update`, {
         sn: this.sn,
         title: this.blog.title,
         cover: this.blog.cover,

@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     submit() {
-      util.post('http://localhost:8080/admin/article/add', {
+      util.post(`${util.getEnvUrl()}/admin/article/add`, {
         title: this.title,
         cover: this.cover,
         content: this.content,

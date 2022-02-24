@@ -146,7 +146,7 @@ export default {
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
       await util
-        .post('http://localhost:8080/admin/article/info', {
+        .post(`${util.getEnvUrl()}/article/info`, {
           sn: this.sn,
         })
         .then((response) => {
@@ -168,7 +168,7 @@ export default {
   methods: {
     async sendComment(comment) {
       if (comment.trim() !== '') {
-        await util.post('http://localhost:8080/comment/add', {
+        await util.post(`${util.getEnvUrl()}/comment/add`, {
           sn: this.sn,
           content: comment,
         });
@@ -180,7 +180,7 @@ export default {
     async sendReply(cid, reply) {
       if (reply.trim() !== '') {
         await util
-          .post('http://localhost:8080/comment/reply', {
+          .post(`${util.getEnvUrl()}/comment/reply`, {
             commentId: cid,
             content: reply,
           })
@@ -194,7 +194,7 @@ export default {
     },
     getComments() {
       util
-        .post('http://localhost:8080/comment/list', {
+        .post(`${util.getEnvUrl()}/comment/list`, {
           sn: this.sn,
         })
         .then((response) => {
@@ -225,7 +225,7 @@ export default {
     likeComment(n) {
       this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
       util
-        .post('http://localhost:8080/like', {
+        .post(`${util.getEnvUrl()}/like`, {
           comment_id: this.comments[n].cid,
         })
         .then(() => {
@@ -235,7 +235,7 @@ export default {
     unlikeComment(n) {
       this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
       util
-        .post('http://localhost:8080/like/cancel', {
+        .post(`${util.getEnvUrl()}/like/cancel`, {
           comment_id: this.comments[n].cid,
         })
         .then(() => {
@@ -244,7 +244,7 @@ export default {
     },
     likeArticle() {
       util
-        .post('http://localhost:8080/like', {
+        .post(`${util.getEnvUrl()}/like`, {
           sn: this.sn,
         })
         .then(async () => {
@@ -252,7 +252,7 @@ export default {
           await this.getArticleLikes();
           if (this.currentLikes === this.likes) {
             util
-              .post('http://localhost:8080/like/cancel', {
+              .post(`${util.getEnvUrl()}/like/cancel`, {
                 sn: this.sn,
               })
               .then(() => {
@@ -263,7 +263,7 @@ export default {
     },
     async getArticleLikes() {
       await util
-        .post('http://localhost:8080/admin/article/list', {
+        .post(`${util.getEnvUrl()}/admin/article/list`, {
           article: {
             state: 1,
           },

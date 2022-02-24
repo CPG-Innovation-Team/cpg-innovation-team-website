@@ -115,7 +115,7 @@ export default {
   }),
   async created() {
     util
-      .post('http://localhost:8080/admin/user/query/list', {
+      .post(`${util.getEnvUrl()}/admin/user/query/list`, {
         state: 1,
       })
       .then((response) => {
@@ -143,7 +143,7 @@ export default {
     async save() {
       this.close();
       await util
-        .post('http://localhost:8080/admin/user/query/info', {
+        .post(`${util.getEnvUrl()}/admin/user/query/info`, {
           username: this.username,
         })
         .then((response) => {
@@ -151,7 +151,7 @@ export default {
         });
       if (this.selectedRole !== '' && this.selectedRole !== null) {
         await util
-          .post('http://localhost:8080/admin/auth/role/add/user', {
+          .post(`${util.getEnvUrl()}/admin/auth/role/add/user`, {
             rName: this.selectedRole,
             uid: this.uid,
           })
@@ -161,7 +161,7 @@ export default {
       }
       if (this.selectedRemoveRole !== '' && this.selectedRemoveRole !== null) {
         await util
-          .post('http://localhost:8080/admin/auth/role/remove/user', {
+          .post(`${util.getEnvUrl()}/admin/auth/role/remove/user`, {
             rName: this.selectedRemoveRole,
             uid: this.uid,
           })
@@ -171,7 +171,7 @@ export default {
       }
     },
     async getAllRoles() {
-      await util.post('http://localhost:8080/admin/auth/query/roles', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}).then((response) => {
         if (response.data.data) {
           this.roles = [];
           Object.keys(response.data.data).forEach((role) => {
@@ -181,7 +181,7 @@ export default {
       });
     },
     async getAllPermissions() {
-      await util.post('http://localhost:8080/admin/auth/query/permissions', {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}).then((response) => {
         if (response.data.data) {
           this.permissions = [];
           Object.keys(response.data.data).forEach((permission) => {
