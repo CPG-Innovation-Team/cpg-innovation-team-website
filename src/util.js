@@ -44,6 +44,6 @@ export default {
     return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
   },
   getEnvUrl() {
-    return process.env.VUE_APP_SOCKET_URL;
+    return process.env.VUE_APP_HTTP_URL;
   },
 };
