@@ -1,10 +1,14 @@
 <template>
   <div :style="cssProps">
-    <v-system-bar v-if="notifications[notifications.length - 1].content !== ''" app color="purple">
+    <v-system-bar
+      class="announcement-bar"
+      v-if="announcements[announcements.length - 1].content !== ''"
+      app
+      color="purple"
+      @click="redirectURL()"
+    >
       <v-row justify="center" align="center">
-        <div class="notification">
-          {{ notifications[notifications.length - 1].content.replace('"', '').replace('"', '') }}
-        </div>
+        <div class="announcement">{{ getAnnouncementContent() }}</div>
       </v-row>
     </v-system-bar>
     <v-app-bar class="nav-container" app flat :style="backgroundStyle">
@@ -61,7 +65,7 @@
                 <v-icon>mdi-bell</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>Notification</v-list-item-title>
+                <v-list-item-title>Announcement</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
@@ -144,7 +148,8 @@ export default {
     projects,
     login: false,
     username: '',
-    notifications: [{ content: '' }],
+    announcements: [{ content: '' }],
+    announcementURL: '',
     backgroundOpacity: 0,
   }),
   props: ['color'],
@@ -158,7 +163,7 @@ export default {
     if (localStorage.token) {
       this.token = localStorage.token;
     }
-    this.getNotification();
+    this.getAnnouncement();
 
     window.addEventListener('scroll', this.handleScroll);
   },
@@ -223,17 +228,28 @@ export default {
         localStorage.clear();
       });
     },
-    async getNotification() {
+    async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
-        this.notifications = [{ content: '' }];
-        if (response.data.data.NotificationList) {
-          response.data.data.NotificationList.forEach((item) => {
-            this.notifications.push({ content: item.Content });
+        this.announcements = [{ content: '' }];
+        if (response.data.data.AnnouncementList) {
+          response.data.data.AnnouncementList.forEach((item) => {
+            this.announcements.push({ content: item.Content });
           });
         }
+        this.announcements.push({ content: 'test url@https://www.cp-foods.com/' });
       });
     },
-
+    getAnnouncementContent() {
+      const str = this.announcements[this.announcements.length - 1].content;
+      this.announcementURL = str
+        .replace('"', '')
+        .replace('"', '')
+        .substring(str.indexOf('@') + 1);
+      return str.replace('"', '').replace('"', '').substring(0, str.indexOf('@'));
+    },
+    redirectURL() {
+      window.location.href = this.announcementURL;
+    },
     handleScroll() {
       if (window.scrollY === 0) {
         this.backgroundOpacity = 0;
@@ -272,9 +288,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.notification {
-  color: white;
-  font-size: 15px;
+.announcement-bar {
+  cursor: pointer;
+
+  .announcement {
+    color: white;
+    font-size: 15px;
+  }
 }
 
 .nav-container {
