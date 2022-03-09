@@ -3,14 +3,14 @@
     <AdminNav />
     <v-main style="background: whitesmoke">
       <v-card class="ma-4">
-        <v-card-title> 通知 </v-card-title>
+        <v-card-title> 公告 </v-card-title>
         <v-card-text
           ><v-radio-group v-model="value" row>
-            <v-radio label="开启通知" value="notificationOn" @click="turn(true)"></v-radio>
-            <v-radio label="关闭通知" value="notificationOff" @click="turn(false)"></v-radio>
+            <v-radio label="开启公告" value="announcementOn" @click="turn(true)"></v-radio>
+            <v-radio label="关闭公告" value="announcementOff" @click="turn(false)"></v-radio>
           </v-radio-group>
-          <v-text-field label="通知内容" :disabled="disabled" v-model="content"></v-text-field>
-          <v-text-field label="通知跳转链接" :disabled="disabled" v-model="link"></v-text-field>
+          <v-text-field label="公告内容" :disabled="disabled" v-model="content"></v-text-field>
+          <v-text-field label="公告跳转链接" :disabled="disabled" v-model="link"></v-text-field>
           <v-row>
             <v-col>
               <v-menu
@@ -94,7 +94,7 @@
               </v-menu>
             </v-col>
           </v-row>
-          <v-btn class="mt-4" :disabled="disabled" text color="blue" @click="addNotification()">保存</v-btn>
+          <v-btn class="mt-4" :disabled="disabled" text color="blue" @click="addAnnouncement()">保存</v-btn>
         </v-card-text>
       </v-card>
     </v-main>
@@ -108,7 +108,7 @@ import AdminNav from '../../components/AdminNav.vue';
 export default {
   data() {
     return {
-      value: 'notificationOn',
+      value: 'announcementOn',
       disabled: false,
       content: '',
       link: '',
@@ -135,12 +135,12 @@ export default {
         this.disabled = false;
       }
     },
-    async addNotification() {
+    async addAnnouncement() {
       if (this.content.trim() !== '') {
         await util
           .post(`${util.getEnvUrl()}/admin/notify/add`, {
             type: 4,
-            content: `${this.content} @ ${this.link}!`,
+            content: `${this.content}@${this.link}`,
             uid: [],
             state: 1,
             beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
