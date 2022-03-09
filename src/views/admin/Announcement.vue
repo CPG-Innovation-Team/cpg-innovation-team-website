@@ -23,7 +23,13 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field label="开始日期" readonly :value="startDate" v-on="on"></v-text-field>
+                  <v-text-field
+                    label="开始日期"
+                    readonly
+                    :value="startDate"
+                    v-on="on"
+                    :disabled="disabled"
+                  ></v-text-field>
                 </template>
                 <v-date-picker
                   v-model="startDate"
@@ -44,7 +50,13 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field label="开始时间" readonly :value="startTime" v-on="on"></v-text-field>
+                  <v-text-field
+                    label="开始时间"
+                    readonly
+                    :value="startTime"
+                    v-on="on"
+                    :disabled="disabled"
+                  ></v-text-field>
                 </template>
                 <v-time-picker v-model="startTime" format="24hr" @input="fromTimeMenu = false"></v-time-picker>
               </v-menu>
@@ -62,7 +74,13 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field label="结束日期" readonly :value="endDate" v-on="on"></v-text-field>
+                  <v-text-field
+                    label="结束日期"
+                    readonly
+                    :value="endDate"
+                    v-on="on"
+                    :disabled="disabled"
+                  ></v-text-field>
                 </template>
                 <v-date-picker
                   v-model="endDate"
@@ -83,7 +101,13 @@
                 min-width="290px"
               >
                 <template v-slot:activator="{ on }">
-                  <v-text-field label="结束时间" readonly :value="endTime" v-on="on"></v-text-field>
+                  <v-text-field
+                    label="结束时间"
+                    readonly
+                    :value="endTime"
+                    v-on="on"
+                    :disabled="disabled"
+                  ></v-text-field>
                 </template>
                 <v-time-picker
                   v-model="endTime"
@@ -94,9 +118,28 @@
               </v-menu>
             </v-col>
           </v-row>
-          <v-btn class="mt-4" :disabled="disabled" text color="blue" @click="addAnnouncement()">保存</v-btn>
+          <v-btn class="mt-4" text color="blue" @click="addAnnouncement()">保存</v-btn>
         </v-card-text>
       </v-card>
+
+      <v-dialog v-model="successDialog" max-width="500px">
+        <v-card>
+          <v-card-title> The announcement is succesfully added! </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close"> Confirm </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="failureDialog" max-width="500px">
+        <v-card>
+          <v-card-title> Something went wrong... </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close"> Confirm </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-main>
   </div>
 </template>
@@ -120,6 +163,8 @@ export default {
       fromTimeMenu: false,
       toDateMenu: false,
       toTimeMenu: false,
+      successDialog: false,
+      failureDialog: false,
     };
   },
   components: {
@@ -150,8 +195,17 @@ export default {
             if (util.checkValidToken(response) === false) {
               this.$router.push('/login');
             }
+            if (response.data.code === 10000) {
+              this.successDialog = true;
+            } else {
+              this.failureDialog = true;
+            }
           });
       }
+    },
+    close() {
+      this.successDialog = false;
+      this.failureDialog = false;
     },
     minTime() {
       if (this.startDate === this.endDate) {
