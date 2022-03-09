@@ -39,7 +39,7 @@
                         </v-list-item-avatar>
 
                         <v-list-item-content>
-                          <v-list-item-title>{{ comments[n - 1].uid }}</v-list-item-title>
+                          <v-list-item-title>{{ comments[n - 1].nickname }}</v-list-item-title>
 
                           <v-list-item-subtitle>
                             {{ comments[n - 1].content }}
@@ -212,12 +212,13 @@ export default {
             this.comments.push({
               cid: response.data.data[i].Cid,
               content: response.data.data[i].Content,
+              nickname: response.data.data[i].NickName,
               createdAt: dateString.replace(',', '').replace('PM', 'p.m.').replace('AM', 'a.m.'),
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
               likeIsClicked: false,
               replyIsClicked: false,
-              replies: response.data.data[i].ReplyList,
+              replies: response.data.data[i].ReplyList || [],
             });
           }
         });
@@ -312,6 +313,7 @@ export default {
     .title-cn {
       font-size: 2.6rem;
       margin: 0;
+      text-shadow: 0.1em 0.1em 0.2em black;
     }
     .subtitle {
       font-size: 1.2rem;
