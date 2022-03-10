@@ -25,26 +25,24 @@
 
             <v-row>
               <v-col cols="12" md="6">
-                新增角色
-                <v-text-field v-model="role" label="role"></v-text-field>
-                <v-btn color="blue darken-1" text @click="saveRole(role)"> Save </v-btn>
-                删除权限
-                <v-select
-                  :items="permissions"
-                  label="delete permission"
-                  v-model="deletePermissionName"
-                  clearable
-                ></v-select>
-                <v-btn color="blue darken-1" text @click="deletePermission(deletePermissionName)"> Delete </v-btn>
+                <v-col>
+                  新增角色
+                  <v-text-field v-model="role" label="role"></v-text-field>
+                  <v-btn color="blue darken-1" text @click="saveRole(role)"> Save </v-btn>
+                </v-col>
+                <v-col>
+                  角色添加权限
+                  <v-select :items="roles" label="select role" v-model="rname" clearable></v-select>
+                  <v-select :items="permissions" label="select permission" v-model="pname" clearable></v-select>
+                  <v-btn color="blue darken-1" text @click="savePermissionToRole(rname, pname)"> Save </v-btn>
+                </v-col>
               </v-col>
               <v-col cols="12" md="6">
-                删除角色
-                <v-select :items="roles" label="delete role" v-model="deleteRoleName" clearable></v-select>
-                <v-btn color="blue darken-1" text @click="deleteRole(deleteRoleName)"> Delete </v-btn>
-                角色添加权限
-                <v-select :items="roles" label="select role" v-model="rname" clearable></v-select>
-                <v-select :items="permissions" label="select permission" v-model="pname" clearable></v-select>
-                <v-btn color="blue darken-1" text @click="savePermissionToRole(rname, pname)"> Save </v-btn>
+                <v-col>
+                  删除角色
+                  <v-select :items="roles" label="delete role" v-model="deleteRoleName" clearable></v-select>
+                  <v-btn color="blue darken-1" text @click="deleteRole(deleteRoleName)"> Delete </v-btn>
+                </v-col>
               </v-col>
             </v-row>
           </v-card-text>
@@ -88,8 +86,6 @@ export default {
     uid: '',
     roles: [],
     permissions: [],
-    permission: '',
-    uri: '',
     uris: [],
     role: '',
     rname: '',
@@ -97,7 +93,6 @@ export default {
     selectedRole: '',
     selectedRemoveRole: '',
     deleteRoleName: '',
-    deletePermissionName: '',
     allRoles: '',
     allPermissions: '',
   }),
@@ -122,21 +117,6 @@ export default {
 
       this.getAllRoles();
     },
-    async savePermission(permission, uri) {
-      await util
-        .post(`${util.getEnvUrl()}/admin/auth/add/permission`, {
-          pName: permission,
-          uri,
-        })
-        .then((response) => {
-          if (response.data.data === '接口权限添加成功！') this.successDialog = true;
-          else {
-            this.failureDialog = true;
-          }
-        });
-
-      this.getAllPermissions();
-    },
     savePermissionToRole(rname, pname) {
       util
         .post(`${util.getEnvUrl()}/admin/auth/role/add/permission`, {
@@ -160,16 +140,6 @@ export default {
           this.setDialogStatus(response);
         });
       this.getAllRoles();
-    },
-    async deletePermission(deletePermissionName) {
-      await util
-        .post(`${util.getEnvUrl()}/admin/auth/delete/permission`, {
-          pName: deletePermissionName,
-        })
-        .then((response) => {
-          this.setDialogStatus(response);
-        });
-      this.getAllPermissions();
     },
     async getAllRoles() {
       await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}).then((response) => {
