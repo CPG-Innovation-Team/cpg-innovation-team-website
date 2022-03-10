@@ -181,23 +181,28 @@ export default {
     AdminNav,
   },
   created() {
-    this.startDate = this.getCurrentDate();
-    this.startTime = '00:00';
-    this.endDate = this.getCurrentDate();
-    this.endTime = '23:59';
+    this.getCurrentDate();
   },
   methods: {
     getCurrentDate() {
-      const date = new Date();
-      return date.toISOString().split('T')[0];
+      const date = new Date().toISOString().split('T')[0];
+      this.startDate = date;
+      this.startTime = '00:00';
+      this.endDate = date;
+      this.endTime = '23:59';
     },
     turn(bool) {
       if (bool === false) {
         this.disabled = true;
         this.link = '';
         this.content = '';
+        this.startTime = null;
+        this.startDate = null;
+        this.endTime = null;
+        this.endDate = null;
       } else {
         this.disabled = false;
+        this.getCurrentDate();
       }
     },
     async addAnnouncement() {
