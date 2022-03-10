@@ -68,21 +68,23 @@
         </v-container>
 
         <v-container class="briefing-block">
-          <v-list two-line>
-            <template v-for="(item, index) in briefingData">
-              <v-list-item :key="index">
-                <v-list-item-content class="briefing-item">
-                  <v-list-item-title>
-                    <a v-html="item.content" :href="item.link" target="_blank" class="briefing-content" />
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="d-flex align-center">
-                    <v-icon> mdi-clock-outline </v-icon>
-                    <span class="ml-1 text-xs" v-html="timeFromNow(item.time)" />
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-          </v-list>
+          <v-container class="briefing-inner-block">
+            <v-list two-line>
+              <template v-for="(item, index) in briefingData">
+                <v-list-item :key="index">
+                  <v-list-item-content class="briefing-item">
+                    <v-list-item-title>
+                      <a v-html="item.content" :href="item.link" target="_blank" class="briefing-content" />
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="d-flex align-center">
+                      <v-icon> mdi-clock-outline </v-icon>
+                      <span class="ml-1 text-xs" v-html="timeFromNow(item.time)" />
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-container>
         </v-container>
       </v-container>
     </v-main>
@@ -288,11 +290,30 @@ h1 {
   flex: 3;
 }
 
+@keyframes briefingScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
 .briefing-block {
   flex: 1;
-  min-width: 200px;
+  position: relative;
+  min-width: 240px;
   height: 720px;
   overflow-y: hidden;
+
+  .briefing-inner-block {
+    min-width: 240px;
+    animation: 30s briefingScroll linear infinite;
+
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
 
   .briefing-item {
     border-bottom: 1px solid #ccc;
