@@ -2,7 +2,7 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
-      v-if="announcements[announcements.length - 1].content !== ''"
+      v-if="getAnnouncementContent() !== ''"
       app
       color="purple"
       @click="redirectURL()"
@@ -236,7 +236,6 @@ export default {
             this.announcements.push({ content: item.Content });
           });
         }
-        this.announcements.push({ content: 'test url@https://www.cp-foods.com/' });
       });
     },
     getAnnouncementContent() {
