@@ -31,13 +31,12 @@
 
               <v-list two-line>
                 <template v-for="n in comments.length">
-                  <v-list-item :key="n">
+                  <v-list-item v-if="comments[n - 1].state === 1" :key="n">
                     <v-col>
                       <v-row>
                         <v-list-item-avatar>
                           <v-img src="https://randomuser.me/api/portraits/men/81.jpg"></v-img>
                         </v-list-item-avatar>
-
                         <v-list-item-content>
                           <v-list-item-title>{{ comments[n - 1].nickname }}</v-list-item-title>
 
@@ -102,7 +101,7 @@
                       </v-row>
                     </v-col>
                   </v-list-item>
-                  <v-divider v-if="n !== 10" :key="`divider-${n}`" inset></v-divider>
+                  <v-divider v-if="n !== 10 && comments[n - 1].state === 1" :key="`divider-${n}`" inset></v-divider>
                 </template>
               </v-list>
 
@@ -175,7 +174,15 @@ export default {
   async created() {
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
-      await util
+      this.getArticleInfo();
+      this.checkLoginStatus();
+      this.getComments();
+      this.getArticleLikes();
+    }
+  },
+  methods: {
+    getArticleInfo() {
+      util
         .post(`${util.getEnvUrl()}/article/info`, {
           sn: this.sn,
         })
@@ -191,18 +198,23 @@ export default {
             createdAt: response.data.data.CreatedAt,
           };
         });
-      this.checkLoginStatus();
-      this.getComments();
-      this.getArticleLikes();
-    }
-  },
-  methods: {
+    },
     async sendComment(comment) {
       if (comment.trim() !== '') {
-        await util.post(`${util.getEnvUrl()}/comment/add`, {
-          sn: this.sn,
-          content: comment,
-        });
+        await util
+          .post(`${util.getEnvUrl()}/comment/add`, {
+            sn: this.sn,
+            content: comment,
+          })
+          .then((response) => {
+            if (response.data.code === 10000) {
+              this.successDialog = true;
+              this.successMessage = '评论发表成功！进入审核状态';
+            } else {
+              this.failureDialog = true;
+              this.failureMessage = '评论发表失败';
+            }
+          });
         this.comments = [];
         await this.getComments();
         this.comment = '';
@@ -216,17 +228,22 @@ export default {
             content: reply,
           })
           .then((response) => {
-            console.log(response);
-            this.comments = [];
-            this.getComments();
-            this.reply = '';
-            this.comment_index = -1;
-            console.log(this.comments);
+            if (response.data.code === 10000) {
+              this.successDialog = true;
+              this.successMessage = '回复发表成功！进入审核状态';
+              this.comments = [];
+              this.getComments();
+              this.reply = '';
+              this.comment_index = -1;
+            } else {
+              this.failureDialog = true;
+              this.failureMessage = '回复发表失败';
+            }
           });
       }
     },
-    getComments() {
-      util
+    async getComments() {
+      await util
         .post(`${util.getEnvUrl()}/comment/list`, {
           sn: this.sn,
         })
@@ -252,6 +269,7 @@ export default {
               likeIsClicked: false,
               replyIsClicked: false,
               replies: response.data.data[i].ReplyList || [],
+              state: response.data.data[i].State,
             });
           }
         });
