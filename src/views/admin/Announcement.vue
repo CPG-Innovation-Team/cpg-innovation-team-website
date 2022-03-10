@@ -140,6 +140,15 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="emptyDialog" max-width="500px">
+        <v-card>
+          <v-card-title> 公告内容不可为空 </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close"> Confirm </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-main>
   </div>
 </template>
@@ -165,12 +174,23 @@ export default {
       toTimeMenu: false,
       successDialog: false,
       failureDialog: false,
+      emptyDialog: false,
     };
   },
   components: {
     AdminNav,
   },
+  created() {
+    this.startDate = this.getCurrentDate();
+    this.startTime = '00:00';
+    this.endDate = this.getCurrentDate();
+    this.endTime = '23:59';
+  },
   methods: {
+    getCurrentDate() {
+      const date = new Date();
+      return date.toISOString().split('T')[0];
+    },
     turn(bool) {
       if (bool === false) {
         this.disabled = true;
@@ -182,6 +202,8 @@ export default {
     },
     async addAnnouncement() {
       if (this.content.trim() !== '') {
+        this.emptyDialog = true;
+      } else {
         await util
           .post(`${util.getEnvUrl()}/admin/notify/add`, {
             type: 4,
@@ -192,9 +214,6 @@ export default {
             endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
           })
           .then((response) => {
-            if (util.checkValidToken(response) === false) {
-              this.$router.push('/login');
-            }
             if (response.data.code === 10000) {
               this.successDialog = true;
             } else {
@@ -206,6 +225,7 @@ export default {
     close() {
       this.successDialog = false;
       this.failureDialog = false;
+      this.emptyDialog = false;
     },
     minTime() {
       if (this.startDate === this.endDate) {
