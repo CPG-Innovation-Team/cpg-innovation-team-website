@@ -200,6 +200,7 @@ export default {
     margin-right: 5%;
     top: 35%;
     text-align: center;
+    text-shadow: 0.1em 0.1em 0.3em black;
     .title-en {
       font-size: 1.2rem;
       font-weight: bold;
