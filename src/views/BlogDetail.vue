@@ -72,9 +72,11 @@
                           hide-details
                           dense
                           outlined
-                          label="reply"
+                          :disabled="notLoggedIn"
+                          :label="commentLabel"
                         ></v-textarea>
                         <v-btn
+                          v-if="!notLoggedIn"
                           class="mb-4 ml-4"
                           color="blue darken-1"
                           text
@@ -111,12 +113,34 @@
                 hide-details
                 dense
                 outlined
-                label="comment"
+                :disabled="notLoggedIn"
+                :label="commentLabel"
               ></v-textarea>
-              <v-btn class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)"> Send </v-btn>
+              <v-btn v-if="!notLoggedIn" class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)">
+                Send
+              </v-btn>
             </v-card>
-          </div></v-col
-        >
+          </div>
+
+          <v-dialog v-model="successDialog" max-width="500px">
+            <v-card>
+              <v-card-title> {{ successMessage }} </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="failureDialog" max-width="500px">
+            <v-card>
+              <v-card-title> {{ failureMessage }} </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-col>
       </v-row>
     </v-main>
   </div>
@@ -137,6 +161,12 @@ export default {
       comments: [],
       comment: '',
       reply: '',
+      notLoggedIn: false,
+      commentLabel: '',
+      successDialog: false,
+      failureDialog: false,
+      successMessage: '',
+      failureMessage: '',
     };
   },
   components: {
@@ -161,6 +191,7 @@ export default {
             createdAt: response.data.data.CreatedAt,
           };
         });
+      this.checkLoginStatus();
       this.getComments();
       this.getArticleLikes();
     }
@@ -190,6 +221,7 @@ export default {
             this.getComments();
             this.reply = '';
             this.comment_index = -1;
+            console.log(this.comments);
           });
       }
     },
@@ -230,8 +262,10 @@ export default {
         .post(`${util.getEnvUrl()}/like`, {
           comment_id: this.comments[n].cid,
         })
-        .then(() => {
-          this.comments[n].zanNum += 1;
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.comments[n].zanNum += 1;
+          }
         });
     },
     unlikeComment(n) {
@@ -240,8 +274,10 @@ export default {
         .post(`${util.getEnvUrl()}/like/cancel`, {
           comment_id: this.comments[n].cid,
         })
-        .then(() => {
-          this.comments[n].zanNum -= 1;
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.comments[n].zanNum -= 1;
+          }
         });
     },
     likeArticle() {
@@ -265,7 +301,7 @@ export default {
     },
     async getArticleLikes() {
       await util
-        .post(`${util.getEnvUrl()}/admin/article/list`, {
+        .post(`${util.getEnvUrl()}/article/list`, {
           article: {
             state: 1,
           },
@@ -289,6 +325,18 @@ export default {
       }
       this.comments[n - 1].replyIsClicked = !this.comments[n - 1].replyIsClicked;
     },
+    checkLoginStatus() {
+      if (!localStorage.token) {
+        this.notLoggedIn = true;
+        this.commentLabel = '发表评论请先登陆';
+      } else {
+        this.commentLabel = '编辑评论';
+      }
+    },
+    close() {
+      this.successDialog = false;
+      this.failureDialog = false;
+    },
   },
 };
 </script>
@@ -306,6 +354,7 @@ export default {
     top: 50%;
     margin-top: -80px;
     text-align: center;
+    text-shadow: 0.1em 0.1em 0.3em black;
     .title-en {
       font-size: 1.2rem;
       font-weight: bold;
@@ -314,11 +363,9 @@ export default {
     .title-cn {
       font-size: 2.6rem;
       margin: 0;
-      text-shadow: 0.1em 0.1em 0.2em black;
     }
     .subtitle {
       font-size: 1.2rem;
-      font-weight: 900;
     }
   }
   .nav-img {
