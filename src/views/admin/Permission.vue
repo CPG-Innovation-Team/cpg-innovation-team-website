@@ -5,27 +5,8 @@
       <v-container>
         <v-card elevation="2">
           <v-card-text>
-            <v-dialog v-model="successDialog" max-width="500px">
-              <v-card>
-                <v-card-title> Success! </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="failureDialog" max-width="500px">
-              <v-card>
-                <v-card-title> Something went wrong... </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" md="6">
                 <v-card-title>所有角色及对应权限</v-card-title>
                 <div v-for="(permissions, role) in allRoles" :key="role.id">
                   <v-card-subtitle> * 角色名称： {{ role }}</v-card-subtitle>
@@ -34,9 +15,7 @@
                   </div>
                 </div>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="12" md="6">
                 <v-card-title>所有权限</v-card-title>
                 <div class="display-content" v-for="(permission, i) in permissions" :key="i">
                   {{ i + 1 }}. {{ permission }}
@@ -45,26 +24,10 @@
             </v-row>
 
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" md="6">
                 新增角色
                 <v-text-field v-model="role" label="role"></v-text-field>
                 <v-btn color="blue darken-1" text @click="saveRole(role)"> Save </v-btn>
-              </v-col>
-              <v-col cols="12">
-                新增权限
-                <v-text-field v-model="permission" label="permission name"></v-text-field>
-                <v-select :items="uris" v-model="uri" label="uri" clearable></v-select>
-                <v-btn color="blue darken-1" text @click="savePermission(permission, uri)"> Save </v-btn>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
-                删除角色
-                <v-select :items="roles" label="delete role" v-model="deleteRoleName" clearable></v-select>
-                <v-btn color="blue darken-1" text @click="deleteRole(deleteRoleName)"> Delete </v-btn>
-              </v-col>
-              <v-col cols="12">
                 删除权限
                 <v-select
                   :items="permissions"
@@ -74,10 +37,10 @@
                 ></v-select>
                 <v-btn color="blue darken-1" text @click="deletePermission(deletePermissionName)"> Delete </v-btn>
               </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="12" md="6">
+                删除角色
+                <v-select :items="roles" label="delete role" v-model="deleteRoleName" clearable></v-select>
+                <v-btn color="blue darken-1" text @click="deleteRole(deleteRoleName)"> Delete </v-btn>
                 角色添加权限
                 <v-select :items="roles" label="select role" v-model="rname" clearable></v-select>
                 <v-select :items="permissions" label="select permission" v-model="pname" clearable></v-select>
@@ -86,6 +49,25 @@
             </v-row>
           </v-card-text>
         </v-card>
+
+        <v-dialog v-model="successDialog" max-width="500px">
+          <v-card>
+            <v-card-title> Success! </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="failureDialog" max-width="500px">
+          <v-card>
+            <v-card-title> Something went wrong... </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-container>
     </v-main>
   </div>
