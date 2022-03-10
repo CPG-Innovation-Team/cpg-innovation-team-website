@@ -143,9 +143,6 @@ export default {
           this.$router
         )
         .then((response) => {
-          if (util.checkValidToken(response) === false) {
-            this.$router.push('/login');
-          }
           if (response.data.data) {
             response.data.data.ArticleDetailList.forEach((blog) => {
               this.updateBlogs(this.blogs, blog);

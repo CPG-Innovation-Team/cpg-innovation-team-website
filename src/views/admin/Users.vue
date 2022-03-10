@@ -119,9 +119,6 @@ export default {
         state: 1,
       })
       .then((response) => {
-        if (util.checkValidToken(response) === false) {
-          this.$router.push('/login');
-        }
         if (response.data.data) {
           response.data.data.forEach((user) => this.users.push(user));
         }

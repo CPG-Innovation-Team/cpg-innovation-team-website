@@ -120,15 +120,6 @@ export default {
     allPermissions: '',
   }),
   async created() {
-    util
-      .post(`${util.getEnvUrl()}/admin/user/query/list`, {
-        state: 1,
-      })
-      .then((response) => {
-        if (util.checkValidToken(response) === false) {
-          this.$router.push('/login');
-        }
-      });
     this.getAllRoles();
     this.getAllPermissions();
   },

@@ -25,15 +25,22 @@ export default {
           },
         })
         .then((response) => {
+          /**
+           * Code reference
+           * 10000, OK
+           * 10003, Invalid Token
+           * 10004, Token is expired
+           * 10009, Invalid Param
+           */
+          if (response.data.code === 10004 || response.data.code === 10003) {
+            window.location.href = '/login';
+          }
           resolve(response);
+        })
+        .catch((error) => {
+          console.log(error);
         });
     });
-  },
-  checkValidToken(response) {
-    if (response.data.code === 10003 || response.data.code === 10004) {
-      return false;
-    }
-    return true;
   },
   /**
    * converts tinymce html to plain text used to display on blog page
