@@ -184,7 +184,8 @@ export default {
             commentId: cid,
             content: reply,
           })
-          .then(() => {
+          .then((response) => {
+            console.log(response);
             this.comments = [];
             this.getComments();
             this.reply = '';

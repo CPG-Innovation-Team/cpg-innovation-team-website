@@ -190,9 +190,7 @@ export default {
       this.username = localStorage.username;
     }
     util.post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }).then((response) => {
-      if (util.checkValidToken(response) === false) {
-        this.$router.push('/login');
-      } else if (response.data.data) {
+      if (response.data.data) {
         this.username = response.data.data.UserName;
         this.email = response.data.data.Email;
         this.isRoot = response.data.data.IsRoot;
