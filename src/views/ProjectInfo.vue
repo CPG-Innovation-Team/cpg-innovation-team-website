@@ -13,7 +13,7 @@
 
     <v-main>
       <v-container class="d-flex justify-space-around">
-        <v-container class="mb-10">
+        <v-container class="project-content-block mb-10">
           <v-img :src="projectBanner" id="project-head-img" max-height="400" />
 
           <v-container>
@@ -284,8 +284,15 @@ h1 {
   font-weight: 600;
 }
 
+.project-content-block {
+  flex: 3;
+}
+
 .briefing-block {
-  width: 300px;
+  flex: 1;
+  min-width: 200px;
+  height: 720px;
+  overflow-y: hidden;
 
   .briefing-item {
     border-bottom: 1px solid #ccc;
