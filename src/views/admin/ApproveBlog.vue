@@ -253,12 +253,12 @@ export default {
         { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
       ],
       cheaders: [
-        { text: 'uid', value: 'uid' },
+        { text: 'id', value: 'cid' },
         { text: 'Content', value: 'content' },
         { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
       ],
       rheaders: [
-        { text: 'cid', value: 'cid' },
+        { text: 'id', value: 'rid' },
         { text: 'Content', value: 'content' },
         { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
       ],
