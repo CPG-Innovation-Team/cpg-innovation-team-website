@@ -62,31 +62,22 @@
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="uid" disabled label="uid"></v-text-field>
+                <v-text-field v-model="username" label="username"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="username" label="username"></v-text-field>
+                <v-text-field v-model="avatar" label="avatar"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="email" label="email"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="isRoot" label="root level"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="nickname" label="nickname"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="state" label="state"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="gender" label="gender"></v-text-field>
+                <v-text-field v-model="genderName" label="gender"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="introduction" label="introduction"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="avatar" label="avatar"></v-text-field>
               </v-col>
             </v-row>
             <v-row>
@@ -164,6 +155,7 @@ export default {
       nickname: '',
       state: '',
       gender: '',
+      genderName: '',
       introduction: '',
       avatar: '',
       password: '',
@@ -202,6 +194,7 @@ export default {
         this.avatar = response.data.data.Avatar;
       }
     });
+    this.getGender();
   },
   methods: {
     saveProfile() {
@@ -246,6 +239,9 @@ export default {
             }
           });
       }
+    },
+    getGender() {
+      this.genderName = this.gender ? 'Female' : 'Male';
     },
   },
 };
