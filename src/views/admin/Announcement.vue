@@ -206,7 +206,7 @@ export default {
       }
     },
     async addAnnouncement() {
-      if (this.content.trim() !== '') {
+      if (this.content.trim() === '') {
         this.emptyDialog = true;
       } else {
         await util
