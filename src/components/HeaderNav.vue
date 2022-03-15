@@ -128,6 +128,7 @@
 <script>
 import CountryFlag from 'vue-country-flag';
 import util from '../util';
+import Event from '../Event';
 
 const projects = require('../data/project');
 const jobs = require('../data/career');
@@ -185,6 +186,8 @@ export default {
       this.lang = lang;
       this.flag = flag;
       document.title = this.$t('title');
+
+      Event.$emit('change-lang', locale);
     },
     search() {
       if (this.searchText !== null && this.searchText.trim() !== '') {
