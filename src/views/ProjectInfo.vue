@@ -94,6 +94,7 @@
 <script>
 import moment from 'moment';
 import HeaderNav from '../components/HeaderNav.vue';
+import Event from '../Event';
 
 const projectBanner = require('../assets/img-project-banner.jpg');
 const cpxBanner = require('../assets/img-cpx-banner.jpg');
@@ -103,6 +104,7 @@ const cppulseBanner = require('../assets/img-cppulse-banner.webp');
 export default {
   name: 'Project',
   data: () => ({
+    locale: null,
     projectBanner,
     projects: [
       {
@@ -197,9 +199,45 @@ export default {
     HeaderNav,
   },
   methods: {
-    timeFromNow: (time) => {
-      return `Updated ${moment(time).fromNow()}`;
+    timeFromNow(time) {
+      return `${this.$t('common.update')}${moment(time).fromNow()}`;
     },
+    changeLang(lang) {
+      if (lang === 'zh-CN') {
+        moment.locale('zh-cn', {
+          relativeTime: {
+            future: '%s内',
+            past: '%s前',
+            s: '几秒',
+            ss: '%d秒',
+            m: '1分钟',
+            mm: '%d分钟',
+            h: '1小时',
+            hh: '%d小时',
+            d: '1天',
+            dd: '%d天',
+            M: '1个月',
+            MM: '%d个月',
+            y: '1年',
+            yy: '%d年',
+          },
+        });
+      } else if (lang === 'en-US') {
+        moment.locale('en');
+      }
+    },
+  },
+  watch: {
+    locale(value) {
+      this.changeLang(value);
+    },
+  },
+
+  created() {
+    Event.$on('change-lang', (locale) => {
+      this.$data.locale = locale;
+    });
+    this.changeLang('zh-CN');
   },
 };
 </script>
