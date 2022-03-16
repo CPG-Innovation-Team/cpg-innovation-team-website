@@ -13,7 +13,9 @@
     </div>
 
     <v-main>
-      <v-container fluid class="mb-10">
+      <RollingGallery />
+
+      <v-container fluid class="mt-10 mb-10">
         <h1 class="news-header mb-12">{{ $t('news.header') }}</h1>
         <v-row>
           <v-col md="4" sm="6" xs="12" v-for="(news, i) in news" :key="i">
@@ -42,6 +44,7 @@
 
 <script>
 import HeaderNav from '../components/HeaderNav.vue';
+import RollingGallery from '../components/RollingGallery.vue';
 
 const news1 = require('../assets/img-news1.jpg');
 const news2 = require('../assets/img-news2.jpg');
@@ -52,6 +55,7 @@ export default {
   data: () => ({}),
   components: {
     HeaderNav,
+    RollingGallery,
   },
   computed: {
     news() {
