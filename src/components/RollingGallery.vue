@@ -6,7 +6,12 @@
         :class="{ reverse: index % 2 === 1 }"
         :style="{ animationDuration: `${list.data.length * list.flex}s` }"
       >
-        <div class="gallery-item" v-for="item of list.data" :key="item.image">
+        <div
+          class="gallery-item"
+          v-for="item of list.data"
+          :key="item.image"
+          :style="{ backgroundColor: randomColor() }"
+        >
           <img :src="item.image" class="gallery-image" />
           <span class="gallery-text" v-text="item.text" />
         </div>
@@ -87,6 +92,12 @@ export default {
       },
     ],
   }),
+  methods: {
+    randomColor() {
+      const colorPool = ['#c8befa', '#fbe9bc', '#e1f9ea', '#c2adc0', '#f5bf9e'];
+      return colorPool[Math.floor(Math.random() * 5)];
+    },
+  },
 };
 </script>
 
@@ -120,7 +131,6 @@ export default {
   .gallery-item {
     margin-bottom: 10px;
     border-radius: 8px;
-    background-color: #6666ff;
   }
   .gallery-image {
     width: 100%;
@@ -130,7 +140,8 @@ export default {
   .gallery-text {
     display: inline-block;
     padding: 0 10px 5px 10px;
-    color: #fff;
+    color: #333;
+    font-size: 14px;
   }
 }
 
