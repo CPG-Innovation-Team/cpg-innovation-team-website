@@ -149,7 +149,7 @@ const router = new VueRouter({
 // handle navigation duplication for router push
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location);
+  return originalPush.call(this, location).catch((err) => err);
 };
 
 export default router;
