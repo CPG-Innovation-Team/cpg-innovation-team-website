@@ -74,7 +74,7 @@
                 <v-text-field v-model="nickname" label="nickname"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="genderName" label="gender"></v-text-field>
+                <v-select :items="genders" label="gender" v-model="genderName"></v-select>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="introduction" label="introduction"></v-text-field>
@@ -83,65 +83,37 @@
             <v-row>
               <v-col cols="12" sm="6" md="6"
                 ><p class="password-title">Enter your password to save changes:</p>
-                <v-text-field
-                  v-model="password"
-                  label="password"
-                  required
-                  :rules="[rules.required]"
-                ></v-text-field></v-col
+                <v-form v-model="valid">
+                  <v-text-field
+                    type="password"
+                    v-model="password"
+                    label="password"
+                    required
+                    :rules="[rules.required]"
+                  ></v-text-field>
+                </v-form> </v-col
             ></v-row>
             <v-card-actions>
               <v-btn color="blue darken-1" text @click="saveProfile"> Save </v-btn>
             </v-card-actions>
           </v-card-text>
         </v-card>
-
-        <v-card class="mt-4">
-          <v-card-title> Modify password </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6" md="12">
-                <v-text-field v-model="oldPwd" label="旧密码"></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="12">
-                <v-text-field
-                  v-model="newPwd"
-                  label="新密码"
-                  :rules="[rules.required, rules.min, rules.digitAlphabet]"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="12">
-                <v-text-field v-model="newPwdRepeat" label="再次输入新密码" :rules="[rules.match]"></v-text-field>
-              </v-col>
-            </v-row>
+        <v-dialog v-model="confirmDialog" max-width="500px">
+          <v-card>
+            <v-card-title> {{ responseMessage }} </v-card-title>
             <v-card-actions>
-              <v-col class="text-left">
-                <v-row>
-                  <div class="pwdAlert" v-show="validationIsFailed">旧密码错误</div>
-                </v-row>
-                <v-row>
-                  <v-btn color="blue darken-1" text @click="savePwd"> Confirm </v-btn>
-                  <v-dialog v-model="confirmDialog" max-width="500px">
-                    <v-card>
-                      <v-card-title v-if="isSaved"> 密码修改成功 </v-card-title>
-                      <v-card-title v-if="!isSaved"> 密码修改失败 </v-card-title>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="confirmDialog = false"> Confirm </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-row>
-              </v-col>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="confirmDialog = false"> Confirm </v-btn>
             </v-card-actions>
-          </v-card-text>
-        </v-card>
+          </v-card>
+        </v-dialog>
       </v-container>
     </v-main>
   </div>
 </template>
 
 <script>
+import bcrypt from 'bcryptjs';
 import AdminNav from '../../components/AdminNav.vue';
 import util from '../../util';
 
@@ -154,23 +126,18 @@ export default {
       uid: '',
       nickname: '',
       state: '',
-      gender: '',
+      genders: ['Male', 'Female', 'Unspecified'],
       genderName: '',
+      gender: '',
       introduction: '',
       avatar: '',
       password: '',
       oldPwd: '',
-      newPwd: '',
-      newPwdRepeat: '',
       confirmDialog: false,
-      isSaved: false,
-      validationIsFailed: false,
+      valid: false,
+      responseMessage: '',
       rules: {
         required: (v) => !!v || 'Required.',
-        digitAlphabet: (v) =>
-          (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || 'The password must contain numbers and alphabets',
-        min: (v) => (v.length >= 6 && v.length <= 32) || 'Min 6 characters, max 32 characters',
-        match: (v) => v === this.newPwd || `The two passwords you entered don't match`,
       },
     };
   },
@@ -181,8 +148,8 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
-    util.post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }).then((response) => {
-      if (response.data.data) {
+    await util.post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }).then((response) => {
+      if (response.data.code === 10000) {
         this.username = response.data.data.UserName;
         this.email = response.data.data.Email;
         this.isRoot = response.data.data.IsRoot;
@@ -192,25 +159,44 @@ export default {
         this.gender = response.data.data.Gender;
         this.introduction = response.data.data.Introduce;
         this.avatar = response.data.data.Avatar;
+        this.oldPwd = response.data.data.Passwd;
       }
     });
-    this.getGender();
+    localStorage.isRoot = this.isRoot;
+    this.getGenderName();
   },
   methods: {
     saveProfile() {
-      if (this.password.trim() !== '') {
-        util.post(`${util.getEnvUrl()}/admin/user/update/info`, {
-          uid: this.uid,
-          username: this.username,
-          email: this.email,
-          passCode: '123456',
-          passwd: this.password,
-          nickname: this.nickname,
-          avatar: this.avatar,
-          gender: this.gender,
-          introduce: this.introduction,
-          state: this.state,
-        });
+      const pwdCheck = bcrypt.compareSync(this.password, this.oldPwd);
+      const validationCheck = this.password.trim() !== '' && this.valid;
+      if (validationCheck === false) {
+        this.confirmDialog = true;
+        this.responseMessage = '密码不可为空';
+      } else if (pwdCheck === false) {
+        this.confirmDialog = true;
+        this.responseMessage = '密码错误，修改失败';
+      } else {
+        util
+          .post(`${util.getEnvUrl()}/admin/user/update/info`, {
+            uid: this.uid,
+            username: this.username,
+            email: this.email,
+            passCode: '123456',
+            passwd: bcrypt.hashSync(this.password, 10),
+            nickname: this.nickname,
+            avatar: this.avatar,
+            gender: this.getGender(),
+            introduce: this.introduction,
+            state: this.state,
+          })
+          .then((response) => {
+            this.confirmDialog = true;
+            if (response.data.code === 10000) {
+              this.responseMessage = '信息修改成功';
+            } else {
+              this.responseMessage = '信息修改失败';
+            }
+          });
       }
     },
     showRole() {
@@ -219,29 +205,23 @@ export default {
       }
       return 'User';
     },
-    savePwd() {
-      if (this.oldPwd.trim() !== '' && this.newPwd.trim() !== '' && this.newPwdRepeat.trim() !== '') {
-        util
-          .post(`${util.getEnvUrl()}/admin/user/update/info`, {
-            uid: this.uid,
-            email: this.email,
-            username: this.username,
-            passCode: '123456',
-            passwd: this.newPwd,
-            nickname: this.nickname,
-          })
-          .then((response) => {
-            this.confirmDialog = true;
-            if (response.data.code === 10002) {
-              this.isSaved = false;
-            } else {
-              this.isSaved = true;
-            }
-          });
+    getGenderName() {
+      if (this.gender === 0) {
+        this.genderName = 'Male';
+      } else if (this.gender === 1) {
+        this.genderName = 'Female';
+      } else {
+        this.genderName = 'Unspecified';
       }
     },
     getGender() {
-      this.genderName = this.gender ? 'Female' : 'Male';
+      if (this.genderName === 'Female') {
+        return 1;
+      }
+      if (this.genderName === 'Male') {
+        return 0;
+      }
+      return 2;
     },
   },
 };
@@ -251,7 +231,6 @@ export default {
 .layout {
   display: flex;
 }
-
 .user-info-container {
   display: flex;
   padding: 20px;
@@ -266,7 +245,6 @@ export default {
     font-weight: 420;
   }
 }
-
 .stat-container {
   margin: 15px 0;
   padding: 0 10px 20px 10px;
@@ -302,19 +280,10 @@ export default {
     }
   }
 }
-
 .sth-container {
   margin: 15px 0;
   padding: 0 10px 20px 10px;
   border-radius: 2px;
   background: white;
-}
-
-.pwdAlert {
-  color: red;
-}
-
-.password-title {
-  color: red;
 }
 </style>
