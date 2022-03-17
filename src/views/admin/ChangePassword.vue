@@ -9,7 +9,12 @@
             <v-row>
               <v-col cols="12" sm="6" md="12">
                 <v-form ref="oldPwdForm">
-                  <v-text-field v-model="oldPwd" label="旧密码" :rules="[rules.required]"></v-text-field>
+                  <v-text-field
+                    v-model="oldPwd"
+                    type="password"
+                    label="旧密码"
+                    :rules="[rules.required]"
+                  ></v-text-field>
                 </v-form>
               </v-col>
 
@@ -17,6 +22,7 @@
                 <v-form ref="newPwdForm" v-model="newPwdValid">
                   <v-text-field
                     v-model="newPwd"
+                    type="password"
                     label="新密码"
                     :rules="[rules.required, rules.min, rules.digitAlphabet]"
                   ></v-text-field>
@@ -26,6 +32,7 @@
                 <v-form ref="repeatPwdForm" v-model="repeatPwdValid">
                   <v-text-field
                     v-model="newPwdRepeat"
+                    type="password"
                     label="再次输入新密码"
                     :rules="[rules.required, rules.match]"
                   ></v-text-field>
