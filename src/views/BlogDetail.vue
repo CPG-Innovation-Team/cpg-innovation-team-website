@@ -8,7 +8,7 @@
         <p class="subtitle">Author: {{ blog.author }}</p>
         <div>
           Likes: {{ likes }}
-          <v-btn icon color="pink" @click="likeArticle()">
+          <v-btn icon color="pink" @click="likeArticle(articleLikeIsClicked)">
             <v-icon v-if="articleLikeIsClicked">mdi-heart</v-icon>
             <v-icon v-else color="grey lighten-1">mdi-heart</v-icon>
           </v-btn>
@@ -179,15 +179,15 @@ export default {
   async created() {
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
-      this.getArticleInfo();
+      await this.getArticleInfo();
       this.checkLoginStatus();
-      this.getComments();
-      this.getArticleLikes();
+      await this.getComments();
+      await this.getArticleLikes();
     }
   },
   methods: {
-    getArticleInfo() {
-      util
+    async getArticleInfo() {
+      await util
         .post(`${util.getEnvUrl()}/article/info`, {
           sn: this.sn,
         })
@@ -202,6 +202,7 @@ export default {
             updatedAt: response.data.data.UpdatedAt,
             createdAt: response.data.data.CreatedAt,
           };
+          this.articleLikeIsClicked = response.data.data.ZanState;
         });
     },
     async sendComment(comment) {
@@ -303,29 +304,27 @@ export default {
           }
         });
     },
-    likeArticle() {
-      util
-        .post(`${util.getEnvUrl()}/like`, {
-          sn: this.sn,
-        })
-        .then(async () => {
-          // perform like article action
-          this.currentLikes = this.likes;
-          await this.getArticleLikes();
-          this.articleLikeIsClicked = true;
-          // check if the user has already liked the article
-          // if yes, then cancel the like
-          if (this.currentLikes === this.likes) {
-            util
-              .post(`${util.getEnvUrl()}/like/cancel`, {
-                sn: this.sn,
-              })
-              .then(async () => {
-                await this.getArticleLikes();
-                this.articleLikeIsClicked = false;
-              });
-          }
-        });
+    likeArticle(articleLikeIsClicked) {
+      // check if the user has liked the article
+      if (articleLikeIsClicked === true) {
+        util
+          .post(`${util.getEnvUrl()}/like/cancel`, {
+            sn: this.sn,
+          })
+          .then(async () => {
+            await this.getArticleLikes();
+            this.articleLikeIsClicked = false;
+          });
+      } else {
+        util
+          .post(`${util.getEnvUrl()}/like`, {
+            sn: this.sn,
+          })
+          .then(async () => {
+            await this.getArticleLikes();
+            this.articleLikeIsClicked = true;
+          });
+      }
     },
     async getArticleLikes() {
       await util
@@ -364,7 +363,7 @@ export default {
     checkLoginStatus() {
       if (!localStorage.token) {
         this.notLoggedIn = true;
-        this.commentLabel = '发表评论请先登陆';
+        this.commentLabel = '发表评论请先注册';
       } else {
         this.commentLabel = '编辑评论';
       }
