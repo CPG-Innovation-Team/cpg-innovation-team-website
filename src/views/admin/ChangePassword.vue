@@ -186,10 +186,4 @@ export default {
 .layout {
   display: flex;
 }
-.pwdAlert {
-  color: red;
-}
-.password-title {
-  color: red;
-}
 </style>
