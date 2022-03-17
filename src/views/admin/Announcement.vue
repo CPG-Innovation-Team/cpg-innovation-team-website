@@ -9,7 +9,8 @@
             <v-radio label="开启公告" value="announcementOn" @click="turn(true)"></v-radio>
             <v-radio label="关闭公告" value="announcementOff" @click="turn(false)"></v-radio>
           </v-radio-group>
-          <v-text-field label="公告内容" :disabled="disabled" v-model="content"></v-text-field>
+          <v-text-field label="中文公告内容" :disabled="disabled" v-model="cnContent"></v-text-field>
+          <v-text-field label="英文公告内容" :disabled="disabled" v-model="enContent"></v-text-field>
           <v-text-field label="公告跳转链接" :disabled="disabled" v-model="link"></v-text-field>
           <v-row>
             <v-col>
@@ -162,7 +163,8 @@ export default {
     return {
       value: 'announcementOn',
       disabled: false,
-      content: '',
+      cnContent: '',
+      enContent: '',
       link: '',
       startTime: null,
       endTime: null,
@@ -206,13 +208,13 @@ export default {
       }
     },
     async addAnnouncement() {
-      if (this.content.trim() === '') {
+      if (this.cnContent.trim() === '' || this.enContent.trim() === '') {
         this.emptyDialog = true;
       } else {
         await util
           .post(`${util.getEnvUrl()}/admin/notify/add`, {
             type: 4,
-            content: `${this.content}@${this.link}`,
+            content: `${this.cnContent}@${this.link}`,
             uid: [],
             state: 1,
             beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
