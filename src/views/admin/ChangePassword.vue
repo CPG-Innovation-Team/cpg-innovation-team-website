@@ -11,9 +11,11 @@
                 <v-form ref="oldPwdForm">
                   <v-text-field
                     v-model="oldPwd"
-                    type="password"
                     label="旧密码"
+                    :type="showOldPwd ? 'text' : 'password'"
+                    :append-icon="showOldPwd ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required]"
+                    @click:append="showOldPwd = !showOldPwd"
                   ></v-text-field>
                 </v-form>
               </v-col>
@@ -22,9 +24,11 @@
                 <v-form ref="newPwdForm" v-model="newPwdValid">
                   <v-text-field
                     v-model="newPwd"
-                    type="password"
                     label="新密码"
+                    :type="showNewPwd ? 'text' : 'password'"
+                    :append-icon="showNewPwd ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.min, rules.digitAlphabet]"
+                    @click:append="showNewPwd = !showNewPwd"
                   ></v-text-field>
                 </v-form>
               </v-col>
@@ -32,9 +36,11 @@
                 <v-form ref="repeatPwdForm" v-model="repeatPwdValid">
                   <v-text-field
                     v-model="newPwdRepeat"
-                    type="password"
                     label="再次输入新密码"
+                    :type="showRepeatPwd ? 'text' : 'password'"
+                    :append-icon="showRepeatPwd ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.match]"
+                    @click:append="showRepeatPwd = !showRepeatPwd"
                   ></v-text-field>
                 </v-form>
               </v-col>
@@ -94,6 +100,9 @@ export default {
       responseMessage: '',
       newPwdValid: false,
       repeatPwdValid: false,
+      showOldPwd: false,
+      showNewPwd: false,
+      showRepeatPwd: false,
       rules: {
         required: (v) => !!v || 'Required.',
         digitAlphabet: (v) =>

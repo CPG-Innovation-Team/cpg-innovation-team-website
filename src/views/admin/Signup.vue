@@ -31,21 +31,25 @@
         <label>Password</label>
         <v-text-field
           v-model="password"
-          type="password"
+          :type="showPwd ? 'text' : 'password'"
+          :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required, rules.min]"
           required
           dense
           outlined
+          @click:append="showPwd = !showPwd"
         ></v-text-field>
 
         <label>Confirm Password</label>
         <v-text-field
           v-model="confirmedPwd"
-          type="password"
+          :type="showConfirmPwd ? 'text' : 'password'"
+          :append-icon="showConfirmPwd ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required, rules.min, rules.confirm]"
           required
           dense
           outlined
+          @click:append="showConfirmPwd = !showConfirmPwd"
         ></v-text-field>
 
         <p style="text-align: right; font-size: 0.9rem; margin-top: 8px">
@@ -98,6 +102,8 @@ export default {
       confirmedPwd: '',
       responseDialog: false,
       alertDialog: false,
+      showPwd: false,
+      showConfirmPwd: false,
       rules: {
         required: (v) => !!v || 'Required.',
         min: (v) => v.length >= 8 || 'Min 8 characters',

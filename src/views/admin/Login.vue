@@ -19,11 +19,13 @@
         <label>Password</label>
         <v-text-field
           v-model="password"
-          type="password"
+          :type="showPwd ? 'text' : 'password'"
+          :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required]"
           required
           dense
           outlined
+          @click:append="showPwd = !showPwd"
         ></v-text-field>
 
         <p style="text-align: right; font-size: 0.9rem; margin-top: 8px">
@@ -62,6 +64,7 @@ export default {
       username: '',
       password: '',
       dialog: false,
+      showPwd: false,
       rules: {
         required: (v) => !!v || 'Required.',
       },
