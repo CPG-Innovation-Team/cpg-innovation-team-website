@@ -320,8 +320,8 @@ export default {
               .post(`${util.getEnvUrl()}/like/cancel`, {
                 sn: this.sn,
               })
-              .then(() => {
-                this.getArticleLikes();
+              .then(async () => {
+                await this.getArticleLikes();
                 this.articleLikeIsClicked = false;
               });
           }
