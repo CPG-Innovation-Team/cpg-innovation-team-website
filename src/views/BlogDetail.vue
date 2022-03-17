@@ -59,7 +59,7 @@
                             <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
                             <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
                           </v-col>
-                          <v-btn color="primary" @click="clickReply(n)">Reply</v-btn>
+                          <v-btn color="primary" @click="clickReply(n)">Reply {{ getReplyBtnIcon(n) }}</v-btn>
                         </v-list-item-action>
                       </v-row>
                       <v-subheader v-if="comments[n - 1].replies.length > 0"> Replies </v-subheader>
@@ -84,13 +84,15 @@
                           Send
                         </v-btn>
                       </div>
-                      <v-row>
+                      <v-row class="ml-4">
                         <v-list>
                           <template v-for="i in comments[n - 1].replies.length">
                             <v-list-item :key="i">
-                              <v-list-item-avatar color="grey darken-1"> </v-list-item-avatar>
+                              <v-list-item-avatar>
+                                <v-img src="https://randomuser.me/api/portraits/men/81.jpg"></v-img
+                              ></v-list-item-avatar>
                               <v-list-item-content>
-                                <v-list-item-title>{{ comments[n - 1].replies[i - 1].UID }}</v-list-item-title>
+                                <v-list-item-title>{{ comments[n - 1].replies[i - 1].NickName }}</v-list-item-title>
                                 <v-list-item-subtitle>
                                   {{ comments[n - 1].replies[i - 1].Content }}
                                 </v-list-item-subtitle>
@@ -166,6 +168,7 @@ export default {
       failureDialog: false,
       successMessage: '',
       failureMessage: '',
+      replyBtnIcon: '▼',
     };
   },
   components: {
@@ -336,12 +339,20 @@ export default {
     },
     clickReply(n) {
       this.comment_index = n;
+      // once a reply button is clicked, close all other reply boxes
       for (let i = 0; i < this.comments.length; i += 1) {
         if (i !== n - 1) {
           this.comments[i].replyIsClicked = false;
         }
       }
+      // toggle the status of a reply box given the index
       this.comments[n - 1].replyIsClicked = !this.comments[n - 1].replyIsClicked;
+    },
+    getReplyBtnIcon(n) {
+      if (this.comments[n - 1].replyIsClicked === true) {
+        return '▲';
+      }
+      return '▼';
     },
     checkLoginStatus() {
       if (!localStorage.token) {
