@@ -176,13 +176,13 @@ export default {
   components: {
     HeaderNav,
   },
-  async created() {
+  created() {
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
-      await this.getArticleInfo();
+      this.getArticleInfo();
       this.checkLoginStatus();
-      await this.getComments();
-      await this.getArticleLikes();
+      this.getComments();
+      this.getArticleLikes();
     }
   },
   methods: {
