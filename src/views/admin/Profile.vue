@@ -184,7 +184,7 @@ export default {
             username: this.username,
             email: this.email,
             passCode: '123456',
-            passwd: bcrypt.hashSync(this.password, 10),
+            passwd: this.password,
             nickname: this.nickname,
             avatar: this.avatar,
             gender: this.getGender(),
