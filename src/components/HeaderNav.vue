@@ -229,6 +229,7 @@ export default {
       util.post(`${util.getEnvUrl()}/admin/logout`, {}).then(() => {
         this.token = '';
         localStorage.clear();
+        this.$router.push('/');
       });
     },
     async getAnnouncement() {
