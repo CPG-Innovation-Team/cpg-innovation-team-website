@@ -235,8 +235,8 @@ export default {
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
         this.announcements = [{ content: '' }];
-        if (response.data.data.AnnouncementList) {
-          response.data.data.AnnouncementList.forEach((item) => {
+        if (response.data.data.NotificationList) {
+          response.data.data.NotificationList.forEach((item) => {
             this.announcements.push({ content: item.Content });
           });
         }
@@ -244,11 +244,11 @@ export default {
     },
     getAnnouncementContent() {
       const str = this.announcements[this.announcements.length - 1].content;
-      this.announcementURL = str
+      this.announcementURL = str.replace('"', '').replace('"', '').substring(str.indexOf('@'));
+      return str
         .replace('"', '')
         .replace('"', '')
-        .substring(str.indexOf('@') + 1);
-      return str.replace('"', '').replace('"', '').substring(0, str.indexOf('@'));
+        .substring(0, str.indexOf('@') - 1);
     },
     redirectURL() {
       window.location.href = this.announcementURL;
