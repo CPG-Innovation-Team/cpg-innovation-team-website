@@ -118,6 +118,7 @@ export default {
             email: this.email,
             passCode: this.passCode,
             passwd: this.password,
+            gender: 2,
           })
           .then((response) => {
             if (response.data.code === 10000) {
