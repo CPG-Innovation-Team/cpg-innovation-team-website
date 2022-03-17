@@ -9,7 +9,8 @@
         <div>
           Likes: {{ likes }}
           <v-btn icon color="pink" @click="likeArticle()">
-            <v-icon>mdi-heart</v-icon>
+            <v-icon v-if="articleLikeIsClicked">mdi-heart</v-icon>
+            <v-icon v-else color="grey lighten-1">mdi-heart</v-icon>
           </v-btn>
         </div>
       </div>
@@ -169,6 +170,7 @@ export default {
       successMessage: '',
       failureMessage: '',
       replyBtnIcon: '▼',
+      articleLikeIsClicked: false,
     };
   },
   components: {
@@ -307,8 +309,12 @@ export default {
           sn: this.sn,
         })
         .then(async () => {
+          // perform like article action
           this.currentLikes = this.likes;
           await this.getArticleLikes();
+          this.articleLikeIsClicked = true;
+          // check if the user has already liked the article
+          // if yes, then cancel the like
           if (this.currentLikes === this.likes) {
             util
               .post(`${util.getEnvUrl()}/like/cancel`, {
@@ -316,6 +322,7 @@ export default {
               })
               .then(() => {
                 this.getArticleLikes();
+                this.articleLikeIsClicked = false;
               });
           }
         });
