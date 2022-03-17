@@ -244,11 +244,13 @@ export default {
     },
     getAnnouncementContent() {
       const str = this.announcements[this.announcements.length - 1].content;
-      this.announcementURL = str.replace('"', '').substring(str.indexOf('@'));
-      return str.replace('"', '').substring(0, str.indexOf('@') - 1);
+      // remove bounary quotes from the string
+      const trimmedStr = str.substring(1, str.length - 1);
+      this.announcementURL = trimmedStr.substring(trimmedStr.indexOf('@') + 1);
+      return trimmedStr.substring(0, trimmedStr.indexOf('@'));
     },
     redirectURL() {
-      window.location.href = this.announcementURL;
+      window.location = this.announcementURL;
     },
     handleScroll() {
       if (window.scrollY === 0) {
