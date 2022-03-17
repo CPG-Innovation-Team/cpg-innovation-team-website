@@ -159,7 +159,7 @@ export default {
             email: this.email,
             username: this.username,
             passCode: '123456',
-            passwd: bcrypt.hashSync(this.newPwd, 10),
+            passwd: this.newPwd,
             nickname: this.nickname,
           })
           .then((response) => {
