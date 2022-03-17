@@ -289,42 +289,48 @@ export default {
   methods: {
     async getBlogList() {
       await util.post(`${util.getEnvUrl()}/admin/review/query/article/list`, {}).then((response) => {
-        const sn = Object.keys(response.data.data.ArticleMap);
-        let index = 0;
-        Object.values(response.data.data.ArticleMap).forEach((blog) => {
-          this.blogs.push({
-            sn: sn[index],
-            title: blog.Title,
-            tags: blog.Tags,
-            content: util.escapeHTML(blog.Content),
-            author: blog.Author,
-            uid: blog.Uid,
-            cover: blog.Cover,
+        if (response.data.data.ArticleMap) {
+          const sn = Object.keys(response.data.data.ArticleMap);
+          let index = 0;
+          Object.values(response.data.data.ArticleMap).forEach((blog) => {
+            this.blogs.push({
+              sn: sn[index],
+              title: blog.Title,
+              tags: blog.Tags,
+              content: util.escapeHTML(blog.Content),
+              author: blog.Author,
+              uid: blog.Uid,
+              cover: blog.Cover,
+            });
+            index += 1;
           });
-          index += 1;
-        });
+        }
       });
     },
     async getCommentList() {
       await util.post(`${util.getEnvUrl()}/admin/review/query/comment/list`, {}).then((response) => {
-        Object.values(response.data.data.CommentMap).forEach((comment) => {
-          this.comments.push({
-            content: comment.Content,
-            uid: comment.UID,
-            cid: comment.Cid,
+        if (response.data.data.CommentMap) {
+          Object.values(response.data.data.CommentMap).forEach((comment) => {
+            this.comments.push({
+              content: comment.Content,
+              uid: comment.UID,
+              cid: comment.Cid,
+            });
           });
-        });
+        }
       });
     },
     async getReplyList() {
       await util.post(`${util.getEnvUrl()}/admin/review/query/reply/list`, {}).then((response) => {
-        Object.values(response.data.data.ReplyMap).forEach((reply) => {
-          this.replies.push({
-            content: reply.Content,
-            uid: reply.UID,
-            rid: reply.Id,
+        if (response.data.data.ReplyMap) {
+          Object.values(response.data.data.ReplyMap).forEach((reply) => {
+            this.replies.push({
+              content: reply.Content,
+              uid: reply.UID,
+              rid: reply.Id,
+            });
           });
-        });
+        }
       });
     },
     getApproveArticle(item) {
