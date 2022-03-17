@@ -85,11 +85,13 @@
                 ><p class="password-title">Enter your password to save changes:</p>
                 <v-form v-model="valid">
                   <v-text-field
-                    type="password"
                     v-model="password"
                     label="password"
                     required
+                    :type="showPwd ? 'text' : 'password'"
+                    :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required]"
+                    @click:append="showPwd = !showPwd"
                   ></v-text-field>
                 </v-form> </v-col
             ></v-row>
@@ -136,6 +138,7 @@ export default {
       confirmDialog: false,
       valid: false,
       responseMessage: '',
+      showPwd: false,
       rules: {
         required: (v) => !!v || 'Required.',
       },
