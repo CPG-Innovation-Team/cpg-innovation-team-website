@@ -51,7 +51,7 @@
                           </v-list-item-subtitle>
                           <v-col class="text-right">
                             <v-icon
-                              v-if="!comments[n - 1].likeIsClicked"
+                              v-if="!comments[n - 1].commentLikeIsClicked"
                               color="grey lighten-1"
                               @click="likeComment(n - 1)"
                             >
@@ -272,16 +272,15 @@ export default {
               createdAt: dateString.replace(',', '').replace('PM', 'p.m.').replace('AM', 'a.m.'),
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
-              likeIsClicked: false,
               replyIsClicked: false,
               replies: response.data.data[i].ReplyList || [],
               state: response.data.data[i].State,
+              commentLikeIsClicked: response.data.data[i].ZanState,
             });
           }
         });
     },
     likeComment(n) {
-      this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
       util
         .post(`${util.getEnvUrl()}/like`, {
           comment_id: this.comments[n].cid,
@@ -289,11 +288,11 @@ export default {
         .then((response) => {
           if (response.data.code === 10000) {
             this.comments[n].zanNum += 1;
+            this.comments[n].commentLikeIsClicked = true;
           }
         });
     },
     unlikeComment(n) {
-      this.comments[n].likeIsClicked = !this.comments[n].likeIsClicked;
       util
         .post(`${util.getEnvUrl()}/like/cancel`, {
           comment_id: this.comments[n].cid,
@@ -301,6 +300,7 @@ export default {
         .then((response) => {
           if (response.data.code === 10000) {
             this.comments[n].zanNum -= 1;
+            this.comments[n].commentLikeIsClicked = false;
           }
         });
     },
