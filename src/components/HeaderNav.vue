@@ -244,11 +244,8 @@ export default {
     },
     getAnnouncementContent() {
       const str = this.announcements[this.announcements.length - 1].content;
-      this.announcementURL = str.replace('"', '').replace('"', '').substring(str.indexOf('@'));
-      return str
-        .replace('"', '')
-        .replace('"', '')
-        .substring(0, str.indexOf('@') - 1);
+      this.announcementURL = str.replace('"', '').substring(str.indexOf('@'));
+      return str.replace('"', '').substring(0, str.indexOf('@') - 1);
     },
     redirectURL() {
       window.location.href = this.announcementURL;
