@@ -54,12 +54,12 @@
             </v-card-actions>
           </v-card-text>
         </v-card>
-        <v-dialog v-model="pwdDialog" max-width="500px">
+        <v-dialog v-model="alertDialog" max-width="500px">
           <v-card>
-            <v-card-title> {{ pwdMessage }} </v-card-title>
+            <v-card-title> {{ alertMessage }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="pwdDialog = false"> Confirm </v-btn>
+              <v-btn color="blue darken-1" text @click="alertDialog = false"> Confirm </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -94,9 +94,9 @@ export default {
       oldPwd: '',
       newPwd: '',
       newPwdRepeat: '',
-      pwdDialog: false,
+      alertDialog: false,
       responseDialog: false,
-      pwdMessage: '',
+      alertMessage: '',
       responseMessage: '',
       newPwdValid: false,
       repeatPwdValid: false,
@@ -141,17 +141,17 @@ export default {
       this.$refs.repeatPwdForm.validate();
       this.confirmDialog = true;
       if (emptyPwdCheck === false) {
-        this.pwdDialog = true;
-        this.pwdMessage = '密码不可为空';
+        this.alertDialog = true;
+        this.alertMessage = '密码不可为空';
       } else if (this.newPwdValid === false) {
-        this.pwdDialog = true;
-        this.pwdMessage = '新密码不符合规则';
+        this.alertDialog = true;
+        this.alertMessage = '新密码不符合规则';
       } else if (this.repeatPwdValid === false) {
-        this.pwdDialog = true;
-        this.pwdMessage = '密码不匹配';
+        this.alertDialog = true;
+        this.alertMessage = '密码不匹配';
       } else if (pwdCheck === false) {
-        this.pwdDialog = true;
-        this.pwdMessage = '旧密码不正确';
+        this.alertDialog = true;
+        this.alertMessage = '旧密码不正确';
       } else {
         util
           .post(`${util.getEnvUrl()}/admin/user/update/info`, {
