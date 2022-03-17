@@ -54,6 +54,30 @@
 
         <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="register">Signup</v-btn>
       </v-form>
+      <v-dialog max-width="600" v-model="responseDialog">
+        <template>
+          <v-card>
+            <v-card-text>
+              <div class="text-h6 pa-6">注册失败，请重试</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn text @click="responseDialog = false">Confirm</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+      <v-dialog max-width="600" v-model="alertDialog">
+        <template>
+          <v-card>
+            <v-card-text>
+              <div class="text-h6 pa-6">信息输入不符合规则，请重新输入</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn text @click="alertDialog = false">Confirm</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -72,6 +96,8 @@ export default {
       email: '',
       password: '',
       confirmedPwd: '',
+      responseDialog: false,
+      alertDialog: false,
       rules: {
         required: (v) => !!v || 'Required.',
         min: (v) => v.length >= 8 || 'Min 8 characters',
@@ -81,19 +107,29 @@ export default {
   },
   methods: {
     validate() {
-      if (this.$refs.form.validate()) {
-        this.$router.push('/');
-      }
+      this.$refs.form.validate();
     },
     async register() {
-      if (this.password === this.confirmedPwd) {
-        await axios.post(`${util.getEnvUrl()}/register`, {
-          username: this.username,
-          nickname: this.nickname,
-          email: this.email,
-          passCode: this.passCode,
-          passwd: this.password,
-        });
+      if (this.valid === true) {
+        await axios
+          .post(`${util.getEnvUrl()}/register`, {
+            username: this.username,
+            nickname: this.nickname,
+            email: this.email,
+            passCode: this.passCode,
+            passwd: this.password,
+          })
+          .then((response) => {
+            if (response.data.code === 10000) {
+              localStorage.token = response.data.data.Token;
+              localStorage.username = this.username;
+              this.$router.push('/');
+            } else {
+              this.responseDialog = true;
+            }
+          });
+      } else {
+        this.alertDialog = true;
       }
     },
   },
