@@ -34,7 +34,7 @@
         </p>
 
         <v-btn color="primary" style="float: right; margin-left: 100%" @click="login(username, password)">Login</v-btn>
-        <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
+        <v-dialog max-width="600" v-model="dialog">
           <template>
             <v-card>
               <v-card-text>
@@ -62,18 +62,14 @@ export default {
       username: '',
       password: '',
       dialog: false,
-      userExisted: false,
       rules: {
         required: (v) => !!v || 'Required.',
-        emailMatch: () => `The email and password you entered don't match`,
       },
     };
   },
   methods: {
     validate() {
-      if (this.$refs.form.validate() && this.userExisted === true) {
-        this.$router.push('/');
-      }
+      this.$refs.form.validate();
     },
     async login(username, password) {
       if (this.username === '' || this.password === '') {
@@ -88,7 +84,6 @@ export default {
             if (response.data.data.Token) {
               localStorage.token = response.data.data.Token;
               localStorage.username = this.username;
-              this.userExisted = true;
               this.$router.push('/');
             } else {
               this.dialog = true;
