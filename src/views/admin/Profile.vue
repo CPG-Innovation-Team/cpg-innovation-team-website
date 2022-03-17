@@ -165,7 +165,6 @@ export default {
         this.oldPwd = response.data.data.Passwd;
       }
     });
-    localStorage.isRoot = this.isRoot;
     this.getGenderName();
   },
   methods: {
