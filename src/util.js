@@ -33,7 +33,7 @@ export default {
            * 10009, Invalid Param
            */
           if (response.data.code === 10004 || response.data.code === 10003) {
-            window.location.href = '/login';
+            window.location = '/login';
           }
           resolve(response);
         })
