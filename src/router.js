@@ -21,6 +21,7 @@ import Profile from './views/admin/Profile.vue';
 import Announcement from './views/admin/Announcement.vue';
 import UpdateBlog from './views/admin/UpdateBlog.vue';
 import Permission from './views/admin/Permission.vue';
+import ChangePassword from './views/admin/ChangePassword.vue';
 
 Vue.use(VueRouter);
 
@@ -129,6 +130,11 @@ const routes = [
     path: '/admin/permission',
     name: 'Permission',
     component: Permission,
+  },
+  {
+    path: '/admin/changePwd',
+    name: 'ChangePassword',
+    component: ChangePassword,
   },
 ];
 
