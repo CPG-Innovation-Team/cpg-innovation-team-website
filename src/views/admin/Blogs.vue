@@ -88,7 +88,6 @@ export default {
       { text: '查阅数', value: 'viewNum' },
       { text: '评论数', value: 'cmtNum' },
       { text: '点赞数', value: 'likes' },
-      { text: '状态', value: 'state' },
       { text: '操作', value: 'actions', sortable: false, align: 'center' },
     ],
     blogs: [],
