@@ -16,7 +16,7 @@ import Blogs from './views/admin/Blogs.vue';
 import Users from './views/admin/Users.vue';
 import Activities from './views/admin/Activities.vue';
 import CreateBlog from './views/admin/CreateBlog.vue';
-import ApproveBlog from './views/admin/ApproveBlog.vue';
+import Approval from './views/admin/Approval.vue';
 import Profile from './views/admin/Profile.vue';
 import Announcement from './views/admin/Announcement.vue';
 import UpdateBlog from './views/admin/UpdateBlog.vue';
@@ -98,8 +98,8 @@ const routes = [
   },
   {
     path: '/admin/approve',
-    name: 'ApprovalBlog',
-    component: ApproveBlog,
+    name: 'Approval',
+    component: Approval,
   },
   {
     path: '/admin/users',
