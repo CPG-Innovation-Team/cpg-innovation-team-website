@@ -233,6 +233,7 @@ export default {
 .layout {
   display: flex;
 }
+
 .user-info-container {
   display: flex;
   padding: 20px;
@@ -247,6 +248,7 @@ export default {
     font-weight: 420;
   }
 }
+
 .stat-container {
   margin: 15px 0;
   padding: 0 10px 20px 10px;
@@ -282,6 +284,7 @@ export default {
     }
   }
 }
+
 .sth-container {
   margin: 15px 0;
   padding: 0 10px 20px 10px;
