@@ -30,7 +30,7 @@
             <v-card class="ma-4" min-width="800">
               <v-subheader> Comments </v-subheader>
 
-              <v-list two-line>
+              <v-list v-if="comments" two-line>
                 <template v-for="n in comments.length">
                   <v-list-item v-if="comments[n - 1].state === 1" :key="n">
                     <v-col>
