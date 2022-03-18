@@ -363,7 +363,7 @@ export default {
     checkLoginStatus() {
       if (!localStorage.token) {
         this.notLoggedIn = true;
-        this.commentLabel = '发表评论请先注册';
+        this.commentLabel = '发表评论请先登陆';
       } else {
         this.commentLabel = '编辑评论';
       }
