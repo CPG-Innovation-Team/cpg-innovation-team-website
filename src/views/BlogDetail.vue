@@ -10,7 +10,7 @@
           Likes: {{ likes }}
           <v-btn icon color="pink" @click="likeArticle(articleLikeIsClicked)">
             <v-icon v-if="articleLikeIsClicked">mdi-heart</v-icon>
-            <v-icon v-else color="grey lighten-1">mdi-heart</v-icon>
+            <v-icon v-else color="pink lighten-3">mdi-heart-outline</v-icon>
           </v-btn>
         </div>
       </div>
@@ -408,7 +408,7 @@ export default {
   .nav-img {
     width: 100%;
     height: 400px;
-    opacity: 2;
+    opacity: 0.4;
   }
 }
 
