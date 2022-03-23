@@ -84,7 +84,7 @@
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
           <div class="language-setting" v-bind="attrs" v-on="on">
-            <country-flag class="flag" :country="flag" data-test-id="country-flag" />
+            <country-flag class="flag" :country="$t('flag')" data-test-id="country-flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
         </template>
@@ -138,7 +138,6 @@ export default {
   data: () => ({
     token: '',
     lang: '中文',
-    flag: 'cn',
     drawer: false,
     group: null,
     // search
