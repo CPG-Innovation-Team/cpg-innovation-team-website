@@ -13,7 +13,7 @@ export default {
     });
     return temp;
   },
-  post(url, parameters) {
+  post(url, parameters, router) {
     if (localStorage.token) {
       this.token = localStorage.token;
     }
@@ -33,7 +33,7 @@ export default {
            * 10009, Invalid Param
            */
           if (response.data.code === 10004 || response.data.code === 10003) {
-            window.location = '/login';
+            router.push({ path: '/login' });
           }
           resolve(response);
         })
