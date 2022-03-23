@@ -14,7 +14,6 @@ import Signup from './views/admin/Signup.vue';
 import Dashboard from './views/admin/Dashboard.vue';
 import Blogs from './views/admin/Blogs.vue';
 import Users from './views/admin/Users.vue';
-import Activities from './views/admin/Activities.vue';
 import CreateBlog from './views/admin/CreateBlog.vue';
 import Approval from './views/admin/Approval.vue';
 import Profile from './views/admin/Profile.vue';
@@ -105,11 +104,6 @@ const routes = [
     path: '/admin/users',
     name: 'Users',
     component: Users,
-  },
-  {
-    path: '/admin/activities',
-    name: 'Activities',
-    component: Activities,
   },
   {
     path: '/admin/profile',

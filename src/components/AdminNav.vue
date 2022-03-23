@@ -39,7 +39,6 @@ export default {
         { title: 'Blogs', icon: 'mdi-post', link: '/admin/blogs' },
         { title: 'Users', icon: 'mdi-account-multiple', link: '/admin/users' },
         { title: 'Permission', icon: 'mdi-account-multiple-plus', link: '/admin/permission' },
-        { title: 'Activity', icon: 'mdi-chart-areaspline-variant', link: '/admin/activities' },
         { title: 'Approve', icon: 'mdi-post', link: '/admin/approve' },
         { title: 'Announcement', icon: 'mdi-bell', link: '/admin/announcement' },
         { title: 'Change Password', icon: 'mdi-onepassword', link: '/admin/changePwd' },
