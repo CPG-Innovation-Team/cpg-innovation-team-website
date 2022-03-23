@@ -84,15 +84,25 @@ export default {
             passwd: password,
           })
           .then((response) => {
-            if (response.data.data.Token) {
+            if (response.data.code === 10000) {
               localStorage.token = response.data.data.Token;
-              localStorage.username = this.username;
+              this.saveUserInfo();
               this.$router.push('/');
             } else {
               this.dialog = true;
             }
           });
       }
+    },
+    async saveUserInfo() {
+      await util
+        .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
+        .then((response) => {
+          if (response.data.code === 10000) {
+            localStorage.username = response.data.data.UserName;
+            localStorage.avatar = response.data.data.Avatar;
+          }
+        });
     },
   },
 };
