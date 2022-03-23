@@ -36,7 +36,12 @@
                     <v-col>
                       <v-row>
                         <v-list-item-avatar>
-                          <v-img src="https://randomuser.me/api/portraits/men/81.jpg"></v-img>
+                          <v-img
+                            v-if="comments[n - 1].avatarIsValid"
+                            :src="comments[n - 1].avatar"
+                            @error="getDefaultUserCommentAvatar(n - 1)"
+                          ></v-img>
+                          <v-img v-else src="../assets/icon-default-avatar.jpeg"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>{{ comments[n - 1].nickname }}</v-list-item-title>
@@ -90,8 +95,16 @@
                           <template v-for="i in comments[n - 1].replies.length">
                             <v-list-item :key="i">
                               <v-list-item-avatar>
-                                <v-img src="https://randomuser.me/api/portraits/men/81.jpg"></v-img
-                              ></v-list-item-avatar>
+                                <v-img
+                                  v-if="comments[n - 1].replies[i - 1].avatarIsValid === false"
+                                  src="../assets/icon-default-avatar.jpeg"
+                                ></v-img>
+                                <v-img
+                                  v-else
+                                  :src="comments[n - 1].replies[i - 1].Avatar"
+                                  @error="getDefaultUserReplyAvatar(n - 1, i - 1)"
+                                ></v-img>
+                              </v-list-item-avatar>
                               <v-list-item-content>
                                 <v-list-item-title>{{ comments[n - 1].replies[i - 1].NickName }}</v-list-item-title>
                                 <v-list-item-subtitle>
@@ -208,10 +221,14 @@ export default {
     async sendComment(comment) {
       if (comment.trim() !== '') {
         await util
-          .post(`${util.getEnvUrl()}/comment/add`, {
-            sn: this.sn,
-            content: comment,
-          })
+          .post(
+            `${util.getEnvUrl()}/comment/add`,
+            {
+              sn: this.sn,
+              content: comment,
+            },
+            this.$router
+          )
           .then((response) => {
             if (response.data.code === 10000) {
               this.successDialog = true;
@@ -229,10 +246,14 @@ export default {
     async sendReply(cid, reply) {
       if (reply.trim() !== '') {
         await util
-          .post(`${util.getEnvUrl()}/comment/reply`, {
-            commentId: cid,
-            content: reply,
-          })
+          .post(
+            `${util.getEnvUrl()}/comment/reply`,
+            {
+              commentId: cid,
+              content: reply,
+            },
+            this.$router
+          )
           .then((response) => {
             if (response.data.code === 10000) {
               this.successDialog = true;
@@ -254,7 +275,6 @@ export default {
           sn: this.sn,
         })
         .then((response) => {
-          console.log(response);
           for (let i = 1; i <= Object.keys(response.data.data).length; i += 1) {
             const date = new Date(response.data.data[i].CreatedAt);
             const formatOptions = {
@@ -274,6 +294,8 @@ export default {
               uid: response.data.data[i].UID,
               zanNum: response.data.data[i].ZanNum,
               replyIsClicked: false,
+              avatar: response.data.data[i].Avatar,
+              avatarIsValid: true,
               replies: response.data.data[i].ReplyList || [],
               state: response.data.data[i].State,
               commentLikeIsClicked: response.data.data[i].ZanState,
@@ -283,9 +305,13 @@ export default {
     },
     likeComment(n) {
       util
-        .post(`${util.getEnvUrl()}/like`, {
-          comment_id: this.comments[n].cid,
-        })
+        .post(
+          `${util.getEnvUrl()}/like`,
+          {
+            comment_id: this.comments[n].cid,
+          },
+          this.$router
+        )
         .then((response) => {
           if (response.data.code === 10000) {
             this.comments[n].zanNum += 1;
@@ -295,9 +321,13 @@ export default {
     },
     unlikeComment(n) {
       util
-        .post(`${util.getEnvUrl()}/like/cancel`, {
-          comment_id: this.comments[n].cid,
-        })
+        .post(
+          `${util.getEnvUrl()}/like/cancel`,
+          {
+            comment_id: this.comments[n].cid,
+          },
+          this.$router
+        )
         .then((response) => {
           if (response.data.code === 10000) {
             this.comments[n].zanNum -= 1;
@@ -309,9 +339,13 @@ export default {
       // check if the user has liked the article
       if (articleLikeIsClicked === true) {
         util
-          .post(`${util.getEnvUrl()}/like/cancel`, {
-            sn: this.sn,
-          })
+          .post(
+            `${util.getEnvUrl()}/like/cancel`,
+            {
+              sn: this.sn,
+            },
+            this.$router
+          )
           .then(async () => {
             await this.getArticleLikes();
             this.articleLikeIsClicked = false;
@@ -372,6 +406,12 @@ export default {
     close() {
       this.successDialog = false;
       this.failureDialog = false;
+    },
+    getDefaultUserCommentAvatar(index) {
+      this.comments[index].avatarIsValid = false;
+    },
+    getDefaultUserReplyAvatar(cindex, rindex) {
+      this.comments[cindex].replies[rindex].avatarIsValid = false;
     },
   },
 };
