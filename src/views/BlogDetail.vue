@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-container">
-      <img class="nav-img" src="https://picsum.photos/2000/" alt="header image" />
+      <img class="nav-img" :src="blog.cover" alt="header image" />
 
       <div class="header-text">
         <p class="title-cn">{{ blog.title }}</p>
@@ -254,6 +254,7 @@ export default {
           sn: this.sn,
         })
         .then((response) => {
+          console.log(response);
           for (let i = 1; i <= Object.keys(response.data.data).length; i += 1) {
             const date = new Date(response.data.data[i].CreatedAt);
             const formatOptions = {
@@ -380,6 +381,7 @@ export default {
 .header-container {
   position: relative;
   height: 400px;
+  background-color: lightgrey;
   .header-text {
     color: white;
     position: absolute;

@@ -21,9 +21,12 @@
                   <v-card flat color="transparent">
                     <div class="popular-item">
                       <img
-                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                        alt="sample img"
+                        v-if="blog.imgIsValid"
+                        :src="blog.cover"
+                        alt="blog cover img"
+                        @error="getDefaultCoverForPopular(index)"
                       />
+                      <img v-else src="../assets/img-default-blog-cover.jpeg" alt="blog cover img" />
                       <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
                         <div class="popular-title">{{ blog.title }}</div>
                       </router-link>
@@ -58,11 +61,18 @@
                         <v-card-text>
                           <v-row no-gutters>
                             <v-col cols="4">
-                              <v-img
+                              <!-- <v-img
                                 class="recent-img"
                                 :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
                                 alt="sample img"
+                              /> -->
+                              <img
+                                v-if="blog.imgIsValid"
+                                :src="blog.cover"
+                                alt="blog cover img"
+                                @error="getDefaultCoverForCategorized(index)"
                               />
+                              <img v-else src="../assets/img-default-blog-cover.jpeg" alt="blog cover img" />
                             </v-col>
                             <v-col cols="8">
                               <v-row class="recent-user-info">
@@ -155,6 +165,7 @@ export default {
               state: blog.State,
               cover: blog.Cover,
               likes: blog.ZanNum,
+              imgIsValid: true,
             });
           });
         }
@@ -163,6 +174,14 @@ export default {
     this.catogorizedBlogs = this.blogs;
   },
   methods: {
+    getDefaultCoverForPopular(index) {
+      this.popularBlogs[index].imgIsValid = false;
+    },
+    getDefaultCoverForCategorized(index) {
+      console.log(index);
+      console.log(this.catogorizedBlogs);
+      this.catogorizedBlogs[index].imgIsValid = false;
+    },
     getPopularBlogs() {
       this.popularBlogs = [...this.blogs];
       this.popularBlogs.sort((a, b) => (a.likes < b.likes && 1) || -1);
@@ -229,6 +248,8 @@ export default {
       width: 200px;
       img {
         border-radius: 5px;
+        width: 200px;
+        height: 120px;
       }
       .popular-title {
         margin-left: 5%;
@@ -262,9 +283,10 @@ export default {
     .recent-blog-title {
       font-size: 16px;
     }
-    .recent-img {
+    img {
       border-radius: 5px;
-      max-width: 200px;
+      width: 200px;
+      height: 120px;
     }
     .recent-user-info {
       margin-top: 2%;
