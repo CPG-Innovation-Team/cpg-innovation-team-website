@@ -25,6 +25,25 @@
             <v-btn color="blue darken-1" text @click="updateArticle"> Save </v-btn>
           </v-card-actions>
         </v-card>
+        <v-dialog max-width="600" v-model="dialog">
+          <template>
+            <v-card>
+              <v-card-text>
+                <div class="text-h6 pa-6">{{ message }}</div>
+              </v-card-text>
+              <v-card-actions class="justify-end">
+                <v-btn
+                  text
+                  @click="
+                    dialog = false;
+                    close(message);
+                  "
+                  >Confirm</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
       </v-container>
     </v-main>
   </div>
@@ -43,6 +62,7 @@ export default {
       tagList: ['All', 'Technology', 'Agriculture'],
       dialog: false,
       content: '',
+      message: '',
     };
   },
   components: {
@@ -73,25 +93,36 @@ export default {
     }
   },
   methods: {
-    close() {
-      this.$router.push({
-        path: '/admin/blogs',
-      });
+    close(message) {
+      if (message === '修改成功') {
+        this.$router.push({
+          path: '/admin/blogs',
+        });
+      }
     },
     async updateArticle() {
-      await util.post(
-        `${util.getEnvUrl()}/admin/article/update`,
-        {
-          sn: this.sn,
-          title: this.blog.title,
-          cover: this.blog.cover,
-          content: this.content,
-          tags: this.blog.tags,
-          state: this.state,
-        },
-        this.$router
-      );
-      this.close();
+      await util
+        .post(
+          `${util.getEnvUrl()}/admin/article/update`,
+          {
+            sn: this.sn,
+            title: this.blog.title,
+            cover: this.blog.cover,
+            content: this.content,
+            tags: this.blog.tags,
+            state: this.state,
+          },
+          this.$router
+        )
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.dialog = true;
+            this.message = '修改成功';
+          } else {
+            this.dialog = true;
+            this.message = '修改失败';
+          }
+        });
     },
   },
 };
