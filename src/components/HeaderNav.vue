@@ -42,7 +42,7 @@
         <template v-slot:activator="{ on, attrs }">
           <div v-if="token" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36" data-test-id="user-avatar">
-              <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
+              <img :src="avatar || require('../assets/icon-default-avatar.jpeg')" alt="user icon" />
             </v-avatar>
           </div>
         </template>
@@ -149,6 +149,7 @@ export default {
     projects,
     login: false,
     username: '',
+    avatar: null,
     announcements: [{ content: '' }],
     announcementURL: '',
     backgroundOpacity: 0,
@@ -163,6 +164,9 @@ export default {
     }
     if (localStorage.token) {
       this.token = localStorage.token;
+    }
+    if (localStorage.avatar) {
+      this.avatar = localStorage.avatar;
     }
     this.getAnnouncement();
 
