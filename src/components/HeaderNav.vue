@@ -226,7 +226,7 @@ export default {
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
     logout() {
-      util.post(`${util.getEnvUrl()}/admin/logout`, {}).then(() => {
+      util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
         this.token = '';
         localStorage.clear();
         this.$router.push('/');

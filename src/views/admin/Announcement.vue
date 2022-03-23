@@ -212,14 +212,18 @@ export default {
         this.emptyDialog = true;
       } else {
         await util
-          .post(`${util.getEnvUrl()}/admin/notify/add`, {
-            type: 4,
-            content: `${this.cnContent}@${this.link}`,
-            uid: [],
-            state: 1,
-            beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
-            endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
-          })
+          .post(
+            `${util.getEnvUrl()}/admin/notify/add`,
+            {
+              type: 4,
+              content: `${this.cnContent}@${this.link}`,
+              uid: [],
+              state: 1,
+              beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
+              endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
+            },
+            this.$router
+          )
           .then((response) => {
             if (response.data.code === 10000) {
               this.successDialog = true;

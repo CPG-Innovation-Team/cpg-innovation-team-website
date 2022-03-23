@@ -54,9 +54,13 @@ export default {
       this.sn = this.$route.query.sn;
       this.state = this.$route.query.state;
       await util
-        .post(`${util.getEnvUrl()}/admin/article/info`, {
-          sn: this.sn,
-        })
+        .post(
+          `${util.getEnvUrl()}/admin/article/info`,
+          {
+            sn: this.sn,
+          },
+          this.$router
+        )
         .then((response) => {
           this.blog = {
             title: response.data.data.Title,
@@ -75,14 +79,18 @@ export default {
       });
     },
     async updateArticle() {
-      await util.post(`${util.getEnvUrl()}/admin/article/update`, {
-        sn: this.sn,
-        title: this.blog.title,
-        cover: this.blog.cover,
-        content: this.content,
-        tags: this.blog.tags,
-        state: this.state,
-      });
+      await util.post(
+        `${util.getEnvUrl()}/admin/article/update`,
+        {
+          sn: this.sn,
+          title: this.blog.title,
+          cover: this.blog.cover,
+          content: this.content,
+          tags: this.blog.tags,
+          state: this.state,
+        },
+        this.$router
+      );
       this.close();
     },
   },

@@ -151,20 +151,22 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
-    await util.post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }).then((response) => {
-      if (response.data.code === 10000) {
-        this.username = response.data.data.UserName;
-        this.email = response.data.data.Email;
-        this.isRoot = response.data.data.IsRoot;
-        this.uid = response.data.data.UID;
-        this.nickname = response.data.data.Nickname;
-        this.state = response.data.data.State;
-        this.gender = response.data.data.Gender;
-        this.introduction = response.data.data.Introduce;
-        this.avatar = response.data.data.Avatar;
-        this.oldPwd = response.data.data.Passwd;
-      }
-    });
+    await util
+      .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
+      .then((response) => {
+        if (response.data.code === 10000) {
+          this.username = response.data.data.UserName;
+          this.email = response.data.data.Email;
+          this.isRoot = response.data.data.IsRoot;
+          this.uid = response.data.data.UID;
+          this.nickname = response.data.data.Nickname;
+          this.state = response.data.data.State;
+          this.gender = response.data.data.Gender;
+          this.introduction = response.data.data.Introduce;
+          this.avatar = response.data.data.Avatar;
+          this.oldPwd = response.data.data.Passwd;
+        }
+      });
     this.getGenderName();
   },
   methods: {
@@ -179,18 +181,22 @@ export default {
         this.responseMessage = '密码错误，修改失败';
       } else {
         util
-          .post(`${util.getEnvUrl()}/admin/user/update/info`, {
-            uid: this.uid,
-            username: this.username,
-            email: this.email,
-            passCode: '123456',
-            passwd: this.password,
-            nickname: this.nickname,
-            avatar: this.avatar,
-            gender: this.getGender(),
-            introduce: this.introduction,
-            state: this.state,
-          })
+          .post(
+            `${util.getEnvUrl()}/admin/user/update/info`,
+            {
+              uid: this.uid,
+              username: this.username,
+              email: this.email,
+              passCode: '123456',
+              passwd: this.password,
+              nickname: this.nickname,
+              avatar: this.avatar,
+              gender: this.getGender(),
+              introduce: this.introduction,
+              state: this.state,
+            },
+            this.$router
+          )
           .then((response) => {
             this.confirmDialog = true;
             if (response.data.code === 10000) {

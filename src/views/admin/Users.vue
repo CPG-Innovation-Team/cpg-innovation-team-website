@@ -115,9 +115,13 @@ export default {
   }),
   async created() {
     util
-      .post(`${util.getEnvUrl()}/admin/user/query/list`, {
-        state: 1,
-      })
+      .post(
+        `${util.getEnvUrl()}/admin/user/query/list`,
+        {
+          state: 1,
+        },
+        this.$router
+      )
       .then((response) => {
         if (response.data.data) {
           response.data.data.forEach((user) => this.users.push(user));
@@ -140,35 +144,47 @@ export default {
     async save() {
       this.close();
       await util
-        .post(`${util.getEnvUrl()}/admin/user/query/info`, {
-          username: this.username,
-        })
+        .post(
+          `${util.getEnvUrl()}/admin/user/query/info`,
+          {
+            username: this.username,
+          },
+          this.$router
+        )
         .then((response) => {
           this.uid = response.data.data.UID;
         });
       if (this.selectedRole !== '' && this.selectedRole !== null) {
         await util
-          .post(`${util.getEnvUrl()}/admin/auth/role/add/user`, {
-            rName: this.selectedRole,
-            uid: this.uid,
-          })
+          .post(
+            `${util.getEnvUrl()}/admin/auth/role/add/user`,
+            {
+              rName: this.selectedRole,
+              uid: this.uid,
+            },
+            this.$router
+          )
           .then((response) => {
             this.setDialogStatus(response);
           });
       }
       if (this.selectedRemoveRole !== '' && this.selectedRemoveRole !== null) {
         await util
-          .post(`${util.getEnvUrl()}/admin/auth/role/remove/user`, {
-            rName: this.selectedRemoveRole,
-            uid: this.uid,
-          })
+          .post(
+            `${util.getEnvUrl()}/admin/auth/role/remove/user`,
+            {
+              rName: this.selectedRemoveRole,
+              uid: this.uid,
+            },
+            this.$router
+          )
           .then((response) => {
             this.setDialogStatus(response);
           });
       }
     },
     async getAllRoles() {
-      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}, this.$router).then((response) => {
         if (response.data.data) {
           this.roles = [];
           Object.keys(response.data.data).forEach((role) => {
@@ -178,7 +194,7 @@ export default {
       });
     },
     async getAllPermissions() {
-      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}, this.$router).then((response) => {
         if (response.data.data) {
           this.permissions = [];
           Object.keys(response.data.data).forEach((permission) => {

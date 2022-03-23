@@ -100,13 +100,17 @@ export default {
   methods: {
     async search(searchText) {
       await util
-        .post(`${util.getEnvUrl()}/admin/article/list`, {
-          isAllMyselfArticles: false,
-          article: {
-            title: searchText,
-            state: 1,
+        .post(
+          `${util.getEnvUrl()}/admin/article/list`,
+          {
+            isAllMyselfArticles: false,
+            article: {
+              title: searchText,
+              state: 1,
+            },
           },
-        })
+          this.$router
+        )
         .then((response) => {
           this.blogs = [];
           response.data.data.ArticleDetailList.forEach((blog) => {
@@ -122,9 +126,13 @@ export default {
       this.editArticle = item;
     },
     async deleteArticle() {
-      await util.post(`${util.getEnvUrl()}/admin/article/delete`, {
-        sn: this.editArticle.sn,
-      });
+      await util.post(
+        `${util.getEnvUrl()}/admin/article/delete`,
+        {
+          sn: this.editArticle.sn,
+        },
+        this.$router
+      );
 
       this.deleteDialog = false;
       this.blogs = [];
@@ -151,11 +159,15 @@ export default {
     },
     async getDeletedArticleList() {
       await util
-        .post(`${util.getEnvUrl()}/admin/article/list`, {
-          article: {
-            state: 3,
+        .post(
+          `${util.getEnvUrl()}/admin/article/list`,
+          {
+            article: {
+              state: 3,
+            },
           },
-        })
+          this.$router
+        )
         .then((response) => {
           if (response.data.data) {
             response.data.data.ArticleDetailList.forEach((blog) => {
