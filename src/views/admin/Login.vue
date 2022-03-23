@@ -83,11 +83,11 @@ export default {
             username,
             passwd: password,
           })
-          .then((response) => {
+          .then(async (response) => {
             if (response.data.code === 10000) {
               localStorage.token = response.data.data.Token;
-              this.saveUserInfo();
-              this.$router.push('/');
+              await this.saveUserInfo();
+              this.$router.go(-1);
             } else {
               this.dialog = true;
             }
