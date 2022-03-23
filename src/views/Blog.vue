@@ -19,19 +19,21 @@
               <div v-for="(blog, index) in popularBlogs.slice(0, 4)" :key="index">
                 <v-col>
                   <v-card flat color="transparent" max-width="200">
-                    <img
-                      class="popular-blog-cover"
-                      v-if="blog.imgIsValid"
-                      :src="blog.cover"
-                      alt="blog cover img"
-                      @error="getDefaultCoverForPopular(index)"
-                    />
-                    <img
-                      class="popular-blog-cover"
-                      v-else
-                      src="../assets/img-default-blog-cover.jpeg"
-                      alt="blog cover img"
-                    />
+                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                      <img
+                        class="popular-blog-cover"
+                        v-if="blog.imgIsValid"
+                        :src="blog.cover"
+                        alt="blog cover img"
+                        @error="getDefaultCoverForPopular(index)"
+                      />
+                      <img
+                        class="popular-blog-cover"
+                        v-else
+                        src="../assets/img-default-blog-cover.jpeg"
+                        alt="blog cover img"
+                      />
+                    </router-link>
                     <v-card-title>
                       <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
                         <div>{{ getBlogTitle(blog.title) }}</div>
@@ -76,59 +78,59 @@
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
                 <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
-                  <v-card class="mt-4 pl-4" flat>
-                    <v-col>
-                      <v-row row-wrap>
-                        <v-card-text>
-                          <v-row no-gutters>
-                            <v-col cols="4">
-                              <img
-                                class="recent-blog-cover"
-                                v-if="blog.imgIsValid"
-                                :src="blog.cover"
-                                alt="blog cover img"
-                                @error="getDefaultCoverForCategorized(index)"
-                              />
-                              <img
-                                class="recent-blog-cover"
-                                v-else
-                                src="../assets/img-default-blog-cover.jpeg"
-                                alt="blog cover img"
-                              />
-                            </v-col>
-                            <v-col cols="8">
-                              <v-row class="recent-user-info">
-                                <v-col cols="8">
-                                  <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                  <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                    <v-card class="mt-4 pl-4" flat>
+                      <v-col>
+                        <v-row row-wrap>
+                          <v-card-text>
+                            <v-row no-gutters>
+                              <v-col cols="4">
+                                <img
+                                  class="recent-blog-cover"
+                                  v-if="blog.imgIsValid"
+                                  :src="blog.cover"
+                                  alt="blog cover img"
+                                  @error="getDefaultCoverForCategorized(index)"
+                                />
+                                <img
+                                  class="recent-blog-cover"
+                                  v-else
+                                  src="../assets/img-default-blog-cover.jpeg"
+                                  alt="blog cover img"
+                                />
+                              </v-col>
+                              <v-col cols="8">
+                                <v-row class="recent-user-info">
+                                  <v-col cols="8">
                                     <div class="recent-blog-title">{{ blog.title }}</div>
-                                  </router-link>
-                                </v-col>
-                                <v-col cols="4">
-                                  <v-row class="">
-                                    <v-avatar class="mr-4" size="40">
-                                      <img
-                                        v-if="blog.avatarIsValid"
-                                        :src="blog.avatar"
-                                        alt="sample img"
-                                        @error="getDefaultAvatarForCategorized(index)"
-                                      />
-                                      <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
-                                    </v-avatar>
-                                    <p class="recent-user-author">作者: {{ blog.author }}</p>
-                                  </v-row>
-                                </v-col>
-                              </v-row>
-                              <v-row>
-                                <v-card-text class="recent-blog-content"
-                                  >{{ util.escapeHTML(blog.content).substring(0, 100) }}...</v-card-text
-                                >
-                              </v-row>
-                            </v-col>
-                          </v-row>
-                        </v-card-text>
-                      </v-row>
-                    </v-col>
-                  </v-card>
+                                  </v-col>
+                                  <v-col cols="4">
+                                    <v-row class="">
+                                      <v-avatar class="mr-4" size="40">
+                                        <img
+                                          v-if="blog.avatarIsValid"
+                                          :src="blog.avatar"
+                                          alt="sample img"
+                                          @error="getDefaultAvatarForCategorized(index)"
+                                        />
+                                        <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
+                                      </v-avatar>
+                                      <p class="recent-user-author">作者: {{ blog.author }}</p>
+                                    </v-row>
+                                  </v-col>
+                                </v-row>
+                                <v-row>
+                                  <v-card-text class="recent-blog-content"
+                                    >{{ util.escapeHTML(blog.content).substring(0, 100) }}...</v-card-text
+                                  >
+                                </v-row>
+                              </v-col>
+                            </v-row>
+                          </v-card-text>
+                        </v-row>
+                      </v-col>
+                    </v-card>
+                  </router-link>
                 </div>
               </v-tab-item>
             </v-tabs-items>
