@@ -61,11 +61,6 @@
                         <v-card-text>
                           <v-row no-gutters>
                             <v-col cols="4">
-                              <!-- <v-img
-                                class="recent-img"
-                                :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                                alt="sample img"
-                              /> -->
                               <img
                                 v-if="blog.imgIsValid"
                                 :src="blog.cover"
