@@ -199,4 +199,8 @@ export default {
 .layout {
   display: flex;
 }
+
+a {
+  text-decoration: none;
+}
 </style>
