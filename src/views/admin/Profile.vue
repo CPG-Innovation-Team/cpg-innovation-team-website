@@ -5,7 +5,8 @@
       <v-container>
         <div class="user-info-container">
           <v-avatar class="avatar" size="64">
-            <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="sample img" />
+            <img v-if="userAvatar" :src="userAvatar" alt="user icon" />
+            <img v-else src="../../assets/icon-default-avatar.jpeg" alt="user icon" />
           </v-avatar>
           <div>
             <div class="name">{{ username }}</div>
@@ -122,6 +123,7 @@ import util from '../../util';
 export default {
   data() {
     return {
+      userAvatar: null,
       username: '',
       email: '',
       isRoot: '',
@@ -150,6 +152,9 @@ export default {
   async created() {
     if (localStorage.username) {
       this.username = localStorage.username;
+    }
+    if (localStorage.avatar) {
+      this.userAvatar = localStorage.avatar;
     }
     await util
       .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
@@ -201,6 +206,8 @@ export default {
             this.confirmDialog = true;
             if (response.data.code === 10000) {
               this.responseMessage = '信息修改成功';
+              localStorage.avatar = this.avatar;
+              this.userAvatar = this.avatar;
             } else {
               this.responseMessage = '信息修改失败';
             }
