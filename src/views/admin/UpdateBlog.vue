@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     close(message) {
-      if (message === '修改成功') {
+      if (message === 'Success') {
         this.$router.push({
           path: '/admin/blogs',
         });
@@ -117,10 +117,10 @@ export default {
         .then((response) => {
           if (response.data.code === 10000) {
             this.dialog = true;
-            this.message = '修改成功';
+            this.message = 'Success';
           } else {
             this.dialog = true;
-            this.message = '修改失败';
+            this.message = 'Failed';
           }
         });
     },
