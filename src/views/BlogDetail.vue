@@ -59,7 +59,9 @@
                               mdi-heart-outline
                             </v-icon>
                             <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
-                            <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                              {{ localeMsg.likes }}: {{ comments[n - 1].zanNum }}</v-list-item-subtitle
+                            >
                           </v-col>
                           <v-btn color="primary" @click="clickReply(n)"
                             >{{ localeMsg.replyBtn }} {{ getReplyBtnIcon(n) }}</v-btn
