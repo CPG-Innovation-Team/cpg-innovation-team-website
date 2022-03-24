@@ -368,9 +368,13 @@ export default {
           });
       } else {
         util
-          .post(`${util.getEnvUrl()}/like`, {
-            sn: this.sn,
-          })
+          .post(
+            `${util.getEnvUrl()}/like`,
+            {
+              sn: this.sn,
+            },
+            this.$router
+          )
           .then(async () => {
             await this.getArticleLikes();
             this.articleLikeIsClicked = true;
