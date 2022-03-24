@@ -43,12 +43,7 @@
                       ><v-row>
                         <v-col :cols="4">
                           <v-avatar class="mr-4" size="40">
-                            <img
-                              v-if="blog.avatarIsValid"
-                              :src="blog.avatar"
-                              alt="sample img"
-                              @error="getDefaultAvatarForPopular(index)"
-                            />
+                            <img v-if="blog.avatar != ''" :src="blog.avatar" alt="sample img" />
                             <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
                           </v-avatar>
                         </v-col>
@@ -108,12 +103,7 @@
                                     <v-col cols="4">
                                       <v-row class="">
                                         <v-avatar class="mr-4" size="40">
-                                          <img
-                                            v-if="blog.avatarIsValid"
-                                            :src="blog.avatar"
-                                            alt="sample img"
-                                            @error="getDefaultAvatarForCategorized(index)"
-                                          />
+                                          <img v-if="blog.avatar !== ''" :src="blog.avatar" alt="sample img" />
                                           <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
                                         </v-avatar>
                                         <p class="recent-user-author">{{ localeMsg.author }}: {{ blog.author }}</p>
@@ -221,7 +211,6 @@ export default {
               cover: blog.Cover,
               likes: blog.ZanNum,
               imgIsValid: true,
-              avatarIsValid: true,
             });
           });
         }
@@ -233,14 +222,8 @@ export default {
     getDefaultCoverForPopular(index) {
       this.popularBlogs[index].imgIsValid = false;
     },
-    getDefaultAvatarForPopular(index) {
-      this.popularBlogs[index].avatarIsValid = false;
-    },
     getDefaultCoverForCategorized(index) {
       this.catogorizedBlogs[index].imgIsValid = false;
-    },
-    getDefaultAvatarForCategorized(index) {
-      this.catogorizedBlogs[index].avatarIsValid = false;
     },
     getBlogTitle(title) {
       if (title.length > 30) return `${title.substring(0, 30)}...`;
