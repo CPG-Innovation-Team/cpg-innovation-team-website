@@ -195,7 +195,7 @@ export default {
         },
       })
       .then((response) => {
-        if (response.data.data) {
+        if (response.data.code === 10000) {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,
@@ -230,11 +230,34 @@ export default {
       return title;
     },
     getPopularBlogs() {
-      this.popularBlogs = [...this.blogs];
-      this.popularBlogs = this.popularBlogs.filter((blog) => {
-        return blog.cover !== '';
-      });
-      this.popularBlogs.sort((a, b) => (a.likes < b.likes && 1) || -1);
+      util
+        .post(`${util.getEnvUrl()}/article/popular/list`, {
+          view_num: false,
+          cmt_num: false,
+          zan_num: true,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.code === 10000) {
+            response.data.data.ArticleDetailList.forEach((blog) => {
+              this.popularBlogs.push({
+                title: blog.Title,
+                tags: blog.Tags,
+                content: blog.Content,
+                viewNum: blog.ViewNum,
+                cmtNum: blog.ViewNum,
+                author: blog.Author,
+                avatar: blog.Avatar,
+                sn: blog.Sn,
+                uid: blog.Uid,
+                state: blog.State,
+                cover: blog.Cover,
+                likes: blog.ZanNum,
+                imgIsValid: true,
+              });
+            });
+          }
+        });
     },
     getCategoryBlogs(category) {
       this.page = 1;
