@@ -1,5 +1,6 @@
 {
   "title": "CP Group Innovation Center",
+  "flag": "gb",
   "navbar": {
     "home": "Home",
     "projects": "Projects",
@@ -8,6 +9,35 @@
     "about": "About",
     "blog": "Blog",
     "login": "Login"
+  },
+  "dialogMsg": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "required": "Required",
+    "minPwd": "Min 6 characters, max 32 characters",
+    "pwdFormat": "The password must contain numbers and alphabets",
+    "notSamePwd": "Your password need to be the same as above"
+  },
+  "login": {
+    "username": "Username",
+    "password": "Password",
+    "forgottenPwdMsg": "Forgot password?",
+    "noAccountMsg": "Doesn't have an account?",
+    "signup": "Sign up",
+    "loginBtn": "Login",
+    "infoErrMsg": "Entered information is not correct, please try again"
+  },
+  "signup": {
+    "username": "Username",
+    "nickname": "Nickname",
+    "email": "Email",
+    "password": "Password",
+    "confirmPwd": "Confirm Password",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Login",
+    "signup": "Signup",
+    "failureMsg": "Registration failed, please try again",
+    "invalidMsg": "Entered information is invalid, please try again"
   },
   "search": "Search",
   "news": {

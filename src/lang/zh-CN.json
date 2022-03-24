@@ -1,5 +1,6 @@
 {
-  "title":"正大创新中心",
+  "title": "正大创新中心",
+  "flag": "cn",
   "navbar": {
     "home": "首页",
     "projects": "项目介绍",
@@ -8,6 +9,35 @@
     "about": "关于我们",
     "blog": "博客",
     "login": "登录"
+  },
+  "dialogMsg": {
+    "confirm": "确认",
+    "cancel": "取消",
+    "required": "必填",
+    "minPwd": "密码最短6个字符，最长32个字符",
+    "pwdFormat": "密码必须同时包括数字和字母",
+    "notSamePwd": "密码不一致"
+  },
+  "login": {
+    "username": "用户名",
+    "password": "密码",
+    "forgottenPwdMsg": "忘记密码？",
+    "noAccountMsg": "没有账号？",
+    "signup": "立即注册",
+    "loginBtn": "登录",
+    "infoErrMsg": "输入信息有误，请重试"
+  },
+  "signup": {
+    "username": "用户名",
+    "nickname": "昵称",
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPwd": "确认密码",
+    "alreadyHaveAccount": "已经拥有账号？",
+    "login": "登录",
+    "signup": "注册",
+    "failureMsg": "注册失败，请重试",
+    "invalidMsg": "信息输入不符合规则，请重新输入"
   },
   "search": "搜索",
   "news": {
