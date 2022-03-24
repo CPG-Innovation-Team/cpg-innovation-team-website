@@ -1,6 +1,7 @@
 {
   "title": "CP Group Innovation Center",
   "flag": "gb",
+  "locale": "en-US",
   "navbar": {
     "home": "Home",
     "projects": "Projects",
@@ -16,7 +17,9 @@
     "required": "Required",
     "minPwd": "Min 6 characters, max 32 characters",
     "pwdFormat": "The password must contain numbers and alphabets",
-    "notSamePwd": "Your password need to be the same as above"
+    "notSamePwd": "Your password need to be the same as above",
+    "commentSuccess": "Comment successfully sent! It's now under review",
+    "commentFailure": "Comment failed to sent"
   },
   "login": {
     "username": "Username",
@@ -49,6 +52,14 @@
     "all": "All",
     "technology": "Technology",
     "agriculture": "Agriculture"
+  },
+  "blogDetail": {
+    "comments": "Comments",
+    "commentMsg": "Please log in before sending comments",
+    "editComment": "Edit Comment",
+    "replies": "Replies",
+    "replyBtn": "Reply",
+    "sendBtn": "Send"
   },
   "search": "Search",
   "news": {

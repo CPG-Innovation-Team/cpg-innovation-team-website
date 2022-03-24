@@ -5,9 +5,9 @@
 
       <div class="header-text">
         <p class="title-cn">{{ blog.title }}</p>
-        <p class="subtitle">Author: {{ blog.author }}</p>
+        <p class="subtitle">{{ localeMsg.author }}: {{ blog.author }}</p>
         <div>
-          Likes: {{ likes }}
+          {{ localeMsg.likes }}: {{ likes }}
           <v-btn icon color="pink" @click="likeArticle(articleLikeIsClicked)">
             <v-icon v-if="articleLikeIsClicked">mdi-heart</v-icon>
             <v-icon v-else color="pink lighten-3">mdi-heart-outline</v-icon>
@@ -28,7 +28,7 @@
           <v-divider></v-divider>
           <div class="blog-comment">
             <v-card class="ma-4" min-width="800">
-              <v-subheader> Comments </v-subheader>
+              <v-subheader> {{ localeMsg.comments }} </v-subheader>
 
               <v-list v-if="comments" two-line>
                 <template v-for="n in comments.length">
@@ -36,11 +36,7 @@
                     <v-col>
                       <v-row>
                         <v-list-item-avatar>
-                          <v-img
-                            v-if="comments[n - 1].avatarIsValid"
-                            :src="comments[n - 1].avatar"
-                            @error="getDefaultUserCommentAvatar(n - 1)"
-                          ></v-img>
+                          <v-img v-if="comments[n - 1].avatar !== ''" :src="comments[n - 1].avatar"></v-img>
                           <v-img v-else src="../assets/icon-default-avatar.jpeg"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
@@ -65,10 +61,12 @@
                             <v-icon v-else color="yellow darken-3" @click="unlikeComment(n - 1)"> mdi-heart </v-icon>
                             <v-list-item-subtitle> Likes: {{ comments[n - 1].zanNum }}</v-list-item-subtitle>
                           </v-col>
-                          <v-btn color="primary" @click="clickReply(n)">Reply {{ getReplyBtnIcon(n) }}</v-btn>
+                          <v-btn color="primary" @click="clickReply(n)"
+                            >{{ localeMsg.replyBtn }} {{ getReplyBtnIcon(n) }}</v-btn
+                          >
                         </v-list-item-action>
                       </v-row>
-                      <v-subheader v-if="comments[n - 1].replies.length > 0"> Replies </v-subheader>
+                      <v-subheader v-if="comments[n - 1].replies.length > 0"> {{ localeMsg.replies }} </v-subheader>
                       <div v-show="comment_index === n && comments[n - 1].replyIsClicked === true" :key="n">
                         <v-textarea
                           class="ma-4"
@@ -87,7 +85,7 @@
                           text
                           @click="sendReply(comments[n - 1].cid, reply)"
                         >
-                          Send
+                          {{ localeMsg.sendBtn }}
                         </v-btn>
                       </div>
                       <v-row class="ml-4">
@@ -96,14 +94,10 @@
                             <v-list-item :key="i">
                               <v-list-item-avatar>
                                 <v-img
-                                  v-if="comments[n - 1].replies[i - 1].avatarIsValid === false"
-                                  src="../assets/icon-default-avatar.jpeg"
-                                ></v-img>
-                                <v-img
-                                  v-else
+                                  v-if="comments[n - 1].replies[i - 1].Avatar !== ''"
                                   :src="comments[n - 1].replies[i - 1].Avatar"
-                                  @error="getDefaultUserReplyAvatar(n - 1, i - 1)"
                                 ></v-img>
+                                <v-img v-else src="../assets/icon-default-avatar.jpeg"></v-img>
                               </v-list-item-avatar>
                               <v-list-item-content>
                                 <v-list-item-title>{{ comments[n - 1].replies[i - 1].NickName }}</v-list-item-title>
@@ -132,26 +126,26 @@
                 :label="commentLabel"
               ></v-textarea>
               <v-btn v-if="!notLoggedIn" class="mb-4 ml-4" color="blue darken-1" text @click="sendComment(comment)">
-                Send
+                {{ localeMsg.sendBtn }}
               </v-btn>
             </v-card>
           </div>
 
-          <v-dialog v-model="successDialog" max-width="500px">
+          <v-dialog v-model="successDialog" max-width="600px">
             <v-card>
               <v-card-title> {{ successMessage }} </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+                <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirm }} </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="failureDialog" max-width="500px">
+          <v-dialog v-model="failureDialog" max-width="600px">
             <v-card>
               <v-card-title> {{ failureMessage }} </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+                <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirm }} </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -198,6 +192,27 @@ export default {
       this.getArticleLikes();
     }
   },
+  watch: {
+    localeMsg() {
+      this.comments = [];
+      this.getComments();
+      this.checkLoginStatus();
+    },
+  },
+  computed: {
+    localeMsg() {
+      return {
+        author: this.$t('blog.author'),
+        likes: this.$t('blog.likes'),
+        comments: this.$t('blogDetail.comments'),
+        commentMsg: this.$t('blogDetail.commentMsg'),
+        replies: this.$t('blogDetail.replies'),
+        replyBtn: this.$t('blogDetail.replyBtn'),
+        sendBtn: this.$t('blogDetail.sendBtn'),
+        confirm: this.$t('dialogMsg.confirm'),
+      };
+    },
+  },
   methods: {
     async getArticleInfo() {
       await util
@@ -232,10 +247,10 @@ export default {
           .then((response) => {
             if (response.data.code === 10000) {
               this.successDialog = true;
-              this.successMessage = '评论发表成功！进入审核状态';
+              this.successMessage = `${this.$t('dialogMsg.commentSuccess')}`;
             } else {
               this.failureDialog = true;
-              this.failureMessage = '评论发表失败';
+              this.failureMessage = `${this.$t('dialogMsg.commentFailure')}`;
             }
           });
         this.comments = [];
@@ -257,14 +272,14 @@ export default {
           .then((response) => {
             if (response.data.code === 10000) {
               this.successDialog = true;
-              this.successMessage = '回复发表成功！进入审核状态';
+              this.successMessage = `${this.$t('dialogMsg.commentSuccess')}`;
               this.comments = [];
               this.getComments();
               this.reply = '';
               this.comment_index = -1;
             } else {
               this.failureDialog = true;
-              this.failureMessage = '回复发表失败';
+              this.failureMessage = `${this.$t('dialogMsg.commentFailure')}`;
             }
           });
       }
@@ -285,7 +300,7 @@ export default {
               minute: '2-digit',
               hour12: true,
             };
-            const dateString = date.toLocaleDateString('zh-Hans-CN', formatOptions);
+            const dateString = date.toLocaleDateString(`${this.$t('locale')}`, formatOptions);
             this.comments.push({
               cid: response.data.data[i].Cid,
               content: response.data.data[i].Content,
@@ -295,7 +310,6 @@ export default {
               zanNum: response.data.data[i].ZanNum,
               replyIsClicked: false,
               avatar: response.data.data[i].Avatar,
-              avatarIsValid: true,
               replies: response.data.data[i].ReplyList || [],
               state: response.data.data[i].State,
               commentLikeIsClicked: response.data.data[i].ZanState,
@@ -398,20 +412,14 @@ export default {
     checkLoginStatus() {
       if (!localStorage.token) {
         this.notLoggedIn = true;
-        this.commentLabel = '发表评论请先登陆';
+        this.commentLabel = `${this.$t('blogDetail.commentMsg')}`;
       } else {
-        this.commentLabel = '编辑评论';
+        this.commentLabel = `${this.$t('blogDetail.editComment')}`;
       }
     },
     close() {
       this.successDialog = false;
       this.failureDialog = false;
-    },
-    getDefaultUserCommentAvatar(index) {
-      this.comments[index].avatarIsValid = false;
-    },
-    getDefaultUserReplyAvatar(cindex, rindex) {
-      this.comments[cindex].replies[rindex].avatarIsValid = false;
     },
   },
 };

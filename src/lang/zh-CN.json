@@ -1,6 +1,7 @@
 {
   "title": "正大创新中心",
   "flag": "cn",
+  "locale": "zh-CN",
   "navbar": {
     "home": "首页",
     "projects": "项目介绍",
@@ -16,7 +17,9 @@
     "required": "必填",
     "minPwd": "密码最短6个字符，最长32个字符",
     "pwdFormat": "密码必须同时包括数字和字母",
-    "notSamePwd": "密码不一致"
+    "notSamePwd": "密码不一致",
+    "commentSuccess": "评论发表成功！进入审核状态",
+    "commentFailure": "评论发表失败"
   },
   "login": {
     "username": "用户名",
@@ -49,6 +52,14 @@
     "all": "全部",
     "technology": "科技",
     "agriculture": "农业"
+  },
+  "blogDetail": {
+    "comments": "评论区",
+    "commentMsg": "发表评论请先登录",
+    "editComment": "编辑评论",
+    "replies": "回复",
+    "replyBtn": "回复",
+    "sendBtn":"发表评论"
   },
   "search": "搜索",
   "news": {
