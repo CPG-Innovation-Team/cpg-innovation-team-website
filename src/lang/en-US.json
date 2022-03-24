@@ -39,6 +39,17 @@
     "failureMsg": "Registration failed, please try again",
     "invalidMsg": "Entered information is invalid, please try again"
   },
+  "blog": {
+    "mostPopular": "Most Popular",
+    "likes": "Likes",
+    "allPosts": "All Articles",
+    "author": "Author"
+  },
+  "categories": {
+    "all": "All",
+    "technology": "Technology",
+    "agriculture": "Agriculture"
+  },
   "search": "Search",
   "news": {
     "header": "News",

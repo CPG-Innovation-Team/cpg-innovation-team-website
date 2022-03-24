@@ -13,7 +13,7 @@
     <v-main class="pt-0">
       <div class="blogs-container">
         <div class="popular-container">
-          <h1 class="popular-title">Most Popular</h1>
+          <h1 class="popular-title">{{ localeMsg.mostPopular }}</h1>
           <v-container>
             <v-row class="justify-center">
               <div v-for="(blog, index) in popularBlogs.slice(0, 4)" :key="index">
@@ -54,7 +54,7 @@
                         </v-col>
                         <v-col :cols="8">
                           <div>{{ blog.author }}</div>
-                          <div>Likes: {{ blog.likes }}</div>
+                          <div>{{ localeMsg.likes }}: {{ blog.likes }}</div>
                         </v-col>
                       </v-row>
                     </v-card-text>
@@ -67,7 +67,7 @@
 
         <div class="recent-container">
           <v-container>
-            <h1>All Posts</h1>
+            <h1>{{ localeMsg.allPosts }}</h1>
 
             <v-tabs class="mb-4" v-model="category" background-color="transparent" color="black">
               <v-tabs-slider></v-tabs-slider>
@@ -116,7 +116,7 @@
                                           />
                                           <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
                                         </v-avatar>
-                                        <p class="recent-user-author">作者: {{ blog.author }}</p>
+                                        <p class="recent-user-author">{{ localeMsg.author }}: {{ blog.author }}</p>
                                       </v-row>
                                     </v-col>
                                   </v-row>
@@ -159,9 +159,13 @@ export default {
   data() {
     return {
       util,
-      category: 'All',
+      category: `${this.$t('categories.all')}`,
       page: 1,
-      categories: ['All', 'Technology', 'Agriculture'],
+      categories: [
+        `${this.$t('categories.all')}`,
+        `${this.$t('categories.technology')}`,
+        `${this.$t('categories.agriculture')}`,
+      ],
       blogs: [],
       popularBlogs: [],
       catogorizedBlogs: [],
@@ -170,6 +174,28 @@ export default {
   },
   components: {
     HeaderNav,
+  },
+  watch: {
+    localeMsg() {
+      // update category name and blogs after changing the language
+      this.category = `${this.$t('categories.all')}`;
+      this.categories = [
+        `${this.$t('categories.all')}`,
+        `${this.$t('categories.technology')}`,
+        `${this.$t('categories.agriculture')}`,
+      ];
+      this.catogorizedBlogs = this.blogs;
+    },
+  },
+  computed: {
+    localeMsg() {
+      return {
+        mostPopular: this.$t('blog.mostPopular'),
+        likes: this.$t('blog.likes'),
+        allPosts: this.$t('blog.allPosts'),
+        author: this.$t('blog.author'),
+      };
+    },
   },
   async created() {
     await util

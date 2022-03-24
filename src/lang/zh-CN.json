@@ -39,6 +39,17 @@
     "failureMsg": "注册失败，请重试",
     "invalidMsg": "信息输入不符合规则，请重新输入"
   },
+  "blog": {
+    "mostPopular": "最受欢迎",
+    "likes": "点赞数",
+    "allPosts": "所有文章",
+    "author": "作者"
+  },
+  "categories": {
+    "all": "全部",
+    "technology": "科技",
+    "agriculture": "农业"
+  },
   "search": "搜索",
   "news": {
     "header": "新闻动态",
