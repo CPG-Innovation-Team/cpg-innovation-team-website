@@ -107,7 +107,7 @@ export default {
         required: (v) => !!v || 'Required.',
         digitAlphabet: (v) =>
           (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || 'The password must contain numbers and alphabets',
-        min: (v) => (v.length >= 6 && v.length <= 32) || 'Min 6 characters, max 32 characters',
+        min: (v) => (v.length >= 8 && v.length <= 32) || 'Min 8 characters, max 32 characters',
         match: (v) => v === this.newPwd || `The two passwords you entered don't match`,
       },
     };

@@ -15,7 +15,7 @@
     "confirm": "确认",
     "cancel": "取消",
     "required": "必填",
-    "minPwd": "密码最短6个字符，最长32个字符",
+    "minPwd": "密码最短8个字符，最长32个字符",
     "pwdFormat": "密码必须同时包括数字和字母",
     "notSamePwd": "密码不一致",
     "commentSuccess": "评论发表成功！进入审核状态",

@@ -109,7 +109,7 @@ export default {
       rules: {
         required: (v) => !!v || `${this.localeMsg.required}`,
         digitAlphabet: (v) => (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || `${this.localeMsg.pwdFormat}`,
-        min: (v) => (v.length >= 6 && v.length <= 32) || `${this.localeMsg.minPwd}`,
+        min: (v) => (v.length >= 8 && v.length <= 32) || `${this.localeMsg.minPwd}`,
         match: (v) => v === this.password || `${this.localeMsg.notSamePwd}`,
       },
     };
