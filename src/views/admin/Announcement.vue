@@ -155,6 +155,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import util from '../../util';
 import AdminNav from '../../components/AdminNav.vue';
 
@@ -211,6 +212,14 @@ export default {
       if (this.cnContent.trim() === '' || this.enContent.trim() === '') {
         this.emptyDialog = true;
       } else {
+        if (this.$t('locale') === 'zh-CN') {
+          moment.locale('zh-cn');
+        }
+        if (this.$t('locale') === 'en-US') {
+          moment.locale('en');
+        }
+        const start = moment(`${this.startDate} ${this.startTime}:00`).format();
+        const end = moment(`${this.endDate} ${this.endTime}:00`).format();
         await util
           .post(
             `${util.getEnvUrl()}/admin/notify/add`,
@@ -219,8 +228,8 @@ export default {
               content: `${this.cnContent}@${this.link}`,
               uid: [],
               state: 1,
-              beginTime: (Date.parse(`${this.startDate} ${this.startTime}:00`) / 1000).toString(),
-              endTime: (Date.parse(`${this.endDate} ${this.endTime}:00`) / 1000).toString(),
+              beginTime: moment(start).format('X'),
+              endTime: moment(end).format('X'),
             },
             this.$router
           )
