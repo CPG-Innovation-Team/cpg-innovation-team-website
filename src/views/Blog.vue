@@ -35,7 +35,10 @@
                       />
                     </router-link>
                     <v-card-title>
-                      <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                      <router-link
+                        class="popular-blog-title"
+                        :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }"
+                      >
                         <div>{{ getBlogTitle(blog.title) }}</div>
                       </router-link></v-card-title
                     >
@@ -326,13 +329,13 @@ export default {
       width: 200px;
       height: 120px;
     }
-    a {
+    .popular-blog-title {
       text-decoration: none;
       font-size: 17px;
       color: rgb(46, 45, 45);
       line-height: 22px;
     }
-    a:hover {
+    .popular-blog-title:hover {
       color: rgb(25, 92, 194);
     }
   }
