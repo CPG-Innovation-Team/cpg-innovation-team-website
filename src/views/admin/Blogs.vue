@@ -39,7 +39,10 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <router-link :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }">
+          <router-link
+            class="icon-link"
+            :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }"
+          >
             <v-icon small class="ml-4"> mdi-pencil </v-icon>
           </router-link>
           <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
@@ -200,7 +203,7 @@ export default {
   display: flex;
 }
 
-a {
+.icon-link {
   text-decoration: none;
 }
 </style>
