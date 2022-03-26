@@ -240,7 +240,6 @@ export default {
           zan_num: true,
         })
         .then((response) => {
-          console.log(response);
           if (response.data.code === 10000) {
             response.data.data.ArticleDetailList.forEach((blog) => {
               this.popularBlogs.push({

@@ -376,7 +376,6 @@ export default {
       await util
         .post(`${util.getEnvUrl()}/admin/review/reply`, { replyId: item.rid, state: bool }, this.$router)
         .then((response) => {
-          console.log(response);
           this.checkSuccess(response);
         });
       this.replies = [];
