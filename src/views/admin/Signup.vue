@@ -5,7 +5,7 @@
         <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
       </router-link>
       <v-form ref="form" v-model="valid" @submit.prevent="validate">
-        <label>Username</label>
+        <label>{{ localeMsg.username }}</label>
         <v-text-field
           v-model="username"
           type="username"
@@ -15,7 +15,7 @@
           outlined
         ></v-text-field>
 
-        <label>Nickname</label>
+        <label>{{ localeMsg.nickname }}</label>
         <v-text-field
           v-model="nickname"
           type="nickname"
@@ -25,27 +25,27 @@
           outlined
         ></v-text-field>
 
-        <label>Email</label>
+        <label>{{ localeMsg.email }}</label>
         <v-text-field v-model="email" type="email" :rules="[rules.required]" required dense outlined></v-text-field>
 
-        <label>Password</label>
+        <label>{{ localeMsg.password }}</label>
         <v-text-field
           v-model="password"
           :type="showPwd ? 'text' : 'password'"
           :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min]"
+          :rules="[rules.required, rules.min, rules.digitAlphabet]"
           required
           dense
           outlined
           @click:append="showPwd = !showPwd"
         ></v-text-field>
 
-        <label>Confirm Password</label>
+        <label>{{ localeMsg.confirmPwd }}</label>
         <v-text-field
           v-model="confirmedPwd"
           :type="showConfirmPwd ? 'text' : 'password'"
           :append-icon="showConfirmPwd ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required, rules.min, rules.confirm]"
+          :rules="[rules.required, rules.match]"
           required
           dense
           outlined
@@ -53,19 +53,21 @@
         ></v-text-field>
 
         <p style="text-align: right; font-size: 0.9rem; margin-top: 8px">
-          Already have an account? <router-link to="/login">Login</router-link>
+          {{ localeMsg.alreadyHaveAccount }} <router-link to="/login">{{ localeMsg.login }}</router-link>
         </p>
 
-        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="register">Signup</v-btn>
+        <v-btn type="submit" color="primary" style="float: right; margin-left: 100%" @click="register">{{
+          localeMsg.signup
+        }}</v-btn>
       </v-form>
       <v-dialog max-width="600" v-model="responseDialog">
         <template>
           <v-card>
             <v-card-text>
-              <div class="text-h6 pa-6">注册失败，请重试</div>
+              <div class="text-h6 pa-6">{{ localeMsg.failureMsg }}</div>
             </v-card-text>
             <v-card-actions class="justify-end">
-              <v-btn text @click="responseDialog = false">Confirm</v-btn>
+              <v-btn text @click="responseDialog = false">{{ localeMsg.confirm }}</v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -74,10 +76,10 @@
         <template>
           <v-card>
             <v-card-text>
-              <div class="text-h6 pa-6">信息输入不符合规则，请重新输入</div>
+              <div class="text-h6 pa-6">{{ localeMsg.invalidMsg }}</div>
             </v-card-text>
             <v-card-actions class="justify-end">
-              <v-btn text @click="alertDialog = false">Confirm</v-btn>
+              <v-btn text @click="alertDialog = false">{{ localeMsg.confirm }}</v-btn>
             </v-card-actions>
           </v-card>
         </template>
@@ -105,11 +107,33 @@ export default {
       showPwd: false,
       showConfirmPwd: false,
       rules: {
-        required: (v) => !!v || 'Required.',
-        min: (v) => v.length >= 8 || 'Min 8 characters',
-        confirm: (v) => v === this.password || 'Your password need to be the same as above',
+        required: (v) => !!v || `${this.localeMsg.required}`,
+        digitAlphabet: (v) => (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || `${this.localeMsg.pwdFormat}`,
+        min: (v) => (v.length >= 8 && v.length <= 32) || `${this.localeMsg.minPwd}`,
+        match: (v) => v === this.password || `${this.localeMsg.notSamePwd}`,
       },
     };
+  },
+  computed: {
+    localeMsg() {
+      return {
+        username: this.$t('signup.username'),
+        nickname: this.$t('signup.nickname'),
+        email: this.$t('signup.email'),
+        password: this.$t('signup.password'),
+        confirmPwd: this.$t('signup.confirmPwd'),
+        alreadyHaveAccount: this.$t('signup.alreadyHaveAccount'),
+        login: this.$t('signup.login'),
+        signup: this.$t('signup.signup'),
+        failureMsg: this.$t('signup.failureMsg'),
+        invalidMsg: this.$t('signup.invalidMsg'),
+        confirm: this.$t('dialogMsg.confirm'),
+        required: this.$t('dialogMsg.required'),
+        pwdFormat: this.$t('dialogMsg.pwdFormat'),
+        minPwd: this.$t('dialogMsg.minPwd'),
+        notSamePwd: this.$t('dialogMsg.notSamePwd'),
+      };
+    },
   },
   methods: {
     validate() {

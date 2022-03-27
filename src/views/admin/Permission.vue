@@ -108,9 +108,13 @@ export default {
     },
     async saveRole(role) {
       await util
-        .post(`${util.getEnvUrl()}/admin/auth/add/role`, {
-          rName: role,
-        })
+        .post(
+          `${util.getEnvUrl()}/admin/auth/add/role`,
+          {
+            rName: role,
+          },
+          this.$router
+        )
         .then((response) => {
           this.setDialogStatus(response);
         });
@@ -119,10 +123,14 @@ export default {
     },
     savePermissionToRole(rname, pname) {
       util
-        .post(`${util.getEnvUrl()}/admin/auth/role/add/permission`, {
-          rname,
-          pname,
-        })
+        .post(
+          `${util.getEnvUrl()}/admin/auth/role/add/permission`,
+          {
+            rname,
+            pname,
+          },
+          this.$router
+        )
         .then((response) => {
           if (response.data.data === '添加成功') this.successDialog = true;
           else {
@@ -133,16 +141,20 @@ export default {
     },
     async deleteRole(deleteRoleName) {
       await util
-        .post(`${util.getEnvUrl()}/admin/auth/delete/role`, {
-          rName: deleteRoleName,
-        })
+        .post(
+          `${util.getEnvUrl()}/admin/auth/delete/role`,
+          {
+            rName: deleteRoleName,
+          },
+          this.$router
+        )
         .then((response) => {
           this.setDialogStatus(response);
         });
       this.getAllRoles();
     },
     async getAllRoles() {
-      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}, this.$router).then((response) => {
         this.allRoles = response.data.data;
         this.roles = [];
         Object.keys(response.data.data).forEach((role) => {
@@ -151,7 +163,7 @@ export default {
       });
     },
     async getAllPermissions() {
-      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}, this.$router).then((response) => {
         this.allPermissions = response.data.data;
         this.permissions = [];
         Object.keys(response.data.data).forEach((permission) => {

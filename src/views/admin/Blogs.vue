@@ -39,7 +39,10 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <router-link :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }">
+          <router-link
+            class="icon-link"
+            :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }"
+          >
             <v-icon small class="ml-4"> mdi-pencil </v-icon>
           </router-link>
           <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
@@ -100,13 +103,17 @@ export default {
   methods: {
     async search(searchText) {
       await util
-        .post(`${util.getEnvUrl()}/admin/article/list`, {
-          isAllMyselfArticles: false,
-          article: {
-            title: searchText,
-            state: 1,
+        .post(
+          `${util.getEnvUrl()}/admin/article/list`,
+          {
+            isAllMyselfArticles: false,
+            article: {
+              title: searchText,
+              state: 1,
+            },
           },
-        })
+          this.$router
+        )
         .then((response) => {
           this.blogs = [];
           response.data.data.ArticleDetailList.forEach((blog) => {
@@ -122,9 +129,13 @@ export default {
       this.editArticle = item;
     },
     async deleteArticle() {
-      await util.post(`${util.getEnvUrl()}/admin/article/delete`, {
-        sn: this.editArticle.sn,
-      });
+      await util.post(
+        `${util.getEnvUrl()}/admin/article/delete`,
+        {
+          sn: this.editArticle.sn,
+        },
+        this.$router
+      );
 
       this.deleteDialog = false;
       this.blogs = [];
@@ -151,11 +162,15 @@ export default {
     },
     async getDeletedArticleList() {
       await util
-        .post(`${util.getEnvUrl()}/admin/article/list`, {
-          article: {
-            state: 3,
+        .post(
+          `${util.getEnvUrl()}/admin/article/list`,
+          {
+            article: {
+              state: 3,
+            },
           },
-        })
+          this.$router
+        )
         .then((response) => {
           if (response.data.data) {
             response.data.data.ArticleDetailList.forEach((blog) => {
@@ -186,5 +201,9 @@ export default {
 <style lang="scss" scoped>
 .layout {
   display: flex;
+}
+
+.icon-link {
+  text-decoration: none;
 }
 </style>

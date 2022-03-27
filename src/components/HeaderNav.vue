@@ -42,7 +42,7 @@
         <template v-slot:activator="{ on, attrs }">
           <div v-if="token" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36" data-test-id="user-avatar">
-              <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="user icon" />
+              <img :src="avatar || require('../assets/icon-default-avatar.jpeg')" alt="user icon" />
             </v-avatar>
           </div>
         </template>
@@ -84,7 +84,7 @@
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
           <div class="language-setting" v-bind="attrs" v-on="on">
-            <country-flag class="flag" :country="flag" data-test-id="country-flag" />
+            <country-flag class="flag" :country="$t('flag')" data-test-id="country-flag" />
             <v-icon>mdi-chevron-down</v-icon>
           </div>
         </template>
@@ -138,7 +138,6 @@ export default {
   data: () => ({
     token: '',
     lang: '中文',
-    flag: 'cn',
     drawer: false,
     group: null,
     // search
@@ -149,6 +148,7 @@ export default {
     projects,
     login: false,
     username: '',
+    avatar: null,
     announcements: [{ content: '' }],
     announcementURL: '',
     backgroundOpacity: 0,
@@ -163,6 +163,9 @@ export default {
     }
     if (localStorage.token) {
       this.token = localStorage.token;
+    }
+    if (localStorage.avatar) {
+      this.avatar = localStorage.avatar;
     }
     this.getAnnouncement();
 
@@ -226,7 +229,7 @@ export default {
       return arr.find((item) => item.title.includes(searchItemTitle)).id.substring(1);
     },
     logout() {
-      util.post(`${util.getEnvUrl()}/admin/logout`, {}).then(() => {
+      util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
         this.token = '';
         localStorage.clear();
         this.$router.push('/');
