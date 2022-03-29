@@ -160,12 +160,6 @@ export default {
       this.avatar = localStorage.avatar;
     }
     await this.getAnnouncement();
-    // if (this.$t('locale') === 'zh-CN') {
-    //   this.announcementContent = util.getAnnouncementCNContent(this.announcement);
-    // }
-    // if (this.$t('locale') === 'en-US') {
-    //   this.announcementContent = util.getAnnouncementENContent(this.announcement);
-    // }
     this.getAnnouncementForLocale();
     this.announcementURL = util.getAnnouncementURL(this.announcement);
 
