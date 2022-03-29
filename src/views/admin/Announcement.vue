@@ -204,8 +204,11 @@ export default {
           this.announcement = { content: output.Content };
           this.startDate = output.BeginTime.substring(0, output.BeginTime.indexOf('T'));
           this.endDate = output.EndTime.substring(0, output.EndTime.indexOf('T'));
-          this.startTime = output.BeginTime.substring(output.BeginTime.indexOf('T') + 1, output.BeginTime.indexOf('+'));
-          this.endTime = output.EndTime.substring(output.EndTime.indexOf('T') + 1, output.EndTime.indexOf('+'));
+          this.startTime = output.BeginTime.substring(
+            output.BeginTime.indexOf('T') + 1,
+            output.BeginTime.indexOf('+') - 3
+          );
+          this.endTime = output.EndTime.substring(output.EndTime.indexOf('T') + 1, output.EndTime.indexOf('+') - 3);
           this.cnContent = util.getAnnouncementCNContent(this.announcement);
           this.enContent = util.getAnnouncementENContent(this.announcement);
           this.link = util.getAnnouncementURL(this.announcement);
