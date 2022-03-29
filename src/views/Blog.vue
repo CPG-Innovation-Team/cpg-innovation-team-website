@@ -219,7 +219,7 @@ export default {
         }
       });
     this.getPopularBlogs();
-    this.catogorizedBlogs = this.blogs;
+    this.catogorizedBlogs = this.blogs.reverse();
   },
   methods: {
     getDefaultCoverForPopular(index) {
@@ -242,7 +242,7 @@ export default {
         .then((response) => {
           if (response.data.code === 10000) {
             response.data.data.ArticleDetailList.forEach((blog) => {
-              this.popularBlogs.push({
+              this.popularBlogs.unshift({
                 title: blog.Title,
                 tags: blog.Tags,
                 content: blog.Content,
