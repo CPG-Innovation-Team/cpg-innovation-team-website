@@ -48,7 +48,7 @@ export default {
    * @returns
    */
   escapeHTML(html) {
-    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
+    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '').replace(/&.*;/g, ' ');
   },
   getAnnouncementCNContent(announcement) {
     // remove bounary quotes from the string
