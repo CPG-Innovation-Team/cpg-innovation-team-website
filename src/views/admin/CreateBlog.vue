@@ -53,7 +53,7 @@
                   <label>Content</label>
                 </v-col>
                 <v-col>
-                  <Editor v-model="content" />
+                  <Editor v-model="content" :editorBool="true" />
                 </v-col>
               </v-row>
 
