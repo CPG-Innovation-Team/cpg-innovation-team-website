@@ -2,14 +2,14 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
-      v-if="this.announcementContent !== ''"
+      v-if="announcementContent !== '' && checkIfAnnouncemmentIsClosed() === true && isAnnouncementClosed == false"
       app
       color="purple"
-      @click="redirectURL()"
     >
-      <v-row justify="center" align="center">
-        <div class="announcement">{{ this.announcementContent }}</div>
+      <v-row justify="center" align="center" @click="redirectURL()">
+        <div class="announcement">{{ announcementContent }}</div>
       </v-row>
+      <v-btn icon @click="closeAnnouncement(announcement.id)"><v-icon color="white">mdi-close</v-icon></v-btn>
     </v-system-bar>
     <v-app-bar class="nav-container" app flat :style="backgroundStyle">
       <v-app-bar-nav-icon
@@ -143,6 +143,7 @@ export default {
     announcement: { content: '' },
     announcementContent: '',
     announcementURL: '',
+    isAnnouncementClosed: false,
     backgroundOpacity: 0,
   }),
   props: ['color'],
@@ -246,12 +247,17 @@ export default {
           if (response.data.message === '当前时间段暂无通知') {
             this.announcement = { content: '' };
           }
-          this.announcement = { content: response.data.data.NotificationList.slice(-1)[0].Content };
+          this.announcement = {
+            content: response.data.data.NotificationList.slice(-1)[0].Content,
+            id: response.data.data.NotificationList.slice(-1)[0].Id,
+          };
         }
       });
     },
     redirectURL() {
-      window.location = this.announcementURL;
+      if (this.announcementURL !== '') {
+        window.location = this.announcementURL;
+      }
     },
     handleScroll() {
       if (window.scrollY === 0) {
@@ -261,6 +267,16 @@ export default {
       } else {
         this.backgroundOpacity = window.scrollY / 480;
       }
+    },
+    closeAnnouncement() {
+      localStorage.closeAnnouncementId = this.announcement.id;
+      this.isAnnouncementClosed = true;
+    },
+    checkIfAnnouncemmentIsClosed() {
+      if (localStorage.closeAnnouncementId) {
+        if (this.announcement.id.toString() === localStorage.closeAnnouncementId) return false;
+      }
+      return true;
     },
   },
   computed: {
