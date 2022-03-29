@@ -40,6 +40,7 @@
     "login": "登录",
     "signup": "注册",
     "failureMsg": "注册失败，请重试",
+    "successMsg": "注册成功！",
     "invalidMsg": "信息输入不符合规则，请重新输入"
   },
   "blog": {
