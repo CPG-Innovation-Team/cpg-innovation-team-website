@@ -50,6 +50,20 @@ export default {
   escapeHTML(html) {
     return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
   },
+  getAnnouncementCNContent(announcement) {
+    // remove bounary quotes from the string
+    const trimmedStr = announcement.content.substring(1, announcement.content.length - 1);
+    return trimmedStr.substring(0, trimmedStr.indexOf('#'));
+  },
+  getAnnouncementENContent(announcement) {
+    const trimmedStr = announcement.content.substring(1, announcement.content.length - 1);
+    return trimmedStr.substring(trimmedStr.indexOf('#') + 1, trimmedStr.indexOf('@'));
+  },
+  getAnnouncementURL(announcement) {
+    const str = announcement.content;
+    const trimmedStr = str.substring(1, str.length - 1);
+    return trimmedStr.substring(trimmedStr.indexOf('@') + 1);
+  },
   getEnvUrl() {
     return process.env.VUE_APP_HTTP_URL;
   },
