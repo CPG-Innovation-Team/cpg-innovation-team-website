@@ -2,13 +2,13 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
-      v-if="getAnnouncementContent() !== ''"
+      v-if="this.announcementContent !== ''"
       app
       color="purple"
       @click="redirectURL()"
     >
       <v-row justify="center" align="center">
-        <div class="announcement">{{ getAnnouncementContent() }}</div>
+        <div class="announcement">{{ this.announcementContent }}</div>
       </v-row>
     </v-system-bar>
     <v-app-bar class="nav-container" app flat :style="backgroundStyle">
@@ -59,15 +59,6 @@
                 </v-list-item-content>
               </v-list-item>
             </router-link>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-bell</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Announcement</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
 
             <v-list-item @click="logout">
               <v-list-item-icon>
@@ -149,7 +140,8 @@ export default {
     login: false,
     username: '',
     avatar: null,
-    announcements: [{ content: '' }],
+    announcement: { content: '' },
+    announcementContent: '',
     announcementURL: '',
     backgroundOpacity: 0,
   }),
@@ -157,7 +149,7 @@ export default {
   components: {
     CountryFlag,
   },
-  created() {
+  async created() {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
@@ -167,7 +159,15 @@ export default {
     if (localStorage.avatar) {
       this.avatar = localStorage.avatar;
     }
-    this.getAnnouncement();
+    await this.getAnnouncement();
+    // if (this.$t('locale') === 'zh-CN') {
+    //   this.announcementContent = util.getAnnouncementCNContent(this.announcement);
+    // }
+    // if (this.$t('locale') === 'en-US') {
+    //   this.announcementContent = util.getAnnouncementENContent(this.announcement);
+    // }
+    this.getAnnouncementForLocale();
+    this.announcementURL = util.getAnnouncementURL(this.announcement);
 
     window.addEventListener('scroll', this.handleScroll);
   },
@@ -175,6 +175,9 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
   watch: {
+    locale() {
+      this.getAnnouncementForLocale();
+    },
     group() {
       this.drawer = false;
     },
@@ -184,6 +187,14 @@ export default {
     },
   },
   methods: {
+    getAnnouncementForLocale() {
+      if (this.$t('locale') === 'zh-CN') {
+        this.announcementContent = util.getAnnouncementCNContent(this.announcement);
+      }
+      if (this.$t('locale') === 'en-US') {
+        this.announcementContent = util.getAnnouncementENContent(this.announcement);
+      }
+    },
     changeLang(locale, lang, flag) {
       this.$i18n.locale = locale;
       this.lang = lang;
@@ -237,20 +248,13 @@ export default {
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
-        this.announcements = [{ content: '' }];
-        if (response.data.data.NotificationList) {
-          response.data.data.NotificationList.forEach((item) => {
-            this.announcements.push({ content: item.Content });
-          });
+        if (response.data.code === 10000) {
+          if (response.data.message === '当前时间段暂无通知') {
+            this.announcement = { content: '' };
+          }
+          this.announcement = { content: response.data.data.NotificationList.slice(-1)[0].Content };
         }
       });
-    },
-    getAnnouncementContent() {
-      const str = this.announcements[this.announcements.length - 1].content;
-      // remove bounary quotes from the string
-      const trimmedStr = str.substring(1, str.length - 1);
-      this.announcementURL = trimmedStr.substring(trimmedStr.indexOf('@') + 1);
-      return trimmedStr.substring(0, trimmedStr.indexOf('@'));
     },
     redirectURL() {
       window.location = this.announcementURL;
@@ -266,6 +270,11 @@ export default {
     },
   },
   computed: {
+    locale() {
+      return {
+        locale: this.$t('locale'),
+      };
+    },
     routers() {
       return [
         { name: this.$t('navbar.home'), link: '/' },
