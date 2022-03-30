@@ -51,7 +51,7 @@
         </v-row>
         <v-card-title> 文章内容 </v-card-title>
         <v-card-text>
-          <Editor v-model="blog.content" :content="blog.content" :editorBool="false" />
+          <Editor v-model="blog.content" :content="blog.content" :editorBool="false" :inCreate="false" />
         </v-card-text>
       </v-card>
 
@@ -151,7 +151,6 @@ export default {
         await util
           .post(`${util.getEnvUrl()}/admin/review/article`, { sn: this.sn, state: true }, this.$router)
           .then((response) => {
-            console.log(response);
             this.checkSuccess(response);
           });
       } else {
