@@ -64,6 +64,16 @@ export default {
     const trimmedStr = str.substring(1, str.length - 1);
     return trimmedStr.substring(trimmedStr.indexOf('@') + 1);
   },
+  debounce(fn, delay) {
+    let timer = null;
+    return function func() {
+      clearTimeout(timer);
+      const that = this;
+      timer = setTimeout(function f() {
+        fn.apply(that);
+      }, delay);
+    };
+  },
   getEnvUrl() {
     return process.env.VUE_APP_HTTP_URL;
   },
