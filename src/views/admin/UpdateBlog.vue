@@ -16,7 +16,7 @@
               <v-select :items="tagList" v-model="blog.tags" clearable outlined label="tags"></v-select>
             </v-row>
             <v-row class="ma-8">
-              <Editor :content="blog.content" v-model="content" :editorBool="true" />
+              <Editor :content="blog.content" v-model="content" :editorBool="true" :inCreate="false" />
             </v-row>
           </v-card-text>
           <v-card-actions>
