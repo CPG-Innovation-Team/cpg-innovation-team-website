@@ -20,11 +20,17 @@ export default {
     editorBool: {
       type: Boolean,
     },
+    inCreate: {
+      type: Boolean,
+    },
   },
   data() {
     return {
       blogContent: '',
       disabled: false,
+      hasChange: false,
+      timer: null,
+      editingContent: '',
       init: {
         height: 500,
         menubar: true,
@@ -43,6 +49,11 @@ export default {
           editor.on('NodeChange Change KeyUp SetContent', () => {
             this.hasChange = true;
             this.$emit('input', editor.getContent());
+            if (this.inCreate === true) {
+              this.editingContent = editor.getContent();
+              clearTimeout(this.timer);
+              this.timer = setTimeout(this.saveContent, 2000);
+            }
           });
         },
       },
@@ -57,6 +68,14 @@ export default {
       this.init.toolbar = false;
       this.disabled = true;
     }
+    if (this.content) {
+      this.blogContent = this.content;
+    }
+  },
+  methods: {
+    saveContent() {
+      localStorage.content = this.editingContent;
+    },
   },
   watch: {
     content(newVal) {
