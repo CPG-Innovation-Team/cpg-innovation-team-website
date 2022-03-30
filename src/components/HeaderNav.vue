@@ -179,7 +179,13 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('mouseover', () => {}, true);
+    window.removeEventListener(
+      'mouseover',
+      () => {
+        /** function */
+      },
+      true
+    );
     clearTimeout(this.timer);
   },
   watch: {
