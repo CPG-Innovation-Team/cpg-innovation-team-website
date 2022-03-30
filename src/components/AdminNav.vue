@@ -71,7 +71,13 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener('mouseover', () => {}, true);
+    window.removeEventListener(
+      'mouseover',
+      () => {
+        /** function */
+      },
+      true
+    );
     clearTimeout(this.timer);
   },
   methods: {
