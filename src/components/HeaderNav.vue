@@ -127,7 +127,6 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    token: '',
     lang: '中文',
     drawer: false,
     group: null,
@@ -137,14 +136,18 @@ export default {
     searchItems: [],
     jobs,
     projects,
-    login: false,
+    // navbar user info
     username: '',
+    token: '',
     avatar: null,
+    // announcement
     announcement: { content: '' },
     announcementContent: '',
     announcementURL: '',
     isAnnouncementClosed: false,
     backgroundOpacity: 0,
+    // timer
+    timer: '',
   }),
   props: ['color'],
   components: {
@@ -164,10 +167,20 @@ export default {
     this.getAnnouncementForLocale();
     this.announcementURL = util.getAnnouncementURL(this.announcement);
 
+    window.addEventListener(
+      'mouseover',
+      util.debounce(function func() {
+        localStorage.lastClickTime = new Date().getTime();
+      }, 1000),
+      true
+    );
+
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('mouseover', () => {}, true);
+    clearTimeout(this.timer);
   },
   watch: {
     locale() {
@@ -181,7 +194,24 @@ export default {
       this.searchItems = [...this.getSearchItems(jobs), ...this.getSearchItems(projects)];
     },
   },
+  mounted() {
+    // 0.5 hour = 1000 * 60 * 30 ms
+    // if the user is logged in, create timer, check timeout every 30 minutes
+    if (this.token !== '') {
+      this.timer = setInterval(this.checkTimeOut, 1000 * 60 * 30);
+    }
+  },
   methods: {
+    checkTimeOut() {
+      const timeOut = 1000 * 60 * 60;
+      const currentTime = new Date().getTime();
+      const lastTime = localStorage.lastClickTime;
+      // if the last click time is longer than 1 hour, then log out
+      if (currentTime - lastTime > timeOut) {
+        this.logout();
+        clearInterval(this.timer);
+      }
+    },
     getAnnouncementForLocale() {
       if (this.$t('locale') === 'zh-CN') {
         this.announcementContent = util.getAnnouncementCNContent(this.announcement);
@@ -237,8 +267,11 @@ export default {
     logout() {
       util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
         this.token = '';
-        localStorage.clear();
-        this.$router.push('/');
+        this.username = '';
+        this.avatar = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('avatar');
       });
     },
     async getAnnouncement() {
