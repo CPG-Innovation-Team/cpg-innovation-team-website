@@ -12,7 +12,6 @@
           <v-text-field label="中文公告内容" :disabled="disabled" v-model="cnContent"></v-text-field>
           <v-text-field label="英文公告内容" :disabled="disabled" v-model="enContent"></v-text-field>
           <v-text-field label="公告跳转链接" :disabled="disabled" v-model="link"></v-text-field>
-
           <v-row>
             <v-col>
               <v-menu
