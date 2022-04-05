@@ -59,7 +59,9 @@ export default {
     this.mouseoverCallback = util.debounce(function func() {
       localStorage.lastClickTime = new Date().getTime();
     }, 3000);
-    window.addEventListener('mouseover', this.mouseoverCallback, true);
+    if (this.token !== '') {
+      window.addEventListener('mouseover', this.mouseoverCallback, true);
+    }
   },
   mounted() {
     // 0.5 hour = 1000 * 60 * 30 ms
