@@ -2,7 +2,7 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
-      v-if="announcementContent !== '' && checkIfAnnouncemmentIsClosed() === true && isAnnouncementClosed == false"
+      v-if="announcementContent !== '' && checkIfAnnouncemmentIsClosed() === false && isAnnouncementClosed == false"
       app
       color="purple"
     >
@@ -311,9 +311,11 @@ export default {
     },
     checkIfAnnouncemmentIsClosed() {
       if (localStorage.closeAnnouncementId) {
-        if (this.announcement.id.toString() === localStorage.closeAnnouncementId) return false;
+        // if the current announcement id matches with the one that user has closed
+        // return true that the announcement is closed
+        if (this.announcement.id.toString() === localStorage.closeAnnouncementId) return true;
       }
-      return true;
+      return false;
     },
   },
   computed: {
