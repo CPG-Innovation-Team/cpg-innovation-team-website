@@ -53,7 +53,7 @@
                   <label>Content</label>
                 </v-col>
                 <v-col>
-                  <Editor v-model="content" />
+                  <Editor :content="editingContent" v-model="content" :editorBool="true" :inCreate="true" />
                 </v-col>
               </v-row>
 
@@ -66,14 +66,26 @@
             </v-form>
             <v-row justify="space-around">
               <v-col cols="auto">
-                <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="dialog">
+                <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="successDialog">
                   <template>
                     <v-card>
                       <v-card-text>
                         <div class="text-h6 pa-6">提交成功，进入审核状态</div>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="closeDialog()" data-test-id="confirm-button">Confirm</v-btn>
+                        <v-btn text @click="closeSuccessDialog()" data-test-id="confirm-button">Confirm</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="failureDialog">
+                  <template>
+                    <v-card>
+                      <v-card-text>
+                        <div class="text-h6 pa-6">提交失败</div>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn text @click="closeFailureDialog()" data-test-id="confirm-button">Confirm</v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -102,32 +114,86 @@ export default {
       content: '',
       tag: '',
       tags: ['All', 'Technology', 'Agriculture'],
-      dialog: false,
+      successDialog: false,
+      failureDialog: false,
+      editingContent: '',
+      timer: null,
     };
   },
   components: {
     AdminNav,
     Editor,
   },
+  created() {
+    if (localStorage.content) {
+      this.editingContent = localStorage.content;
+    }
+    if (localStorage.title) {
+      this.title = localStorage.title;
+    }
+    if (localStorage.cover) {
+      this.cover = localStorage.cover;
+    }
+    if (localStorage.tag) {
+      this.tag = localStorage.tag;
+    }
+  },
   methods: {
     submit() {
-      util.post(
-        `${util.getEnvUrl()}/admin/article/add`,
-        {
-          title: this.title,
-          cover: this.cover,
-          content: this.content,
-          tags: this.tag,
-        },
-        this.$router
-      );
-      this.dialog = true;
+      util
+        .post(
+          `${util.getEnvUrl()}/admin/article/add`,
+          {
+            title: this.title,
+            cover: this.cover,
+            content: this.content,
+            tags: this.tag,
+          },
+          this.$router
+        )
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.successDialog = true;
+            localStorage.removeItem('title');
+            localStorage.removeItem('content');
+            localStorage.removeItem('tag');
+            localStorage.removeItem('cover');
+          } else {
+            this.failureDialog = true;
+          }
+        });
     },
-    closeDialog() {
-      this.dialog = false;
+    closeSuccessDialog() {
+      this.successDialog = false;
       this.$router.push({
         path: '/admin/blogs',
       });
+    },
+    closeFailureDialog() {
+      this.failureDialog = false;
+    },
+    saveArticleTitleToLocal() {
+      localStorage.title = this.title;
+    },
+    saveArticleCoverToLocal() {
+      localStorage.cover = this.cover;
+    },
+    saveArticleTagToLocal() {
+      localStorage.tag = this.tag;
+    },
+  },
+  watch: {
+    title() {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(this.saveArticleTitleToLocal, 2000);
+    },
+    cover() {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(this.saveArticleCoverToLocal, 2000);
+    },
+    tag() {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(this.saveArticleTagToLocal, 2000);
     },
   },
 };

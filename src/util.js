@@ -48,7 +48,31 @@ export default {
    * @returns
    */
   escapeHTML(html) {
-    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '');
+    return html.replace(/<(?:"[^"]*"|'[^']*'|[^'">])*>/g, '').replace(/&.{1,10};/g, ' ');
+  },
+  getAnnouncementCNContent(announcement) {
+    // remove bounary quotes from the string
+    const trimmedStr = announcement.content.substring(1, announcement.content.length - 1);
+    return trimmedStr.substring(0, trimmedStr.indexOf('#'));
+  },
+  getAnnouncementENContent(announcement) {
+    const trimmedStr = announcement.content.substring(1, announcement.content.length - 1);
+    return trimmedStr.substring(trimmedStr.indexOf('#') + 1, trimmedStr.indexOf('@'));
+  },
+  getAnnouncementURL(announcement) {
+    const str = announcement.content;
+    const trimmedStr = str.substring(1, str.length - 1);
+    return trimmedStr.substring(trimmedStr.indexOf('@') + 1);
+  },
+  debounce(fn, delay) {
+    let timer = null;
+    return function func() {
+      clearTimeout(timer);
+      const that = this;
+      timer = setTimeout(function f() {
+        fn.apply(that);
+      }, delay);
+    };
   },
   getEnvUrl() {
     return process.env.VUE_APP_HTTP_URL;

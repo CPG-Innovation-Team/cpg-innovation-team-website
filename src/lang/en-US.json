@@ -40,6 +40,7 @@
     "login": "Login",
     "signup": "Signup",
     "failureMsg": "Registration failed, please try again",
+    "successMsg": "Registration succeeded!",
     "invalidMsg": "Entered information is invalid, please try again"
   },
   "blog": {

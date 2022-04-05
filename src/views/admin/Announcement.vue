@@ -8,6 +8,9 @@
           ><v-radio-group v-model="value" row>
             <v-radio label="开启公告" value="announcementOn" @click="turn(true)"></v-radio>
             <v-radio label="关闭公告" value="announcementOff" @click="turn(false)"></v-radio>
+            <v-col class="text-right">
+              <v-btn text color="blue" @click="clearAll()">全部清空</v-btn>
+            </v-col>
           </v-radio-group>
           <v-text-field label="中文公告内容" :disabled="disabled" v-model="cnContent"></v-text-field>
           <v-text-field label="英文公告内容" :disabled="disabled" v-model="enContent"></v-text-field>
@@ -178,15 +181,51 @@ export default {
       successDialog: false,
       failureDialog: false,
       emptyDialog: false,
+      announcement: { content: '' },
+      announcementContent: '',
+      announcementURL: '',
     };
   },
   components: {
     AdminNav,
   },
-  created() {
+  async created() {
     this.getCurrentDate();
+    await this.getAnnouncement();
   },
   methods: {
+    async getAnnouncement() {
+      await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
+        if (response.data.code === 10000) {
+          if (response.data.message === '当前时间段暂无通知') {
+            this.announcement = { content: '' };
+          }
+          if (response.data.data.NotificationList) {
+            const output = response.data.data.NotificationList.slice(-1)[0];
+            this.announcement = { content: output.Content };
+            this.startDate = output.BeginTime.substring(0, output.BeginTime.indexOf('T'));
+            this.endDate = output.EndTime.substring(0, output.EndTime.indexOf('T'));
+            this.startTime = output.BeginTime.substring(
+              output.BeginTime.indexOf('T') + 1,
+              output.BeginTime.indexOf('+') - 3
+            );
+            this.endTime = output.EndTime.substring(output.EndTime.indexOf('T') + 1, output.EndTime.indexOf('+') - 3);
+            this.cnContent = util.getAnnouncementCNContent(this.announcement);
+            this.enContent = util.getAnnouncementENContent(this.announcement);
+            this.link = util.getAnnouncementURL(this.announcement);
+          }
+        }
+      });
+    },
+    clearAll() {
+      this.cnContent = '';
+      this.enContent = '';
+      this.link = '';
+      this.startDate = null;
+      this.endDate = null;
+      this.startTime = null;
+      this.endTime = null;
+    },
     getCurrentDate() {
       const date = new Date().toISOString().split('T')[0];
       this.startDate = date;
@@ -198,7 +237,8 @@ export default {
       if (bool === false) {
         this.disabled = true;
         this.link = '';
-        this.content = '';
+        this.cnContent = '';
+        this.enContent = '';
         this.startTime = null;
         this.startDate = null;
         this.endTime = null;
@@ -206,6 +246,7 @@ export default {
       } else {
         this.disabled = false;
         this.getCurrentDate();
+        this.getAnnouncement();
       }
     },
     async addAnnouncement() {
@@ -225,7 +266,7 @@ export default {
             `${util.getEnvUrl()}/admin/notify/add`,
             {
               type: 4,
-              content: `${this.cnContent}@${this.link}`,
+              content: `${this.cnContent}#${this.enContent}@${this.link}`,
               uid: [],
               state: 1,
               beginTime: moment(start).format('X'),

@@ -2,14 +2,14 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
-      v-if="getAnnouncementContent() !== ''"
+      v-if="announcementContent !== '' && checkIfAnnouncemmentIsClosed() === false && isAnnouncementClosed == false"
       app
       color="purple"
-      @click="redirectURL()"
     >
-      <v-row justify="center" align="center">
-        <div class="announcement">{{ getAnnouncementContent() }}</div>
+      <v-row justify="center" align="center" @click="redirectURL()">
+        <div class="announcement">{{ announcementContent }}</div>
       </v-row>
+      <v-btn icon @click="closeAnnouncement(announcement.id)"><v-icon color="white">mdi-close</v-icon></v-btn>
     </v-system-bar>
     <v-app-bar class="nav-container" app flat :style="backgroundStyle">
       <v-app-bar-nav-icon
@@ -59,15 +59,6 @@
                 </v-list-item-content>
               </v-list-item>
             </router-link>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-bell</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Announcement</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
 
             <v-list-item @click="logout">
               <v-list-item-icon>
@@ -136,7 +127,6 @@ const jobs = require('../data/career');
 export default {
   name: 'HeaderNav',
   data: () => ({
-    token: '',
     lang: '中文',
     drawer: false,
     group: null,
@@ -146,18 +136,25 @@ export default {
     searchItems: [],
     jobs,
     projects,
-    login: false,
+    // navbar user info
     username: '',
+    token: '',
     avatar: null,
-    announcements: [{ content: '' }],
+    // announcement
+    announcement: { content: '' },
+    announcementContent: '',
     announcementURL: '',
+    isAnnouncementClosed: false,
     backgroundOpacity: 0,
+    // timer
+    timer: '',
+    mouseoverCallback: null,
   }),
   props: ['color'],
   components: {
     CountryFlag,
   },
-  created() {
+  async created() {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
@@ -167,14 +164,29 @@ export default {
     if (localStorage.avatar) {
       this.avatar = localStorage.avatar;
     }
-    this.getAnnouncement();
+    await this.getAnnouncement();
+    this.getAnnouncementForLocale();
+    this.announcementURL = util.getAnnouncementURL(this.announcement);
+
+    this.mouseoverCallback = util.debounce(function func() {
+      localStorage.lastClickTime = new Date().getTime();
+    }, 3000);
+
+    if (this.token !== '') {
+      window.addEventListener('mouseover', this.mouseoverCallback, true);
+    }
 
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('mouseover', this.mouseoverCallback, true);
+    clearTimeout(this.timer);
   },
   watch: {
+    locale() {
+      this.getAnnouncementForLocale();
+    },
     group() {
       this.drawer = false;
     },
@@ -183,7 +195,32 @@ export default {
       this.searchItems = [...this.getSearchItems(jobs), ...this.getSearchItems(projects)];
     },
   },
+  mounted() {
+    // 0.5 hour = 1000 * 60 * 30 ms
+    // if the user is logged in, create timer, check timeout every 30 minutes
+    if (this.token !== '') {
+      this.timer = setInterval(this.checkTimeOut, 1000 * 60 * 30);
+    }
+  },
   methods: {
+    checkTimeOut() {
+      const timeOut = 1000 * 60 * 60;
+      const currentTime = new Date().getTime();
+      const lastTime = localStorage.lastClickTime;
+      // if the last click time is longer than 1 hour, then log out
+      if (currentTime - lastTime > timeOut) {
+        this.logout();
+        clearInterval(this.timer);
+      }
+    },
+    getAnnouncementForLocale() {
+      if (this.$t('locale') === 'zh-CN') {
+        this.announcementContent = util.getAnnouncementCNContent(this.announcement);
+      }
+      if (this.$t('locale') === 'en-US') {
+        this.announcementContent = util.getAnnouncementENContent(this.announcement);
+      }
+    },
     changeLang(locale, lang, flag) {
       this.$i18n.locale = locale;
       this.lang = lang;
@@ -231,29 +268,33 @@ export default {
     logout() {
       util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
         this.token = '';
-        localStorage.clear();
-        this.$router.push('/');
+        this.username = '';
+        this.avatar = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('avatar');
+        window.removeEventListener('mouseover', this.mouseoverCallback, true);
       });
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
-        this.announcements = [{ content: '' }];
-        if (response.data.data.NotificationList) {
-          response.data.data.NotificationList.forEach((item) => {
-            this.announcements.push({ content: item.Content });
-          });
+        if (response.data.code === 10000) {
+          if (response.data.message === '当前时间段暂无通知') {
+            this.announcement = { content: '' };
+          }
+          if (response.data.data.NotificationList) {
+            this.announcement = {
+              content: response.data.data.NotificationList.slice(-1)[0].Content,
+              id: response.data.data.NotificationList.slice(-1)[0].Id,
+            };
+          }
         }
       });
     },
-    getAnnouncementContent() {
-      const str = this.announcements[this.announcements.length - 1].content;
-      // remove bounary quotes from the string
-      const trimmedStr = str.substring(1, str.length - 1);
-      this.announcementURL = trimmedStr.substring(trimmedStr.indexOf('@') + 1);
-      return trimmedStr.substring(0, trimmedStr.indexOf('@'));
-    },
     redirectURL() {
-      window.location = this.announcementURL;
+      if (this.announcementURL !== '') {
+        window.location = this.announcementURL;
+      }
     },
     handleScroll() {
       if (window.scrollY === 0) {
@@ -264,8 +305,25 @@ export default {
         this.backgroundOpacity = window.scrollY / 480;
       }
     },
+    closeAnnouncement() {
+      localStorage.closeAnnouncementId = this.announcement.id;
+      this.isAnnouncementClosed = true;
+    },
+    checkIfAnnouncemmentIsClosed() {
+      if (localStorage.closeAnnouncementId) {
+        // if the current announcement id matches with the one that user has closed
+        // return true that the announcement is closed
+        if (this.announcement.id.toString() === localStorage.closeAnnouncementId) return true;
+      }
+      return false;
+    },
   },
   computed: {
+    locale() {
+      return {
+        locale: this.$t('locale'),
+      };
+    },
     routers() {
       return [
         { name: this.$t('navbar.home'), link: '/' },

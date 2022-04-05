@@ -45,6 +45,8 @@ export default {
       ],
       username: '',
       token: '',
+      timer: null,
+      mouseoverCallback: null,
     };
   },
   async created() {
@@ -54,12 +56,44 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
+    this.mouseoverCallback = util.debounce(function func() {
+      localStorage.lastClickTime = new Date().getTime();
+    }, 3000);
+    if (this.token !== '') {
+      window.addEventListener('mouseover', this.mouseoverCallback, true);
+    }
+  },
+  mounted() {
+    // 0.5 hour = 1000 * 60 * 30 ms
+    // if the user is logged in, create timer, check timeout every 30 minutes
+    if (this.token !== '') {
+      this.timer = setInterval(this.checkTimeOut, 1000 * 60 * 30);
+    }
+  },
+  beforeDestroy() {
+    window.removeEventListener('mouseover', this.mouseoverCallback, true);
+    clearTimeout(this.timer);
   },
   methods: {
+    checkTimeOut() {
+      const timeOut = 1000 * 60 * 60;
+      const currentTime = new Date().getTime();
+      const lastTime = localStorage.lastClickTime;
+      // if the last click time is longer than 1 hour, then log out
+      if (currentTime - lastTime > timeOut) {
+        this.logout();
+        clearInterval(this.timer);
+      }
+    },
     logout() {
       util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
         this.token = '';
-        localStorage.clear();
+        this.username = '';
+        this.avatar = null;
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('avatar');
+        window.removeEventListener('mouseover', this.mouseoverCallback, true);
         this.$router.push('/');
       });
     },

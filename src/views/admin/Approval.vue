@@ -7,89 +7,6 @@
           <v-toolbar flat color="white">
             <v-toolbar-title>All Pending Blogs</v-toolbar-title>
           </v-toolbar>
-          <v-dialog v-model="approveDialog" fullscreen>
-            <v-card>
-              <v-card-text>
-                <v-col class="pt-8">
-                  <v-row>
-                    <v-col>
-                      <v-btn color="blue darken-1" text @click="approveDialog = false"> 返回 </v-btn>
-                    </v-col>
-                    <v-col class="text-right">
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="
-                          confirmDialog = true;
-                          approveAction = true;
-                        "
-                      >
-                        审核通过
-                      </v-btn>
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="
-                          confirmDialog = true;
-                          approveAction = false;
-                        "
-                      >
-                        审核不通过
-                      </v-btn></v-col
-                    >
-                  </v-row>
-                </v-col>
-              </v-card-text>
-              <v-card-text class="mt-8 ml-16">
-                <v-col>
-                  <v-row> <v-card-title> 文章标题 </v-card-title></v-row
-                  ><v-row>
-                    {{ currentArticle.title }}
-                  </v-row>
-                </v-col>
-              </v-card-text>
-              <v-card-text class="mt-8 ml-16">
-                <v-col>
-                  <v-row> <v-card-title> 文章内容 </v-card-title></v-row>
-                  <v-row>
-                    <div class="blog-content">
-                      <div v-dompurify-html="currentArticle.content"></div>
-                    </div>
-                  </v-row>
-                </v-col>
-              </v-card-text>
-              <v-card-actions>
-                <v-dialog v-model="confirmDialog" max-width="500px">
-                  <v-card>
-                    <v-card-title> 确认以下操作吗？ </v-card-title>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="
-                          confirmDialog = false;
-                          approveAction = false;
-                        "
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="
-                          confirmDialog = false;
-                          confirmAction();
-                        "
-                      >
-                        Confirm
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
@@ -97,7 +14,9 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn text @click="getApproveArticle(item)"> 详情 </v-btn>
+          <router-link class="approve-btn" :to="{ name: 'ApproveBlog', query: { sn: item.sn } }">
+            <v-btn text> 详情 </v-btn>
+          </router-link>
         </template>
       </v-data-table>
 
@@ -262,11 +181,6 @@ export default {
         { text: 'Content', value: 'content' },
         { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
       ],
-      // for blog approval
-      approveDialog: false,
-      confirmDialog: false,
-      currentArticle: '',
-      approveAction: false,
       // for general purpose dialog
       successDialog: false,
       failureDialog: false,
@@ -333,36 +247,6 @@ export default {
         }
       });
     },
-    getApproveArticle(item) {
-      this.approveDialog = true;
-      this.currentArticle = item;
-    },
-    async confirmAction() {
-      if (this.approveAction === true) {
-        await util
-          .post(`${util.getEnvUrl()}/admin/review/article`, { sn: this.currentArticle.sn, state: true }, this.$router)
-          .then((response) => {
-            this.checkSuccess(response);
-          });
-        this.blogs = [];
-        this.getBlogList();
-      } else {
-        await util
-          .post(
-            `${util.getEnvUrl()}/admin/review/article`,
-            {
-              sn: this.currentArticle.sn,
-              state: false,
-            },
-            this.$router
-          )
-          .then((response) => {
-            this.checkSuccess(response);
-          });
-        this.blogs = [];
-        this.getBlogList();
-      }
-    },
     async approveComment(item, bool) {
       await util
         .post(`${util.getEnvUrl()}/admin/review/comment`, { commentId: item.cid, state: bool }, this.$router)
@@ -384,7 +268,6 @@ export default {
     close() {
       this.successDialog = false;
       this.failureDialog = false;
-      this.approveDialog = false;
     },
     checkSuccess(response) {
       if (response.data.code === 10000) {
@@ -400,5 +283,9 @@ export default {
 <style lang="scss" scoped>
 .layout {
   display: flex;
+}
+
+.approve-btn {
+  text-decoration: none;
 }
 </style>

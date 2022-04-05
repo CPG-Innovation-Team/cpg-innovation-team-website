@@ -19,7 +19,7 @@
               <div v-for="(blog, index) in popularBlogs.slice(0, 4)" :key="index">
                 <v-col>
                   <v-card class="ml-2 mr-2" flat color="transparent" max-width="210">
-                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn } }">
                       <img
                         class="popular-blog-cover"
                         v-if="blog.imgIsValid"
@@ -35,10 +35,7 @@
                       />
                     </router-link>
                     <v-card-title>
-                      <router-link
-                        class="popular-blog-title"
-                        :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }"
-                      >
+                      <router-link class="popular-blog-title" :to="{ path: '/blogDetail', query: { sn: blog.sn } }">
                         <div>{{ getBlogTitle(blog.title) }}</div>
                       </router-link></v-card-title
                     >
@@ -219,7 +216,7 @@ export default {
         }
       });
     this.getPopularBlogs();
-    this.catogorizedBlogs = this.blogs;
+    this.catogorizedBlogs = this.blogs.reverse();
   },
   methods: {
     getDefaultCoverForPopular(index) {
@@ -242,7 +239,7 @@ export default {
         .then((response) => {
           if (response.data.code === 10000) {
             response.data.data.ArticleDetailList.forEach((blog) => {
-              this.popularBlogs.push({
+              this.popularBlogs.unshift({
                 title: blog.Title,
                 tags: blog.Tags,
                 content: blog.Content,

@@ -12,14 +12,8 @@ describe('Admin create blog page', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('Triggering closeDialog() closes the dialog', () => {
-    wrapper.vm.closeDialog();
-    expect(wrapper.vm.dialog).toBe(false);
-    expect(router.currentRoute.fullPath).toBe('/admin/blogs');
-  });
-
   it('Triggering submit() sets up the dialog', () => {
     wrapper.vm.submit();
-    expect(wrapper.vm.dialog).toBe(true);
+    expect(wrapper.vm.failureDialog).toBe(false);
   });
 });

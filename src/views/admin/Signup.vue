@@ -60,14 +60,33 @@
           localeMsg.signup
         }}</v-btn>
       </v-form>
-      <v-dialog max-width="600" v-model="responseDialog">
+      <v-dialog max-width="600" v-model="failureDialog">
         <template>
           <v-card>
             <v-card-text>
               <div class="text-h6 pa-6">{{ localeMsg.failureMsg }}</div>
             </v-card-text>
             <v-card-actions class="justify-end">
-              <v-btn text @click="responseDialog = false">{{ localeMsg.confirm }}</v-btn>
+              <v-btn text @click="failureDialog = false">{{ localeMsg.confirm }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+      <v-dialog max-width="600" v-model="successDialog">
+        <template>
+          <v-card>
+            <v-card-text>
+              <div class="text-h6 pa-6">{{ localeMsg.successMsg }}</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                text
+                @click="
+                  successDialog = false;
+                  login(username, password);
+                "
+                >{{ localeMsg.confirm }}</v-btn
+              >
             </v-card-actions>
           </v-card>
         </template>
@@ -102,7 +121,8 @@ export default {
       email: '',
       password: '',
       confirmedPwd: '',
-      responseDialog: false,
+      failureDialog: false,
+      successDialog: false,
       alertDialog: false,
       showPwd: false,
       showConfirmPwd: false,
@@ -126,6 +146,7 @@ export default {
         login: this.$t('signup.login'),
         signup: this.$t('signup.signup'),
         failureMsg: this.$t('signup.failureMsg'),
+        successMsg: this.$t('signup.successMsg'),
         invalidMsg: this.$t('signup.invalidMsg'),
         confirm: this.$t('dialogMsg.confirm'),
         required: this.$t('dialogMsg.required'),
@@ -138,6 +159,20 @@ export default {
   methods: {
     validate() {
       this.$refs.form.validate();
+    },
+    async login(username, password) {
+      await axios
+        .post(`${util.getEnvUrl()}/login`, {
+          username,
+          passwd: password,
+        })
+        .then(async (response) => {
+          if (response.data.code === 10000) {
+            localStorage.token = response.data.data.Token;
+            localStorage.username = this.username;
+            this.$router.push('/');
+          }
+        });
     },
     async register() {
       if (this.valid === true) {
@@ -152,11 +187,9 @@ export default {
           })
           .then((response) => {
             if (response.data.code === 10000) {
-              localStorage.token = response.data.data.Token;
-              localStorage.username = this.username;
-              this.$router.push('/');
+              this.successDialog = true;
             } else {
-              this.responseDialog = true;
+              this.failureDialog = true;
             }
           });
       } else {
