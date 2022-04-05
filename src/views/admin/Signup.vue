@@ -187,10 +187,6 @@ export default {
           })
           .then((response) => {
             if (response.data.code === 10000) {
-              axios.post(`${util.getEnvUrl()}/admin/auth/role/add/user`, {
-                rName: '普通用户',
-                uid: response.data.data.Uid,
-              });
               this.successDialog = true;
             } else {
               this.failureDialog = true;
