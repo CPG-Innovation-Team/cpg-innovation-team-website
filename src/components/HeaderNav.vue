@@ -171,7 +171,7 @@ export default {
       'mouseover',
       util.debounce(function func() {
         localStorage.lastClickTime = new Date().getTime();
-      }, 1000),
+      }, 3000),
       true
     );
 
@@ -286,10 +286,12 @@ export default {
           if (response.data.message === '当前时间段暂无通知') {
             this.announcement = { content: '' };
           }
-          this.announcement = {
-            content: response.data.data.NotificationList.slice(-1)[0].Content,
-            id: response.data.data.NotificationList.slice(-1)[0].Id,
-          };
+          if (response.data.data.NotificationList) {
+            this.announcement = {
+              content: response.data.data.NotificationList.slice(-1)[0].Content,
+              id: response.data.data.NotificationList.slice(-1)[0].Id,
+            };
+          }
         }
       });
     },
