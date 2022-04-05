@@ -12,26 +12,50 @@
 
     <v-main class="pt-0">
       <div class="blogs-container">
-        <div v-if="!isExpired" class="popular-container">
-          <h1 style="text-align: center">Most Popular</h1>
+        <div class="popular-container">
+          <h1 class="popular-title">{{ localeMsg.mostPopular }}</h1>
           <v-container>
             <v-row class="justify-center">
               <div v-for="(blog, index) in popularBlogs.slice(0, 4)" :key="index">
                 <v-col>
-                  <v-card flat color="transparent">
-                    <div class="popular-item">
+                  <v-card class="ml-2 mr-2" flat color="transparent" max-width="210">
+                    <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
                       <img
-                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                        alt="sample img"
+                        class="popular-blog-cover"
+                        v-if="blog.imgIsValid"
+                        :src="blog.cover"
+                        alt="blog cover img"
+                        @error="getDefaultCoverForPopular(index)"
                       />
-                      <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
-                        <div class="popular-title">{{ blog.title }}</div>
-                      </router-link>
-                      <div class="user-info">
-                        <div class="name">作者：{{ blog.author }}</div>
-                        <div class="likes">Likes: {{ blog.likes }}</div>
-                      </div>
-                    </div>
+                      <img
+                        class="popular-blog-cover"
+                        v-else
+                        src="../assets/img-default-blog-cover.jpeg"
+                        alt="blog cover img"
+                      />
+                    </router-link>
+                    <v-card-title>
+                      <router-link
+                        class="popular-blog-title"
+                        :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }"
+                      >
+                        <div>{{ getBlogTitle(blog.title) }}</div>
+                      </router-link></v-card-title
+                    >
+                    <v-card-text
+                      ><v-row>
+                        <v-col :cols="4">
+                          <v-avatar class="mr-4" size="40">
+                            <img v-if="blog.avatar != ''" :src="blog.avatar" alt="sample img" />
+                            <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
+                          </v-avatar>
+                        </v-col>
+                        <v-col :cols="8">
+                          <div>{{ blog.author }}</div>
+                          <div>{{ localeMsg.likes }}: {{ blog.likes }}</div>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
                   </v-card>
                 </v-col>
               </div>
@@ -41,7 +65,7 @@
 
         <div class="recent-container">
           <v-container>
-            <h1>All Posts</h1>
+            <h1>{{ localeMsg.allPosts }}</h1>
 
             <v-tabs class="mb-4" v-model="category" background-color="transparent" color="black">
               <v-tabs-slider></v-tabs-slider>
@@ -52,48 +76,56 @@
             <v-tabs-items v-model="category">
               <v-tab-item style="background: rgb(248, 247, 247)" v-for="i in categories.length" :key="i">
                 <div v-for="(blog, index) in catogorizedBlogs.slice(page * 10 - 10, page * 10)" :key="index">
-                  <v-card class="mt-4 pl-4" flat>
-                    <v-col>
-                      <v-row row-wrap>
-                        <v-card-text>
-                          <v-row no-gutters>
-                            <v-col cols="4">
-                              <v-img
-                                class="recent-img"
-                                :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                                alt="sample img"
-                              />
-                            </v-col>
-                            <v-col cols="8">
-                              <v-row class="recent-user-info">
-                                <v-col cols="8">
-                                  <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
-                                    <div class="recent-blog-title">{{ blog.title }}</div>
-                                  </router-link>
-                                </v-col>
+                  <router-link :to="{ path: '/blogDetail', query: { sn: blog.sn.toString() } }">
+                    <v-hover v-slot="{ hover }">
+                      <v-card class="ma-4" flat :elevation="hover ? 1 : 0" :class="{ 'on-hover': hover }">
+                        <v-col>
+                          <v-row row-wrap>
+                            <v-card-text>
+                              <v-row no-gutters>
                                 <v-col cols="4">
-                                  <v-row class="text-right align-center">
-                                    <v-avatar class="mr-4">
-                                      <img
-                                        :src="`https://source.unsplash.com/random/200x120?sig=` + Math.random() * index"
-                                        alt="sample img"
-                                      />
-                                    </v-avatar>
-                                    <p class="recent-user-author">作者: {{ blog.author }}</p>
+                                  <img
+                                    class="recent-blog-cover"
+                                    v-if="blog.imgIsValid"
+                                    :src="blog.cover"
+                                    alt="blog cover img"
+                                    @error="getDefaultCoverForCategorized(index)"
+                                  />
+                                  <img
+                                    class="recent-blog-cover"
+                                    v-else
+                                    src="../assets/img-default-blog-cover.jpeg"
+                                    alt="blog cover img"
+                                  />
+                                </v-col>
+                                <v-col cols="8">
+                                  <v-row class="recent-user-info">
+                                    <v-col cols="8">
+                                      <div class="recent-blog-title">{{ blog.title }}</div>
+                                    </v-col>
+                                    <v-col cols="4">
+                                      <v-row class="">
+                                        <v-avatar class="mr-4" size="40">
+                                          <img v-if="blog.avatar !== ''" :src="blog.avatar" alt="sample img" />
+                                          <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
+                                        </v-avatar>
+                                        <p class="recent-user-author">{{ localeMsg.author }}: {{ blog.author }}</p>
+                                      </v-row>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row>
+                                    <v-card-text class="recent-blog-content"
+                                      >{{ util.escapeHTML(blog.content).substring(0, 100) }}...</v-card-text
+                                    >
                                   </v-row>
                                 </v-col>
                               </v-row>
-                              <v-row>
-                                <v-card-text class="recent-blog-content"
-                                  >{{ util.escapeHTML(blog.content).substring(0, 100) }}...</v-card-text
-                                >
-                              </v-row>
-                            </v-col>
+                            </v-card-text>
                           </v-row>
-                        </v-card-text>
-                      </v-row>
-                    </v-col>
-                  </v-card>
+                        </v-col>
+                      </v-card>
+                    </v-hover>
+                  </router-link>
                 </div>
               </v-tab-item>
             </v-tabs-items>
@@ -120,18 +152,43 @@ export default {
   data() {
     return {
       util,
-      category: 'All',
+      category: `${this.$t('categories.all')}`,
       page: 1,
-      categories: ['All', 'Technology', 'Agriculture'],
+      categories: [
+        `${this.$t('categories.all')}`,
+        `${this.$t('categories.technology')}`,
+        `${this.$t('categories.agriculture')}`,
+      ],
       blogs: [],
       popularBlogs: [],
       catogorizedBlogs: [],
-      isExpired: false,
       dialog: false,
     };
   },
   components: {
     HeaderNav,
+  },
+  watch: {
+    localeMsg() {
+      // update category name and blogs after changing the language
+      this.category = `${this.$t('categories.all')}`;
+      this.categories = [
+        `${this.$t('categories.all')}`,
+        `${this.$t('categories.technology')}`,
+        `${this.$t('categories.agriculture')}`,
+      ];
+      this.catogorizedBlogs = this.blogs;
+    },
+  },
+  computed: {
+    localeMsg() {
+      return {
+        mostPopular: this.$t('blog.mostPopular'),
+        likes: this.$t('blog.likes'),
+        allPosts: this.$t('blog.allPosts'),
+        author: this.$t('blog.author'),
+      };
+    },
   },
   async created() {
     await util
@@ -141,7 +198,7 @@ export default {
         },
       })
       .then((response) => {
-        if (response.data.data) {
+        if (response.data.code === 10000) {
           response.data.data.ArticleDetailList.forEach((blog) => {
             this.blogs.push({
               title: blog.Title,
@@ -150,11 +207,13 @@ export default {
               viewNum: blog.ViewNum,
               cmtNum: blog.ViewNum,
               author: blog.Author,
+              avatar: blog.Avatar,
               sn: blog.Sn,
               uid: blog.Uid,
               state: blog.State,
               cover: blog.Cover,
               likes: blog.ZanNum,
+              imgIsValid: true,
             });
           });
         }
@@ -163,9 +222,44 @@ export default {
     this.catogorizedBlogs = this.blogs;
   },
   methods: {
+    getDefaultCoverForPopular(index) {
+      this.popularBlogs[index].imgIsValid = false;
+    },
+    getDefaultCoverForCategorized(index) {
+      this.catogorizedBlogs[index].imgIsValid = false;
+    },
+    getBlogTitle(title) {
+      if (title.length > 30) return `${title.substring(0, 30)}...`;
+      return title;
+    },
     getPopularBlogs() {
-      this.popularBlogs = [...this.blogs];
-      this.popularBlogs.sort((a, b) => (a.likes < b.likes && 1) || -1);
+      util
+        .post(`${util.getEnvUrl()}/article/popular/list`, {
+          view_num: false,
+          cmt_num: false,
+          zan_num: true,
+        })
+        .then((response) => {
+          if (response.data.code === 10000) {
+            response.data.data.ArticleDetailList.forEach((blog) => {
+              this.popularBlogs.push({
+                title: blog.Title,
+                tags: blog.Tags,
+                content: blog.Content,
+                viewNum: blog.ViewNum,
+                cmtNum: blog.ViewNum,
+                author: blog.Author,
+                avatar: blog.Avatar,
+                sn: blog.Sn,
+                uid: blog.Uid,
+                state: blog.State,
+                cover: blog.Cover,
+                likes: blog.ZanNum,
+                imgIsValid: true,
+              });
+            });
+          }
+        });
     },
     getCategoryBlogs(category) {
       this.page = 1;
@@ -225,31 +319,31 @@ export default {
   .popular-container {
     padding: 40px 0;
     background: rgb(226, 226, 226);
-    .popular-item {
+    .popular-title {
+      text-align: center;
+      margin-bottom: 4%;
+    }
+    .popular-blog-cover {
+      border-radius: 5px;
       width: 200px;
-      img {
-        border-radius: 5px;
-      }
-      .popular-title {
-        margin-left: 5%;
-        font-size: 20px;
-        font-weight: 650;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .user-info {
-        margin-left: 5%;
-      }
+      height: 120px;
+    }
+    .popular-blog-title {
+      text-decoration: none;
+      font-size: 17px;
+      color: rgb(46, 45, 45);
+      line-height: 22px;
+    }
+    .popular-blog-title:hover {
+      color: rgb(25, 92, 194);
     }
   }
-
   .recent-container {
     padding: 40px 0;
     background: rgb(248, 247, 247);
-
+    a {
+      text-decoration: none;
+    }
     .recent-title {
       font-size: 1rem;
       font-weight: 650;
@@ -260,11 +354,12 @@ export default {
       text-overflow: ellipsis;
     }
     .recent-blog-title {
-      font-size: 16px;
+      font-size: 19px;
     }
-    .recent-img {
+    .recent-blog-cover {
       border-radius: 5px;
-      max-width: 200px;
+      width: 200px;
+      height: 120px;
     }
     .recent-user-info {
       margin-top: 2%;
@@ -273,7 +368,7 @@ export default {
       align-items: center;
       .recent-user-author {
         margin-left: 2%;
-        margin-top: 2%;
+        margin-top: 5%;
       }
     }
     .recent-blog-content {

@@ -4,9 +4,8 @@
       <router-link to="/">
         <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
       </router-link>
-
       <v-form ref="form" v-model="valid" @submit.prevent="validate">
-        <label>Username</label>
+        <label>{{ localeMsg.username }}</label>
         <v-text-field
           v-model="username"
           type="username"
@@ -16,7 +15,7 @@
           outlined
         ></v-text-field>
 
-        <label>Password</label>
+        <label>{{ localeMsg.password }}</label>
         <v-text-field
           v-model="password"
           :type="showPwd ? 'text' : 'password'"
@@ -29,26 +28,32 @@
         ></v-text-field>
 
         <p style="text-align: right; font-size: 0.9rem; margin-top: 8px">
-          <a>Forgot password?</a>
+          <a>{{ localeMsg.forgottenPwdMsg }}</a>
         </p>
         <p style="text-align: right; font-size: 0.9rem">
-          Don't have an account? <router-link to="/signup">Sign up</router-link>
+          {{ localeMsg.noAccountMsg }} <router-link to="/signup">{{ localeMsg.signup }}</router-link>
         </p>
 
-        <v-btn color="primary" style="float: right; margin-left: 100%" @click="login(username, password)">Login</v-btn>
-        <v-dialog max-width="600" v-model="dialog">
-          <template>
-            <v-card>
-              <v-card-text>
-                <div class="text-h6 pa-6">输入信息有误，请重试</div>
-              </v-card-text>
-              <v-card-actions class="justify-end">
-                <v-btn text @click="dialog = false">Confirm</v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
+        <v-btn
+          type="submit"
+          color="primary"
+          style="float: right; margin-left: 100%"
+          @click="login(username, password)"
+          >{{ localeMsg.loginBtn }}</v-btn
+        >
       </v-form>
+      <v-dialog max-width="600" v-model="dialog">
+        <template>
+          <v-card>
+            <v-card-text>
+              <div class="text-h6 pa-6">{{ localeMsg.infoErrMsg }}</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn text @click="dialog = false">{{ localeMsg.confirm }}</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -66,33 +71,58 @@ export default {
       dialog: false,
       showPwd: false,
       rules: {
-        required: (v) => !!v || 'Required.',
+        required: (v) => !!v || `${this.localeMsg.required}`,
       },
     };
+  },
+  computed: {
+    localeMsg() {
+      return {
+        username: this.$t('login.username'),
+        password: this.$t('login.password'),
+        forgottenPwdMsg: this.$t('login.forgottenPwdMsg'),
+        noAccountMsg: this.$t('login.noAccountMsg'),
+        signup: this.$t('login.signup'),
+        loginBtn: this.$t('login.loginBtn'),
+        infoErrMsg: this.$t('login.infoErrMsg'),
+        confirm: this.$t('dialogMsg.confirm'),
+        required: this.$t('dialogMsg.required'),
+      };
+    },
   },
   methods: {
     validate() {
       this.$refs.form.validate();
     },
     async login(username, password) {
-      if (this.username === '' || this.password === '') {
-        this.dialog = true;
-      } else {
+      if (this.valid === true) {
         await axios
           .post(`${util.getEnvUrl()}/login`, {
             username,
             passwd: password,
           })
-          .then((response) => {
-            if (response.data.data.Token) {
+          .then(async (response) => {
+            if (response.data.code === 10000) {
               localStorage.token = response.data.data.Token;
-              localStorage.username = this.username;
-              this.$router.push('/');
+              await this.saveUserInfo();
+              this.$router.go(-1);
             } else {
               this.dialog = true;
             }
           });
+      } else {
+        this.dialog = true;
       }
+    },
+    async saveUserInfo() {
+      await util
+        .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
+        .then((response) => {
+          if (response.data.code === 10000) {
+            localStorage.username = response.data.data.UserName;
+            localStorage.avatar = response.data.data.Avatar;
+          }
+        });
     },
   },
 };

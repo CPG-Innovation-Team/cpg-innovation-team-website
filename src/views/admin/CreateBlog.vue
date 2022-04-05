@@ -111,12 +111,16 @@ export default {
   },
   methods: {
     submit() {
-      util.post(`${util.getEnvUrl()}/admin/article/add`, {
-        title: this.title,
-        cover: this.cover,
-        content: this.content,
-        tags: this.tag,
-      });
+      util.post(
+        `${util.getEnvUrl()}/admin/article/add`,
+        {
+          title: this.title,
+          cover: this.cover,
+          content: this.content,
+          tags: this.tag,
+        },
+        this.$router
+      );
       this.dialog = true;
     },
     closeDialog() {

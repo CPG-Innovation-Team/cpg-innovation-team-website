@@ -288,7 +288,7 @@ export default {
   },
   methods: {
     async getBlogList() {
-      await util.post(`${util.getEnvUrl()}/admin/review/query/article/list`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/review/query/article/list`, {}, this.$router).then((response) => {
         if (response.data.data.ArticleMap) {
           const sn = Object.keys(response.data.data.ArticleMap);
           let index = 0;
@@ -308,7 +308,7 @@ export default {
       });
     },
     async getCommentList() {
-      await util.post(`${util.getEnvUrl()}/admin/review/query/comment/list`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/review/query/comment/list`, {}, this.$router).then((response) => {
         if (response.data.data.CommentMap) {
           Object.values(response.data.data.CommentMap).forEach((comment) => {
             this.comments.push({
@@ -321,7 +321,7 @@ export default {
       });
     },
     async getReplyList() {
-      await util.post(`${util.getEnvUrl()}/admin/review/query/reply/list`, {}).then((response) => {
+      await util.post(`${util.getEnvUrl()}/admin/review/query/reply/list`, {}, this.$router).then((response) => {
         if (response.data.data.ReplyMap) {
           Object.values(response.data.data.ReplyMap).forEach((reply) => {
             this.replies.push({
@@ -340,7 +340,7 @@ export default {
     async confirmAction() {
       if (this.approveAction === true) {
         await util
-          .post(`${util.getEnvUrl()}/admin/review/article`, { sn: this.currentArticle.sn, state: true })
+          .post(`${util.getEnvUrl()}/admin/review/article`, { sn: this.currentArticle.sn, state: true }, this.$router)
           .then((response) => {
             this.checkSuccess(response);
           });
@@ -348,10 +348,14 @@ export default {
         this.getBlogList();
       } else {
         await util
-          .post(`${util.getEnvUrl()}/admin/review/article`, {
-            sn: this.currentArticle.sn,
-            state: false,
-          })
+          .post(
+            `${util.getEnvUrl()}/admin/review/article`,
+            {
+              sn: this.currentArticle.sn,
+              state: false,
+            },
+            this.$router
+          )
           .then((response) => {
             this.checkSuccess(response);
           });
@@ -361,7 +365,7 @@ export default {
     },
     async approveComment(item, bool) {
       await util
-        .post(`${util.getEnvUrl()}/admin/review/comment`, { commentId: item.cid, state: bool })
+        .post(`${util.getEnvUrl()}/admin/review/comment`, { commentId: item.cid, state: bool }, this.$router)
         .then((response) => {
           this.checkSuccess(response);
         });
@@ -369,10 +373,11 @@ export default {
       this.getCommentList();
     },
     async approveReply(item, bool) {
-      await util.post(`${util.getEnvUrl()}/admin/review/reply`, { replyId: item.rid, state: bool }).then((response) => {
-        console.log(response);
-        this.checkSuccess(response);
-      });
+      await util
+        .post(`${util.getEnvUrl()}/admin/review/reply`, { replyId: item.rid, state: bool }, this.$router)
+        .then((response) => {
+          this.checkSuccess(response);
+        });
       this.replies = [];
       this.getReplyList();
     },

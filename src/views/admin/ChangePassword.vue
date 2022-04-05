@@ -107,7 +107,7 @@ export default {
         required: (v) => !!v || 'Required.',
         digitAlphabet: (v) =>
           (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || 'The password must contain numbers and alphabets',
-        min: (v) => (v.length >= 6 && v.length <= 32) || 'Min 6 characters, max 32 characters',
+        min: (v) => (v.length >= 8 && v.length <= 32) || 'Min 8 characters, max 32 characters',
         match: (v) => v === this.newPwd || `The two passwords you entered don't match`,
       },
     };
@@ -123,15 +123,17 @@ export default {
       if (localStorage.username) {
         this.username = localStorage.username;
       }
-      util.post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }).then((response) => {
-        if (response.data.code === 10000) {
-          this.username = response.data.data.UserName;
-          this.email = response.data.data.Email;
-          this.uid = response.data.data.UID;
-          this.nickname = response.data.data.Nickname;
-          this.originalPwd = response.data.data.Passwd;
-        }
-      });
+      util
+        .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.username = response.data.data.UserName;
+            this.email = response.data.data.Email;
+            this.uid = response.data.data.UID;
+            this.nickname = response.data.data.Nickname;
+            this.originalPwd = response.data.data.Passwd;
+          }
+        });
     },
     savePwd() {
       const pwdCheck = bcrypt.compareSync(this.oldPwd, this.originalPwd);
@@ -154,14 +156,18 @@ export default {
         this.alertMessage = '旧密码不正确';
       } else {
         util
-          .post(`${util.getEnvUrl()}/admin/user/update/info`, {
-            uid: this.uid,
-            email: this.email,
-            username: this.username,
-            passCode: '123456',
-            passwd: this.newPwd,
-            nickname: this.nickname,
-          })
+          .post(
+            `${util.getEnvUrl()}/admin/user/update/info`,
+            {
+              uid: this.uid,
+              email: this.email,
+              username: this.username,
+              passCode: '123456',
+              passwd: this.newPwd,
+              nickname: this.nickname,
+            },
+            this.$router
+          )
           .then((response) => {
             this.responseDialog = true;
             if (response.data.code === 10002) {
