@@ -46,6 +46,7 @@ export default {
       username: '',
       token: '',
       timer: null,
+      mouseoverCallback: null,
     };
   },
   async created() {
@@ -55,13 +56,10 @@ export default {
     if (localStorage.username) {
       this.username = localStorage.username;
     }
-    window.addEventListener(
-      'mouseover',
-      util.debounce(function func() {
-        localStorage.lastClickTime = new Date().getTime();
-      }, 3000),
-      true
-    );
+    this.mouseoverCallback = util.debounce(function func() {
+      localStorage.lastClickTime = new Date().getTime();
+    }, 3000);
+    window.addEventListener('mouseover', this.mouseoverCallback, true);
   },
   mounted() {
     // 0.5 hour = 1000 * 60 * 30 ms
@@ -71,13 +69,7 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener(
-      'mouseover',
-      () => {
-        /** function */
-      },
-      true
-    );
+    window.removeEventListener('mouseover', this.mouseoverCallback, true);
     clearTimeout(this.timer);
   },
   methods: {
@@ -99,6 +91,7 @@ export default {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('avatar');
+        window.removeEventListener('mouseover', this.mouseoverCallback, true);
         this.$router.push('/');
       });
     },
