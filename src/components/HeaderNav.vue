@@ -148,6 +148,7 @@ export default {
     backgroundOpacity: 0,
     // timer
     timer: '',
+    mouseoverCallback: null,
   }),
   props: ['color'],
   components: {
@@ -167,25 +168,19 @@ export default {
     this.getAnnouncementForLocale();
     this.announcementURL = util.getAnnouncementURL(this.announcement);
 
-    window.addEventListener(
-      'mouseover',
-      util.debounce(function func() {
-        localStorage.lastClickTime = new Date().getTime();
-      }, 3000),
-      true
-    );
+    this.mouseoverCallback = util.debounce(function func() {
+      localStorage.lastClickTime = new Date().getTime();
+    }, 3000);
+
+    if (this.token !== '') {
+      window.addEventListener('mouseover', this.mouseoverCallback, true);
+    }
 
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener(
-      'mouseover',
-      () => {
-        /** function */
-      },
-      true
-    );
+    window.removeEventListener('mouseover', this.mouseoverCallback, true);
     clearTimeout(this.timer);
   },
   watch: {
@@ -278,6 +273,7 @@ export default {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
         localStorage.removeItem('avatar');
+        window.removeEventListener('mouseover', this.mouseoverCallback, true);
       });
     },
     async getAnnouncement() {
