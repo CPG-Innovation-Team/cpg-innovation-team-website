@@ -59,7 +59,7 @@ export default {
       'mouseover',
       util.debounce(function func() {
         localStorage.lastClickTime = new Date().getTime();
-      }, 1000),
+      }, 3000),
       true
     );
   },
