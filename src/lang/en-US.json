@@ -81,5 +81,38 @@
   "projects": {},
   "common": {
     "update": "Updated "
+  },
+  "admin": {
+    "navbar": {
+      "profile": "Profile",
+      "dashboard": "Dashboard",
+      "blogs": "Blogs",
+      "users": "Users",
+      "permission": "Permission",
+      "approval": "Approval",
+      "announcement": "Announcement",
+      "changePwd": "Change Password",
+      "logout": "Log out"
+    },
+    "announcement": {
+      "title": "Announcement",
+      "radioBtn": {
+        "turnOn": "Turn on announcement",
+        "turnOff": "Turn off announcement"
+      },
+      "content": {
+        "chineseContent": "Chinese announcement content",
+        "englishContent": "English announcement content"
+      },
+      "url": "Redirect URL",
+      "date": {
+        "startDate": "Start Date",
+        "endDate": "End Date"
+      },
+      "time": {
+        "startTime": "Start Time",
+        "endTime": "End Time"
+      }
+    }
   }
 }

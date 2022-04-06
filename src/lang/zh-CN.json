@@ -60,7 +60,7 @@
     "editComment": "编辑评论",
     "replies": "回复",
     "replyBtn": "回复",
-    "sendBtn":"发表评论"
+    "sendBtn": "发表评论"
   },
   "search": "搜索",
   "news": {
@@ -81,5 +81,38 @@
   "projects": {},
   "common": {
     "update": "更新于"
+  },
+  "admin": {
+    "navbar": {
+      "profile": "用户信息",
+      "dashboard": "仪表板",
+      "blogs": "博客管理",
+      "users": "用户管理",
+      "permission": "权限管理",
+      "approval": "后台审核",
+      "announcement": "公告管理",
+      "changePwd": "更改密码",
+      "logout": "登出"
+    },
+    "announcement": {
+      "title": "公告",
+      "radioBtn": {
+        "turnOn": "开启公告",
+        "turnOff": "关闭公告"
+      },
+      "content": {
+        "chineseContent": "中文公告内容",
+        "englishContent": "英文公告内容"
+      },
+      "url": "公告跳转链接",
+      "date": {
+        "startDate": "开始日期",
+        "endDate": "结束日期"
+      },
+      "time": {
+        "startTime": "开始时间",
+        "endTime": "结束时间"
+      }
+    }
   }
 }
