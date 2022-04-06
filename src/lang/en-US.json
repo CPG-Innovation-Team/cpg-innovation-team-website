@@ -98,7 +98,8 @@
       "title": "Announcement",
       "radioBtn": {
         "turnOn": "Turn on announcement",
-        "turnOff": "Turn off announcement"
+        "turnOff": "Turn off announcement",
+        "clearAll": "Clear All"
       },
       "content": {
         "chineseContent": "Chinese announcement content",
@@ -112,7 +113,12 @@
       "time": {
         "startTime": "Start Time",
         "endTime": "End Time"
-      }
+      },
+      "save": "Save",
+      "successMsg": "The announcement is successfully added!",
+      "failureMsg": "The announcement failed to be added",
+      "warningMsg": "The announcement contents can't be empty",
+      "confirm": "Confirm"
     }
   }
 }
