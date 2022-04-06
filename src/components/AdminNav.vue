@@ -20,7 +20,7 @@
       </v-list-item>
 
       <v-list-item>
-        <v-btn class="ml-8 mt-8" text @click="logout"> Logout </v-btn>
+        <v-btn class="ml-8 mt-8" text @click="logout"> {{ localeMsg.logout }} </v-btn>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -34,20 +34,27 @@ export default {
     return {
       drawer: true,
       routes: [
-        { title: 'Profile', icon: 'mdi-account-circle', link: '/admin/profile' },
-        { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/admin/dashboard' },
-        { title: 'Blogs', icon: 'mdi-post', link: '/admin/blogs' },
-        { title: 'Users', icon: 'mdi-account-multiple', link: '/admin/users' },
-        { title: 'Permission', icon: 'mdi-account-multiple-plus', link: '/admin/permission' },
-        { title: 'Approve', icon: 'mdi-post', link: '/admin/approve' },
-        { title: 'Announcement', icon: 'mdi-bell', link: '/admin/announcement' },
-        { title: 'Change Password', icon: 'mdi-onepassword', link: '/admin/changePwd' },
+        { title: this.$t('admin.navbar.profile'), icon: 'mdi-account-circle', link: '/admin/profile' },
+        { title: this.$t('admin.navbar.dashboard'), icon: 'mdi-view-dashboard', link: '/admin/dashboard' },
+        { title: this.$t('admin.navbar.blogs'), icon: 'mdi-post', link: '/admin/blogs' },
+        { title: this.$t('admin.navbar.users'), icon: 'mdi-account-multiple', link: '/admin/users' },
+        { title: this.$t('admin.navbar.permission'), icon: 'mdi-account-multiple-plus', link: '/admin/permission' },
+        { title: this.$t('admin.navbar.approval'), icon: 'mdi-post', link: '/admin/approve' },
+        { title: this.$t('admin.navbar.announcement'), icon: 'mdi-bell', link: '/admin/announcement' },
+        { title: this.$t('admin.navbar.changePwd'), icon: 'mdi-onepassword', link: '/admin/changePwd' },
       ],
       username: '',
       token: '',
       timer: null,
       mouseoverCallback: null,
     };
+  },
+  computed: {
+    localeMsg() {
+      return {
+        logout: this.$t('admin.navbar.logout'),
+      };
+    },
   },
   async created() {
     if (localStorage.token) {
