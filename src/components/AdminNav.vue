@@ -94,7 +94,7 @@ export default {
         localStorage.removeItem('username');
         localStorage.removeItem('avatar');
         window.removeEventListener('mouseover', this.mouseoverCallback, true);
-        this.$router.push('/');
+        this.$router.push('/login');
       });
     },
   },
