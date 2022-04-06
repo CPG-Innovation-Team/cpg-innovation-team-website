@@ -3,18 +3,18 @@
     <AdminNav />
     <v-main style="background: whitesmoke">
       <v-card class="ma-4">
-        <v-card-title> 公告 </v-card-title>
+        <v-card-title> {{ localeMsg.title }} </v-card-title>
         <v-card-text
           ><v-radio-group v-model="value" row>
-            <v-radio label="开启公告" value="announcementOn" @click="turn(true)"></v-radio>
-            <v-radio label="关闭公告" value="announcementOff" @click="turn(false)"></v-radio>
+            <v-radio :label="localeMsg.turnOn" value="announcementOn" @click="turn(true)"></v-radio>
+            <v-radio :label="localeMsg.turnOff" value="announcementOff" @click="turn(false)"></v-radio>
             <v-col class="text-right">
-              <v-btn text color="blue" @click="clearAll()">全部清空</v-btn>
+              <v-btn text color="blue" @click="clearAll()">{{ localeMsg.clearAllLabel }}</v-btn>
             </v-col>
           </v-radio-group>
-          <v-text-field label="中文公告内容" :disabled="disabled" v-model="cnContent"></v-text-field>
-          <v-text-field label="英文公告内容" :disabled="disabled" v-model="enContent"></v-text-field>
-          <v-text-field label="公告跳转链接" :disabled="disabled" v-model="link"></v-text-field>
+          <v-text-field :label="localeMsg.cnContentLabel" :disabled="disabled" v-model="cnContent"></v-text-field>
+          <v-text-field :label="localeMsg.enContentLabel" :disabled="disabled" v-model="enContent"></v-text-field>
+          <v-text-field :label="localeMsg.urlLabel" :disabled="disabled" v-model="link"></v-text-field>
           <v-row>
             <v-col>
               <v-menu
@@ -28,7 +28,7 @@
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    label="开始日期"
+                    :label="localeMsg.startDateLabel"
                     readonly
                     :value="startDate"
                     v-on="on"
@@ -55,7 +55,7 @@
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    label="开始时间"
+                    :label="localeMsg.startTimeLabel"
                     readonly
                     :value="startTime"
                     v-on="on"
@@ -79,7 +79,7 @@
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    label="结束日期"
+                    :label="localeMsg.endDateLabel"
                     readonly
                     :value="endDate"
                     v-on="on"
@@ -106,7 +106,7 @@
               >
                 <template v-slot:activator="{ on }">
                   <v-text-field
-                    label="结束时间"
+                    :label="localeMsg.endTimeLabel"
                     readonly
                     :value="endTime"
                     v-on="on"
@@ -122,34 +122,34 @@
               </v-menu>
             </v-col>
           </v-row>
-          <v-btn class="mt-4" text color="blue" @click="addAnnouncement()">保存</v-btn>
+          <v-btn class="mt-4" text color="blue" @click="addAnnouncement()">{{ localeMsg.saveBtnLabel }}</v-btn>
         </v-card-text>
       </v-card>
 
       <v-dialog v-model="successDialog" max-width="500px">
         <v-card>
-          <v-card-title> The announcement is succesfully added! </v-card-title>
+          <v-card-title> {{ localeMsg.successMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Confirm </v-btn>
+            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtnLabel }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <v-dialog v-model="failureDialog" max-width="500px">
         <v-card>
-          <v-card-title> Something went wrong... </v-card-title>
+          <v-card-title> {{ localeMsg.failureMsg }}</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Confirm </v-btn>
+            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtnLabel }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <v-dialog v-model="emptyDialog" max-width="500px">
         <v-card>
-          <v-card-title> 公告内容不可为空 </v-card-title>
+          <v-card-title> {{ localeMsg.warningMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Confirm </v-btn>
+            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtnLabel }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -188,6 +188,28 @@ export default {
   },
   components: {
     AdminNav,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        title: this.$t('admin.announcement.title'),
+        turnOn: this.$t('admin.announcement.radioBtn.turnOn'),
+        turnOff: this.$t('admin.announcement.radioBtn.turnOff'),
+        clearAllLabel: this.$t('admin.announcement.radioBtn.clearAll'),
+        cnContentLabel: this.$t('admin.announcement.content.chineseContent'),
+        enContentLabel: this.$t('admin.announcement.content.englishContent'),
+        urlLabel: this.$t('admin.announcement.url'),
+        startDateLabel: this.$t('admin.announcement.date.startDate'),
+        endDateLabel: this.$t('admin.announcement.date.endDate'),
+        startTimeLabel: this.$t('admin.announcement.time.startTime'),
+        endTimeLabel: this.$t('admin.announcement.time.endTime'),
+        saveBtnLabel: this.$t('admin.announcement.save'),
+        successMsg: this.$t('admin.announcement.successMsg'),
+        failureMsg: this.$t('admin.announcement.failureMsg'),
+        warningMsg: this.$t('admin.announcement.warningMsg'),
+        confirmBtnLabel: this.$t('admin.announcement.confirm'),
+      };
+    },
   },
   async created() {
     this.getCurrentDate();
