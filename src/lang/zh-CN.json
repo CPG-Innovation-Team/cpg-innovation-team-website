@@ -98,7 +98,8 @@
       "title": "公告",
       "radioBtn": {
         "turnOn": "开启公告",
-        "turnOff": "关闭公告"
+        "turnOff": "关闭公告",
+        "clearAll": "全部清空"
       },
       "content": {
         "chineseContent": "中文公告内容",
@@ -112,7 +113,12 @@
       "time": {
         "startTime": "开始时间",
         "endTime": "结束时间"
-      }
+      },
+      "save": "保存",
+      "successMsg": "公告添加成功！",
+      "failureMsg": "公告添加失败",
+      "warningMsg": "公告内容不可为空",
+      "confirm": "确认"
     }
   }
 }
