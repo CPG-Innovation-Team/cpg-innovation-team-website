@@ -34,17 +34,24 @@ export default {
     return {
       drawer: true,
       routes: [
-        { title: this.$t('admin.navbar.profile'), icon: 'mdi-account-circle', link: '/admin/profile' },
-        { title: this.$t('admin.navbar.dashboard'), icon: 'mdi-view-dashboard', link: '/admin/dashboard' },
-        { title: this.$t('admin.navbar.blogs'), icon: 'mdi-post', link: '/admin/blogs' },
-        { title: this.$t('admin.navbar.users'), icon: 'mdi-account-multiple', link: '/admin/users' },
-        { title: this.$t('admin.navbar.permission'), icon: 'mdi-account-multiple-plus', link: '/admin/permission' },
-        { title: this.$t('admin.navbar.approval'), icon: 'mdi-post', link: '/admin/approve' },
-        { title: this.$t('admin.navbar.announcement'), icon: 'mdi-bell', link: '/admin/announcement' },
-        { title: this.$t('admin.navbar.changePwd'), icon: 'mdi-onepassword', link: '/admin/changePwd' },
+        {
+          name: 'profile',
+          title: this.$t('admin.navbar.profile'),
+          icon: 'mdi-account-circle',
+          link: '/admin/profile',
+        },
+        {
+          name: 'changePwd',
+          title: this.$t('admin.navbar.changePwd'),
+          icon: 'mdi-onepassword',
+          link: '/admin/changePwd',
+        },
       ],
       username: '',
       token: '',
+      allRoles: [],
+      roleNames: [],
+      permissions: [],
       timer: null,
       mouseoverCallback: null,
     };
@@ -62,6 +69,12 @@ export default {
     }
     if (localStorage.username) {
       this.username = localStorage.username;
+    }
+    if (localStorage.routes === undefined) {
+      await this.saveRoutesIndex();
+    }
+    if (localStorage.routes) {
+      this.initializeRoutes();
     }
     this.mouseoverCallback = util.debounce(function func() {
       localStorage.lastClickTime = new Date().getTime();
@@ -82,6 +95,103 @@ export default {
     clearTimeout(this.timer);
   },
   methods: {
+    initializeRoutes() {
+      if (localStorage.routes.length !== 0) {
+        const routeNames = localStorage.routes;
+        if (routeNames.includes('dashboard'))
+          this.routes.push({
+            name: 'dashboard',
+            title: this.$t('admin.navbar.dashboard'),
+            icon: 'mdi-view-dashboard',
+            link: '/admin/dashboard',
+          });
+        if (routeNames.includes('blogs')) {
+          this.routes.push({
+            name: 'blogs',
+            title: this.$t('admin.navbar.blogs'),
+            icon: 'mdi-post',
+            link: '/admin/blogs',
+          });
+        }
+        if (routeNames.includes('users')) {
+          this.routes.push({
+            name: 'users',
+            title: this.$t('admin.navbar.users'),
+            icon: 'mdi-account-multiple',
+            link: '/admin/users',
+          });
+        }
+        if (routeNames.includes('permission')) {
+          this.routes.push({
+            name: 'permission',
+            title: this.$t('admin.navbar.permission'),
+            icon: 'mdi-account-multiple-plus',
+            link: '/admin/permission',
+          });
+        }
+        if (routeNames.includes('approval')) {
+          this.routes.push({
+            name: 'approval',
+            title: this.$t('admin.navbar.approval'),
+            icon: 'mdi-post',
+            link: '/admin/approve',
+          });
+        }
+        if (routeNames.includes('announcement')) {
+          this.routes.push({
+            name: 'announcement',
+            title: this.$t('admin.navbar.announcement'),
+            icon: 'mdi-bell',
+            link: '/admin/announcement',
+          });
+        }
+      }
+    },
+    async saveRoutesIndex() {
+      let routes = [];
+      if (localStorage.isRoot) {
+        routes = ['dashboard', 'blogs', 'users', 'permission', 'approval', 'announcement'];
+      } else {
+        await this.getPermissions();
+        if (this.permissions.includes('/admin/article/list')) routes.push('blogs');
+        if (this.permissions.includes('/admin/user/query/list')) routes.push('users');
+        if (this.permissions.includes('/admin/auth/query/permissions')) routes.push('permission');
+        if (this.permissions.includes('/admin/review/query/article/list')) routes.push('approval');
+        if (this.permissions.includes('/admin/notify/add')) routes.push('announcement');
+      }
+      localStorage.routes = routes;
+    },
+    async getPermissions() {
+      await util
+        .post(
+          `${util.getEnvUrl()}/admin/auth/query/user/roles`,
+          { uid: [parseInt(localStorage.uid, 10)] },
+          this.$router
+        )
+        .then(async (response) => {
+          await this.getAllRoles();
+          if (response.data.code === 10000) {
+            // save the role names the user owns
+            this.roleNames = response.data.data[0].roleNames;
+            Object.keys(this.allRoles).forEach((role) => {
+              // save corresponding permissions for existing roles
+              if (this.roleNames.includes(role)) {
+                this.permissions.push(this.allRoles[role]);
+              }
+            });
+            // flatten the permission array
+            this.permissions = this.permissions.flat();
+          }
+        });
+    },
+    async getAllRoles() {
+      await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}, this.$router).then((response) => {
+        if (response.data.code === 10000) {
+          // save role names with their corresponding permission uris in allRoles
+          this.allRoles = response.data.data;
+        }
+      });
+    },
     checkTimeOut() {
       const timeOut = 1000 * 60 * 60;
       const currentTime = new Date().getTime();
@@ -97,9 +207,7 @@ export default {
         this.token = '';
         this.username = '';
         this.avatar = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('avatar');
+        util.clearLocalStorage();
         window.removeEventListener('mouseover', this.mouseoverCallback, true);
         this.$router.push('/');
       });
