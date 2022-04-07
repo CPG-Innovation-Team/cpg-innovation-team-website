@@ -116,6 +116,7 @@ export default {
     AdminNav,
   },
   created() {
+    util.checkAccess('', this.$router);
     this.getUserInfo();
   },
   methods: {

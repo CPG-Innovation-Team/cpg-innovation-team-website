@@ -70,6 +70,7 @@ export default {
     Editor,
   },
   async created() {
+    util.checkAccess('blogs', this.$router);
     if (this.$route.query) {
       this.sn = this.$route.query.sn;
       this.state = this.$route.query.state;

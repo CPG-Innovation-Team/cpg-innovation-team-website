@@ -145,6 +145,7 @@ export default {
     AdminNav,
   },
   async created() {
+    util.checkAccess('', this.$router);
     if (localStorage.username) {
       this.username = localStorage.username;
     }

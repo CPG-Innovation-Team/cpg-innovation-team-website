@@ -212,6 +212,7 @@ export default {
     },
   },
   async created() {
+    util.checkAccess('announcement', this.$router);
     this.getCurrentDate();
     await this.getAnnouncement();
   },

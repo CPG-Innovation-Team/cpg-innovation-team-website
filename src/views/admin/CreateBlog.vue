@@ -125,6 +125,7 @@ export default {
     Editor,
   },
   created() {
+    util.checkAccess('blogs', this.$router);
     if (localStorage.content) {
       this.editingContent = localStorage.content;
     }
