@@ -209,7 +209,7 @@ export default {
       const lastTime = localStorage.lastClickTime;
       // if the last click time is longer than 1 hour, then log out
       if (currentTime - lastTime > timeOut) {
-        this.logout();
+        this.clearUserInfo();
         clearInterval(this.timer);
       }
     },
@@ -267,12 +267,15 @@ export default {
     },
     logout() {
       util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
-        this.token = '';
-        this.username = '';
-        this.avatar = null;
-        util.clearLocalStorage();
-        window.removeEventListener('mouseover', this.mouseoverCallback, true);
+        this.clearUserInfo();
       });
+    },
+    clearUserInfo() {
+      this.token = '';
+      this.username = '';
+      this.avatar = null;
+      util.clearLocalStorage();
+      window.removeEventListener('mouseover', this.mouseoverCallback, true);
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
