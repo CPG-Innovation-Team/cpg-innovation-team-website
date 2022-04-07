@@ -64,6 +64,14 @@ export default {
     const trimmedStr = str.substring(1, str.length - 1);
     return trimmedStr.substring(trimmedStr.indexOf('@') + 1);
   },
+  clearLocalStorage() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('avatar');
+    localStorage.removeItem('routes');
+    localStorage.removeItem('isRoot');
+    localStorage.removeItem('uid');
+  },
   debounce(fn, delay) {
     let timer = null;
     return function func() {
