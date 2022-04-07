@@ -82,6 +82,11 @@ export default {
       }, delay);
     };
   },
+  checkAccess(component, router) {
+    if (localStorage.routes === undefined || !localStorage.routes.includes(`${component}`)) {
+      router.push('/admin/accessDenied');
+    }
+  },
   getEnvUrl() {
     return process.env.VUE_APP_HTTP_URL;
   },
