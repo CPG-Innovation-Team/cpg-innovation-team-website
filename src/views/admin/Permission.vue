@@ -3,53 +3,142 @@
     <AdminNav />
     <v-main>
       <v-container>
-        <v-data-table :headers="headers" :items="roleItems" class="mt-8">
+        <v-data-table
+          v-model="selected"
+          item-key="name"
+          :headers="headers"
+          :items="roleItems"
+          show-select
+          @toggle-select-all="selectAllToggle"
+        >
           <template v-slot:top>
             <v-toolbar flat color="white">
               <v-toolbar-title>角色权限表</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-spacer></v-spacer>
+              <v-dialog v-model="newDialog" max-width="500px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="primary" depressed class="mb-2" v-bind="attrs" v-on="on"> 新增角色 </v-btn>
+                </template>
+                <v-card class="pa-4">
+                  <v-card-title>
+                    <span class="text-h5"> 新增角色 </span>
+                  </v-card-title>
+
+                  <v-card-text>
+                    <v-container>
+                      <v-row align="baseline" class="mt-2">
+                        <v-text-field v-model="role" label="输入角色名称" outlined></v-text-field>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="
+                        addRole(role);
+                        newDialog = false;
+                      "
+                    >
+                      Save
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-toolbar>
           </template>
-          <template v-slot:[`item.name`]="{ item }">
+          <template v-slot:[`item.data-table-select`]="{ item, isSelected, select }">
+            <v-simple-checkbox
+              :value="isSelected"
+              :disabled="disableCheckbox(item)"
+              @input="select($event)"
+              :ripple="false"
+            ></v-simple-checkbox>
+          </template>
+          <template class="table-col" v-slot:[`item.name`]="{ item }">
             <div class="text-truncate">
               {{ item.name }}
             </div>
           </template>
+          <template v-slot:[`item.action`]="{ item }">
+            <v-icon
+              small
+              class="ml-4"
+              @click="
+                editDialog = true;
+                originalRoleItem = item;
+                setEditRoleItem(item);
+              "
+            >
+              mdi-pencil
+            </v-icon>
+          </template>
           <template v-for="permission in permissions" v-slot:[`item.${permission}`]="{ item }">
-            <v-simple-checkbox disabled v-model="item[permission]" :key="permission" />
+            <v-simple-checkbox class="checkbox-color" disabled v-model="item[permission]" :key="permission" />
+          </template>
+          <template v-slot:[`body.append`]>
+            <v-btn class="ml-3" :disabled="checkDisabled()" icon @click="deleteDialog = true">
+              <v-icon md> mdi-delete </v-icon>
+            </v-btn>
           </template>
         </v-data-table>
 
-        <v-col class="mt-8">
-          <div>新增角色</div>
-          <v-row align="baseline" class="mt-2">
-            <v-col cols="4">
-              <v-text-field v-model="role" label="输入角色名称" outlined></v-text-field>
-            </v-col>
-            <v-col cols="2"> <v-btn color="blue darken-1" text @click="addRole(role)"> Save </v-btn></v-col>
-          </v-row>
-          <div>角色添加权限</div>
-          <v-row align="baseline" class="mt-2">
-            <v-col cols="4">
-              <v-select :items="roles" label="选择角色" v-model="rname" clearable outlined></v-select>
-            </v-col>
-            <v-col cols="4"
-              ><v-select :items="permissions" label="选择权限" v-model="pname" clearable outlined></v-select
-            ></v-col>
-            <v-col cols="1">
-              <v-btn color="blue darken-1" text @click="addPermissionToRole(rname, pname)"> Save </v-btn></v-col
-            >
-          </v-row>
-          <div>删除角色</div>
-          <v-row align="baseline" class="mt-2">
-            <v-col cols="4">
-              <v-select :items="roles" label="选择角色" v-model="deleteRoleName" clearable outlined></v-select>
-            </v-col>
-            <v-col cols="2">
-              <v-btn color="blue darken-1" text @click="deleteRole(deleteRoleName)"> Delete </v-btn></v-col
-            >
-          </v-row>
-        </v-col>
+        <v-dialog v-model="editDialog" max-width="800px">
+          <v-card class="pa-4">
+            <v-card-title> 角色添加权限 </v-card-title>
+            <v-card-text>
+              <v-row dense>
+                <v-col cols="3" v-for="permission in permissions" :key="permission">
+                  <v-checkbox
+                    v-model="editRoleItem[permission]"
+                    :label="permission"
+                    color="blue"
+                    hide-details
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn depressed color="primary" @click="addPermissionToRole()"> Add </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
+        <v-dialog v-model="deleteDialog" max-width="500px">
+          <v-card>
+            <v-card-title> Are you sure to delete the following role(s)? </v-card-title>
+            <v-card-text v-for="(item, index) in selected" :key="index"> {{ index + 1 }}. {{ item.name }} </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="
+                  deleteRoles();
+                  deleteDialog = false;
+                "
+              >
+                Confirm
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="warningDialog" max-width="500px">
+          <v-card>
+            <v-card-title> 添加失败，角色已经存在 </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-dialog v-model="successDialog" max-width="500px">
           <v-card>
             <v-card-title> Success! </v-card-title>
@@ -82,19 +171,17 @@ export default {
     AdminNav,
   },
   data: () => ({
-    dialog: false,
+    // dialogs
     successDialog: false,
     failureDialog: false,
-    uid: '',
+    deleteDialog: false,
+    editDialog: false,
+    newDialog: false,
+    warningDialog: false,
     roles: [],
     permissions: [],
     uris: [],
     role: '',
-    rname: '',
-    pname: '',
-    selectedRole: '',
-    selectedRemoveRole: '',
-    deleteRoleName: '',
     allRoles: [],
     allPermissions: [],
     headers: [
@@ -104,8 +191,12 @@ export default {
         sortable: true,
         value: 'name',
       },
+      { text: '编辑权限', value: 'action', sortable: false, align: 'end' },
     ],
     roleItems: [],
+    selected: [],
+    originalRoleItem: {},
+    editRoleItem: {},
   }),
   async created() {
     await this.getAllRoles();
@@ -119,11 +210,40 @@ export default {
       this.dialog = false;
       this.successDialog = false;
       this.failureDialog = false;
+      this.newDialog = false;
+      this.editDialog = false;
+      this.deleteDialog = false;
+      this.warningDialog = false;
+    },
+    disableCheckbox(item) {
+      // disable the delete-checkbox for 普通用户
+      if (item.name === '普通用户') return true;
+      return false;
+    },
+    checkDisabled() {
+      // disable the delete button if no role is selected
+      if (this.selected.length === 0) return true;
+      return false;
+    },
+    selectAllToggle() {
+      const disabledCount = 1;
+      // filter the selected when select-all is toggled
+      if (this.selected.length !== this.roleItems.length - disabledCount) {
+        this.selected = this.roleItems.filter((item) => {
+          return item.name !== '普通用户';
+        });
+      } else {
+        this.selected = [];
+      }
+    },
+    setEditRoleItem(item) {
+      // make a copy of the role that is being edited
+      this.editRoleItem = { ...item };
     },
     initializeHeaders() {
       // initialize data table headers for all permissions
       this.permissions.forEach((permission) => {
-        this.headers.push({ text: permission, value: permission });
+        this.headers.push({ text: permission, value: permission, width: '80px', align: 'center' });
       });
     },
     initializeRoleItems() {
@@ -145,47 +265,11 @@ export default {
       });
       return bool;
     },
-    async addRole(role) {
-      // calling api to add a new role
-      await util
-        .post(
-          `${util.getEnvUrl()}/admin/auth/add/role`,
-          {
-            rName: role,
-          },
-          this.$router
-        )
-        .then((response) => {
-          this.setDialogStatus(response);
-        });
-      this.role = '';
-      await this.getAllRoles();
-      this.roleItems = [];
-      this.initializeRoleItems();
-    },
-    async addPermissionToRole(rname, pname) {
-      const pArr = [pname];
-      // calling api to add a new permission to a given role
-      await util
-        .post(
-          `${util.getEnvUrl()}/admin/auth/role/add/permission`,
-          {
-            rname,
-            pname: pArr,
-          },
-          this.$router
-        )
-        .then((response) => {
-          this.setDialogStatus(response);
-        });
-      this.rname = '';
-      this.pname = '';
-      await this.getAllRoles();
-      this.roleItems = [];
-      this.initializeRoleItems();
-    },
-    async deleteRole(deleteRoleName) {
-      const rArr = [deleteRoleName];
+    async deleteRoles() {
+      const rArr = [];
+      this.selected.forEach((role) => {
+        rArr.push(role.name);
+      });
       // calling api to delete a given role
       await util
         .post(
@@ -198,7 +282,67 @@ export default {
         .then((response) => {
           this.setDialogStatus(response);
         });
-      this.deleteRoleName = '';
+      // clear selected after operation
+      this.selected = [];
+      await this.getAllRoles();
+      this.roleItems = [];
+      this.initializeRoleItems();
+    },
+    async addRole(role) {
+      let isExisted = false;
+      this.roles.forEach((r) => {
+        if (r === role) {
+          this.warningDialog = true;
+          isExisted = true;
+        }
+      });
+      if (isExisted === false) {
+        // calling api to add a new role
+        await util
+          .post(
+            `${util.getEnvUrl()}/admin/auth/add/role`,
+            {
+              rName: role,
+            },
+            this.$router
+          )
+          .then((response) => {
+            this.setDialogStatus(response);
+          });
+        await this.getAllRoles();
+        this.roleItems = [];
+        this.initializeRoleItems();
+      }
+      this.role = '';
+    },
+    async addPermissionToRole() {
+      const addition = [];
+      const deletion = [];
+
+      Object.keys(this.originalRoleItem).forEach((permission) => {
+        if (this.originalRoleItem[permission] !== this.editRoleItem[permission]) {
+          if (this.editRoleItem[permission] === false) {
+            deletion.push(permission);
+          } else {
+            addition.push(permission);
+          }
+        }
+      });
+      // calling api to add new permissions to a given role
+      if (addition.length !== 0) {
+        await util
+          .post(
+            `${util.getEnvUrl()}/admin/auth/role/add/permission`,
+            {
+              rname: this.originalRoleItem.name,
+              pname: addition,
+            },
+            this.$router
+          )
+          .then((response) => {
+            this.setDialogStatus(response);
+          });
+      }
       await this.getAllRoles();
       this.roleItems = [];
       this.initializeRoleItems();
@@ -254,5 +398,9 @@ export default {
 
 .display-content {
   margin-left: 5%;
+}
+
+.action-link {
+  text-decoration: none;
 }
 </style>
