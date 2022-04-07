@@ -122,6 +122,9 @@ export default {
             localStorage.uid = response.data.data.UID;
             localStorage.username = response.data.data.UserName;
             localStorage.avatar = response.data.data.Avatar;
+            if (response.data.data.IsRoot === 1) {
+              localStorage.isRoot = 1;
+            }
           }
         });
     },
