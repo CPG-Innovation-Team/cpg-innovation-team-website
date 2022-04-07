@@ -199,6 +199,7 @@ export default {
     editRoleItem: {},
   }),
   async created() {
+    util.checkAccess('permission', this.$router);
     await this.getAllRoles();
     await this.getAllPermissions();
     this.initializeHeaders();

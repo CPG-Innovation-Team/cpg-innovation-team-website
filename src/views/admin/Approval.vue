@@ -196,6 +196,7 @@ export default {
     AdminNav,
   },
   created() {
+    util.checkAccess('approval', this.$router);
     this.getBlogList();
     this.getCommentList();
     this.getReplyList();

@@ -97,6 +97,7 @@ export default {
     deletedBlogs: [],
   }),
   created() {
+    util.checkAccess('blogs', this.$router);
     this.getArticleList();
     this.getDeletedArticleList();
   },
