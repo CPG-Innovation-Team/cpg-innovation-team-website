@@ -83,8 +83,13 @@ export default {
     };
   },
   checkAccess(component, router) {
-    if (localStorage.routes === undefined || !localStorage.routes.includes(`${component}`)) {
-      router.push('/admin/accessDenied');
+    if (component !== '') {
+      if (localStorage.routes === undefined || !localStorage.routes.includes(`${component}`)) {
+        router.push('/admin/accessDenied');
+      }
+    }
+    if (localStorage.uid === undefined) {
+      router.push('/login');
     }
   },
   getEnvUrl() {
