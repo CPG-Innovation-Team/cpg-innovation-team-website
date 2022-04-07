@@ -270,9 +270,7 @@ export default {
         this.token = '';
         this.username = '';
         this.avatar = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('avatar');
+        util.clearLocalStorage();
         window.removeEventListener('mouseover', this.mouseoverCallback, true);
       });
     },
