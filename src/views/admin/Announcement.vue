@@ -300,6 +300,13 @@ export default {
           .then((response) => {
             if (response.data.code === 10000) {
               this.successDialog = true;
+              this.cnContent = '';
+              this.enContent = '';
+              this.link = '';
+              this.startDate = null;
+              this.endDate = null;
+              this.startTime = null;
+              this.endTime = null;
             } else {
               this.failureDialog = true;
             }
