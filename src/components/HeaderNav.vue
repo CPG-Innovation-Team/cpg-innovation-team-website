@@ -280,7 +280,6 @@ export default {
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
-        console.log(response);
         if (response.data.code === 10000) {
           if (response.data.message === '当前时间段暂无通知') {
             this.announcement = { content: '' };
@@ -355,7 +354,7 @@ export default {
           cursor: 'pointer',
         };
       }
-      return { cursor: 'default' };
+      return { cursor: 'auto' };
     },
   },
 };
