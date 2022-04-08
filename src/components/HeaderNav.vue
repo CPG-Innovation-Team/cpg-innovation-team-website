@@ -2,6 +2,7 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
+      :style="announcementStyle"
       v-if="announcementContent !== '' && checkIfAnnouncemmentIsClosed() === false && isAnnouncementClosed == false"
       app
       color="purple"
@@ -279,6 +280,7 @@ export default {
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
+        console.log(response);
         if (response.data.code === 10000) {
           if (response.data.message === '当前时间段暂无通知') {
             this.announcement = { content: '' };
@@ -347,14 +349,20 @@ export default {
       }
       return { backgroundColor: `rgba(0, 0, 0, ${this.backgroundOpacity} !important` };
     },
+    announcementStyle() {
+      if (this.announcementURL !== '') {
+        return {
+          cursor: 'pointer',
+        };
+      }
+      return { cursor: 'default' };
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .announcement-bar {
-  cursor: pointer;
-
   .announcement {
     color: white;
     font-size: 15px;
