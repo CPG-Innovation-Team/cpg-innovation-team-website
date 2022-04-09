@@ -98,53 +98,40 @@ export default {
     initializeRoutes() {
       if (localStorage.routes.length !== 0) {
         const routeNames = localStorage.routes;
-        if (routeNames.includes('dashboard'))
-          this.routes.push({
-            name: 'dashboard',
-            title: this.$t('admin.navbar.dashboard'),
-            icon: 'mdi-view-dashboard',
-            link: '/admin/dashboard',
-          });
-        if (routeNames.includes('blogs')) {
-          this.routes.push({
-            name: 'blogs',
-            title: this.$t('admin.navbar.blogs'),
-            icon: 'mdi-post',
-            link: '/admin/blogs',
-          });
-        }
-        if (routeNames.includes('users')) {
-          this.routes.push({
-            name: 'users',
-            title: this.$t('admin.navbar.users'),
-            icon: 'mdi-account-multiple',
-            link: '/admin/users',
-          });
-        }
-        if (routeNames.includes('permission')) {
-          this.routes.push({
-            name: 'permission',
-            title: this.$t('admin.navbar.permission'),
-            icon: 'mdi-account-multiple-plus',
-            link: '/admin/permission',
-          });
-        }
-        if (routeNames.includes('approval')) {
-          this.routes.push({
-            name: 'approval',
-            title: this.$t('admin.navbar.approval'),
-            icon: 'mdi-post',
-            link: '/admin/approve',
-          });
-        }
-        if (routeNames.includes('announcement')) {
-          this.routes.push({
-            name: 'announcement',
-            title: this.$t('admin.navbar.announcement'),
-            icon: 'mdi-bell',
-            link: '/admin/announcement',
-          });
-        }
+        this.addRoutes(
+          routeNames,
+          'dashboard',
+          this.$t('admin.navbar.dashboard'),
+          'mdi-view-dashboard',
+          '/admin/dashboard'
+        );
+        this.addRoutes(routeNames, 'blogs', this.$t('admin.navbar.blogs'), 'mdi-post', '/admin/blogs');
+        this.addRoutes(routeNames, 'users', this.$t('admin.navbar.users'), 'mdi-account-multiple', '/admin/users');
+        this.addRoutes(
+          routeNames,
+          'permission',
+          this.$t('admin.navbar.permission'),
+          'mdi-account-multiple-plus',
+          '/admin/permission'
+        );
+        this.addRoutes(routeNames, 'approval', this.$t('admin.navbar.approval'), 'mdi-post', '/admin/approve');
+        this.addRoutes(
+          routeNames,
+          'announcement',
+          this.$t('admin.navbar.announcement'),
+          'mdi-bell',
+          '/admin/announcement'
+        );
+      }
+    },
+    addRoutes(routeNames, routeName, title, icon, link) {
+      if (routeNames.includes(routeName)) {
+        this.routes.push({
+          name: routeName,
+          title,
+          icon,
+          link,
+        });
       }
     },
     async saveRoutesIndex() {
@@ -153,13 +140,17 @@ export default {
         routes = ['dashboard', 'blogs', 'users', 'permission', 'approval', 'announcement'];
       } else {
         await this.getPermissions();
-        if (this.permissions.includes('/admin/article/list')) routes.push('blogs');
-        if (this.permissions.includes('/admin/user/query/list')) routes.push('users');
-        if (this.permissions.includes('/admin/auth/query/permissions')) routes.push('permission');
-        if (this.permissions.includes('/admin/review/query/article/list')) routes.push('approval');
-        if (this.permissions.includes('/admin/notify/add')) routes.push('announcement');
+        this.addRouteNames('/admin/article/list', 'blogs', routes);
+        this.addRouteNames('/admin/user/query/list', 'users', routes);
+        this.addRouteNames('/admin/auth/query/permissions', 'permission', routes);
+        this.addRouteNames('/admin/review/query/article/list', 'approval', routes);
+        this.addRouteNames('/admin/notify/add', 'announcement', routes);
       }
       localStorage.routes = routes;
+    },
+    // add route names to routes
+    addRouteNames(permission, routeName, routes) {
+      if (this.permissions.includes(permission)) routes.push(routeName);
     },
     async getPermissions() {
       await util
