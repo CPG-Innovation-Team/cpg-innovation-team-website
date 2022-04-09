@@ -53,11 +53,6 @@
           </v-row>
         </div>
 
-        <div class="sth-container">
-          <v-card-title>Security</v-card-title>
-          <div>...</div>
-        </div>
-
         <v-card>
           <v-card-title> Profile </v-card-title>
           <v-card-text>
@@ -150,6 +145,7 @@ export default {
     AdminNav,
   },
   async created() {
+    util.checkAccess('', this.$router);
     if (localStorage.username) {
       this.username = localStorage.username;
     }

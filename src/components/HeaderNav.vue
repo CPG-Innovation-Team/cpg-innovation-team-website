@@ -2,6 +2,7 @@
   <div :style="cssProps">
     <v-system-bar
       class="announcement-bar"
+      :style="announcementStyle"
       v-if="announcementContent !== '' && checkIfAnnouncemmentIsClosed() === false && isAnnouncementClosed == false"
       app
       color="purple"
@@ -209,7 +210,7 @@ export default {
       const lastTime = localStorage.lastClickTime;
       // if the last click time is longer than 1 hour, then log out
       if (currentTime - lastTime > timeOut) {
-        this.logout();
+        this.clearUserInfo();
         clearInterval(this.timer);
       }
     },
@@ -267,14 +268,15 @@ export default {
     },
     logout() {
       util.post(`${util.getEnvUrl()}/admin/logout`, {}, this.$router).then(() => {
-        this.token = '';
-        this.username = '';
-        this.avatar = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-        localStorage.removeItem('avatar');
-        window.removeEventListener('mouseover', this.mouseoverCallback, true);
+        this.clearUserInfo();
       });
+    },
+    clearUserInfo() {
+      this.token = '';
+      this.username = '';
+      this.avatar = null;
+      util.clearLocalStorage();
+      window.removeEventListener('mouseover', this.mouseoverCallback, true);
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
@@ -346,14 +348,20 @@ export default {
       }
       return { backgroundColor: `rgba(0, 0, 0, ${this.backgroundOpacity} !important` };
     },
+    announcementStyle() {
+      if (this.announcementURL !== '') {
+        return {
+          cursor: 'pointer',
+        };
+      }
+      return { cursor: 'auto' };
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .announcement-bar {
-  cursor: pointer;
-
   .announcement {
     color: white;
     font-size: 15px;

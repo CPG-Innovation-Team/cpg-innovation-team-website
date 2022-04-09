@@ -63,6 +63,7 @@
 <script>
 import AdminNav from '../../components/AdminNav.vue';
 import Traffic from '../../components/Charts/Traffic.vue';
+import util from '../../util';
 
 export default {
   data() {
@@ -92,6 +93,9 @@ export default {
   components: {
     AdminNav,
     Traffic,
+  },
+  created() {
+    util.checkAccess('dashboard', this.$router);
   },
 };
 </script>

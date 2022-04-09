@@ -196,6 +196,7 @@ export default {
     AdminNav,
   },
   created() {
+    util.checkAccess('approval', this.$router);
     this.getBlogList();
     this.getCommentList();
     this.getReplyList();
@@ -203,7 +204,7 @@ export default {
   methods: {
     async getBlogList() {
       await util.post(`${util.getEnvUrl()}/admin/review/query/article/list`, {}, this.$router).then((response) => {
-        if (response.data.data.ArticleMap) {
+        if (response.data.code === 10000) {
           const sn = Object.keys(response.data.data.ArticleMap);
           let index = 0;
           Object.values(response.data.data.ArticleMap).forEach((blog) => {
@@ -223,7 +224,7 @@ export default {
     },
     async getCommentList() {
       await util.post(`${util.getEnvUrl()}/admin/review/query/comment/list`, {}, this.$router).then((response) => {
-        if (response.data.data.CommentMap) {
+        if (response.data.code === 10000) {
           Object.values(response.data.data.CommentMap).forEach((comment) => {
             this.comments.push({
               content: comment.Content,
@@ -236,7 +237,7 @@ export default {
     },
     async getReplyList() {
       await util.post(`${util.getEnvUrl()}/admin/review/query/reply/list`, {}, this.$router).then((response) => {
-        if (response.data.data.ReplyMap) {
+        if (response.data.code === 10000) {
           Object.values(response.data.data.ReplyMap).forEach((reply) => {
             this.replies.push({
               content: reply.Content,

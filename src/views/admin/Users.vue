@@ -114,6 +114,7 @@ export default {
     deletePermissionName: '',
   }),
   async created() {
+    util.checkAccess('users', this.$router);
     util
       .post(
         `${util.getEnvUrl()}/admin/user/query/list`,

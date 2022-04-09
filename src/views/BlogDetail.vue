@@ -232,8 +232,16 @@ export default {
             updatedAt: response.data.data.UpdatedAt,
             createdAt: response.data.data.CreatedAt,
           };
-          this.articleLikeIsClicked = response.data.data.ZanState;
         });
+      if (localStorage.token) {
+        await util
+          .post(`${util.getEnvUrl()}/admin/article/info`, {
+            sn: this.sn,
+          })
+          .then((response) => {
+            this.articleLikeIsClicked = response.data.data.ZanState;
+          });
+      }
     },
     async sendComment(comment) {
       if (comment.trim() !== '') {

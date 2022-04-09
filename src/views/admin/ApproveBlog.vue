@@ -125,6 +125,7 @@ export default {
     Editor,
   },
   created() {
+    util.checkAccess('approval', this.$router);
     if (this.$route.query.sn) {
       this.sn = this.$route.query.sn;
       this.getArticleInfo();

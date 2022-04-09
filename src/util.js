@@ -64,6 +64,14 @@ export default {
     const trimmedStr = str.substring(1, str.length - 1);
     return trimmedStr.substring(trimmedStr.indexOf('@') + 1);
   },
+  clearLocalStorage() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('avatar');
+    localStorage.removeItem('routes');
+    localStorage.removeItem('isRoot');
+    localStorage.removeItem('uid');
+  },
   debounce(fn, delay) {
     let timer = null;
     return function func() {
@@ -73,6 +81,16 @@ export default {
         fn.apply(that);
       }, delay);
     };
+  },
+  checkAccess(component, router) {
+    if (component !== '') {
+      if (localStorage.routes === undefined || !localStorage.routes.includes(`${component}`)) {
+        router.push('/admin/accessDenied');
+      }
+    }
+    if (localStorage.uid === undefined) {
+      router.push('/login');
+    }
   },
   getEnvUrl() {
     return process.env.VUE_APP_HTTP_URL;

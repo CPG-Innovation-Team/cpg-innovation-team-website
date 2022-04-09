@@ -119,8 +119,12 @@ export default {
         .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
         .then((response) => {
           if (response.data.code === 10000) {
+            localStorage.uid = response.data.data.UID;
             localStorage.username = response.data.data.UserName;
             localStorage.avatar = response.data.data.Avatar;
+            if (response.data.data.IsRoot === 1) {
+              localStorage.isRoot = 1;
+            }
           }
         });
     },
