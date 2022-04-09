@@ -218,12 +218,16 @@ export default {
     },
     disableCheckbox(item) {
       // disable the delete-checkbox for 普通用户
-      if (item.name === '普通用户') return true;
+      if (item.name === '普通用户') {
+        return true;
+      }
       return false;
     },
     checkDisabled() {
       // disable the delete button if no role is selected
-      if (this.selected.length === 0) return true;
+      if (this.selected.length === 0) {
+        return true;
+      }
       return false;
     },
     selectAllToggle() {
