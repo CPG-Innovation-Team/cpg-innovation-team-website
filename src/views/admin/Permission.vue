@@ -105,7 +105,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn depressed color="primary" @click="addPermissionToRole()"> Add </v-btn>
+              <v-btn depressed color="primary" @click="editPermissionToRole()"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -316,7 +316,7 @@ export default {
       }
       this.role = '';
     },
-    async addPermissionToRole() {
+    async editPermissionToRole() {
       const addition = [];
       const deletion = [];
 
@@ -341,6 +341,22 @@ export default {
             this.$router
           )
           .then((response) => {
+            this.setDialogStatus(response);
+          });
+      }
+      // calling api to delete selected permission of a given role
+      if (deletion.length !== 0) {
+        await util
+          .post(
+            `${util.getEnvUrl()}/admin/auth/role/remove/permission`,
+            {
+              rname: this.originalRoleItem.name,
+              pname: deletion,
+            },
+            this.$router
+          )
+          .then((response) => {
+            console.log(response);
             this.setDialogStatus(response);
           });
       }
