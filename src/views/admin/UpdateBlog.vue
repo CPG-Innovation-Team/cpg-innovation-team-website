@@ -58,7 +58,6 @@ export default {
   data() {
     return {
       blog: '',
-      state: '',
       tagList: ['All', 'Technology', 'Agriculture'],
       dialog: false,
       content: '',
@@ -73,7 +72,6 @@ export default {
     util.checkAccess('blogs', this.$router);
     if (this.$route.query) {
       this.sn = this.$route.query.sn;
-      this.state = this.$route.query.state;
       await util
         .post(
           `${util.getEnvUrl()}/admin/article/info`,
@@ -102,6 +100,10 @@ export default {
       }
     },
     async updateArticle() {
+      /**
+       * state for article:
+       * 0-未审核; 1-已上线; 2-下线; 3-用户删除
+       */
       await util
         .post(
           `${util.getEnvUrl()}/admin/article/update`,
@@ -111,14 +113,14 @@ export default {
             cover: this.blog.cover,
             content: this.content,
             tags: this.blog.tags,
-            state: this.state,
+            state: '0',
           },
           this.$router
         )
         .then((response) => {
           if (response.data.code === 10000) {
             this.dialog = true;
-            this.message = 'Success';
+            this.message = 'Success! 进入审核状态';
           } else {
             this.dialog = true;
             this.message = 'Failed';
