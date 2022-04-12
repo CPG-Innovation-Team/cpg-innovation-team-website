@@ -90,6 +90,18 @@
                     </v-card>
                   </template>
                 </v-dialog>
+                <v-dialog transition="dialog-bottom-transition" max-width="600" v-model="warningDialog">
+                  <template>
+                    <v-card>
+                      <v-card-text>
+                        <div class="text-h6 pa-6">标题和正文内容不可为空</div>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn text @click="closeFailureDialog()" data-test-id="confirm-button">Confirm</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
               </v-col>
             </v-row>
           </v-col>
@@ -112,10 +124,11 @@ export default {
       title: '',
       cover: '',
       content: '',
-      tag: '',
+      tag: 'All',
       tags: ['All', 'Technology', 'Agriculture'],
       successDialog: false,
       failureDialog: false,
+      warningDialog: false,
       editingContent: '',
       timer: null,
     };
@@ -141,28 +154,32 @@ export default {
   },
   methods: {
     submit() {
-      util
-        .post(
-          `${util.getEnvUrl()}/admin/article/add`,
-          {
-            title: this.title,
-            cover: this.cover,
-            content: this.content,
-            tags: this.tag,
-          },
-          this.$router
-        )
-        .then((response) => {
-          if (response.data.code === 10000) {
-            this.successDialog = true;
-            localStorage.removeItem('title');
-            localStorage.removeItem('content');
-            localStorage.removeItem('tag');
-            localStorage.removeItem('cover');
-          } else {
-            this.failureDialog = true;
-          }
-        });
+      if (this.title.trim() === '' || this.content.trim() === '') {
+        this.warningDialog = true;
+      } else {
+        util
+          .post(
+            `${util.getEnvUrl()}/admin/article/add`,
+            {
+              title: this.title,
+              cover: this.cover,
+              content: this.content,
+              tags: this.tag,
+            },
+            this.$router
+          )
+          .then((response) => {
+            if (response.data.code === 10000) {
+              this.successDialog = true;
+              localStorage.removeItem('title');
+              localStorage.removeItem('content');
+              localStorage.removeItem('tag');
+              localStorage.removeItem('cover');
+            } else {
+              this.failureDialog = true;
+            }
+          });
+      }
     },
     closeSuccessDialog() {
       this.successDialog = false;
@@ -172,6 +189,7 @@ export default {
     },
     closeFailureDialog() {
       this.failureDialog = false;
+      this.warningDialog = false;
     },
     saveArticleTitleToLocal() {
       localStorage.title = this.title;
