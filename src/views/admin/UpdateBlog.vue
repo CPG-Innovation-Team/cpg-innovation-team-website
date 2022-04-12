@@ -81,19 +81,21 @@ export default {
           this.$router
         )
         .then((response) => {
-          this.blog = {
-            title: response.data.data.Title,
-            tags: response.data.data.Tags,
-            content: response.data.data.Content,
-            author: response.data.data.Author,
-            cover: response.data.data.Cover,
-          };
+          if (response.data.code === 10000) {
+            this.blog = {
+              title: response.data.data.Title,
+              tags: response.data.data.Tags,
+              content: response.data.data.Content,
+              author: response.data.data.Author,
+              cover: response.data.data.Cover,
+            };
+          }
         });
     }
   },
   methods: {
     close(message) {
-      if (message === 'Success') {
+      if (message === 'Success! 进入审核状态') {
         this.$router.push({
           path: '/admin/blogs',
         });
