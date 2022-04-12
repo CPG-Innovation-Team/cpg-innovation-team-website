@@ -89,7 +89,8 @@
 
         <v-dialog v-model="editDialog" max-width="800px">
           <v-card class="pa-4">
-            <v-card-title> 角色添加权限 </v-card-title>
+            <v-card-title> 角色编辑权限 </v-card-title>
+            <v-card-text> 角色: {{ editRoleItem.name }} </v-card-text>
             <v-card-text>
               <v-row dense>
                 <v-col cols="3" v-for="permission in permissions" :key="permission">
@@ -354,7 +355,6 @@ export default {
             this.$router
           )
           .then((response) => {
-            console.log(response);
             this.setDialogStatus(response);
           });
       }
