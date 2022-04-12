@@ -39,10 +39,7 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <router-link
-            class="icon-link"
-            :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }"
-          >
+          <router-link class="icon-link" :to="{ path: '/admin/blogs/update', query: { sn: item.sn } }">
             <v-icon small class="ml-4"> mdi-pencil </v-icon>
           </router-link>
           <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
@@ -147,6 +144,7 @@ export default {
         .post(
           `${util.getEnvUrl()}/admin/article/list`,
           {
+            isAllMyselfArticles: localStorage.isRoot === undefined,
             article: {
               state: 1,
             },
@@ -154,10 +152,12 @@ export default {
           this.$router
         )
         .then((response) => {
-          if (response.data.data) {
-            response.data.data.ArticleDetailList.forEach((blog) => {
-              this.updateBlogs(this.blogs, blog);
-            });
+          if (response.data.code === 10000) {
+            if (response.data.data.ArticleDetailList !== null) {
+              response.data.data.ArticleDetailList.forEach((blog) => {
+                this.updateBlogs(this.blogs, blog);
+              });
+            }
           }
         });
     },
@@ -166,6 +166,7 @@ export default {
         .post(
           `${util.getEnvUrl()}/admin/article/list`,
           {
+            isAllMyselfArticles: localStorage.isRoot === undefined,
             article: {
               state: 3,
             },
@@ -173,10 +174,12 @@ export default {
           this.$router
         )
         .then((response) => {
-          if (response.data.data) {
-            response.data.data.ArticleDetailList.forEach((blog) => {
-              this.updateBlogs(this.deletedBlogs, blog);
-            });
+          if (response.data.code === 10000) {
+            if (response.data.data.ArticleDetailList !== null) {
+              response.data.data.ArticleDetailList.forEach((blog) => {
+                this.updateBlogs(this.deletedBlogs, blog);
+              });
+            }
           }
         });
     },
