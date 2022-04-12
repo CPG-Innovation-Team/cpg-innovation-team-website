@@ -85,8 +85,11 @@ export default {
   },
   mounted() {
     // 0.5 hour = 1000 * 60 * 30 ms
-    // if the user is logged in, create timer, check timeout every 30 minutes
+    // if the user is logged in
     if (this.token !== '') {
+      // when user opens the page, check timeout immediately
+      this.checkTimeOut();
+      // then check timeout every 30 mins
       this.timer = setInterval(this.checkTimeOut, 1000 * 60 * 30);
     }
   },
