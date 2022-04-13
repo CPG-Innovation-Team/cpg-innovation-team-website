@@ -56,7 +56,7 @@
                   <v-icon>mdi-account</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title data-test-id="user-blogs">My Blogs</v-list-item-title>
+                  <v-list-item-title data-test-id="user-blogs">{{ $t('navbar.myBlogs') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </router-link>
@@ -66,7 +66,7 @@
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>Logout</v-list-item-title>
+                <v-list-item-title>{{ $t('navbar.logout') }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>

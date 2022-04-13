@@ -9,7 +9,9 @@
     "recruitment": "招聘信息",
     "about": "关于我们",
     "blog": "博客",
-    "login": "登录"
+    "login": "登录",
+    "myBlogs": "我的博客",
+    "logout": "登出"
   },
   "dialogMsg": {
     "confirm": "确认",
