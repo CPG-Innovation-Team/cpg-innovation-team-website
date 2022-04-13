@@ -119,6 +119,23 @@
         "failureMsg": "The information failed to save"
       }
     },
+    "changePwd": {
+      "title": "Change Password",
+      "oldPwd": "Old Password",
+      "newPwd": "New Password",
+      "repeatedPwd": "Repeat new password",
+      "confirmBtn": "Confirm",
+      "required": "Required",
+      "digitAlphabet": "The password must contain numbers and alphabets",
+      "min": "Min 8 characters, max 32 characters",
+      "match": "The two passwords you entered don't match",
+      "emptyPwdNotAllowed": "Password cannot be empty",
+      "wrongPwd": "Wrong password",
+      "dismatchPwd": "The two passwords don't match",
+      "newPwdNotValid": "The new password doesn't satisfy the rules",
+      "successMsg": "The password is successfully saved!",
+      "failureMsg": "The password is failed to save"
+    },
     "announcement": {
       "title": "Announcement",
       "radioBtn": {
