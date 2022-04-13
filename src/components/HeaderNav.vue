@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode';
 import CountryFlag from 'vue-country-flag';
 import util from '../util';
 import Event from '../Event';
@@ -146,10 +147,10 @@ export default {
     announcementContent: '',
     announcementURL: '',
     isAnnouncementClosed: false,
+    // header nav opacity
     backgroundOpacity: 0,
     // timer
     timer: '',
-    mouseoverCallback: null,
   }),
   props: ['color'],
   components: {
@@ -169,20 +170,11 @@ export default {
     this.getAnnouncementForLocale();
     this.announcementURL = util.getAnnouncementURL(this.announcement);
 
-    this.mouseoverCallback = util.debounce(function func() {
-      localStorage.lastClickTime = new Date().getTime();
-    }, 3000);
-
-    if (this.token !== '') {
-      window.addEventListener('mouseover', this.mouseoverCallback, true);
-    }
-
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('mouseover', this.mouseoverCallback, true);
-    clearTimeout(this.timer);
+    clearInterval(this.timer);
   },
   watch: {
     locale() {
@@ -209,10 +201,10 @@ export default {
   methods: {
     checkTimeOut() {
       const timeOut = 1000 * 60 * 60;
-      const currentTime = new Date().getTime();
-      const lastTime = localStorage.lastClickTime;
-      // if the last click time is longer than 1 hour, then log out
-      if (currentTime - lastTime > timeOut) {
+      const currentTime = parseInt(new Date().getTime() / 1000, 10);
+      const expTime = jwtDecode(this.token);
+      // if the time difference is longer than 1 hour, then log out
+      if (currentTime - expTime > timeOut) {
         this.clearUserInfo();
         clearInterval(this.timer);
       }
@@ -279,7 +271,6 @@ export default {
       this.username = '';
       this.avatar = null;
       util.clearLocalStorage();
-      window.removeEventListener('mouseover', this.mouseoverCallback, true);
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {
