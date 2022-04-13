@@ -80,7 +80,7 @@
                           <v-row row-wrap>
                             <v-card-text>
                               <v-row no-gutters>
-                                <v-col cols="4">
+                                <v-col cols="3">
                                   <img
                                     class="recent-blog-cover"
                                     v-if="blog.imgIsValid"
@@ -95,7 +95,7 @@
                                     alt="blog cover img"
                                   />
                                 </v-col>
-                                <v-col cols="8">
+                                <v-col cols="9">
                                   <v-row class="recent-user-info">
                                     <v-col cols="8">
                                       <div class="recent-blog-title">{{ blog.title }}</div>
