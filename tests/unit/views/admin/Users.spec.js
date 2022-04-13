@@ -16,19 +16,4 @@ describe('Admin users page', () => {
   it('The adminNav is rendered', () => {
     expect(wrapper.exists()).toBe(true);
   });
-
-  it('Triggering editItem() set up the dialog', () => {
-    const item = { username: 'item' };
-    wrapper.vm.editItem(item);
-    expect(wrapper.vm.dialog).toBe(true);
-    expect(wrapper.vm.editedItem).toBe(item);
-    expect(wrapper.vm.username).toBe(item.username);
-  });
-
-  it('Triggering close() closes the dialog', () => {
-    wrapper.vm.close();
-    expect(wrapper.vm.dialog).toBe(false);
-    expect(wrapper.vm.successDialog).toBe(false);
-    expect(wrapper.vm.failureDialog).toBe(false);
-  });
 });
