@@ -2,76 +2,81 @@
   <div class="layout">
     <AdminNav />
     <v-main style="background: whitesmoke">
-      <v-container>
-        <v-card class="mt-4">
-          <v-card-title> Modify password </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6" md="12">
-                <v-form ref="oldPwdForm">
-                  <v-text-field
-                    v-model="oldPwd"
-                    label="旧密码"
-                    :type="showOldPwd ? 'text' : 'password'"
-                    :append-icon="showOldPwd ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required]"
-                    @click:append="showOldPwd = !showOldPwd"
-                  ></v-text-field>
-                </v-form>
-              </v-col>
+      <v-container fill-height fluid>
+        <v-row align="center" justify="center">
+          <v-card class="mt-4" width="400px" elevation="0">
+            <v-card-title> {{ localeMsg.title }}</v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col cols="12" sm="6" md="12">
+                  <v-form ref="oldPwdForm">
+                    <v-text-field
+                      v-model="oldPwd"
+                      :label="localeMsg.oldPwd"
+                      outlined
+                      dense
+                      :type="showOldPwd ? 'text' : 'password'"
+                      :append-icon="showOldPwd ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[rules.required]"
+                      @click:append="showOldPwd = !showOldPwd"
+                    ></v-text-field>
+                  </v-form>
+                </v-col>
 
-              <v-col cols="12" sm="6" md="12">
-                <v-form ref="newPwdForm" v-model="newPwdValid">
-                  <v-text-field
-                    v-model="newPwd"
-                    label="新密码"
-                    :type="showNewPwd ? 'text' : 'password'"
-                    :append-icon="showNewPwd ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required, rules.min, rules.digitAlphabet]"
-                    @click:append="showNewPwd = !showNewPwd"
-                  ></v-text-field>
-                </v-form>
-              </v-col>
-              <v-col cols="12" sm="6" md="12">
-                <v-form ref="repeatPwdForm" v-model="repeatPwdValid">
-                  <v-text-field
-                    v-model="newPwdRepeat"
-                    label="再次输入新密码"
-                    :type="showRepeatPwd ? 'text' : 'password'"
-                    :append-icon="showRepeatPwd ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required, rules.match]"
-                    @click:append="showRepeatPwd = !showRepeatPwd"
-                  ></v-text-field>
-                </v-form>
-              </v-col>
-            </v-row>
-            <v-card-actions>
-              <v-col class="text-left">
-                <v-row>
-                  <v-btn color="blue darken-1" text @click="savePwd"> Confirm </v-btn>
-                </v-row>
-              </v-col>
-            </v-card-actions>
-          </v-card-text>
-        </v-card>
-        <v-dialog v-model="alertDialog" max-width="500px">
-          <v-card>
-            <v-card-title> {{ alertMessage }} </v-card-title>
+                <v-col cols="12" sm="6" md="12">
+                  <v-form ref="newPwdForm" v-model="newPwdValid">
+                    <v-text-field
+                      v-model="newPwd"
+                      :label="localeMsg.newPwd"
+                      outlined
+                      dense
+                      :type="showNewPwd ? 'text' : 'password'"
+                      :append-icon="showNewPwd ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[rules.required, rules.min, rules.digitAlphabet]"
+                      @click:append="showNewPwd = !showNewPwd"
+                    ></v-text-field>
+                  </v-form>
+                </v-col>
+                <v-col cols="12" sm="6" md="12">
+                  <v-form ref="repeatPwdForm" v-model="repeatPwdValid">
+                    <v-text-field
+                      v-model="newPwdRepeat"
+                      :label="localeMsg.repeatedPwd"
+                      outlined
+                      dense
+                      :type="showRepeatPwd ? 'text' : 'password'"
+                      :append-icon="showRepeatPwd ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[rules.required, rules.match]"
+                      @click:append="showRepeatPwd = !showRepeatPwd"
+                    ></v-text-field>
+                  </v-form>
+                </v-col>
+              </v-row>
+            </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="alertDialog = false"> Confirm </v-btn>
+              <v-btn color="blue darken-1" text @click="savePwd"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
-        <v-dialog v-model="responseDialog" max-width="500px">
-          <v-card>
-            <v-card-title> {{ responseMessage }} </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="responseDialog = false"> Confirm </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+          <v-dialog v-model="alertDialog" max-width="500px">
+            <v-card>
+              <v-card-title> {{ alertMessage }} </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="alertDialog = false"> {{ localeMsg.confirmBtn }} </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="responseDialog" max-width="500px">
+            <v-card>
+              <v-card-title> {{ responseMessage }} </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="responseDialog = false"> {{ localeMsg.confirmBtn }} </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-row>
       </v-container>
     </v-main>
   </div>
@@ -104,16 +109,36 @@ export default {
       showNewPwd: false,
       showRepeatPwd: false,
       rules: {
-        required: (v) => !!v || 'Required.',
-        digitAlphabet: (v) =>
-          (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || 'The password must contain numbers and alphabets',
-        min: (v) => (v.length >= 8 && v.length <= 32) || 'Min 8 characters, max 32 characters',
-        match: (v) => v === this.newPwd || `The two passwords you entered don't match`,
+        required: (v) => !!v || this.localeMsg.required,
+        digitAlphabet: (v) => (v && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/.test(v)) || this.localeMsg.digitAlphabet,
+        min: (v) => (v.length >= 8 && v.length <= 32) || this.localeMsg.min,
+        match: (v) => v === this.newPwd || this.localeMsg.match,
       },
     };
   },
   components: {
     AdminNav,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        title: this.$t('admin.changePwd.title'),
+        oldPwd: this.$t('admin.changePwd.oldPwd'),
+        newPwd: this.$t('admin.changePwd.newPwd'),
+        repeatedPwd: this.$t('admin.changePwd.repeatedPwd'),
+        confirmBtn: this.$t('admin.changePwd.confirmBtn'),
+        required: this.$t('admin.changePwd.required'),
+        digitAlphabet: this.$t('admin.changePwd.digitAlphabet'),
+        min: this.$t('admin.changePwd.min'),
+        match: this.$t('admin.changePwd.match'),
+        emptyPwdNotAllowed: this.$t('admin.changePwd.emptyPwdNotAllowed'),
+        wrongPwd: this.$t('admin.changePwd.wrongPwd'),
+        dismatchPwd: this.$t('admin.changePwd.dismatchPwd'),
+        newPwdNotValid: this.$t('admin.changePwd.newPwdNotValid'),
+        successMsg: this.$t('admin.changePwd.successMsg'),
+        failureMsg: this.$t('admin.changePwd.failureMsg'),
+      };
+    },
   },
   created() {
     util.checkAccess('', this.$router);
@@ -145,16 +170,16 @@ export default {
       this.confirmDialog = true;
       if (emptyPwdCheck === false) {
         this.alertDialog = true;
-        this.alertMessage = '密码不可为空';
+        this.alertMessage = this.localeMsg.emptyPwdNotAllowed;
       } else if (this.newPwdValid === false) {
         this.alertDialog = true;
-        this.alertMessage = '新密码不符合规则';
+        this.alertMessage = this.localeMsg.newPwdNotValid;
       } else if (this.repeatPwdValid === false) {
         this.alertDialog = true;
-        this.alertMessage = '密码不匹配';
+        this.alertMessage = this.localeMsg.dismatchPwd;
       } else if (pwdCheck === false) {
         this.alertDialog = true;
-        this.alertMessage = '旧密码不正确';
+        this.alertMessage = this.localeMsg.wrongPwd;
       } else {
         util
           .post(
@@ -171,17 +196,17 @@ export default {
           )
           .then((response) => {
             this.responseDialog = true;
-            if (response.data.code === 10002) {
-              this.responseMessage = '密码保存失败';
+            if (response.data.code === 10000) {
+              this.responseMessage = this.localeMsg.successMsg;
             } else {
-              this.responseMessage = '密码保存成功';
-              this.oldPwd = '';
-              this.newPwd = '';
-              this.newPwdRepeat = '';
-              this.$refs.oldPwdForm.resetValidation();
-              this.$refs.newPwdForm.resetValidation();
-              this.$refs.repeatPwdForm.resetValidation();
+              this.responseMessage = this.localeMsg.failureMsg;
             }
+            this.oldPwd = '';
+            this.newPwd = '';
+            this.newPwdRepeat = '';
+            this.$refs.oldPwdForm.resetValidation();
+            this.$refs.newPwdForm.resetValidation();
+            this.$refs.repeatPwdForm.resetValidation();
           });
       }
     },
