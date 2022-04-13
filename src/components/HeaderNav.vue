@@ -200,11 +200,11 @@ export default {
   },
   methods: {
     checkTimeOut() {
-      const timeOut = 1000 * 60 * 60;
       const currentTime = parseInt(new Date().getTime() / 1000, 10);
-      const expTime = jwtDecode(this.token);
+      const expTime = jwtDecode(this.token).exp;
       // if the time difference is longer than 1 hour, then log out
-      if (currentTime - expTime > timeOut) {
+      if (currentTime >= expTime) {
+        console.log('timeout');
         this.clearUserInfo();
         clearInterval(this.timer);
       }
