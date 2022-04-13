@@ -44,6 +44,8 @@
     "invalidMsg": "信息输入不符合规则，请重新输入"
   },
   "blog": {
+    "title": "博客",
+    "subtitle": "正大创新项目中心博客",
     "mostPopular": "最受欢迎",
     "likes": "点赞数",
     "allPosts": "所有文章",

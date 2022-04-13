@@ -44,6 +44,8 @@
     "invalidMsg": "Entered information is invalid, please try again"
   },
   "blog": {
+    "title": "Blog",
+    "subtitle": "CP Group Innovation Center Blog",
     "mostPopular": "Most Popular",
     "likes": "Likes",
     "allPosts": "All Articles",
