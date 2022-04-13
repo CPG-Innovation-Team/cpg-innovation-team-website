@@ -243,7 +243,7 @@ export default {
     initializeHeaders() {
       // initialize data table headers for all permissions
       this.permissions.forEach((permission) => {
-        this.headers.push({ text: permission, value: permission, width: '80px', align: 'center' });
+        this.headers.push({ text: permission, value: permission, align: 'center' });
       });
     },
     initializeRoleItems() {
