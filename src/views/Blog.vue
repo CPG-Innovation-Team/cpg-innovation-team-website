@@ -5,8 +5,8 @@
       <img class="nav-img" src="https://picsum.photos/2000/" alt="header image" />
 
       <div class="header-text">
-        <p class="title-cn">博客</p>
-        <p class="subtitle">正大创新项目中心博客</p>
+        <p class="title-cn">{{ localeMsg.title }}</p>
+        <p class="subtitle">{{ localeMsg.subtitle }}</p>
       </div>
     </div>
 
@@ -180,6 +180,8 @@ export default {
   computed: {
     localeMsg() {
       return {
+        title: this.$t('blog.title'),
+        subtitle: this.$t('blog.subtitle'),
         mostPopular: this.$t('blog.mostPopular'),
         likes: this.$t('blog.likes'),
         allPosts: this.$t('blog.allPosts'),
