@@ -9,7 +9,9 @@
     "recruitment": "Recruitment",
     "about": "About",
     "blog": "Blog",
-    "login": "Login"
+    "login": "Login",
+    "myBlogs": "My blogs",
+    "logout": "Log out"
   },
   "dialogMsg": {
     "confirm": "Confirm",
