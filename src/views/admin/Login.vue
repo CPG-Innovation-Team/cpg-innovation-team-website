@@ -122,7 +122,6 @@ export default {
             localStorage.uid = response.data.data.UID;
             localStorage.username = response.data.data.UserName;
             localStorage.avatar = response.data.data.Avatar;
-            localStorage.lastClickTime = new Date().getTime();
             if (response.data.data.IsRoot === 1) {
               localStorage.isRoot = 1;
             }

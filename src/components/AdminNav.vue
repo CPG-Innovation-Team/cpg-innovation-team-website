@@ -180,11 +180,10 @@ export default {
       });
     },
     checkTimeOut() {
-      const timeOut = 1000 * 60 * 60;
       const currentTime = parseInt(new Date().getTime() / 1000, 10);
-      const expTime = jwtDecode(this.token);
+      const expTime = jwtDecode(this.token).exp;
       // if the time difference is longer than 1 hour, then redirect to login
-      if (currentTime - expTime > timeOut) {
+      if (currentTime >= expTime) {
         this.clearUserInfo();
         this.$router.push('/login');
         clearInterval(this.timer);
