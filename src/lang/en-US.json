@@ -94,6 +94,31 @@
       "changePwd": "Change Password",
       "logout": "Log out"
     },
+    "profile": {
+      "admin": "Super Manager",
+      "user": "User",
+      "title": "Profile",
+      "username": "Username",
+      "email": "Email",
+      "gender": "Gender",
+      "female": "Female",
+      "male": "Male",
+      "unspecified": "Unspecified",
+      "pwdTitle": "Enter your password to save changes",
+      "password": "Password",
+      "avatar": "Avatar",
+      "nickname": "Nickname",
+      "introduction": "Introduction",
+      "saveBtn": "Save",
+      "response": {
+        "confirmBtn": "Confirm",
+        "required": "Required",
+        "emptyPwdNotAllowed": "The password can't be empty",
+        "wrongPwd": "Wrong password, failed to save changes",
+        "successMsg": "The information is saved!",
+        "failureMsg": "The information failed to save"
+      }
+    },
     "announcement": {
       "title": "Announcement",
       "radioBtn": {
