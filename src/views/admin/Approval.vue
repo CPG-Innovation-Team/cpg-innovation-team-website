@@ -20,11 +20,22 @@
         </template>
       </v-data-table>
 
-      <v-data-table :headers="cheaders" :items="comments" sort-by="modified" class="elevation-1">
+      <v-data-table
+        v-model="selectedComments"
+        :headers="cheaders"
+        :items="comments"
+        item-key="cid"
+        sort-by="modified"
+        class="elevation-1"
+        show-select
+      >
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>All Pending Comments</v-toolbar-title>
           </v-toolbar>
+        </template>
+        <template v-slot:[`item.data-table-select`]="{ isSelected, select }">
+          <v-simple-checkbox :value="isSelected" @input="select($event)" :ripple="false"></v-simple-checkbox>
         </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
@@ -52,13 +63,39 @@
             不通过
           </v-btn>
         </template>
+        <template v-slot:[`body.append`]>
+          <td></td>
+          <td></td>
+          <td></td>
+          <div class="d-flex justify-center">
+            <td>
+              <v-btn class="ma-2" color="primary" depressed small :disabled="checkCommentBtnDisabled()">
+                批量通过
+              </v-btn>
+              <v-btn class="ma-2" color="primary" depressed small :disabled="checkCommentBtnDisabled()">
+                批量不通过
+              </v-btn>
+            </td>
+          </div>
+        </template>
       </v-data-table>
 
-      <v-data-table :headers="rheaders" :items="replies" sort-by="modified" class="elevation-1">
+      <v-data-table
+        v-model="selectedReplies"
+        :headers="rheaders"
+        :items="replies"
+        item-key="rid"
+        sort-by="modified"
+        class="elevation-1"
+        show-select
+      >
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>All Pending Replies</v-toolbar-title>
           </v-toolbar>
+        </template>
+        <template v-slot:[`item.data-table-select`]="{ isSelected, select }">
+          <v-simple-checkbox :value="isSelected" @input="select($event)" :ripple="false"></v-simple-checkbox>
         </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
@@ -85,6 +122,19 @@
           >
             不通过
           </v-btn>
+        </template>
+        <template v-slot:[`body.append`]>
+          <td></td>
+          <td></td>
+          <td></td>
+          <div class="d-flex justify-center">
+            <td>
+              <v-btn class="ma-2" color="primary" depressed small :disabled="checkReplyBtnDisabled()"> 批量通过 </v-btn>
+              <v-btn class="ma-2" color="primary" depressed small :disabled="checkReplyBtnDisabled()">
+                批量不通过
+              </v-btn>
+            </td>
+          </div>
         </template>
       </v-data-table>
 
@@ -188,8 +238,10 @@ export default {
       commentApproveBool: false,
       replyApproveBool: false,
       commentAndReplyDialog: false,
-      currentComment: '',
-      currentReply: '',
+      currentComment: null,
+      currentReply: null,
+      selectedComments: [],
+      selectedReplies: [],
     };
   },
   components: {
@@ -247,6 +299,14 @@ export default {
           });
         }
       });
+    },
+    checkCommentBtnDisabled() {
+      // disable the button if no comment is selected
+      return this.selectedComments.length === 0;
+    },
+    checkReplyBtnDisabled() {
+      // disable the button if no reply is selected
+      return this.selectedReplies.length === 0;
     },
     async approveComment(item, bool) {
       await util
