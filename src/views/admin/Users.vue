@@ -177,23 +177,9 @@ export default {
       this.userRoleNames.forEach((user, userIndex) => {
         this.userItems.push({ id: user.userId, username: user.userName });
         this.roles.forEach((role) => {
-          this.userItems[userIndex][role] = this.checkRolesForUsers(user, role);
+          this.userItems[userIndex][role] = user.roleNames === null ? false : user.roleNames.includes(role);
         });
       });
-    },
-    checkRolesForUsers(user, role) {
-      // check if the given user has the role, if yes, return true
-      let bool = false;
-      this.users.forEach((u) => {
-        if (u.uid === user.userId) {
-          bool = user.roleNames === null ? false : user.roleNames.includes(role);
-          // if the user is admin, then return true
-          if (u.isRoot === 1) {
-            bool = true;
-          }
-        }
-      });
-      return bool;
     },
     async editRoleToUser() {
       const addition = [];
