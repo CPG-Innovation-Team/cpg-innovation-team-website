@@ -65,17 +65,7 @@
             </div>
           </template>
           <template v-slot:[`item.action`]="{ item }">
-            <v-icon
-              small
-              class="ml-4"
-              @click="
-                editDialog = true;
-                originalRoleItem = item;
-                setEditRoleItem(item);
-              "
-            >
-              mdi-pencil
-            </v-icon>
+            <v-icon small class="ml-4" @click="setEditRoleItem(item)"> mdi-pencil </v-icon>
           </template>
           <template v-for="permission in permissions" v-slot:[`item.${permission}`]="{ item }">
             <v-simple-checkbox class="checkbox-color" disabled v-model="item[permission]" :key="permission" />
@@ -237,6 +227,8 @@ export default {
       }
     },
     setEditRoleItem(item) {
+      this.editDialog = true;
+      this.originalRoleItem = item;
       // make a copy of the role that is being edited
       this.editRoleItem = { ...item };
     },
