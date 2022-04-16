@@ -31,9 +31,17 @@ export default {
            * 10003, Invalid Token
            * 10004, Token is expired
            * 10009, Invalid Param
+           * 20108, Access Denied
            */
+          console.log(response);
           if (response.data.code === 10004 || response.data.code === 10003) {
-            router.push({ path: '/login' });
+            if (!url.includes('logout')) {
+              router.push('/login');
+            }
+          }
+          if (response.data.code === 20108) {
+            console.log('20108');
+            router.push('/admin/accessDenied');
           }
           resolve(response);
         })
@@ -72,24 +80,15 @@ export default {
     localStorage.removeItem('isRoot');
     localStorage.removeItem('uid');
   },
-  debounce(fn, delay) {
-    let timer = null;
-    return function func() {
-      clearTimeout(timer);
-      const that = this;
-      timer = setTimeout(function f() {
-        fn.apply(that);
-      }, delay);
-    };
-  },
   checkAccess(component, router) {
-    if (component !== '') {
-      if (localStorage.routes === undefined || !localStorage.routes.includes(`${component}`)) {
-        router.push('/admin/accessDenied');
-      }
-    }
     if (localStorage.uid === undefined) {
       router.push('/login');
+    } else if (component !== '') {
+      if (localStorage.routes === undefined) {
+        router.push('/admin/profile');
+      } else if (!localStorage.routes.includes(`${component}`)) {
+        router.push('/admin/accessDenied');
+      }
     }
   },
   getEnvUrl() {
