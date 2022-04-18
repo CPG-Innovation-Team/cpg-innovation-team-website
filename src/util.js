@@ -33,7 +33,6 @@ export default {
            * 10009, Invalid Param
            * 20108, Access Denied
            */
-          console.log(response);
           if (response.data.code === 10004 || response.data.code === 10003) {
             if (!url.includes('logout')) {
               router.push('/login');
