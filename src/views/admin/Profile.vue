@@ -147,7 +147,6 @@ export default {
     if (localStorage.avatar) {
       this.userAvatar = localStorage.avatar;
     }
-    // this.genders = [this.localeMsg.male, this.localeMsg.female, this.localeMsg.unspecified];
     await util
       .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
       .then((response) => {
