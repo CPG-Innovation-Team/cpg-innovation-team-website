@@ -10,80 +10,44 @@
           </v-avatar>
           <div>
             <div class="name">{{ username }}</div>
-            <div class="level d-flex">{{ showRole() }}<v-icon class="ml-2">mdi-information</v-icon></div>
+            <div class="level d-flex">{{ showRole() }}</div>
           </div>
         </div>
 
-        <div class="stat-container">
-          <v-card-title>Statistics</v-card-title>
-          <v-row>
-            <v-col>
-              <div class="card">
-                <a>
-                  <div class="tit">Follower<v-icon color="gray">mdi-chevron-right</v-icon></div>
-                </a>
-                <div class="stat">15</div>
-                <div class="yesterday">Yesterday <span>--</span></div>
-              </div>
-            </v-col>
-
-            <v-col>
-              <div class="card">
-                <div class="tit">View</div>
-                <div class="stat">1,124</div>
-                <div class="yesterday">Yesterday <span>28</span></div>
-              </div>
-            </v-col>
-
-            <v-col>
-              <div class="card">
-                <div class="tit">Like</div>
-                <div class="stat">4,124</div>
-                <div class="yesterday">Yesterday <span>6</span></div>
-              </div>
-            </v-col>
-
-            <v-col>
-              <div class="card">
-                <div class="tit">Share</div>
-                <div class="stat">124</div>
-                <div class="yesterday">Yesterday <span>2</span></div>
-              </div>
-            </v-col>
-          </v-row>
-        </div>
-
-        <v-card>
-          <v-card-title> Profile </v-card-title>
+        <v-card class="mt-8 pa-2" elevation="0">
+          <v-card-title> {{ localeMsg.title }} </v-card-title>
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="username" label="username"></v-text-field>
+                <v-text-field v-model="username" :label="localeMsg.username" outlined dense></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="avatar" label="avatar"></v-text-field>
+                <v-text-field v-model="avatar" :label="localeMsg.avatar" outlined dense></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="email" label="email"></v-text-field>
+                <v-text-field v-model="email" :label="localeMsg.email" outlined dense></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="nickname" label="nickname"></v-text-field>
+                <v-text-field v-model="nickname" :label="localeMsg.nickname" outlined dense></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-select :items="genders" label="gender" v-model="genderName"></v-select>
+                <v-select :items="genders" :label="localeMsg.gender" v-model="genderName" outlined dense></v-select>
               </v-col>
+            </v-row>
+            <v-row>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="introduction" label="introduction"></v-text-field>
+                <v-textarea v-model="introduction" :label="localeMsg.introduction" outlined dense></v-textarea>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" sm="6" md="6"
-                ><p class="password-title">Enter your password to save changes:</p>
-                <v-form v-model="valid">
+                ><p class="password-title">{{ localeMsg.pwdTitle }}:</p>
+                <v-form ref="pwdForm" v-model="valid">
                   <v-text-field
                     v-model="password"
-                    label="password"
-                    required
+                    :label="localeMsg.password"
+                    outlined
+                    dense
                     :type="showPwd ? 'text' : 'password'"
                     :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required]"
@@ -92,7 +56,7 @@
                 </v-form> </v-col
             ></v-row>
             <v-card-actions>
-              <v-btn color="blue darken-1" text @click="saveProfile"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="saveProfile"> {{ localeMsg.saveBtn }} </v-btn>
             </v-card-actions>
           </v-card-text>
         </v-card>
@@ -101,7 +65,7 @@
             <v-card-title> {{ responseMessage }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="confirmDialog = false"> Confirm </v-btn>
+              <v-btn color="blue darken-1" text @click="confirmDialog = false"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -125,7 +89,11 @@ export default {
       uid: '',
       nickname: '',
       state: '',
-      genders: ['Male', 'Female', 'Unspecified'],
+      genders: [
+        `${this.$t('admin.profile.male')}`,
+        `${this.$t('admin.profile.female')}`,
+        `${this.$t('admin.profile.unspecified')}`,
+      ],
       genderName: '',
       gender: '',
       introduction: '',
@@ -137,12 +105,39 @@ export default {
       responseMessage: '',
       showPwd: false,
       rules: {
-        required: (v) => !!v || 'Required.',
+        required: (v) => !!v || this.localeMsg.required,
       },
     };
   },
   components: {
     AdminNav,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        admin: this.$t('admin.profile.admin'),
+        user: this.$t('admin.profile.user'),
+        title: this.$t('admin.profile.title'),
+        username: this.$t('admin.profile.username'),
+        email: this.$t('admin.profile.email'),
+        gender: this.$t('admin.profile.gender'),
+        female: this.$t('admin.profile.female'),
+        male: this.$t('admin.profile.male'),
+        unspecified: this.$t('admin.profile.unspecified'),
+        pwdTitle: this.$t('admin.profile.pwdTitle'),
+        password: this.$t('admin.profile.password'),
+        avatar: this.$t('admin.profile.avatar'),
+        nickname: this.$t('admin.profile.nickname'),
+        introduction: this.$t('admin.profile.introduction'),
+        saveBtn: this.$t('admin.profile.saveBtn'),
+        confirmBtn: this.$t('admin.profile.response.confirmBtn'),
+        required: this.$t('admin.profile.response.required'),
+        emptyPwdNotAllowed: this.$t('admin.profile.response.emptyPwdNotAllowed'),
+        wrongPwd: this.$t('admin.profile.response.wrongPwd'),
+        successMsg: this.$t('admin.profile.response.successMsg'),
+        failureMsg: this.$t('admin.profile.response.failureMsg'),
+      };
+    },
   },
   async created() {
     util.checkAccess('', this.$router);
@@ -176,10 +171,10 @@ export default {
       const validationCheck = this.password.trim() !== '' && this.valid;
       if (validationCheck === false) {
         this.confirmDialog = true;
-        this.responseMessage = '密码不可为空';
+        this.responseMessage = this.localeMsg.emptyPwdNotAllowed;
       } else if (pwdCheck === false) {
         this.confirmDialog = true;
-        this.responseMessage = '密码错误，修改失败';
+        this.responseMessage = this.localeMsg.wrongPwd;
       } else {
         util
           .post(
@@ -201,35 +196,37 @@ export default {
           .then((response) => {
             this.confirmDialog = true;
             if (response.data.code === 10000) {
-              this.responseMessage = '信息修改成功';
+              this.responseMessage = this.localeMsg.successMsg;
               localStorage.avatar = this.avatar;
               this.userAvatar = this.avatar;
+              this.password = '';
+              this.$refs.pwdForm.resetValidation();
             } else {
-              this.responseMessage = '信息修改失败';
+              this.responseMessage = this.localeMsg.failureMsg;
             }
           });
       }
     },
     showRole() {
       if (this.isRoot === 1) {
-        return 'Super Manager';
+        return this.localeMsg.admin;
       }
-      return 'User';
+      return this.localeMsg.user;
     },
     getGenderName() {
       if (this.gender === 0) {
-        this.genderName = 'Male';
+        this.genderName = this.localeMsg.male;
       } else if (this.gender === 1) {
-        this.genderName = 'Female';
+        this.genderName = this.localeMsg.female;
       } else {
-        this.genderName = 'Unspecified';
+        this.genderName = this.localeMsg.unspecified;
       }
     },
     getGender() {
-      if (this.genderName === 'Female') {
+      if (this.genderName === this.localeMsg.female) {
         return 1;
       }
-      if (this.genderName === 'Male') {
+      if (this.genderName === this.localeMsg.male) {
         return 0;
       }
       return 2;
@@ -266,7 +263,6 @@ export default {
   .card {
     margin: 0 12px;
     padding: 12px 0 12px 20px;
-    /* border: 1px solid silver; */
     border-radius: 4px;
     background: #ddf1fc;
     .tit {

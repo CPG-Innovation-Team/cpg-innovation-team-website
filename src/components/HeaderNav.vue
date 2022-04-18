@@ -56,7 +56,7 @@
                   <v-icon>mdi-account</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title data-test-id="user-blogs">My Blogs</v-list-item-title>
+                  <v-list-item-title data-test-id="user-blogs">{{ $t('navbar.myBlogs') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </router-link>
@@ -66,7 +66,7 @@
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title>Logout</v-list-item-title>
+                <v-list-item-title>{{ $t('navbar.logout') }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode';
 import CountryFlag from 'vue-country-flag';
 import util from '../util';
 import Event from '../Event';
@@ -146,10 +147,10 @@ export default {
     announcementContent: '',
     announcementURL: '',
     isAnnouncementClosed: false,
+    // header nav opacity
     backgroundOpacity: 0,
     // timer
     timer: '',
-    mouseoverCallback: null,
   }),
   props: ['color'],
   components: {
@@ -169,20 +170,11 @@ export default {
     this.getAnnouncementForLocale();
     this.announcementURL = util.getAnnouncementURL(this.announcement);
 
-    this.mouseoverCallback = util.debounce(function func() {
-      localStorage.lastClickTime = new Date().getTime();
-    }, 3000);
-
-    if (this.token !== '') {
-      window.addEventListener('mouseover', this.mouseoverCallback, true);
-    }
-
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('mouseover', this.mouseoverCallback, true);
-    clearTimeout(this.timer);
+    clearInterval(this.timer);
   },
   watch: {
     locale() {
@@ -198,18 +190,20 @@ export default {
   },
   mounted() {
     // 0.5 hour = 1000 * 60 * 30 ms
-    // if the user is logged in, create timer, check timeout every 30 minutes
+    // check if the user is logged in
     if (this.token !== '') {
+      // when user opens the page, check timeout immediately
+      this.checkTimeOut();
+      // then, check timeout every 30 minutes
       this.timer = setInterval(this.checkTimeOut, 1000 * 60 * 30);
     }
   },
   methods: {
     checkTimeOut() {
-      const timeOut = 1000 * 60 * 60;
-      const currentTime = new Date().getTime();
-      const lastTime = localStorage.lastClickTime;
-      // if the last click time is longer than 1 hour, then log out
-      if (currentTime - lastTime > timeOut) {
+      const currentTime = parseInt(new Date().getTime() / 1000, 10);
+      const expTime = jwtDecode(this.token).exp;
+      // if the time difference is longer than 1 hour, then log out
+      if (currentTime >= expTime) {
         this.clearUserInfo();
         clearInterval(this.timer);
       }
@@ -276,7 +270,6 @@ export default {
       this.username = '';
       this.avatar = null;
       util.clearLocalStorage();
-      window.removeEventListener('mouseover', this.mouseoverCallback, true);
     },
     async getAnnouncement() {
       await util.post(`${util.getEnvUrl()}/notify/query`, {}).then((response) => {

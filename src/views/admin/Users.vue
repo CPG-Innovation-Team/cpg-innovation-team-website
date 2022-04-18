@@ -2,70 +2,70 @@
   <div class="layout">
     <AdminNav />
     <v-main>
-      <v-data-table :headers="headers" :items="users" sort-by="level" class="elevation-1" style="height: 100vh">
-        <template v-slot:top>
-          <v-toolbar flat color="white">
-            <v-toolbar-title>Users</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-text-field
-              v-model="search"
-              placeholder="Search"
-              append-icon="mdi-magnify"
-              required
-              dense
-              hide-details
-              outlined
-            ></v-text-field>
-            <v-spacer></v-spacer>
-            <v-dialog v-model="successDialog" max-width="500px">
-              <v-card>
-                <v-card-title> Success! </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="failureDialog" max-width="500px">
-              <v-card>
-                <v-card-title> Something went wrong... </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="dialog" max-width="500px">
-              <v-card>
-                <v-card-title>
-                  <span class="text-h5">User information</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-select :items="roles" label="add role" v-model="selectedRole" clearable></v-select>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-select :items="roles" label="remove role" v-model="selectedRemoveRole" clearable></v-select>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
+      <v-container>
+        <v-data-table :headers="headers" :items="userItems" sort-by="level" style="height: 100vh">
+          <template v-slot:top>
+            <v-toolbar flat color="white">
+              <v-toolbar-title>Users</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-text-field
+                v-model="search"
+                placeholder="Search"
+                append-icon="mdi-magnify"
+                required
+                dense
+                hide-details
+                outlined
+              ></v-text-field>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+          </template>
+          <template v-slot:[`item.action`]="{ item }">
+            <v-icon small class="mr-2" @click="editUserItem(item)"> mdi-pencil </v-icon>
+          </template>
+          <template v-for="role in roles" v-slot:[`item.${role}`]="{ item }">
+            <v-simple-checkbox class="checkbox-color" disabled v-model="item[role]" :key="role" />
+          </template>
+        </v-data-table>
 
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-                  <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
-        </template>
-        <template v-slot:[`item.action`]="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        </template>
-      </v-data-table>
+        <v-dialog v-model="editDialog" max-width="800px">
+          <v-card class="pa-4">
+            <v-card-title> 用户编辑角色 </v-card-title>
+            <v-card-text> 用户: {{ editedUser.username }}</v-card-text>
+            <v-card-text>
+              <v-row dense>
+                <v-col cols="3" v-for="role in roles" :key="role">
+                  <v-checkbox v-model="editedUser[role]" :label="role" color="blue" hide-details></v-checkbox>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn depressed color="primary" @click="editRoleToUser()"> Save </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="successDialog" max-width="500px">
+          <v-card>
+            <v-card-title> Success! </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="failureDialog" max-width="500px">
+          <v-card>
+            <v-card-title> Something went wrong... </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-container>
     </v-main>
   </div>
 </template>
@@ -79,110 +79,65 @@ export default {
     AdminNav,
   },
   data: () => ({
-    dialog: false,
+    editDialog: false,
     successDialog: false,
     failureDialog: false,
     search: '',
     headers: [
       {
-        text: 'Name',
+        text: 'ID',
+        sortable: true,
+        value: 'id',
+      },
+      {
+        text: '用户名\\角色',
+        align: 'start',
+        sortable: true,
         value: 'username',
       },
-      { text: 'Email', value: 'email' },
-      { text: '管理员权限', value: 'isRoot', align: 'center' },
-      { text: 'Action', value: 'action', align: 'center' },
+      { text: '编辑角色', value: 'action', sortable: false, align: 'end' },
     ],
     users: [],
-    editedIndex: -1,
-    editedItem: {
-      UserName: '',
-      Email: '',
-      IsRoot: '',
-    },
-    username: '',
-    uid: '',
     roles: [],
-    permissions: [],
-    permission: '',
-    uri: '',
-    role: '',
-    rname: '',
-    pname: '',
-    selectedRole: '',
-    selectedRemoveRole: '',
-    deleteRoleName: '',
-    deletePermissionName: '',
+    userRoleNames: [],
+    userItems: [],
+    editedUser: {},
+    originalUser: {},
   }),
   async created() {
     util.checkAccess('users', this.$router);
-    util
-      .post(
-        `${util.getEnvUrl()}/admin/user/query/list`,
-        {
-          state: 1,
-        },
-        this.$router
-      )
-      .then((response) => {
-        if (response.data.data) {
-          response.data.data.forEach((user) => this.users.push(user));
-        }
-      });
-    this.getAllRoles();
-    this.getAllPermissions();
+    await this.getUserList();
+    await this.getUserRoles();
+    await this.getAllRoles();
+    this.initializeHeaders();
+    this.initializeUsers();
   },
   methods: {
-    editItem(item) {
-      this.dialog = true;
-      this.editedItem = item;
-      this.username = item.username;
+    editUserItem(item) {
+      this.editDialog = true;
+      this.originalUser = item;
+      this.editedUser = { ...item };
     },
     close() {
-      this.dialog = false;
+      this.editDialog = false;
       this.successDialog = false;
       this.failureDialog = false;
     },
-    async save() {
-      this.close();
+    async getUserList() {
+      // get the list of all users
       await util
         .post(
-          `${util.getEnvUrl()}/admin/user/query/info`,
+          `${util.getEnvUrl()}/admin/user/query/list`,
           {
-            username: this.username,
+            state: 1,
           },
           this.$router
         )
         .then((response) => {
-          this.uid = response.data.data.UID;
+          if (response.data.code === 10000) {
+            response.data.data.forEach((user) => this.users.push(user));
+          }
         });
-      if (this.selectedRole !== '' && this.selectedRole !== null) {
-        await util
-          .post(
-            `${util.getEnvUrl()}/admin/auth/role/add/user`,
-            {
-              rName: this.selectedRole,
-              uid: this.uid,
-            },
-            this.$router
-          )
-          .then((response) => {
-            this.setDialogStatus(response);
-          });
-      }
-      if (this.selectedRemoveRole !== '' && this.selectedRemoveRole !== null) {
-        await util
-          .post(
-            `${util.getEnvUrl()}/admin/auth/role/remove/user`,
-            {
-              rName: this.selectedRemoveRole,
-              uid: this.uid,
-            },
-            this.$router
-          )
-          .then((response) => {
-            this.setDialogStatus(response);
-          });
-      }
     },
     async getAllRoles() {
       await util.post(`${util.getEnvUrl()}/admin/auth/query/roles`, {}, this.$router).then((response) => {
@@ -194,18 +149,86 @@ export default {
         }
       });
     },
-    async getAllPermissions() {
-      await util.post(`${util.getEnvUrl()}/admin/auth/query/permissions`, {}, this.$router).then((response) => {
-        if (response.data.data) {
-          this.permissions = [];
-          Object.keys(response.data.data).forEach((permission) => {
-            this.permissions.push(permission);
-          });
-        }
+    async getUserRoles() {
+      // get the role names of each user
+      const ids = this.users.map((user) => user.uid);
+      await util
+        .post(
+          `${util.getEnvUrl()}/admin/auth/query/user/roles`,
+          {
+            uid: ids,
+          },
+          this.$router
+        )
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.userRoleNames = response.data.data;
+          }
+        });
+    },
+    initializeHeaders() {
+      // initialize header with role names
+      this.roles.forEach((role) => {
+        this.headers.push({ text: role, value: role, align: 'center' });
       });
     },
+    initializeUsers() {
+      // initialize user items with id, username, and corresponding role booleans
+      this.userRoleNames.forEach((user, userIndex) => {
+        this.userItems.push({ id: user.userId, username: user.userName });
+        this.roles.forEach((role) => {
+          this.userItems[userIndex][role] = user.roleNames === null ? false : user.roleNames.includes(role);
+        });
+      });
+    },
+    async editRoleToUser() {
+      const addition = [];
+      const deletion = [];
+
+      Object.keys(this.originalUser).forEach((role) => {
+        if (this.originalUser[role] !== this.editedUser[role]) {
+          if (this.editedUser[role] === false) {
+            deletion.push(role);
+          } else {
+            addition.push(role);
+          }
+        }
+      });
+
+      if (addition.length !== 0) {
+        await util
+          .post(
+            `${util.getEnvUrl()}/admin/auth/user/add/roles`,
+            {
+              uid: this.originalUser.id,
+              rName: addition,
+            },
+            this.$router
+          )
+          .then((response) => {
+            this.setDialogStatus(response);
+          });
+      }
+      if (deletion.length !== 0) {
+        await util
+          .post(
+            `${util.getEnvUrl()}/admin/auth/user/delete/roles`,
+            {
+              uid: this.originalUser.id,
+              rName: deletion,
+            },
+            this.$router
+          )
+          .then((response) => {
+            this.setDialogStatus(response);
+          });
+      }
+      await this.getUserRoles();
+      this.userItems = [];
+      this.initializeUsers();
+    },
     setDialogStatus(response) {
-      if (response.data.message === 'OK') this.successDialog = true;
+      if (response.data.code === 10000) this.successDialog = true;
       else {
         this.failureDialog = true;
       }

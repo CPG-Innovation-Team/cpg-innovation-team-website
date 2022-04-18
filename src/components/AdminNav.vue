@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode';
 import util from '../util';
 
 export default {
@@ -53,7 +54,6 @@ export default {
       roleNames: [],
       permissions: [],
       timer: null,
-      mouseoverCallback: null,
     };
   },
   computed: {
@@ -76,23 +76,19 @@ export default {
     if (localStorage.routes) {
       this.initializeRoutes();
     }
-    this.mouseoverCallback = util.debounce(function func() {
-      localStorage.lastClickTime = new Date().getTime();
-    }, 3000);
-    if (this.token !== '') {
-      window.addEventListener('mouseover', this.mouseoverCallback, true);
-    }
   },
   mounted() {
     // 0.5 hour = 1000 * 60 * 30 ms
-    // if the user is logged in, create timer, check timeout every 30 minutes
+    // if the user is logged in
     if (this.token !== '') {
+      // when user opens the page, check timeout immediately
+      this.checkTimeOut();
+      // then check timeout every 30 mins
       this.timer = setInterval(this.checkTimeOut, 1000 * 60 * 30);
     }
   },
   beforeDestroy() {
-    window.removeEventListener('mouseover', this.mouseoverCallback, true);
-    clearTimeout(this.timer);
+    clearInterval(this.timer);
   },
   methods: {
     initializeRoutes() {
@@ -184,11 +180,10 @@ export default {
       });
     },
     checkTimeOut() {
-      const timeOut = 1000 * 60 * 60;
-      const currentTime = new Date().getTime();
-      const lastTime = localStorage.lastClickTime;
-      // if the last click time is longer than 1 hour, then log out
-      if (currentTime - lastTime > timeOut) {
+      const currentTime = parseInt(new Date().getTime() / 1000, 10);
+      const expTime = jwtDecode(this.token).exp;
+      // if the time difference is longer than 1 hour, then redirect to login
+      if (currentTime >= expTime) {
         this.clearUserInfo();
         this.$router.push('/login');
         clearInterval(this.timer);
@@ -205,7 +200,6 @@ export default {
       this.username = '';
       this.avatar = null;
       util.clearLocalStorage();
-      window.removeEventListener('mouseover', this.mouseoverCallback, true);
     },
   },
 };

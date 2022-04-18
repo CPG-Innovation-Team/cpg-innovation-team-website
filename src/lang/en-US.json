@@ -9,7 +9,9 @@
     "recruitment": "Recruitment",
     "about": "About",
     "blog": "Blog",
-    "login": "Login"
+    "login": "Login",
+    "myBlogs": "My blogs",
+    "logout": "Log out"
   },
   "dialogMsg": {
     "confirm": "Confirm",
@@ -44,6 +46,8 @@
     "invalidMsg": "Entered information is invalid, please try again"
   },
   "blog": {
+    "title": "Blog",
+    "subtitle": "CP Group Innovation Center Blog",
     "mostPopular": "Most Popular",
     "likes": "Likes",
     "allPosts": "All Articles",
@@ -93,6 +97,48 @@
       "announcement": "Announcement",
       "changePwd": "Change Password",
       "logout": "Log out"
+    },
+    "profile": {
+      "admin": "Super Manager",
+      "user": "User",
+      "title": "Profile",
+      "username": "Username",
+      "email": "Email",
+      "gender": "Gender",
+      "female": "Female",
+      "male": "Male",
+      "unspecified": "Unspecified",
+      "pwdTitle": "Enter your password to save changes",
+      "password": "Password",
+      "avatar": "Avatar",
+      "nickname": "Nickname",
+      "introduction": "Introduction",
+      "saveBtn": "Save",
+      "response": {
+        "confirmBtn": "Confirm",
+        "required": "Required",
+        "emptyPwdNotAllowed": "The password can't be empty",
+        "wrongPwd": "Wrong password, failed to save changes",
+        "successMsg": "The information is saved!",
+        "failureMsg": "The information failed to save"
+      }
+    },
+    "changePwd": {
+      "title": "Change Password",
+      "oldPwd": "Old Password",
+      "newPwd": "New Password",
+      "repeatedPwd": "Repeat new password",
+      "confirmBtn": "Confirm",
+      "required": "Required",
+      "digitAlphabet": "The password must contain numbers and alphabets",
+      "min": "Min 8 characters, max 32 characters",
+      "match": "The two passwords you entered don't match",
+      "emptyPwdNotAllowed": "Password cannot be empty",
+      "wrongPwd": "Wrong password",
+      "dismatchPwd": "The two passwords don't match",
+      "newPwdNotValid": "The new password doesn't satisfy the rules",
+      "successMsg": "The password is successfully saved!",
+      "failureMsg": "The password is failed to save"
     },
     "announcement": {
       "title": "Announcement",

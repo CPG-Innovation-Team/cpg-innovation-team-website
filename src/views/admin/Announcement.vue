@@ -2,7 +2,7 @@
   <div class="layout">
     <AdminNav />
     <v-main style="background: whitesmoke">
-      <v-card class="ma-4">
+      <v-card class="ma-4" elevation="0">
         <v-card-title> {{ localeMsg.title }} </v-card-title>
         <v-card-text
           ><v-radio-group v-model="value" row>

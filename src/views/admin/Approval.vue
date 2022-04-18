@@ -20,115 +20,156 @@
         </template>
       </v-data-table>
 
-      <v-data-table :headers="cheaders" :items="comments" sort-by="modified" class="elevation-1">
+      <v-data-table
+        v-model="selectedComments"
+        :headers="cheaders"
+        :items="comments"
+        item-key="cid"
+        sort-by="modified"
+        class="elevation-1"
+        show-select
+      >
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>All Pending Comments</v-toolbar-title>
           </v-toolbar>
         </template>
+        <template v-slot:[`item.data-table-select`]="{ isSelected, select }">
+          <v-simple-checkbox :value="isSelected" @input="select($event)" :ripple="false"></v-simple-checkbox>
+        </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
             {{ item.content }}
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            text
-            @click="
-              commentAndReplyDialog = true;
-              commentApproveBool = true;
-              currentComment = item;
-            "
-          >
-            通过
-          </v-btn>
-          <v-btn
-            text
-            @click="
-              commentAndReplyDialog = true;
-              commentApproveBool = false;
-            "
-          >
-            不通过
-          </v-btn>
+          <v-btn text @click="setCommentItem(true, true, item)"> 通过 </v-btn>
+          <v-btn text @click="setCommentItem(true, false, item)"> 不通过 </v-btn>
+        </template>
+        <template v-slot:[`body.append`]>
+          <td></td>
+          <td></td>
+          <td></td>
+          <div class="d-flex justify-center">
+            <td>
+              <v-btn
+                class="ma-2"
+                color="primary"
+                depressed
+                small
+                :disabled="checkCommentBtnDisabled()"
+                @click="setCommentItem(true, true, selectedComments)"
+              >
+                批量通过
+              </v-btn>
+              <v-btn
+                class="ma-2"
+                color="primary"
+                depressed
+                small
+                :disabled="checkCommentBtnDisabled()"
+                @click="setCommentItem(true, false, selectedComments)"
+              >
+                批量不通过
+              </v-btn>
+            </td>
+          </div>
         </template>
       </v-data-table>
 
-      <v-data-table :headers="rheaders" :items="replies" sort-by="modified" class="elevation-1">
+      <v-data-table
+        v-model="selectedReplies"
+        :headers="rheaders"
+        :items="replies"
+        item-key="rid"
+        sort-by="modified"
+        class="elevation-1"
+        show-select
+      >
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>All Pending Replies</v-toolbar-title>
           </v-toolbar>
         </template>
+        <template v-slot:[`item.data-table-select`]="{ isSelected, select }">
+          <v-simple-checkbox :value="isSelected" @input="select($event)" :ripple="false"></v-simple-checkbox>
+        </template>
         <template v-slot:[`item.content`]="{ item }">
           <div class="text-truncate" style="max-width: 130px">
             {{ item.content }}
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            text
-            @click="
-              commentAndReplyDialog = true;
-              replyApproveBool = true;
-              currentReply = item;
-            "
-          >
-            通过
-          </v-btn>
-          <v-btn
-            text
-            @click="
-              commentAndReplyDialog = true;
-              replyApproveBool = false;
-            "
-          >
-            不通过
-          </v-btn>
+          <v-btn text @click="setReplyItem(true, true, item)"> 通过 </v-btn>
+          <v-btn text @click="setReplyItem(true, false, item)"> 不通过 </v-btn>
+        </template>
+        <template v-slot:[`body.append`]>
+          <td></td>
+          <td></td>
+          <td></td>
+          <div class="d-flex justify-center">
+            <td>
+              <v-btn
+                class="ma-2"
+                color="primary"
+                depressed
+                small
+                :disabled="checkReplyBtnDisabled()"
+                @click="setReplyItem(true, true, selectedReplies)"
+              >
+                批量通过
+              </v-btn>
+              <v-btn
+                class="ma-2"
+                color="primary"
+                depressed
+                small
+                :disabled="checkReplyBtnDisabled()"
+                @click="setReplyItem(true, false, selectedReplies)"
+              >
+                批量不通过
+              </v-btn>
+            </td>
+          </div>
         </template>
       </v-data-table>
 
-      <v-dialog v-model="commentAndReplyDialog" max-width="500px">
+      <v-dialog v-model="commentDialog" max-width="500px">
         <v-card>
-          <v-card-title v-if="commentApproveBool === true || replyApproveBool === true">
-            确认审核通过吗？
-          </v-card-title>
+          <v-card-title v-if="commentApproveBool === true"> 确认审核通过吗？ </v-card-title>
           <v-card-title v-else> 确认审核不通过吗？ </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="commentDialog = false"> Cancel </v-btn>
             <v-btn
-              v-if="commentApproveBool === true || replyApproveBool === true"
+              v-if="commentApproveBool === true"
               color="blue darken-1"
               text
-              @click="
-                if (commentApproveBool === true) {
-                  approveComment(currentComment, true);
-                }
-                if (replyApproveBool === true) {
-                  approveReply(currentReply, true);
-                }
-                commentAndReplyDialog = false;
-              "
+              @click="approveComment(currentComment, true)"
             >
               Confirm
             </v-btn>
+            <v-btn v-else color="blue darken-1" text @click="approveComment(currentComment, false)"> Confirm </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="replyDialog" max-width="500px">
+        <v-card>
+          <v-card-title v-if="replyApproveBool === true"> 确认审核通过吗？ </v-card-title>
+          <v-card-title v-else> 确认审核不通过吗？ </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="replyDialog = false"> Cancel </v-btn>
             <v-btn
-              v-else
+              v-if="replyApproveBool === true"
               color="blue darken-1"
               text
-              @click="
-                if (commentApproveBool === false) {
-                  approveComment(currentComment, false);
-                }
-                if (replyApproveBool === false) {
-                  approveReply(currentReply, false);
-                }
-                commentAndReplyDialog = false;
-              "
+              @click="approveReply(currentReply, true)"
             >
               Confirm
             </v-btn>
+            <v-btn v-else color="blue darken-1" text @click="approveReply(currentReply, false)"> Confirm </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -187,9 +228,12 @@ export default {
       // for comment and reply approval
       commentApproveBool: false,
       replyApproveBool: false,
-      commentAndReplyDialog: false,
-      currentComment: '',
-      currentReply: '',
+      commentDialog: false,
+      replyDialog: false,
+      currentComment: null,
+      currentReply: null,
+      selectedComments: [],
+      selectedReplies: [],
     };
   },
   components: {
@@ -248,23 +292,48 @@ export default {
         }
       });
     },
+    checkCommentBtnDisabled() {
+      // disable the button if no comment is selected
+      return this.selectedComments.length === 0;
+    },
+    checkReplyBtnDisabled() {
+      // disable the button if no reply is selected
+      return this.selectedReplies.length === 0;
+    },
+    setCommentItem(dialogBool, approveBool, item) {
+      this.commentDialog = dialogBool;
+      this.commentApproveBool = approveBool;
+      this.currentComment = item;
+    },
+    setReplyItem(dialogBool, approveBool, item) {
+      this.replyDialog = dialogBool;
+      this.replyApproveBool = approveBool;
+      this.currentReply = item;
+    },
     async approveComment(item, bool) {
+      this.commentDialog = false;
+      // check if item is a single object or an array of objects
+      const ids = item.length === undefined ? [item.cid] : item.map((comment) => comment.cid);
       await util
-        .post(`${util.getEnvUrl()}/admin/review/comment`, { commentId: item.cid, state: bool }, this.$router)
+        .post(`${util.getEnvUrl()}/admin/review/comment`, { commentId: ids, state: bool }, this.$router)
         .then((response) => {
           this.checkSuccess(response);
+          this.commentApproveBool = false;
+          this.comments = [];
+          this.getCommentList();
         });
-      this.comments = [];
-      this.getCommentList();
     },
     async approveReply(item, bool) {
+      this.replyDialog = false;
+      const ids = item.length === undefined ? [item.rid] : item.map((comment) => comment.rid);
       await util
-        .post(`${util.getEnvUrl()}/admin/review/reply`, { replyId: item.rid, state: bool }, this.$router)
+        .post(`${util.getEnvUrl()}/admin/review/reply`, { replyId: ids, state: bool }, this.$router)
         .then((response) => {
           this.checkSuccess(response);
+          this.replyApproveBool = false;
+          this.replies = [];
+          this.getReplyList();
         });
-      this.replies = [];
-      this.getReplyList();
     },
     close() {
       this.successDialog = false;

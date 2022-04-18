@@ -17,16 +17,6 @@
               outlined
               @keyup.enter="search(searchText)"
             ></v-text-field>
-            <v-dialog v-model="deleteDialog" max-width="500px">
-              <v-card>
-                <v-card-title> Are you sure you want to delete this article? </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-                  <v-btn color="blue darken-1" text @click="deleteArticle"> Confirm </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
             <v-spacer></v-spacer>
             <router-link to="/admin/blogs/create">
               <v-btn color="primary" dark class="mb-2"> New Blog </v-btn>
@@ -39,15 +29,52 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <router-link
-            class="icon-link"
-            :to="{ path: '/admin/blogs/update', query: { sn: item.sn, state: item.state } }"
-          >
+          <router-link class="icon-link" :to="{ path: '/admin/blogs/update', query: { sn: item.sn } }">
             <v-icon small class="ml-4"> mdi-pencil </v-icon>
           </router-link>
           <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
+
+      <v-dialog v-model="deleteDialog" max-width="500px">
+        <v-card>
+          <v-card-title> Are you sure you want to delete this article? </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close()"> Cancel </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="
+                deleteDialog = false;
+                deleteArticle();
+              "
+            >
+              Confirm
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="successDialog" max-width="500px">
+        <v-card>
+          <v-card-title> Success! </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close()"> Confirm </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="failureDialog" max-width="500px">
+        <v-card>
+          <v-card-title> Something went wrong... </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close()"> Confirm </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
       <v-data-table :headers="headers" :items="deletedBlogs" sort-by="modified" class="elevation-1">
         <template v-slot:top>
@@ -63,7 +90,9 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small class="ml-4" @click="editDeleteArticle(item)"> mdi-delete </v-icon>
+          <router-link class="icon-link" :to="{ path: '/admin/blogs/update', query: { sn: item.sn } }">
+            <v-icon small class="ml-4"> mdi-pencil </v-icon>
+          </router-link>
         </template>
       </v-data-table>
     </v-main>
@@ -80,6 +109,8 @@ export default {
   },
   data: () => ({
     deleteDialog: false,
+    successDialog: false,
+    failureDialog: false,
     searchText: '',
     headers: [
       {
@@ -116,37 +147,50 @@ export default {
           this.$router
         )
         .then((response) => {
-          this.blogs = [];
-          response.data.data.ArticleDetailList.forEach((blog) => {
-            this.updateBlogs(this.blogs, blog);
-          });
+          if (response.data.code === 10000) {
+            this.blogs = [];
+            if (response.data.data.ArticleDetailList !== null) {
+              response.data.data.ArticleDetailList.forEach((blog) => {
+                this.updateBlogs(this.blogs, blog);
+              });
+            }
+          }
         });
     },
     close() {
       this.deleteDialog = false;
+      this.successDialog = false;
+      this.failureDialog = false;
     },
     editDeleteArticle(item) {
       this.deleteDialog = true;
       this.editArticle = item;
     },
     async deleteArticle() {
-      await util.post(
-        `${util.getEnvUrl()}/admin/article/delete`,
-        {
-          sn: this.editArticle.sn,
-        },
-        this.$router
-      );
-
-      this.deleteDialog = false;
-      this.blogs = [];
-      this.getArticleList();
+      await util
+        .post(
+          `${util.getEnvUrl()}/admin/article/delete`,
+          {
+            sn: this.editArticle.sn,
+          },
+          this.$router
+        )
+        .then((response) => {
+          if (response.data.code === 10000) {
+            this.successDialog = true;
+            this.blogs = [];
+            this.getArticleList();
+          } else {
+            this.failureDialog = true;
+          }
+        });
     },
     async getArticleList() {
       await util
         .post(
           `${util.getEnvUrl()}/admin/article/list`,
           {
+            isAllMyselfArticles: localStorage.isRoot === undefined,
             article: {
               state: 1,
             },
@@ -154,10 +198,12 @@ export default {
           this.$router
         )
         .then((response) => {
-          if (response.data.data) {
-            response.data.data.ArticleDetailList.forEach((blog) => {
-              this.updateBlogs(this.blogs, blog);
-            });
+          if (response.data.code === 10000) {
+            if (response.data.data.ArticleDetailList !== null) {
+              response.data.data.ArticleDetailList.forEach((blog) => {
+                this.updateBlogs(this.blogs, blog);
+              });
+            }
           }
         });
     },
@@ -166,6 +212,7 @@ export default {
         .post(
           `${util.getEnvUrl()}/admin/article/list`,
           {
+            isAllMyselfArticles: localStorage.isRoot === undefined,
             article: {
               state: 3,
             },
@@ -173,10 +220,12 @@ export default {
           this.$router
         )
         .then((response) => {
-          if (response.data.data) {
-            response.data.data.ArticleDetailList.forEach((blog) => {
-              this.updateBlogs(this.deletedBlogs, blog);
-            });
+          if (response.data.code === 10000) {
+            if (response.data.data.ArticleDetailList !== null) {
+              response.data.data.ArticleDetailList.forEach((blog) => {
+                this.updateBlogs(this.deletedBlogs, blog);
+              });
+            }
           }
         });
     },

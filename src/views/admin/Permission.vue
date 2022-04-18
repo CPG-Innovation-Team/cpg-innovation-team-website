@@ -65,17 +65,7 @@
             </div>
           </template>
           <template v-slot:[`item.action`]="{ item }">
-            <v-icon
-              small
-              class="ml-4"
-              @click="
-                editDialog = true;
-                originalRoleItem = item;
-                setEditRoleItem(item);
-              "
-            >
-              mdi-pencil
-            </v-icon>
+            <v-icon small class="ml-4" @click="setEditRoleItem(item)"> mdi-pencil </v-icon>
           </template>
           <template v-for="permission in permissions" v-slot:[`item.${permission}`]="{ item }">
             <v-simple-checkbox class="checkbox-color" disabled v-model="item[permission]" :key="permission" />
@@ -89,7 +79,8 @@
 
         <v-dialog v-model="editDialog" max-width="800px">
           <v-card class="pa-4">
-            <v-card-title> 角色添加权限 </v-card-title>
+            <v-card-title> 角色编辑权限 </v-card-title>
+            <v-card-text> 角色: {{ editRoleItem.name }} </v-card-text>
             <v-card-text>
               <v-row dense>
                 <v-col cols="3" v-for="permission in permissions" :key="permission">
@@ -236,13 +227,15 @@ export default {
       }
     },
     setEditRoleItem(item) {
+      this.editDialog = true;
+      this.originalRoleItem = item;
       // make a copy of the role that is being edited
       this.editRoleItem = { ...item };
     },
     initializeHeaders() {
       // initialize data table headers for all permissions
       this.permissions.forEach((permission) => {
-        this.headers.push({ text: permission, value: permission, width: '80px', align: 'center' });
+        this.headers.push({ text: permission, value: permission, align: 'center' });
       });
     },
     initializeRoleItems() {
@@ -354,7 +347,6 @@ export default {
             this.$router
           )
           .then((response) => {
-            console.log(response);
             this.setDialogStatus(response);
           });
       }

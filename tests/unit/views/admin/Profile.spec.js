@@ -1,23 +1,35 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import Profile from '@/views/admin/Profile.vue';
 import Vue from 'vue';
+import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
+import i18n from '@/plugins/vue-i18n';
+import VueI18n from 'vue-i18n';
 
 Vue.use(VueRouter);
+Vue.use(VueI18n);
+
+const router = new VueRouter();
+const vuetify = new Vuetify();
 
 jest.mock('axios', () => ({
   post: jest.fn(() => Promise.resolve({ data: {} })),
 }));
 
 describe('Admin profile page', () => {
-  it('The adminNav bar and axios is rendered', () => {
-    const wrapper = shallowMount(Profile);
-    expect(wrapper.exists()).toBe(true);
+  let wrapper;
+  beforeEach(() => {
+    wrapper = mount(Profile, {
+      mocks: {
+        $t: (msg) => i18n.messages['zh-CN'][msg],
+      },
+      stubs: ['router-link', 'router-view'],
+      vuetify,
+      router,
+    });
   });
 
-  it('showRole() returns `User` when isRoot is 0', () => {
-    const wrapper = shallowMount(Profile);
-    const output = wrapper.vm.showRole();
-    expect(output).toBe('User');
+  it('The adminNav bar and axios is rendered', () => {
+    expect(wrapper.exists()).toBe(true);
   });
 });

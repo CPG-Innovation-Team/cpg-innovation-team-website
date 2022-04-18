@@ -184,4 +184,9 @@ export default {
 .layout {
   display: flex;
 }
+
+.nav-img {
+  width: 200px;
+  margin-left: 1%;
+}
 </style>

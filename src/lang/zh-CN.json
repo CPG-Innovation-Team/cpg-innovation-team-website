@@ -9,7 +9,9 @@
     "recruitment": "招聘信息",
     "about": "关于我们",
     "blog": "博客",
-    "login": "登录"
+    "login": "登录",
+    "myBlogs": "我的博客",
+    "logout": "登出"
   },
   "dialogMsg": {
     "confirm": "确认",
@@ -44,6 +46,8 @@
     "invalidMsg": "信息输入不符合规则，请重新输入"
   },
   "blog": {
+    "title": "博客",
+    "subtitle": "正大创新项目中心博客",
     "mostPopular": "最受欢迎",
     "likes": "点赞数",
     "allPosts": "所有文章",
@@ -93,6 +97,48 @@
       "announcement": "公告管理",
       "changePwd": "更改密码",
       "logout": "登出"
+    },
+    "profile": {
+      "admin": "超级管理员",
+      "user": "普通用户",
+      "title": "用户信息",
+      "username": "用户名",
+      "email": "邮箱",
+      "gender": "性别",
+      "female": "女",
+      "male": "男",
+      "unspecified": "保密",
+      "pwdTitle": "请输入密码",
+      "password": "密码",
+      "avatar": "头像",
+      "nickname": "昵称",
+      "introduction": "自我介绍",
+      "saveBtn": "保存",
+      "response": {
+        "confirmBtn": "确认",
+        "required": "必填",
+        "emptyPwdNotAllowed": "密码不可为空",
+        "wrongPwd": "密码错误，修改失败",
+        "successMsg": "信息修改成功",
+        "failureMsg": "信息修改失败"
+      }
+    },
+    "changePwd": {
+      "title": "修改密码",
+      "oldPwd": "旧密码",
+      "newPwd": "新密码",
+      "repeatedPwd": "再次输入新密码",
+      "confirmBtn": "确认",
+      "required": "必填",
+      "digitAlphabet": "密码必须同时包含数字和字母",
+      "min": "密码最少8个字符，最多32个字符",
+      "match": "新密码不匹配",
+      "emptyPwdNotAllowed": "密码不可为空",
+      "wrongPwd": "旧密码不正确",
+      "dismatchPwd": "密码不匹配",
+      "newPwdNotValid": "新密码不符合规则",
+      "successMsg": "密码保存成功",
+      "failureMsg": "密码保存失败"
     },
     "announcement": {
       "title": "公告",
