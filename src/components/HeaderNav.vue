@@ -204,7 +204,6 @@ export default {
       const expTime = jwtDecode(this.token).exp;
       // if the time difference is longer than 1 hour, then log out
       if (currentTime >= expTime) {
-        console.log('timeout');
         this.clearUserInfo();
         clearInterval(this.timer);
       }
