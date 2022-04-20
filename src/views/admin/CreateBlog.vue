@@ -9,7 +9,7 @@
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col class="label" cols="1">
-                  <label>Title</label>
+                  <label>{{ localeMsg.title }}</label>
                 </v-col>
                 <v-col>
                   <v-text-field
@@ -25,7 +25,7 @@
 
               <v-row>
                 <v-col cols="1" class="label">
-                  <span>Cover</span>
+                  <span>{{ localeMsg.cover }}</span>
                 </v-col>
                 <v-col>
                   <v-text-field
@@ -41,7 +41,7 @@
 
               <v-row>
                 <v-col class="label" cols="1">
-                  <label>Tag</label>
+                  <label>{{ localeMsg.tags }}</label>
                 </v-col>
                 <v-col>
                   <v-select :items="tags" v-model="tag" clearable outlined data-test-id="blog-tag-input"></v-select>
@@ -50,7 +50,7 @@
 
               <v-row>
                 <v-col class="label" cols="1">
-                  <label>Content</label>
+                  <label>{{ localeMsg.content }}</label>
                 </v-col>
                 <v-col>
                   <Editor :content="editingContent" v-model="content" :editorBool="true" :inCreate="true" />
@@ -59,8 +59,10 @@
 
               <v-row>
                 <v-col class="text-right">
-                  <v-btn color="normal" class="mr-4" @click="$router.go(-1)">Back</v-btn>
-                  <v-btn color="primary" @click="submit" data-test-id="create-blog-submit">Submit</v-btn>
+                  <v-btn color="normal" depressed class="mr-4" @click="$router.go(-1)">{{ localeMsg.cancelBtn }}</v-btn>
+                  <v-btn color="primary" depressed @click="submit" data-test-id="create-blog-submit">{{
+                    localeMsg.submitBtn
+                  }}</v-btn>
                 </v-col>
               </v-row>
             </v-form>
@@ -70,10 +72,12 @@
                   <template>
                     <v-card>
                       <v-card-text>
-                        <div class="text-h6 pa-6">提交成功，进入审核状态</div>
+                        <div class="text-h6 pa-6">{{ localeMsg.successMsg }}</div>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="closeSuccessDialog()" data-test-id="confirm-button">Confirm</v-btn>
+                        <v-btn text @click="closeSuccessDialog()" data-test-id="confirm-button">{{
+                          localeMsg.confirmBtn
+                        }}</v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -82,10 +86,12 @@
                   <template>
                     <v-card>
                       <v-card-text>
-                        <div class="text-h6 pa-6">提交失败</div>
+                        <div class="text-h6 pa-6">{{ localeMsg.failureMsg }}</div>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="closeFailureDialog()" data-test-id="confirm-button">Confirm</v-btn>
+                        <v-btn text @click="closeFailureDialog()" data-test-id="confirm-button">{{
+                          localeMsg.confirmBtn
+                        }}</v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -94,10 +100,12 @@
                   <template>
                     <v-card>
                       <v-card-text>
-                        <div class="text-h6 pa-6">标题和正文内容不可为空</div>
+                        <div class="text-h6 pa-6">{{ localeMsg.warningMsg }}</div>
                       </v-card-text>
                       <v-card-actions class="justify-end">
-                        <v-btn text @click="closeFailureDialog()" data-test-id="confirm-button">Confirm</v-btn>
+                        <v-btn text @click="closeFailureDialog()" data-test-id="confirm-button">{{
+                          localeMsg.confirmBtn
+                        }}</v-btn>
                       </v-card-actions>
                     </v-card>
                   </template>
@@ -124,8 +132,12 @@ export default {
       title: '',
       cover: '',
       content: '',
-      tag: 'All',
-      tags: ['All', 'Technology', 'Agriculture'],
+      tag: `${this.$t('categories.all')}`,
+      tags: [
+        `${this.$t('categories.all')}`,
+        `${this.$t('categories.technology')}`,
+        `${this.$t('categories.agriculture')}`,
+      ],
       successDialog: false,
       failureDialog: false,
       warningDialog: false,
@@ -136,6 +148,22 @@ export default {
   components: {
     AdminNav,
     Editor,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        title: this.$t('admin.newBlog.title'),
+        cover: this.$t('admin.newBlog.cover'),
+        tags: this.$t('admin.newBlog.tags'),
+        content: this.$t('admin.newBlog.content'),
+        confirmBtn: this.$t('admin.newBlog.confirmBtn'),
+        cancelBtn: this.$t('admin.newBlog.cancelBtn'),
+        submitBtn: this.$t('admin.newBlog.submitBtn'),
+        successMsg: this.$t('admin.newBlog.successMsg'),
+        failureMsg: this.$t('admin.newBlog.failureMsg'),
+        warningMsg: this.$t('admin.newBlog.warningMsg'),
+      };
+    },
   },
   created() {
     util.checkAccess('blogs', this.$router);
