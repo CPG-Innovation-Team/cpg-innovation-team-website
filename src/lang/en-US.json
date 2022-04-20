@@ -140,6 +140,32 @@
       "successMsg": "The password is successfully saved!",
       "failureMsg": "The password is failed to save"
     },
+    "blogs": {
+      "allActiveBlogs": "All Active Blogs",
+      "search": "Search",
+      "title": "Title",
+      "tags": "Tags",
+      "content": "Content",
+      "viewNum": "Views Num",
+      "commentNum": "Comments Num",
+      "likeNum": "Likes Num",
+      "action": "Action",
+      "newBlog": "New Blog",
+      "allDeletedBlogs": "All Deleted Blogs",
+      "dialog": {
+        "confirmToDelete": "Are you sure to delete this blog?",
+        "confirmBtn": "Confirm",
+        "cancelBtn": "Cancel",
+        "successMsg": "Successfully deleted!",
+        "failureMsg": "Failed to delete"
+      }
+    },
+    "updateBlog": {
+      "pageTitle": "Edit Blog",
+      "title": "Title",
+      "cover": "Cover",
+      "tags": "Tags"
+    },
     "announcement": {
       "title": "Announcement",
       "radioBtn": {
