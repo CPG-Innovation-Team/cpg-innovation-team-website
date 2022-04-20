@@ -221,7 +221,7 @@ export default {
       this.lang = lang;
       this.flag = flag;
       document.title = this.$t('title');
-
+      this.$vuetify.lang.current = locale === 'zh-CN' ? 'zhHans' : 'en';
       Event.$emit('change-lang', locale);
     },
     search() {
