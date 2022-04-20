@@ -164,7 +164,23 @@
       "pageTitle": "编辑博客",
       "title": "标题",
       "cover": "封面",
-      "tags": "标签"
+      "tags": "标签",
+      "confirmBtn": "确认",
+      "cancelBtn": "取消",
+      "successMsg": "编辑成功！进入审核状态",
+      "failureMsg": "编辑失败"
+    },
+    "newBlog": {
+      "title": "标题",
+      "cover": "封面",
+      "tags": "标签",
+      "content": "内容",
+      "confirmBtn": "确认",
+      "cancelBtn": "取消",
+      "submitBtn": "提交",
+      "successMsg": "提交成功，进入审核状态",
+      "failureMsg": "提交失败",
+      "warningMsg": "标题和正文内容不可为空"
     },
     "announcement": {
       "title": "公告",
