@@ -78,7 +78,7 @@
       </v-dialog>
       <v-dialog v-model="successDialog" max-width="500px">
         <v-card>
-          <v-card-title> {{ localeMsg.successMsg }}! </v-card-title>
+          <v-card-title> {{ localeMsg.successMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
