@@ -182,6 +182,21 @@
       "failureMsg": "提交失败",
       "warningMsg": "标题和正文内容不可为空"
     },
+    "users": {
+      "title": "用户列表",
+      "search": "搜索",
+      "userAndRole": "用户名\\角色",
+      "action": "编辑角色",
+      "dialog": {
+        "editRole": "用户编辑角色",
+        "user": "用户",
+        "cancelBtn": "取消",
+        "saveBtn": "保存",
+        "confirmBtn": "确认",
+        "successMsg": "保存成功！",
+        "failureMsg": "保存失败"
+      }
+    },
     "announcement": {
       "title": "公告",
       "radioBtn": {

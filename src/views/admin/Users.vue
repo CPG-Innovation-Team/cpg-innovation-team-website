@@ -6,7 +6,7 @@
         <v-data-table :headers="headers" :items="userItems" sort-by="level" style="height: 100vh">
           <template v-slot:top>
             <v-toolbar flat color="white">
-              <v-toolbar-title>Users</v-toolbar-title>
+              <v-toolbar-title>{{ localeMsg.title }}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-text-field
                 v-model="search"
@@ -30,8 +30,8 @@
 
         <v-dialog v-model="editDialog" max-width="800px">
           <v-card class="pa-4">
-            <v-card-title> 用户编辑角色 </v-card-title>
-            <v-card-text> 用户: {{ editedUser.username }}</v-card-text>
+            <v-card-title> {{ localeMsg.editRole }} </v-card-title>
+            <v-card-text> {{ localeMsg.user }}: {{ editedUser.username }}</v-card-text>
             <v-card-text>
               <v-row dense>
                 <v-col cols="3" v-for="role in roles" :key="role">
@@ -41,27 +41,27 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn depressed color="primary" @click="editRoleToUser()"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
+              <v-btn depressed color="primary" @click="editRoleToUser()"> {{ localeMsg.saveBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
         <v-dialog v-model="successDialog" max-width="500px">
           <v-card>
-            <v-card-title> Success! </v-card-title>
+            <v-card-title> {{ localeMsg.successMsg }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="failureDialog" max-width="500px">
           <v-card>
-            <v-card-title> Something went wrong... </v-card-title>
+            <v-card-title> {{ localeMsg.failureMsg }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -78,32 +78,49 @@ export default {
   components: {
     AdminNav,
   },
-  data: () => ({
-    editDialog: false,
-    successDialog: false,
-    failureDialog: false,
-    search: '',
-    headers: [
-      {
-        text: 'ID',
-        sortable: true,
-        value: 'id',
-      },
-      {
-        text: '用户名\\角色',
-        align: 'start',
-        sortable: true,
-        value: 'username',
-      },
-      { text: '编辑角色', value: 'action', sortable: false, align: 'end' },
-    ],
-    users: [],
-    roles: [],
-    userRoleNames: [],
-    userItems: [],
-    editedUser: {},
-    originalUser: {},
-  }),
+  data() {
+    return {
+      editDialog: false,
+      successDialog: false,
+      failureDialog: false,
+      search: '',
+      headers: [
+        {
+          text: 'ID',
+          sortable: true,
+          value: 'id',
+        },
+        {
+          text: this.$t('admin.users.userAndRole'),
+          align: 'start',
+          sortable: true,
+          value: 'username',
+        },
+        { text: this.$t('admin.users.action'), value: 'action', sortable: false, align: 'end' },
+      ],
+      users: [],
+      roles: [],
+      userRoleNames: [],
+      userItems: [],
+      editedUser: {},
+      originalUser: {},
+    };
+  },
+  computed: {
+    localeMsg() {
+      return {
+        title: this.$t('admin.users.title'),
+        search: this.$t('admin.users.search'),
+        editRole: this.$t('admin.users.dialog.editRole'),
+        user: this.$t('admin.users.dialog.user'),
+        cancelBtn: this.$t('admin.users.dialog.cancelBtn'),
+        saveBtn: this.$t('admin.users.dialog.saveBtn'),
+        confirmBtn: this.$t('admin.users.dialog.confirmBtn'),
+        successMsg: this.$t('admin.users.dialog.successMsg'),
+        failureMsg: this.$t('admin.users.dialog.failureMsg'),
+      };
+    },
+  },
   async created() {
     util.checkAccess('users', this.$router);
     await this.getUserList();

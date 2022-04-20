@@ -182,6 +182,21 @@
       "failureMsg": "Failed to submit",
       "warningMsg": "The title and content cannot be empty"
     },
+    "users": {
+      "title": "Users",
+      "search": "Search",
+      "userAndRole": "User\\Role",
+      "action": "Edit Role",
+      "dialog": {
+        "editRole": "Edit Role for User",
+        "user": "User",
+        "cancelBtn": "Cancel",
+        "saveBtn": "Save",
+        "confirmBtn": "Confirm",
+        "successMsg": "Successfully saved!",
+        "failureMsg": "Failed to save"
+      }
+    },
     "announcement": {
       "title": "Announcement",
       "radioBtn": {
