@@ -2,7 +2,7 @@
   <div>
     <HeaderNav />
     <div class="header-container">
-      <img class="nav-img" src="../assets/img-carousel2.jpg" alt="header image" />
+      <img class="nav-img" src="../assets/bg-homepage.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-en">CP Group Innovation Center</p>
@@ -106,7 +106,6 @@ export default {
   }
   .nav-img {
     width: 100%;
-    height: 400px;
     opacity: 2;
   }
 }

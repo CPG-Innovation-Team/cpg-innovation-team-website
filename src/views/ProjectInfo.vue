@@ -2,7 +2,7 @@
   <div>
     <HeaderNav />
     <div class="header-container">
-      <img class="nav-img" src="../assets/img-carousel1.jpg" alt="header image" />
+      <img class="nav-img" src="../assets/bg-project-info.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-en">创新团队项目</p>
@@ -268,7 +268,6 @@ export default {
   }
   .nav-img {
     width: 100%;
-    height: 400px;
     opacity: 2;
   }
 }

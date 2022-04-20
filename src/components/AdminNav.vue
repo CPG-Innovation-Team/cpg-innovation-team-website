@@ -3,7 +3,7 @@
     <v-list dense nav class="py-0">
       <v-list-item>
         <router-link to="/">
-          <img class="mt-3 ml-5" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
+          <img class="mt-3 ml-5" width="136" height="34" src="../assets/icon-logo-black.svg" alt="logo image" />
         </router-link>
       </v-list-item>
 
