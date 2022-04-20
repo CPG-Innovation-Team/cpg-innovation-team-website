@@ -5,11 +5,11 @@
       <v-data-table :headers="headers" :items="blogs" sort-by="modified" class="elevation-1">
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>All Active Blogs</v-toolbar-title>
+            <v-toolbar-title>{{ localeMsg.allActiveBlogs }}</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-text-field
               v-model="searchText"
-              placeholder="Search"
+              :placeholder="localeMsg.search"
               append-icon="mdi-magnify"
               required
               dense
@@ -19,7 +19,7 @@
             ></v-text-field>
             <v-spacer></v-spacer>
             <router-link to="/admin/blogs/create">
-              <v-btn color="primary" dark class="mb-2"> New Blog </v-btn>
+              <v-btn color="primary" depressed class="mb-2"> {{ localeMsg.newBlog }} </v-btn>
             </router-link>
           </v-toolbar>
         </template>
@@ -38,10 +38,10 @@
 
       <v-dialog v-model="deleteDialog" max-width="500px">
         <v-card>
-          <v-card-title> Are you sure you want to delete this article? </v-card-title>
+          <v-card-title> {{ localeMsg.confirmToDelete }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close()"> Cancel </v-btn>
+            <v-btn color="blue darken-1" text @click="close()"> {{ localeMsg.cancelBtn }} </v-btn>
             <v-btn
               color="blue darken-1"
               text
@@ -50,7 +50,7 @@
                 deleteArticle();
               "
             >
-              Confirm
+              {{ localeMsg.confirmBtn }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -58,20 +58,20 @@
 
       <v-dialog v-model="successDialog" max-width="500px">
         <v-card>
-          <v-card-title> Success! </v-card-title>
+          <v-card-title> {{ localeMsg.successMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close()"> Confirm </v-btn>
+            <v-btn color="blue darken-1" text @click="close()"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
       <v-dialog v-model="failureDialog" max-width="500px">
         <v-card>
-          <v-card-title> Something went wrong... </v-card-title>
+          <v-card-title> {{ localeMsg.failureMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close()"> Confirm </v-btn>
+            <v-btn color="blue darken-1" text @click="close()"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -79,7 +79,7 @@
       <v-data-table :headers="headers" :items="deletedBlogs" sort-by="modified" class="elevation-1">
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>All Deleted Blogs</v-toolbar-title>
+            <v-toolbar-title>{{ localeMsg.allDeletedBlogs }}</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
           </v-toolbar>
@@ -107,26 +107,43 @@ export default {
   components: {
     AdminNav,
   },
-  data: () => ({
-    deleteDialog: false,
-    successDialog: false,
-    failureDialog: false,
-    searchText: '',
-    headers: [
-      {
-        text: '标题',
-        value: 'title',
-      },
-      { text: '标签', value: 'tags' },
-      { text: '内容', value: 'content' },
-      { text: '查阅数', value: 'viewNum' },
-      { text: '评论数', value: 'cmtNum' },
-      { text: '点赞数', value: 'likes' },
-      { text: '操作', value: 'actions', sortable: false, align: 'center' },
-    ],
-    blogs: [],
-    deletedBlogs: [],
-  }),
+  data() {
+    return {
+      deleteDialog: false,
+      successDialog: false,
+      failureDialog: false,
+      searchText: '',
+      headers: [
+        {
+          text: this.$t('admin.blogs.title'),
+          value: 'title',
+        },
+        { text: this.$t('admin.blogs.tags'), value: 'tags' },
+        { text: this.$t('admin.blogs.content'), value: 'content' },
+        { text: this.$t('admin.blogs.viewNum'), value: 'viewNum' },
+        { text: this.$t('admin.blogs.commentNum'), value: 'cmtNum' },
+        { text: this.$t('admin.blogs.likeNum'), value: 'likes' },
+        { text: this.$t('admin.blogs.action'), value: 'actions', sortable: false, align: 'center' },
+      ],
+      blogs: [],
+      deletedBlogs: [],
+    };
+  },
+  computed: {
+    localeMsg() {
+      return {
+        allActiveBlogs: this.$t('admin.blogs.allActiveBlogs'),
+        search: this.$t('admin.blogs.search'),
+        newBlog: this.$t('admin.blogs.newBlog'),
+        allDeletedBlogs: this.$t('admin.blogs.allDeletedBlogs'),
+        confirmToDelete: this.$t('admin.blogs.dialog.confirmToDelete'),
+        confirmBtn: this.$t('admin.blogs.dialog.confirmBtn'),
+        cancelBtn: this.$t('admin.blogs.dialog.cancelBtn'),
+        successMsg: this.$t('admin.blogs.dialog.successMsg'),
+        failureMsg: this.$t('admin.blogs.dialog.failureMsg'),
+      };
+    },
+  },
   created() {
     util.checkAccess('blogs', this.$router);
     this.getArticleList();

@@ -140,6 +140,32 @@
       "successMsg": "密码保存成功",
       "failureMsg": "密码保存失败"
     },
+    "blogs": {
+      "allActiveBlogs": "所有已上线博客",
+      "search": "搜索",
+      "title": "标题",
+      "tags": "标签",
+      "content": "内容",
+      "viewNum": "浏览量",
+      "commentNum": "评论数",
+      "likeNum": "点赞数",
+      "action": "操作",
+      "newBlog": "创建博客",
+      "allDeletedBlogs": "所有已删除博客",
+      "dialog": {
+        "confirmToDelete": "确定要删除该博客吗？",
+        "confirmBtn": "确认",
+        "cancelBtn": "取消",
+        "successMsg": "删除成功！",
+        "failureMsg": "删除失败"
+      }
+    },
+    "updateBlog": {
+      "pageTitle": "编辑博客",
+      "title": "标题",
+      "cover": "封面",
+      "tags": "标签"
+    },
     "announcement": {
       "title": "公告",
       "radioBtn": {
