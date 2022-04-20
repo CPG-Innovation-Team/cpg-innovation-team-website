@@ -213,6 +213,41 @@
       "failureMsg": "添加失败",
       "deleteMsg": "确定要删除以下角色吗？"
     },
+    "approval": {
+      "allPendingBlogs": "所有待审核博客",
+      "title": "标题",
+      "tags": "标签",
+      "content": "内容",
+      "action": "操作",
+      "detail": "查看详情",
+      "allPendingComments": "所有待审核评论",
+      "allPendingReplies": "所有待审核回复",
+      "approveBtn": "通过",
+      "disapproveBtn": "不通过",
+      "multiApproveBtn": "批量通过",
+      "multiDisapproveBtn": "批量不通过",
+      "cancelBtn": "取消",
+      "confirmBtn": "确认",
+      "approveMsg": "确认通过吗？",
+      "disapproveMsg": "确认不通过吗？",
+      "successMsg": "操作成功！",
+      "failureMsg": "操作失败"
+    },
+    "approveBlog": {
+      "backBtn": "返回",
+      "approveBtn": "通过",
+      "disapproveBtn": "不通过",
+      "cover": "博客封面",
+      "emptyCover": "暂无封面",
+      "title": "博客标题",
+      "author": "博客作者",
+      "content": "博客内容",
+      "confirmMsg": "确认以下操作吗？",
+      "successMsg": "操作成功！",
+      "failureMsg": "操作失败",
+      "cancelBtn": "取消",
+      "confirmBtn": "确认"
+    },
     "announcement": {
       "title": "公告",
       "radioBtn": {
