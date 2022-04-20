@@ -99,7 +99,7 @@ import Event from '../Event';
 const projectBanner = require('../assets/img-project-banner.jpg');
 const cpxBanner = require('../assets/img-cpx-banner.jpg');
 const cpcoinBanner = require('../assets/img-cpcoin-banner.png');
-const cppulseBanner = require('../assets/img-cppulse-banner.webp');
+const cppulseBanner = require('../assets/img-cppulse-banner.png');
 
 export default {
   name: 'Project',
