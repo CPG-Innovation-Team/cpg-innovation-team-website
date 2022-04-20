@@ -149,13 +149,9 @@ export default {
   data() {
     return {
       util,
-      category: `${this.$t('categories.all')}`,
+      category: this.$t('categories.all'),
       page: 1,
-      categories: [
-        `${this.$t('categories.all')}`,
-        `${this.$t('categories.technology')}`,
-        `${this.$t('categories.agriculture')}`,
-      ],
+      categories: [this.$t('categories.all'), this.$t('categories.technology'), this.$t('categories.agriculture')],
       blogs: [],
       popularBlogs: [],
       catogorizedBlogs: [],
@@ -168,11 +164,11 @@ export default {
   watch: {
     localeMsg() {
       // update category name and blogs after changing the language
-      this.category = `${this.$t('categories.all')}`;
+      this.category = this.$t('categories.all');
       this.categories = [
-        `${this.$t('categories.all')}`,
-        `${this.$t('categories.technology')}`,
-        `${this.$t('categories.agriculture')}`,
+        this.$t('categories.all'),
+        this.$t('categories.technology'),
+        this.$t('categories.agriculture'),
       ];
       this.catogorizedBlogs = this.blogs;
     },
