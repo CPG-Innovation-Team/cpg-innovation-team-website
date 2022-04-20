@@ -213,6 +213,41 @@
       "failureMsg": "Failed to add",
       "deleteMsg": "Are you sure to delete the following roles?"
     },
+    "approval": {
+      "allPendingBlogs": "All Pending Blogs",
+      "title": "Title",
+      "tags": "Tags",
+      "content": "Content",
+      "action": "Action",
+      "detail": "More Detail",
+      "allPendingComments": "All Pending Comments",
+      "allPendingReplies": "All Pending Replies",
+      "approveBtn": "Approve",
+      "disapproveBtn": "Disapprove",
+      "multiApproveBtn": "Approve Selected",
+      "multiDisapproveBtn": "Disapprove Selected",
+      "cancelBtn": "Cancel",
+      "confirmBtn": "Confirm",
+      "approveMsg": "Confirm to approve?",
+      "disapproveMsg": "Confirm to disapprove?",
+      "successMsg": "Success!",
+      "failureMsg": "Something went wrong"
+    },
+    "approveBlog": {
+      "backBtn": "Back",
+      "approveBtn": "Approve",
+      "disapproveBtn": "Disapprove",
+      "cover": "Blog Cover",
+      "emptyCover": "No Cover Available",
+      "title": "Blog Title",
+      "author": "Blog Author",
+      "content": "Blog Content",
+      "confirmMsg": "Are you sure to perform the actions?",
+      "successMsg": "Success!",
+      "failureMsg": "Something went wrong",
+      "cancelBtn": "Cancel",
+      "confirmBtn": "Confirm"
+    },
     "announcement": {
       "title": "Announcement",
       "radioBtn": {
