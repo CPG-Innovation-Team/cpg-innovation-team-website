@@ -164,7 +164,23 @@
       "pageTitle": "Edit Blog",
       "title": "Title",
       "cover": "Cover",
-      "tags": "Tags"
+      "tags": "Tags",
+      "confirmBtn": "Confirm",
+      "cancelBtn": "Cancel",
+      "successMsg": "Success! It's now under review",
+      "failureMsg": "Failed to edit"
+    },
+    "newBlog": {
+      "title": "Title",
+      "cover": "Cover",
+      "tags": "Tags",
+      "content": "Content",
+      "confirmBtn": "Confirm",
+      "cancelBtn": "Cancel",
+      "submitBtn": "Submit",
+      "successMsg": "Success! It's now under review",
+      "failureMsg": "Failed to submit",
+      "warningMsg": "The title and content cannot be empty"
     },
     "announcement": {
       "title": "Announcement",

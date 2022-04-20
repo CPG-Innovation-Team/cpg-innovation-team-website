@@ -4,16 +4,30 @@
     <v-main>
       <v-container fluid>
         <v-card>
-          <v-card-title> Update Article </v-card-title>
+          <v-card-title> {{ localeMsg.pageTitle }} </v-card-title>
           <v-card-text>
             <v-row class="ma-8">
-              <v-text-field v-model="blog.title" required hide-details dense outlined label="title"></v-text-field>
+              <v-text-field
+                v-model="blog.title"
+                required
+                hide-details
+                dense
+                outlined
+                :label="localeMsg.title"
+              ></v-text-field>
             </v-row>
             <v-row class="ma-8">
-              <v-text-field v-model="blog.cover" required hide-details dense outlined label="cover"></v-text-field>
+              <v-text-field
+                v-model="blog.cover"
+                required
+                hide-details
+                dense
+                outlined
+                :label="localeMsg.cover"
+              ></v-text-field>
             </v-row>
             <v-row class="ma-8">
-              <v-select :items="tagList" v-model="blog.tags" clearable outlined label="tags"></v-select>
+              <v-select :items="tagList" v-model="blog.tags" clearable outlined :label="localeMsg.tags"></v-select>
             </v-row>
             <v-row class="ma-8">
               <Editor :content="blog.content" v-model="content" :editorBool="true" :inCreate="false" />
@@ -21,25 +35,38 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-            <v-btn color="blue darken-1" text @click="updateArticle"> Save </v-btn>
+            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
+            <v-btn color="blue darken-1" text @click="updateArticle"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
-        <v-dialog max-width="600" v-model="dialog">
+        <v-dialog max-width="600" v-model="successDialog">
           <template>
             <v-card>
               <v-card-text>
-                <div class="text-h6 pa-6">{{ message }}</div>
+                <div class="text-h6 pa-6">{{ localeMsg.successMsg }}</div>
               </v-card-text>
               <v-card-actions class="justify-end">
                 <v-btn
                   text
                   @click="
-                    dialog = false;
-                    close(message);
+                    successDialog = false;
+                    close();
                   "
-                  >Confirm</v-btn
                 >
+                  {{ localeMsg.confirmBtn }}</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
+        <v-dialog max-width="600" v-model="failureDialog">
+          <template>
+            <v-card>
+              <v-card-text>
+                <div class="text-h6 pa-6">{{ localeMsg.failureMsg }}</div>
+              </v-card-text>
+              <v-card-actions class="justify-end">
+                <v-btn text @click="failureDialog = false"> {{ localeMsg.confirmBtn }}</v-btn>
               </v-card-actions>
             </v-card>
           </template>
@@ -59,7 +86,8 @@ export default {
     return {
       blog: '',
       tagList: ['All', 'Technology', 'Agriculture'],
-      dialog: false,
+      successDialog: false,
+      failureDialog: false,
       content: '',
       message: '',
     };
@@ -67,6 +95,20 @@ export default {
   components: {
     AdminNav,
     Editor,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        pageTitle: this.$t('admin.updateBlog.pageTitle'),
+        title: this.$t('admin.updateBlog.title'),
+        cover: this.$t('admin.updateBlog.cover'),
+        tags: this.$t('admin.updateBlog.tags'),
+        confirmBtn: this.$t('admin.updateBlog.confirmBtn'),
+        cancelBtn: this.$t('admin.updateBlog.cancelBtn'),
+        successMsg: this.$t('admin.updateBlog.successMsg'),
+        failureMsg: this.$t('admin.updateBlog.failureMsg'),
+      };
+    },
   },
   async created() {
     util.checkAccess('blogs', this.$router);
@@ -94,12 +136,10 @@ export default {
     }
   },
   methods: {
-    close(message) {
-      if (message === 'Success! 进入审核状态') {
-        this.$router.push({
-          path: '/admin/blogs',
-        });
-      }
+    close() {
+      this.$router.push({
+        path: '/admin/blogs',
+      });
     },
     async updateArticle() {
       /**
@@ -121,11 +161,9 @@ export default {
         )
         .then((response) => {
           if (response.data.code === 10000) {
-            this.dialog = true;
-            this.message = 'Success! 进入审核状态';
+            this.successDialog = true;
           } else {
-            this.dialog = true;
-            this.message = 'Failed';
+            this.failureDialog = true;
           }
         });
     },
