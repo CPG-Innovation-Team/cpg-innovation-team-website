@@ -21,7 +21,7 @@
       <div class="team-title">团队介绍</div>
       <div class="team-profile-container">
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-chenxi.jpeg" alt="Chenxi" />
+          <img class="team-profile-image" src="../assets/img-chenxi.jpg" alt="Chenxi" />
           <div class="team-profile-name">陈曦</div>
           <div class="team-profile-position">
             <p>前端开发部</p>
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-david.jpeg" alt="David" />
+          <img class="team-profile-image" src="../assets/img-david.jpg" alt="David" />
           <div class="team-profile-name">David 刘明洋</div>
           <div class="team-profile-position">
             <p>前端开发部</p>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-grace.jpeg" alt="Grace" />
+          <img class="team-profile-image" src="../assets/img-grace.jpg" alt="Grace" />
           <div class="team-profile-name">Grace 陈昕悦</div>
           <div class="team-profile-position">
             <p>前端开发部</p>

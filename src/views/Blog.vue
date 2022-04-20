@@ -1,8 +1,8 @@
 <template>
   <div>
-    <HeaderNav />
+    <HeaderNav :color="'black'" />
     <div class="header-container">
-      <img class="nav-img" src="https://picsum.photos/2000/" alt="header image" />
+      <img class="nav-img" src="../assets/bg-blog.jpg" alt="header image" />
 
       <div class="header-text">
         <p class="title-cn">{{ localeMsg.title }}</p>
@@ -30,7 +30,7 @@
                       <img
                         class="popular-blog-cover"
                         v-else
-                        src="../assets/img-default-blog-cover.jpeg"
+                        src="../assets/img-default-blog-cover.jpg"
                         alt="blog cover img"
                       />
                     </router-link>
@@ -44,7 +44,7 @@
                         <v-col :cols="4">
                           <v-avatar class="mr-4" size="40">
                             <img v-if="blog.avatar != ''" :src="blog.avatar" alt="sample img" />
-                            <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
+                            <img v-else src="../assets/icon-default-avatar.jpg" alt="sample img" />
                           </v-avatar>
                         </v-col>
                         <v-col :cols="8">
@@ -91,7 +91,7 @@
                                   <img
                                     class="recent-blog-cover"
                                     v-else
-                                    src="../assets/img-default-blog-cover.jpeg"
+                                    src="../assets/img-default-blog-cover.jpg"
                                     alt="blog cover img"
                                   />
                                 </v-col>
@@ -104,7 +104,7 @@
                                       <v-row class="">
                                         <v-avatar class="mr-4" size="40">
                                           <img v-if="blog.avatar !== ''" :src="blog.avatar" alt="sample img" />
-                                          <img v-else src="../assets/icon-default-avatar.jpeg" alt="sample img" />
+                                          <img v-else src="../assets/icon-default-avatar.jpg" alt="sample img" />
                                         </v-avatar>
                                         <p class="recent-user-author">{{ localeMsg.author }}: {{ blog.author }}</p>
                                       </v-row>
@@ -316,7 +316,7 @@ export default {
     background: rgb(226, 226, 226);
     .popular-title {
       text-align: center;
-      margin-bottom: 4%;
+      margin-bottom: 1%;
     }
     .popular-blog-cover {
       border-radius: 5px;
