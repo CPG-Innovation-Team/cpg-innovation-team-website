@@ -197,6 +197,22 @@
         "failureMsg": "保存失败"
       }
     },
+    "permission": {
+      "title": "角色权限表",
+      "roleAndPermission": "角色\\权限",
+      "action": "编辑权限",
+      "newRole": "新增角色",
+      "enterRoleNameLabel": "输入角色名称",
+      "cancelBtn": "取消",
+      "saveBtn": "保存",
+      "confirmBtn": "确认",
+      "editPermission": "角色编辑权限",
+      "role": "角色",
+      "warningMsg": "添加失败，角色已经存在",
+      "successMsg": "添加成功！",
+      "failureMsg": "添加失败",
+      "deleteMsg": "确定要删除以下角色吗？"
+    },
     "announcement": {
       "title": "公告",
       "radioBtn": {
