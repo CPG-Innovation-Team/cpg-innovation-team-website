@@ -13,29 +13,31 @@
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
-              <v-toolbar-title>角色权限表</v-toolbar-title>
+              <v-toolbar-title>{{ localeMsg.title }}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <v-dialog v-model="newDialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="primary" depressed class="mb-2" v-bind="attrs" v-on="on"> 新增角色 </v-btn>
+                  <v-btn color="primary" depressed class="mb-2" v-bind="attrs" v-on="on">
+                    {{ localeMsg.newRole }}
+                  </v-btn>
                 </template>
                 <v-card class="pa-4">
                   <v-card-title>
-                    <span class="text-h5"> 新增角色 </span>
+                    <span class="text-h5"> {{ localeMsg.newRole }} </span>
                   </v-card-title>
 
                   <v-card-text>
                     <v-container>
                       <v-row align="baseline" class="mt-2">
-                        <v-text-field v-model="role" label="输入角色名称" outlined></v-text-field>
+                        <v-text-field v-model="role" :label="localeMsg.enterRoleNameLabel" outlined></v-text-field>
                       </v-row>
                     </v-container>
                   </v-card-text>
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+                    <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
                     <v-btn
                       color="blue darken-1"
                       text
@@ -44,7 +46,7 @@
                         newDialog = false;
                       "
                     >
-                      Save
+                      {{ localeMsg.saveBtn }}
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -79,8 +81,8 @@
 
         <v-dialog v-model="editDialog" max-width="800px">
           <v-card class="pa-4">
-            <v-card-title> 角色编辑权限 </v-card-title>
-            <v-card-text> 角色: {{ editRoleItem.name }} </v-card-text>
+            <v-card-title> {{ localeMsg.editPermission }} </v-card-title>
+            <v-card-text> {{ localeMsg.role }}: {{ editRoleItem.name }} </v-card-text>
             <v-card-text>
               <v-row dense>
                 <v-col cols="3" v-for="permission in permissions" :key="permission">
@@ -95,19 +97,19 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn depressed color="primary" @click="editPermissionToRole()"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
+              <v-btn depressed color="primary" @click="editPermissionToRole()"> {{ localeMsg.saveBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
         <v-dialog v-model="deleteDialog" max-width="500px">
           <v-card>
-            <v-card-title> Are you sure to delete the following role(s)? </v-card-title>
+            <v-card-title> {{ localeMsg.deleteMsg }} </v-card-title>
             <v-card-text v-for="(item, index) in selected" :key="index"> {{ index + 1 }}. {{ item.name }} </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
               <v-btn
                 color="blue darken-1"
                 text
@@ -116,35 +118,35 @@
                   deleteDialog = false;
                 "
               >
-                Confirm
+                {{ localeMsg.confirmBtn }}
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="warningDialog" max-width="500px">
           <v-card>
-            <v-card-title> 添加失败，角色已经存在 </v-card-title>
+            <v-card-title> {{ localeMsg.warningMsg }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="successDialog" max-width="500px">
           <v-card>
-            <v-card-title> Success! </v-card-title>
+            <v-card-title> {{ localeMsg.successMsg }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="failureDialog" max-width="500px">
           <v-card>
-            <v-card-title> Something went wrong... </v-card-title>
+            <v-card-title> {{ localeMsg.failureMsg }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -161,34 +163,54 @@ export default {
   components: {
     AdminNav,
   },
-  data: () => ({
-    // dialogs
-    successDialog: false,
-    failureDialog: false,
-    deleteDialog: false,
-    editDialog: false,
-    newDialog: false,
-    warningDialog: false,
-    roles: [],
-    permissions: [],
-    uris: [],
-    role: '',
-    allRoles: [],
-    allPermissions: [],
-    headers: [
-      {
-        text: '角色\\权限',
-        align: 'start',
-        sortable: true,
-        value: 'name',
-      },
-      { text: '编辑权限', value: 'action', sortable: false, align: 'end' },
-    ],
-    roleItems: [],
-    selected: [],
-    originalRoleItem: {},
-    editRoleItem: {},
-  }),
+  data() {
+    return {
+      // dialogs
+      successDialog: false,
+      failureDialog: false,
+      deleteDialog: false,
+      editDialog: false,
+      newDialog: false,
+      warningDialog: false,
+      roles: [],
+      permissions: [],
+      uris: [],
+      role: '',
+      allRoles: [],
+      allPermissions: [],
+      headers: [
+        {
+          text: this.$t('admin.permission.roleAndPermission'),
+          align: 'start',
+          sortable: true,
+          value: 'name',
+        },
+        { text: this.$t('admin.permission.action'), value: 'action', sortable: false, align: 'end' },
+      ],
+      roleItems: [],
+      selected: [],
+      originalRoleItem: {},
+      editRoleItem: {},
+    };
+  },
+  computed: {
+    localeMsg() {
+      return {
+        title: this.$t('admin.permission.title'),
+        newRole: this.$t('admin.permission.newRole'),
+        enterRoleNameLabel: this.$t('admin.permission.enterRoleNameLabel'),
+        cancelBtn: this.$t('admin.permission.cancelBtn'),
+        saveBtn: this.$t('admin.permission.saveBtn'),
+        confirmBtn: this.$t('admin.permission.confirmBtn'),
+        editPermission: this.$t('admin.permission.editPermission'),
+        role: this.$t('admin.permission.role'),
+        warningMsg: this.$t('admin.permission.warningMsg'),
+        successMsg: this.$t('admin.permission.successMsg'),
+        failureMsg: this.$t('admin.permission.failureMsg'),
+        deleteMsg: this.$t('admin.permission.deleteMsg'),
+      };
+    },
+  },
   async created() {
     util.checkAccess('permission', this.$router);
     await this.getAllRoles();

@@ -197,6 +197,22 @@
         "failureMsg": "Failed to save"
       }
     },
+    "permission": {
+      "title": "Role-Permission Table",
+      "roleAndPermission": "Role\\Permission",
+      "action": "Edit Permission",
+      "newRole": "Add Role",
+      "enterRoleNameLabel": "Enter Role Name",
+      "cancelBtn": "Cancel",
+      "saveBtn": "Save",
+      "confirmBtn": "Confirm",
+      "editPermission": "Edit Permission for Role",
+      "role": "Role",
+      "warningMsg": "Failed to add, the Role has already existed",
+      "successMsg": "Successfully added!",
+      "failureMsg": "Failed to add",
+      "deleteMsg": "Are you sure to delete the following roles?"
+    },
     "announcement": {
       "title": "Announcement",
       "radioBtn": {
