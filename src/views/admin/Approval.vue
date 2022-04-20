@@ -5,7 +5,7 @@
       <v-data-table :headers="headers" :items="blogs" sort-by="modified" class="elevation-1">
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>All Pending Blogs</v-toolbar-title>
+            <v-toolbar-title>{{ localeMsg.allPendingBlogs }}</v-toolbar-title>
           </v-toolbar>
         </template>
         <template v-slot:[`item.content`]="{ item }">
@@ -15,7 +15,7 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <router-link class="approve-btn" :to="{ name: 'ApproveBlog', query: { sn: item.sn } }">
-            <v-btn text> 详情 </v-btn>
+            <v-btn text> {{ localeMsg.detail }} </v-btn>
           </router-link>
         </template>
       </v-data-table>
@@ -31,7 +31,7 @@
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>All Pending Comments</v-toolbar-title>
+            <v-toolbar-title>{{ localeMsg.allPendingComments }}</v-toolbar-title>
           </v-toolbar>
         </template>
         <template v-slot:[`item.data-table-select`]="{ isSelected, select }">
@@ -43,8 +43,8 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn text @click="setCommentItem(true, true, item)"> 通过 </v-btn>
-          <v-btn text @click="setCommentItem(true, false, item)"> 不通过 </v-btn>
+          <v-btn text @click="setCommentItem(true, true, item)"> {{ localeMsg.approveBtn }} </v-btn>
+          <v-btn text @click="setCommentItem(true, false, item)"> {{ localeMsg.disapproveBtn }} </v-btn>
         </template>
         <template v-slot:[`body.append`]>
           <td></td>
@@ -60,7 +60,7 @@
                 :disabled="checkCommentBtnDisabled()"
                 @click="setCommentItem(true, true, selectedComments)"
               >
-                批量通过
+                {{ localeMsg.multiApproveBtn }}
               </v-btn>
               <v-btn
                 class="ma-2"
@@ -70,7 +70,7 @@
                 :disabled="checkCommentBtnDisabled()"
                 @click="setCommentItem(true, false, selectedComments)"
               >
-                批量不通过
+                {{ localeMsg.multiDisapproveBtn }}
               </v-btn>
             </td>
           </div>
@@ -88,7 +88,7 @@
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>All Pending Replies</v-toolbar-title>
+            <v-toolbar-title>{{ localeMsg.allPendingReplies }}</v-toolbar-title>
           </v-toolbar>
         </template>
         <template v-slot:[`item.data-table-select`]="{ isSelected, select }">
@@ -100,8 +100,8 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn text @click="setReplyItem(true, true, item)"> 通过 </v-btn>
-          <v-btn text @click="setReplyItem(true, false, item)"> 不通过 </v-btn>
+          <v-btn text @click="setReplyItem(true, true, item)"> {{ localeMsg.approveBtn }} </v-btn>
+          <v-btn text @click="setReplyItem(true, false, item)"> {{ localeMsg.disapproveBtn }} </v-btn>
         </template>
         <template v-slot:[`body.append`]>
           <td></td>
@@ -117,7 +117,7 @@
                 :disabled="checkReplyBtnDisabled()"
                 @click="setReplyItem(true, true, selectedReplies)"
               >
-                批量通过
+                {{ localeMsg.multiApproveBtn }}
               </v-btn>
               <v-btn
                 class="ma-2"
@@ -127,7 +127,7 @@
                 :disabled="checkReplyBtnDisabled()"
                 @click="setReplyItem(true, false, selectedReplies)"
               >
-                批量不通过
+                {{ localeMsg.multiDisapproveBtn }}
               </v-btn>
             </td>
           </div>
@@ -136,59 +136,63 @@
 
       <v-dialog v-model="commentDialog" max-width="500px">
         <v-card>
-          <v-card-title v-if="commentApproveBool === true"> 确认审核通过吗？ </v-card-title>
-          <v-card-title v-else> 确认审核不通过吗？ </v-card-title>
+          <v-card-title v-if="commentApproveBool === true"> {{ localeMsg.approveMsg }} </v-card-title>
+          <v-card-title v-else> {{ localeMsg.disapproveMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="commentDialog = false"> Cancel </v-btn>
+            <v-btn color="blue darken-1" text @click="commentDialog = false"> {{ localeMsg.cancelBtn }} </v-btn>
             <v-btn
               v-if="commentApproveBool === true"
               color="blue darken-1"
               text
               @click="approveComment(currentComment, true)"
             >
-              Confirm
+              {{ localeMsg.confirmBtn }}
             </v-btn>
-            <v-btn v-else color="blue darken-1" text @click="approveComment(currentComment, false)"> Confirm </v-btn>
+            <v-btn v-else color="blue darken-1" text @click="approveComment(currentComment, false)">
+              {{ localeMsg.confirmBtn }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
       <v-dialog v-model="replyDialog" max-width="500px">
         <v-card>
-          <v-card-title v-if="replyApproveBool === true"> 确认审核通过吗？ </v-card-title>
-          <v-card-title v-else> 确认审核不通过吗？ </v-card-title>
+          <v-card-title v-if="replyApproveBool === true"> {{ localeMsg.approveMsg }} </v-card-title>
+          <v-card-title v-else> {{ localeMsg.disapproveMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="replyDialog = false"> Cancel </v-btn>
+            <v-btn color="blue darken-1" text @click="replyDialog = false"> {{ localeMsg.cancelBtn }} </v-btn>
             <v-btn
               v-if="replyApproveBool === true"
               color="blue darken-1"
               text
               @click="approveReply(currentReply, true)"
             >
-              Confirm
+              {{ localeMsg.confirmBtn }}
             </v-btn>
-            <v-btn v-else color="blue darken-1" text @click="approveReply(currentReply, false)"> Confirm </v-btn>
+            <v-btn v-else color="blue darken-1" text @click="approveReply(currentReply, false)">
+              {{ localeMsg.confirmBtn }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
       <v-dialog v-model="successDialog" max-width="500px">
         <v-card>
-          <v-card-title> Success! </v-card-title>
+          <v-card-title> {{ localeMsg.successMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <v-dialog v-model="failureDialog" max-width="500px">
         <v-card>
-          <v-card-title> Something went wrong... </v-card-title>
+          <v-card-title> {{ localeMsg.failureMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -207,20 +211,20 @@ export default {
       comments: [],
       replies: [],
       headers: [
-        { text: 'Title', value: 'title' },
-        { text: 'Tags', value: 'tags' },
-        { text: 'Content', value: 'content' },
-        { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
+        { text: this.$t('admin.approval.title'), value: 'title' },
+        { text: this.$t('admin.approval.tags'), value: 'tags' },
+        { text: this.$t('admin.approval.content'), value: 'content' },
+        { text: this.$t('admin.approval.action'), value: 'actions', sortable: false, align: 'center' },
       ],
       cheaders: [
         { text: 'id', value: 'cid' },
-        { text: 'Content', value: 'content' },
-        { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
+        { text: this.$t('admin.approval.content'), value: 'content' },
+        { text: this.$t('admin.approval.action'), value: 'actions', sortable: false, align: 'center' },
       ],
       rheaders: [
         { text: 'id', value: 'rid' },
-        { text: 'Content', value: 'content' },
-        { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
+        { text: this.$t('admin.approval.content'), value: 'content' },
+        { text: this.$t('admin.approval.action'), value: 'actions', sortable: false, align: 'center' },
       ],
       // for general purpose dialog
       successDialog: false,
@@ -238,6 +242,26 @@ export default {
   },
   components: {
     AdminNav,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        allPendingBlogs: this.$t('admin.approval.allPendingBlogs'),
+        detail: this.$t('admin.approval.detail'),
+        allPendingComments: this.$t('admin.approval.allPendingComments'),
+        allPendingReplies: this.$t('admin.approval.allPendingReplies'),
+        approveBtn: this.$t('admin.approval.approveBtn'),
+        disapproveBtn: this.$t('admin.approval.disapproveBtn'),
+        multiDisapproveBtn: this.$t('admin.approval.multiDisapproveBtn'),
+        multiApproveBtn: this.$t('admin.approval.multiApproveBtn'),
+        cancelBtn: this.$t('admin.approval.cancelBtn'),
+        confirmBtn: this.$t('admin.approval.confirmBtn'),
+        approveMsg: this.$t('admin.approval.approveMsg'),
+        disapproveMsg: this.$t('admin.approval.disapproveMsg'),
+        successMsg: this.$t('admin.approval.successMsg'),
+        failureMsg: this.$t('admin.approval.failureMsg'),
+      };
+    },
   },
   created() {
     util.checkAccess('approval', this.$router);

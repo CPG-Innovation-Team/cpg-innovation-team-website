@@ -6,7 +6,9 @@
         <v-col>
           <v-row>
             <v-col>
-              <v-btn color="blue darken-1" text @click="$router.push('/admin/approve')"> 返回 </v-btn>
+              <v-btn color="blue darken-1" text @click="$router.push('/admin/approve')">
+                {{ localeMsg.backBtn }}
+              </v-btn>
             </v-col>
             <v-col class="text-right">
               <v-btn
@@ -17,7 +19,7 @@
                   approveBool = true;
                 "
               >
-                审核通过
+                {{ localeMsg.approveBtn }}
               </v-btn>
               <v-btn
                 color="blue darken-1"
@@ -27,29 +29,29 @@
                   approveBool = false;
                 "
               >
-                审核不通过
+                {{ localeMsg.disapproveBtn }}
               </v-btn>
             </v-col>
           </v-row>
         </v-col>
-        <v-card-title> 文章封面 </v-card-title>
+        <v-card-title> {{ localeMsg.cover }} </v-card-title>
         <img v-if="blog.cover !== ''" class="nav-img" :src="blog.cover" alt="header image" />
-        <v-card-text v-else>暂无封面</v-card-text>
+        <v-card-text v-else>{{ localeMsg.emptyCover }}</v-card-text>
         <v-row>
           <v-col>
-            <v-card-title> 文章标题 </v-card-title>
+            <v-card-title> {{ localeMsg.title }} </v-card-title>
             <v-card-text>
               {{ blog.title }}
             </v-card-text>
           </v-col>
           <v-col>
-            <v-card-title> 作者 </v-card-title>
+            <v-card-title> {{ localeMsg.author }} </v-card-title>
             <v-card-text>
               {{ blog.author }}
             </v-card-text>
           </v-col>
         </v-row>
-        <v-card-title> 文章内容 </v-card-title>
+        <v-card-title> {{ localeMsg.content }} </v-card-title>
         <v-card-text>
           <Editor v-model="blog.content" :content="blog.content" :editorBool="false" :inCreate="false" />
         </v-card-text>
@@ -57,10 +59,10 @@
 
       <v-dialog v-model="confirmDialog" max-width="500px">
         <v-card>
-          <v-card-title> 确认以下操作吗？ </v-card-title>
+          <v-card-title> {{ localeMsg.confirmMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="confirmDialog = false"> Cancel </v-btn>
+            <v-btn color="blue darken-1" text @click="confirmDialog = false"> {{ localeMsg.cancelBtn }} </v-btn>
             <v-btn
               color="blue darken-1"
               text
@@ -69,14 +71,14 @@
                 confirmAction();
               "
             >
-              Confirm
+              {{ localeMsg.confirmBtn }}
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <v-dialog v-model="successDialog" max-width="500px">
         <v-card>
-          <v-card-title> Success! </v-card-title>
+          <v-card-title> {{ localeMsg.successMsg }}! </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -87,17 +89,17 @@
                 $router.push('/admin/approve');
               "
             >
-              Close
+              {{ localeMsg.confirmBtn }}
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
       <v-dialog v-model="failureDialog" max-width="500px">
         <v-card>
-          <v-card-title> Something went wrong... </v-card-title>
+          <v-card-title> {{ localeMsg.failureMsg }} </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="failureDialog = false"> Close </v-btn>
+            <v-btn color="blue darken-1" text @click="failureDialog = false"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -123,6 +125,25 @@ export default {
   components: {
     AdminNav,
     Editor,
+  },
+  computed: {
+    localeMsg() {
+      return {
+        backBtn: this.$t('admin.approveBlog.backBtn'),
+        approveBtn: this.$t('admin.approveBlog.approveBtn'),
+        disapproveBtn: this.$t('admin.approveBlog.disapproveBtn'),
+        cover: this.$t('admin.approveBlog.cover'),
+        emptyCover: this.$t('admin.approveBlog.emptyCover'),
+        title: this.$t('admin.approveBlog.title'),
+        author: this.$t('admin.approveBlog.author'),
+        content: this.$t('admin.approveBlog.content'),
+        confirmMsg: this.$t('admin.approveBlog.confirmMsg'),
+        successMsg: this.$t('admin.approveBlog.successMsg'),
+        failureMsg: this.$t('admin.approveBlog.failureMsg'),
+        cancelBtn: this.$t('admin.approveBlog.cancelBtn'),
+        confirmBtn: this.$t('admin.approveBlog.confirmBtn'),
+      };
+    },
   },
   created() {
     util.checkAccess('approval', this.$router);
