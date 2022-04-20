@@ -37,7 +37,7 @@
                       <v-row>
                         <v-list-item-avatar>
                           <v-img v-if="comments[n - 1].avatar !== ''" :src="comments[n - 1].avatar"></v-img>
-                          <v-img v-else src="../assets/icon-default-avatar.jpeg"></v-img>
+                          <v-img v-else src="../assets/icon-default-avatar.jpg"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
                           <v-list-item-title>{{ comments[n - 1].nickname }}</v-list-item-title>
@@ -99,7 +99,7 @@
                                   v-if="comments[n - 1].replies[i - 1].Avatar !== ''"
                                   :src="comments[n - 1].replies[i - 1].Avatar"
                                 ></v-img>
-                                <v-img v-else src="../assets/icon-default-avatar.jpeg"></v-img>
+                                <v-img v-else src="../assets/icon-default-avatar.jpg"></v-img>
                               </v-list-item-avatar>
                               <v-list-item-content>
                                 <v-list-item-title>{{ comments[n - 1].replies[i - 1].NickName }}</v-list-item-title>

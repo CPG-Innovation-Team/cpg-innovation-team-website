@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="row" justify="center">
         <router-link to="/">
-          <img width="100" height="25" src="../assets/logo-white.svg" alt="logo image" />
+          <img width="100" height="25" src="../assets/icon-logo-white.svg" alt="logo image" />
         </router-link>
       </v-row>
 

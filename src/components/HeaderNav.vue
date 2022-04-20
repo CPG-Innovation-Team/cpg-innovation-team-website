@@ -20,8 +20,15 @@
       ></v-app-bar-nav-icon>
 
       <router-link to="/">
-        <img v-if="!color" class="ml-8 mt-2" width="136" height="34" src="../assets/logo-white.svg" alt="logo image" />
-        <img v-else class="ml-8 mt-2" width="136" height="34" src="../assets/logo-black.svg" alt="logo image" />
+        <img
+          v-if="!color"
+          class="ml-8 mt-2"
+          width="136"
+          height="34"
+          src="../assets/icon-logo-white.svg"
+          alt="logo image"
+        />
+        <img v-else class="ml-8 mt-2" width="136" height="34" src="../assets/icon-logo-black.svg" alt="logo image" />
       </router-link>
 
       <v-spacer></v-spacer>
@@ -43,7 +50,7 @@
         <template v-slot:activator="{ on, attrs }">
           <div v-if="token" class="language-setting" v-bind="attrs" v-on="on">
             <v-avatar size="36" data-test-id="user-avatar">
-              <img :src="avatar || require('../assets/icon-default-avatar.jpeg')" alt="user icon" />
+              <img :src="avatar || require('../assets/icon-default-avatar.jpg')" alt="user icon" />
             </v-avatar>
           </div>
         </template>

@@ -2,7 +2,7 @@
   <div class="background">
     <div class="form-container">
       <router-link to="/">
-        <img class="mb-5" width="150" src="../../assets/logo-black.svg" alt="logo image" />
+        <img class="mb-5" width="150" src="../../assets/icon-logo-black.svg" alt="logo image" />
       </router-link>
       <v-form ref="form" v-model="valid" @submit.prevent="validate">
         <label>{{ localeMsg.username }}</label>

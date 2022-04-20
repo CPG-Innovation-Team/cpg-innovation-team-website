@@ -6,7 +6,7 @@
         <div class="user-info-container">
           <v-avatar class="avatar" size="64">
             <img v-if="userAvatar" :src="userAvatar" alt="user icon" />
-            <img v-else src="../../assets/icon-default-avatar.jpeg" alt="user icon" />
+            <img v-else src="../../assets/icon-default-avatar.jpg" alt="user icon" />
           </v-avatar>
           <div>
             <div class="name">{{ username }}</div>
