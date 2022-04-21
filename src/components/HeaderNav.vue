@@ -337,10 +337,7 @@ export default {
       ];
     },
     cssProps() {
-      if (this.color) {
-        return { '--themeColor': this.color };
-      }
-      return { '--themeColor': 'white' };
+      return { '--themeColor': this.color };
     },
     backgroundStyle() {
       if (this.color === 'black') {
