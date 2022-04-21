@@ -21,7 +21,7 @@
 
       <router-link to="/">
         <img
-          v-if="!color"
+          v-if="color === 'white'"
           class="ml-8 mt-2"
           width="136"
           height="34"
@@ -43,7 +43,7 @@
       <v-spacer></v-spacer>
 
       <router-link v-if="!token" class="login-btn mr-2" to="/login">
-        <v-btn outlined color="white" data-test-id="login-btn"> {{ $t('navbar.login') }} </v-btn>
+        <v-btn outlined :color="color" data-test-id="login-btn"> {{ $t('navbar.login') }} </v-btn>
       </router-link>
 
       <v-menu offset-y content-class="elevation-0" rounded="14">
@@ -343,7 +343,7 @@ export default {
       return { '--themeColor': 'white' };
     },
     backgroundStyle() {
-      if (this.color) {
+      if (this.color === 'black') {
         return { backgroundColor: `rgba(255, 255, 255, ${this.backgroundOpacity * 1.5} !important` };
       }
       return { backgroundColor: `rgba(0, 0, 0, ${this.backgroundOpacity} !important` };
