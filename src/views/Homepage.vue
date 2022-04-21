@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderNav />
+    <HeaderNav :color="'white'" />
     <div class="header-container">
       <img class="nav-img" src="../assets/bg-homepage.jpg" alt="header image" />
 

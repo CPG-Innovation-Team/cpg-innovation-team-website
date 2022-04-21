@@ -14,7 +14,7 @@
           </v-btn>
         </div>
       </div>
-      <HeaderNav />
+      <HeaderNav :color="'white'" />
     </div>
 
     <v-main>
