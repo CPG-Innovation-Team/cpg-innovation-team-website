@@ -83,7 +83,7 @@
       <v-menu offset-y content-class="elevation-0" rounded="14">
         <template v-slot:activator="{ on, attrs }">
           <div class="language-setting" v-bind="attrs" v-on="on">
-            <country-flag class="flag" :country="$t('flag')" data-test-id="country-flag" />
+            <span :class="$t('flag')"></span>
             <v-icon>mdi-chevron-down</v-icon>
           </div>
         </template>
@@ -92,16 +92,16 @@
             <v-list-item class="pr-2 pl-2">
               <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
                 <div class="language-selection">
-                  <country-flag class="flag" country="cn" />
+                  <span class="fi fi-cn"></span>
                   <span class="language-text">简体中文</span>
                 </div>
               </v-list-item-content>
             </v-list-item>
             <v-list-item class="pr-2 pl-2">
-              <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'gb')">
+              <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'en')">
                 <div class="language-selection">
-                  <country-flag class="flag" country="gb" />
-                  <span class="language-text">English(UK)</span>
+                  <span class="fi fi-us"></span>
+                  <span class="language-text">English</span>
                 </div>
               </v-list-item-content>
             </v-list-item>
@@ -126,7 +126,6 @@
 
 <script>
 import jwtDecode from 'jwt-decode';
-import CountryFlag from 'vue-country-flag';
 import util from '../util';
 import Event from '../Event';
 
@@ -160,9 +159,6 @@ export default {
     timer: '',
   }),
   props: ['color'],
-  components: {
-    CountryFlag,
-  },
   async created() {
     if (localStorage.username) {
       this.username = localStorage.username;
