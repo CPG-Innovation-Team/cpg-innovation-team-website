@@ -412,6 +412,8 @@ export default {
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+    font-size: 14px;
+    margin-left: 4px;
   }
 }
 
