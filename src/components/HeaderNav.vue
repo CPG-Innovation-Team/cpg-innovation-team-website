@@ -380,6 +380,7 @@ export default {
   .language-setting {
     display: flex;
     align-self: center;
+    margin-right: 10px;
   }
 }
 
@@ -397,11 +398,6 @@ export default {
   font-weight: bold;
   text-decoration: none;
   color: var(--themeColor);
-}
-
-.flag {
-  border-radius: 6px;
-  margin-right: -10px;
 }
 
 .language-selection {
