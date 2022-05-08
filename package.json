@@ -21,6 +21,7 @@
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "rollbar": "^2.24.0",
+    "tinymce": "^6.0.2",
     "vue": "^2.6.11",
     "vue-baidu-map": "^0.21.22",
     "vue-chartjs": "^3.5.1",
