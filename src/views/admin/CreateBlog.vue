@@ -4,8 +4,8 @@
     <v-main data-test-id="create-blog-page">
       <v-container fluid>
         <v-row class="mt-12">
-          <v-col cols="12" sm="2"> </v-col>
-          <v-col cols="12" sm="8">
+          <v-col cols="12" sm="1"> </v-col>
+          <v-col cols="12" sm="10">
             <v-form ref="form" v-model="valid">
               <v-row>
                 <v-col class="label" cols="1">
@@ -44,7 +44,14 @@
                   <label>{{ localeMsg.tags }}</label>
                 </v-col>
                 <v-col>
-                  <v-select :items="tags" v-model="tag" clearable outlined data-test-id="blog-tag-input"></v-select>
+                  <v-select
+                    :items="tags"
+                    v-model="tag"
+                    clearable
+                    dense
+                    outlined
+                    data-test-id="blog-tag-input"
+                  ></v-select>
                 </v-col>
               </v-row>
 
@@ -113,7 +120,7 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="12" sm="2"> </v-col>
+          <v-col cols="12" sm="1"> </v-col>
         </v-row>
       </v-container>
     </v-main>

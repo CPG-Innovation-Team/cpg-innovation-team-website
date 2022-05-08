@@ -5,38 +5,40 @@
       <v-container fluid>
         <v-card>
           <v-card-title> {{ localeMsg.pageTitle }} </v-card-title>
-          <v-card-text>
-            <v-row class="ma-8">
-              <v-text-field
-                v-model="blog.title"
-                required
-                hide-details
-                dense
-                outlined
-                :label="localeMsg.title"
-              ></v-text-field>
-            </v-row>
-            <v-row class="ma-8">
-              <v-text-field
-                v-model="blog.cover"
-                required
-                hide-details
-                dense
-                outlined
-                :label="localeMsg.cover"
-              ></v-text-field>
-            </v-row>
-            <v-row class="ma-8">
-              <v-select :items="tagList" v-model="blog.tags" clearable outlined :label="localeMsg.tags"></v-select>
-            </v-row>
-            <v-row class="ma-8">
-              <Editor :content="blog.content" v-model="content" :editorBool="true" :inCreate="false" />
-            </v-row>
+          <v-card-text class="pa-12">
+            <v-text-field
+              class="mb-8"
+              v-model="blog.title"
+              required
+              hide-details
+              dense
+              outlined
+              :label="localeMsg.title"
+            ></v-text-field>
+            <v-text-field
+              class="mb-8"
+              v-model="blog.cover"
+              required
+              hide-details
+              dense
+              outlined
+              :label="localeMsg.cover"
+            ></v-text-field>
+            <v-select
+              class="mb-8"
+              :items="tagList"
+              v-model="blog.tags"
+              clearable
+              dense
+              outlined
+              :label="localeMsg.tags"
+            ></v-select>
+            <Editor :content="blog.content" v-model="content" :editorBool="true" :inCreate="false" />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="pr-12 pb-8">
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
-            <v-btn color="blue darken-1" text @click="updateArticle"> {{ localeMsg.confirmBtn }} </v-btn>
+            <v-btn color="normal" depressed @click="close"> {{ localeMsg.cancelBtn }} </v-btn>
+            <v-btn color="primary" depressed @click="updateArticle"> {{ localeMsg.confirmBtn }} </v-btn>
           </v-card-actions>
         </v-card>
         <v-dialog max-width="600" v-model="successDialog">
