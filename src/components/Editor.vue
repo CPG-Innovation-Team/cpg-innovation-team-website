@@ -33,6 +33,7 @@ export default {
       editingContent: '',
       init: {
         height: 500,
+        language: this.$t('locale') === 'zh-CN' ? 'zh_CN' : 'en',
         menubar: true,
         plugins: [
           'advlist autolink lists link image charmap print preview anchor',
