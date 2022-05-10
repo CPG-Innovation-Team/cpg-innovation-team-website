@@ -62,50 +62,7 @@
                 </v-fade-transition>
                 <v-btn class="gallery-item-marker" x-small><v-icon x-small> mdi-video </v-icon></v-btn>
               </div>
-              <v-hover v-slot:default="{ hover }" open-delay="200">
-                <div>
-                  <div v-if="item.label === `精选`">
-                    <v-btn class="gallery-item-label" x-small :style="hover ? expandStyle : closeStyle">
-                      <v-icon x-small> mdi-star </v-icon>
-                      <v-scroll-x-transition>
-                        <span v-if="hover" class="ml-2">精选</span>
-                      </v-scroll-x-transition>
-                    </v-btn>
-                  </div>
-                  <div v-if="item.label === `限定`">
-                    <v-btn class="gallery-item-label" x-small :style="hover ? expandStyle : closeStyle">
-                      <v-icon x-small> mdi-shimmer </v-icon>
-                      <v-scroll-x-transition>
-                        <span v-if="hover" class="ml-2">限定</span>
-                      </v-scroll-x-transition>
-                    </v-btn>
-                  </div>
-                  <div v-if="item.label === `销量最佳`">
-                    <v-btn class="gallery-item-label" x-small :style="hover ? expandStyle : closeStyle">
-                      <v-icon x-small> mdi-license </v-icon>
-                      <v-scroll-x-transition>
-                        <span v-if="hover" class="ml-2">销量最佳</span>
-                      </v-scroll-x-transition>
-                    </v-btn>
-                  </div>
-                  <div v-if="item.label === `搜索第一`">
-                    <v-btn class="gallery-item-label" x-small :style="hover ? expandStyle : closeStyle">
-                      <v-icon x-small> mdi-fire </v-icon>
-                      <v-scroll-x-transition>
-                        <span v-if="hover" class="ml-2">搜索第一</span>
-                      </v-scroll-x-transition>
-                    </v-btn>
-                  </div>
-                  <div v-if="item.label === `新品`">
-                    <v-btn class="gallery-item-label" x-small :style="hover ? expandStyle : closeStyle">
-                      <v-icon x-small> mdi-new-box </v-icon>
-                      <v-scroll-x-transition>
-                        <span v-if="hover" class="ml-2">新品</span>
-                      </v-scroll-x-transition>
-                    </v-btn>
-                  </div>
-                </div>
-              </v-hover>
+              <GalleryLabel :label="item.label" />
             </div>
           </v-hover>
           <v-row class="pt-2 pb-2 pl-4 pr-4" align="center" no-gutters>
@@ -132,11 +89,14 @@
 </template>
 
 <script>
+import GalleryLabel from './GalleryLabel.vue';
+
 export default {
   name: 'RollingGallery',
+  components: {
+    GalleryLabel,
+  },
   data: () => ({
-    expandStyle: 'padding: 3px;',
-    closeStyle: 'min-width: 0px; padding: 3px;',
     galleryData: [
       {
         flex: 2,
@@ -202,12 +162,6 @@ export default {
             country: 'China',
           },
           {
-            video: 'https://static.videezy.com/system/resources/previews/000/040/953/original/5_04_10_19.mp4',
-            text: 'test video 2',
-            label: '限定',
-            country: 'China',
-          },
-          {
             image: 'https://static.cpgroup.top/product/nft/img-nft1.png',
             text: 'NFT Series 1',
             label: '限定',
@@ -260,6 +214,12 @@ export default {
       {
         flex: 2,
         data: [
+          {
+            video: 'https://static.videezy.com/system/resources/previews/000/040/953/original/5_04_10_19.mp4',
+            text: 'test video 2',
+            label: '限定',
+            country: 'China',
+          },
           {
             image: 'https://static.cpgroup.top/product/water/img-water1.png',
             text: '纯悦矿泉水',
@@ -500,14 +460,6 @@ export default {
       z-index: 99;
       min-width: 0;
       max-width: 0;
-      height: 15px;
-    }
-    .gallery-item-label {
-      position: absolute;
-      background-color: whitesmoke;
-      top: 8px;
-      left: 8px;
-      z-index: 99;
       height: 15px;
     }
   }
