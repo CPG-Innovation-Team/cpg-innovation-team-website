@@ -26,7 +26,9 @@
                     </v-overlay>
                   </v-fade-transition>
                 </v-img>
-                <v-btn class="gallery-item-marker" x-small> <v-icon x-small>mdi-alpha-g-box</v-icon></v-btn>
+                <v-btn v-if="item.type === 'gif'" class="gallery-item-marker" x-small>
+                  <v-icon x-small>mdi-alpha-g-box</v-icon></v-btn
+                >
               </div>
               <div
                 v-if="item.type === 'video'"
