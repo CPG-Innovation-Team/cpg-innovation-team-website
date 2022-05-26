@@ -1,18 +1,21 @@
 # 正大创新团队官方网站前端项目
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CPG-Innovation-Team_cpg-innovation-team-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CPG-Innovation-Team_cpg-innovation-team-website)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CPG-Innovation-Team_cpg-innovation-team-website&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CPG-Innovation-Team_cpg-innovation-team-website) 
 [![CircleCI](https://circleci.com/gh/CPG-Innovation-Team/cpg-innovation-team-website/tree/master.svg?style=svg)](https://circleci.com/gh/CPG-Innovation-Team/cpg-innovation-team-website/tree/master)
 [![codecov](https://codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website/branch/master/graph/badge.svg?token=CA7DJRBY7X)](https://codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
 
 ## 系统依赖
-### 需要安装 [Node.js](https://nodejs.org)
-### 在版本 Node.js 14.17 上稳定运行
+需要安装 [Node.js](https://nodejs.org) 14.17版本
+    
+## 本地运行
+- 首次运行或有依赖变更时执行安装 `npm install`
 
-## 操作命令 
-### 首次运行或有依赖变更时执行安装 `npm install`
-### 启动本地服务 `npm run serve`
-### 编译生产环境代码包 `npm run build`
-### 执行单元测试 `npm run test:unit`
-### 执行代码校验 `npm run lint`
+- 启动本地服务 `npm run serve`
+
+- 编译生产环境代码包 `npm run build`
+
+- 执行单元测试 `npm run test:unit`
+
+- 执行代码校验 `npm run lint`
 
 ## 规范及标准
 1. 命名规范
@@ -41,40 +44,76 @@
    3. 使用 [Prettier](https://prettier.io/) 统一代码风格并自动格式化
 4. 提交信息（Commit Message)：可以准确描述本次提交的涉及的功能模块和具体修改内容，非相关内容请分开多次提交
 
-## UI组件库
-[Vuetify](https://vuetifyjs.com/zh-Hans/)
-
-## 项目主要文件与目录结构说明
+## 项目结构
 ```
 .
-├── README.md    项目说明文档
-├── babel.config.js    Babel配置文件
-├── jest.config.js    Jest单元测试配置文件
-├── package-lock.json    项目依赖版本配置文件
+├── README.md   项目说明文档
+├── babel.config.js     Babel配置文件
+├── jest.config.js      Jest单元测试配置文件
+├── package-lock.json   项目依赖版本配置文件
 ├── package.json    项目配置文件
 ├── public
-│   ├── favicon.ico    网站图标
-│   └── index.html    网站HTML模板
+│   ├── favicon.ico     网站图标
+│   └── index.html      网站HTML模板
 ├── src
-│   ├── App.vue    全局页面
-│   ├── assets    静态资源文件目录，含图片、视频等
-│   ├── components    公用组件目录
-│   │   └── HeaderNav.vue    顶部导航栏
-│   ├── main.js    项目入口文件
-│   ├── plugins    插件目录
-│   │   └── vuetify.js    UI组件库Vuetify配置文件
-│   ├── router.js    路由文件
-│   └── views    页面目录
-│       ├── AboutUs.vue    关于我们页面
+│   ├── App.vue     全局页面
+│   ├── Event.js    事件总线文件
+│   ├── assets      静态资源文件目录，含图片、视频等
+│   ├── components      公用组件目录
+│   │   ├── AdminNav.vue    后管顶部导航栏
+│   │   ├── Charts
+│   │   │   └── Traffic.vue
+│   │   ├── Editor.vue      富文本编辑器组件
+│   │   ├── Footer.vue      主页底部导航栏
+│   │   ├── GalleryLabel.vue    图片瀑布流标签组件
+│   │   ├── HeaderNav.vue   主页顶部导航栏
+│   │   └── RollingGallery.vue      主页图片瀑布流组件
+│   ├── data    数据文件目录
+│   ├── lang    语言文件目录
+│   ├── main.js     项目入口文件
+│   ├── plugins     插件目录
+│   │   ├── vue-i18n.js     i18n国际化配置文件
+│   │   └── vuetify.js      UI组件库Vuetify配置文件
+│   ├── router.js       路由文件
+│   ├── util.js     公用方法文件
+│   └── views       页面目录
+│       ├── AboutUs.vue     关于我们页面
+│       ├── Blog.vue    博客页面
+│       ├── BlogDetail.vue      博客详情页面
 │       ├── Homepage.vue    主页
-│       ├── ProjectInfo.vue    项目介绍页面
-│       ├── RecruitmentInfo.vue    招聘信息页面
-│       └── TeamInfo.vue    团队介绍页面
-└── tests
-    └── unit    单元测试目录
+│       ├── ProjectInfo.vue     项目介绍页面
+│       ├── RecruitmentDetail.vue   招聘详情页面
+│       ├── RecruitmentInfo.vue     招聘信息页面
+│       ├── SearchResults.vue       搜索结果页面
+│       ├── TeamInfo.vue        团队介绍页面
+│       └── admin   后台管理系统目录
+│           ├── AccessDenied.vue    无权限访问页面
+│           ├── Announcement.vue    公告页面
+│           ├── Approval.vue    审核页面
+│           ├── ApproveBlog.vue     审核博客页面
+│           ├── Blogs.vue   博客管理页面
+│           ├── ChangePassword.vue      修改密码页面
+│           ├── CreateBlog.vue      创建博客页面
+│           ├── Dashboard.vue   仪表盘页面
+│           ├── Login.vue       登陆页面
+│           ├── Permission.vue  权限管理页面
+│           ├── Profile.vue     用户资料页面
+│           ├── Signup.vue      注册页面
+│           ├── UpdateBlog.vue  更新博客页面
+│           └── Users.vue       用户管理页面
+├── tests
+│   ├── e2e     e2e测试目录
+│   └── unit    单元测试目录
+└── vue.config.js
 ```
 
-## 集成工具
+## 技术栈
+Vue.js
+
+### UI组件库
+[Vuetify](https://vuetifyjs.com/zh-Hans/)
+
+### 集成工具
 - 自动化构建部署 [CircleCI](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website)
 - 代码质量静态扫描 [SonarCloud](https://sonarcloud.io/project/overview?id=CPG-Innovation-Team_cpg-innovation-team-website)
 - 单元测试覆盖率报告 [Codecov](https://app.codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
