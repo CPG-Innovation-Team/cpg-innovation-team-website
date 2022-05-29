@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website/branch/master/graph/badge.svg?token=CA7DJRBY7X)](https://codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
 
 ## 系统依赖
-需要安装 [Node.js](https://nodejs.org) 14.17版本
+需要安装 [Node.js](https://nodejs.org), 在版本 Node.js 14.17上稳定运行
     
 ## 本地运行
 - 首次运行或有依赖变更时执行安装 `npm install`
