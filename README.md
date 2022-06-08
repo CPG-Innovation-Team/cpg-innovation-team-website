@@ -56,15 +56,20 @@
 
 ## 发布
 
-https://www.cpgroup.top/
+1. 通过创建pull request提交代码
+2. PR合并进master后，CircleCI自动部署至AWS服务器
+
+**CircleCI配置文件目录：** .circleci/config.yml
+
+**CircleCI项目地址：** [cpg-innovation-team-website](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website)
 
 ## 环境变量
 
 在.env文件中添加以下环境变量
 
-`NODE_ENV`
+`VUE_APP_ROLLBAR_ACCESS_TOKEN` : [rollbar](https://rollbar.com/casualbill/all/items/?sort=%5Bobject%20Object%5D&status=active&date_from=&date_to=&environments=unknown&activated_to=&framework=&levels=40&levels=50&activated_from=&offset=0&timezone=America%2FToronto&assigned_user=&date_filtering=seen&projects=520818&query=&enc_query=)密钥
 
-`VUE_APP_HTTP_URL`
+`VUE_APP_HTTP_URL` : API地址
 
 ## 文件目录结构
 
@@ -132,6 +137,8 @@ https://www.cpgroup.top/
 
 ## 技术栈
 
-**UI组件库:** [Vuetify](https://vuetifyjs.com/zh-Hans/)
+**UI组件库:** [Vuetify](https://vuetifyjs.com/zh-Hans/), [百度地图](https://dafrok.github.io/vue-baidu-map/#/zh/index)
+
+**富文本编辑器:** [TinyMCE](https://www.tiny.cloud/)
 
 **集成工具:** [CircleCI](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website), [SonarCloud](https://sonarcloud.io/project/overview?id=CPG-Innovation-Team_cpg-innovation-team-website), [Codecov](https://app.codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
