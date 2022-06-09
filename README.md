@@ -56,10 +56,16 @@
 
 ## 发布
 
-1. 通过创建pull request提交代码
-2. PR合并进master后，CircleCI自动部署至AWS服务器
+1. 新建feature/bug分支
+2. 通过git add添加本地代码
+3. 通过git commit -m提交本地代码并填写相应commit message
+4. 代码提交完成后，git push推送代码至对应远程分支
+5. 创建Pull request进行code review
+6. 若有changes requested, 修改代码并重复step 2-4
+7. PR合并进master后，删除本地分支
+8. CircleCI自动部署至AWS服务器
 
-**CircleCI配置文件目录：** .circleci/config.yml
+**CircleCI配置文件目录：** `.circleci/config.yml`
 
 **CircleCI项目地址：** [cpg-innovation-team-website](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website)
 
@@ -67,7 +73,7 @@
 
 在.env文件中添加以下环境变量
 
-`VUE_APP_ROLLBAR_ACCESS_TOKEN` : [rollbar](https://rollbar.com/casualbill/all/items/?sort=%5Bobject%20Object%5D&status=active&date_from=&date_to=&environments=unknown&activated_to=&framework=&levels=40&levels=50&activated_from=&offset=0&timezone=America%2FToronto&assigned_user=&date_filtering=seen&projects=520818&query=&enc_query=)密钥
+`VUE_APP_ROLLBAR_ACCESS_TOKEN` : [Rollbar](https://rollbar.com/casualbill/cpg-innovation-team-website/)密钥
 
 `VUE_APP_HTTP_URL` : API地址
 
@@ -141,4 +147,5 @@
 
 **富文本编辑器:** [TinyMCE](https://www.tiny.cloud/)
 
-**集成工具:** [CircleCI](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website), [SonarCloud](https://sonarcloud.io/project/overview?id=CPG-Innovation-Team_cpg-innovation-team-website), [Codecov](https://app.codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website)
+**集成工具:** [CircleCI](https://app.circleci.com/pipelines/github/CPG-Innovation-Team/cpg-innovation-team-website), [SonarCloud](https://sonarcloud.io/project/overview?id=CPG-Innovation-Team_cpg-innovation-team-website), [Codecov](https://app.codecov.io/gh/CPG-Innovation-Team/cpg-innovation-team-website), [Rollbar](https://rollbar.com/casualbill/cpg-innovation-team-website)
+
