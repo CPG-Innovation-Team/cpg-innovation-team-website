@@ -33,7 +33,7 @@
               outlined
               :label="localeMsg.tags"
             ></v-select>
-            <Editor :content="blog.content" v-model="content" :editorBool="true" :inCreate="false" />
+            <Editor v-model="content" :prevContent="blog.content" />
           </v-card-text>
           <v-card-actions class="pr-12 pb-8">
             <v-spacer></v-spacer>
