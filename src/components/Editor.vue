@@ -59,24 +59,7 @@ export default {
           });
         },
         images_upload_handler: (blobInfo, success, failure) => {
-          const formatIsValid =
-            blobInfo.blob().type === 'image/jpeg' ||
-            blobInfo.blob().type === 'image/png' ||
-            blobInfo.blob().type === 'image/GIF' ||
-            blobInfo.blob().type === 'image/jpg';
-          if (blobInfo.blob().size / 1024 / 1024 > 5) {
-            if (this.$t('locale') === 'zh-CN') {
-              failure('上传失败，图片大小请控制在 5MB 以内');
-            } else {
-              failure('Failed to upload image, the maximum size supported is 5MB');
-            }
-          } else if (!formatIsValid) {
-            if (this.$t('locale') === 'zh-CN') {
-              failure('仅支持jpeg/jpg/png/GIF格式');
-            } else {
-              failure('Only jpeg/jpg/png/GIF formats are supported');
-            }
-          } else {
+          if (this.checkValidFormat(blobInfo.blob(), failure) && this.checkValidSize(blobInfo.blob(), failure)) {
             const formData = new FormData();
             formData.append('file', blobInfo.blob(), blobInfo.filename());
             util
@@ -110,6 +93,29 @@ export default {
   methods: {
     saveContent() {
       localStorage.content = this.editingContent;
+    },
+    checkValidFormat(img, failure) {
+      const formatIsValid = img.type === 'image/jpeg' || img.type === 'image/png' || img.type === 'image/gif';
+      if (!formatIsValid) {
+        if (this.$t('locale') === 'zh-CN') {
+          failure('仅支持jpeg/jpg/png/gif格式');
+        } else {
+          failure('Only jpeg/jpg/png/gif formats are supported');
+        }
+        return false;
+      }
+      return true;
+    },
+    checkValidSize(img, failure) {
+      if (img.size / 1024 / 1024 > 5) {
+        if (this.$t('locale') === 'zh-CN') {
+          failure('上传失败，图片大小请控制在 5MB 以内');
+        } else {
+          failure('Failed to upload image, the maximum size supported is 5MB');
+        }
+        return false;
+      }
+      return true;
     },
   },
   watch: {
