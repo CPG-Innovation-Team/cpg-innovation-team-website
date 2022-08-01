@@ -11,17 +11,23 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue';
+import util from '../util';
 
 export default {
+  components: {
+    Editor,
+  },
   props: {
-    content: {
+    prevContent: {
       type: String,
     },
-    editorBool: {
+    toolbar: {
       type: Boolean,
+      default: true,
     },
-    inCreate: {
+    inCreatePage: {
       type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -43,43 +49,78 @@ export default {
         toolbar:
           'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image | removeformat | help',
         init_instance_callback: (editor) => {
-          if (this.value) {
-            editor.setContent(this.value);
-          }
-          this.hasInit = true;
           editor.on('NodeChange Change KeyUp SetContent', () => {
-            this.hasChange = true;
             this.$emit('input', editor.getContent());
-            if (this.inCreate === true) {
+            if (this.inCreatePage === true) {
               this.editingContent = editor.getContent();
               clearTimeout(this.timer);
-              this.timer = setTimeout(this.saveContent, 2000);
+              this.timer = setTimeout(this.saveContent, 1000);
             }
           });
+        },
+        images_upload_handler: (blobInfo, success, failure) => {
+          if (this.checkValidFormat(blobInfo.blob(), failure) && this.checkValidSize(blobInfo.blob(), failure)) {
+            const formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+            util
+              .post('https://api.cpgroup.top:8080/admin/object/upload', formData, this.$router)
+              .then((res) => {
+                success(res.data.data.url);
+              })
+              .catch(() => {
+                if (this.$t('locale') === 'zh-CN') {
+                  failure('上传失败');
+                } else {
+                  failure('Failed to upload');
+                }
+              });
+          }
         },
       },
     };
   },
-  components: {
-    Editor,
-  },
   created() {
-    if (this.editorBool === false) {
+    if (this.toolbar === false) {
       this.init.menubar = false;
       this.init.toolbar = false;
       this.disabled = true;
     }
-    if (this.content) {
-      this.blogContent = this.content;
+    // restore blog content from local storage
+    if (this.prevContent) {
+      this.blogContent = this.prevContent;
     }
   },
   methods: {
     saveContent() {
       localStorage.content = this.editingContent;
     },
+    checkValidFormat(img, failure) {
+      const formatIsValid = img.type === 'image/jpeg' || img.type === 'image/png' || img.type === 'image/gif';
+      if (!formatIsValid) {
+        if (this.$t('locale') === 'zh-CN') {
+          failure('仅支持jpeg/jpg/png/gif格式');
+        } else {
+          failure('Only jpeg/jpg/png/gif formats are supported');
+        }
+        return false;
+      }
+      return true;
+    },
+    checkValidSize(img, failure) {
+      if (img.size / 1024 / 1024 > 5) {
+        if (this.$t('locale') === 'zh-CN') {
+          failure('上传失败，图片大小请控制在 5MB 以内');
+        } else {
+          failure('Failed to upload image, the maximum size supported is 5MB');
+        }
+        return false;
+      }
+      return true;
+    },
   },
   watch: {
-    content(newVal) {
+    // watch blog content in async/await (updateBlog and ApproveBlog)
+    prevContent(newVal) {
       this.blogContent = newVal;
     },
   },
