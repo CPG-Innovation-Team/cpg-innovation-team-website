@@ -9,7 +9,7 @@
             <img v-else src="../../assets/icon-default-avatar.jpg" alt="user icon" />
           </v-avatar>
           <div>
-            <div class="name">{{ username }}</div>
+            <div class="user-info-name">{{ displayUsername }}</div>
             <div class="level d-flex">{{ showRole() }}</div>
           </div>
         </div>
@@ -18,11 +18,68 @@
           <v-card-title> {{ localeMsg.title }} </v-card-title>
           <v-card-text>
             <v-row>
+              <v-col cols="12" align="center">
+                <v-hover v-slot="{ hover }">
+                  <v-avatar class="user-info-avatar" size="80">
+                    <img v-if="userAvatar" :src="userAvatar" alt="user icon" />
+                    <img v-else src="../../assets/icon-default-avatar.jpg" alt="user icon" />
+                    <v-fade-transition>
+                      <v-overlay v-if="hover" absolute color="black"
+                        ><v-btn icon large @click="updateAvatarDialog = true"> <v-icon>mdi-camera </v-icon></v-btn>
+                      </v-overlay>
+                    </v-fade-transition>
+                  </v-avatar>
+                </v-hover>
+                <v-dialog max-width="600" v-model="updateAvatarDialog">
+                  <v-card>
+                    <v-card-title>编辑头像</v-card-title>
+                    <v-card-text>
+                      <v-row align="center">
+                        <v-col>
+                          <cropper
+                            class="cropper"
+                            ref="cropper"
+                            :src="previewAvatar"
+                            :debounce="false"
+                            stencil-component="circle-stencil"
+                            backgroundClass="white"
+                            @change="avatarOnChange"
+                        /></v-col>
+                        <v-col align="center">
+                          <v-card-text>头像预览</v-card-text>
+                          <preview
+                            class="preview"
+                            :width="120"
+                            :height="120"
+                            :image="result.image"
+                            :coordinates="result.coordinates"
+                          />
+                          <v-card-text> 120x120px</v-card-text>
+                        </v-col>
+                      </v-row>
+                      <input
+                        ref="uploadAvatar"
+                        type="file"
+                        accept="image/x-png,image/gif,image/jpeg"
+                        hidden
+                        @change="uploadAvatar($event)"
+                      />
+                      <v-btn class="mt-4" text @click="$refs.uploadAvatar.click()">更换头像</v-btn>
+                    </v-card-text>
+                    <v-card-actions class="justify-center">
+                      <v-btn text @click="closeUpdateAvatarDialog"> 取消</v-btn>
+                      <v-btn depressed color="primary" @click="uploadAvatarToServer"> 保存</v-btn>
+                    </v-card-actions>
+                    <v-overlay v-if="isUploading" absolute color="black">
+                      <v-progress-circular indeterminate color="amber"></v-progress-circular>
+                    </v-overlay>
+                  </v-card>
+                </v-dialog>
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="username" :label="localeMsg.username" outlined dense></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field v-model="avatar" :label="localeMsg.avatar" outlined dense></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field v-model="email" :label="localeMsg.email" outlined dense></v-text-field>
@@ -75,14 +132,22 @@
 </template>
 
 <script>
+import { Cropper, Preview } from 'vue-advanced-cropper';
+import 'vue-advanced-cropper/dist/style.css';
 import bcrypt from 'bcryptjs';
 import AdminNav from '../../components/AdminNav.vue';
 import util from '../../util';
 
 export default {
+  components: {
+    Cropper,
+    Preview,
+    AdminNav,
+  },
   data() {
     return {
       userAvatar: null,
+      displayUsername: '',
       username: '',
       email: '',
       isRoot: '',
@@ -97,7 +162,6 @@ export default {
       genderName: '',
       gender: '',
       introduction: '',
-      avatar: '',
       password: '',
       oldPwd: '',
       confirmDialog: false,
@@ -107,10 +171,14 @@ export default {
       rules: {
         required: (v) => !!v || this.localeMsg.required,
       },
+      updateAvatarDialog: false,
+      result: {
+        coordinates: null,
+        image: null,
+      },
+      previewAvatar: null,
+      isUploading: false,
     };
-  },
-  components: {
-    AdminNav,
   },
   computed: {
     localeMsg() {
@@ -143,9 +211,11 @@ export default {
     util.checkAccess('', this.$router);
     if (localStorage.username) {
       this.username = localStorage.username;
+      this.displayUsername = this.username;
     }
     if (localStorage.avatar) {
       this.userAvatar = localStorage.avatar;
+      this.previewAvatar = this.userAvatar;
     }
     await util
       .post(`${util.getEnvUrl()}/admin/user/query/info`, { username: this.username }, this.$router)
@@ -159,7 +229,7 @@ export default {
           this.state = response.data.data.State;
           this.gender = response.data.data.Gender;
           this.introduction = response.data.data.Introduce;
-          this.avatar = response.data.data.Avatar;
+          this.userAvatar = response.data.data.Avatar;
           this.oldPwd = response.data.data.Passwd;
         }
       });
@@ -186,7 +256,6 @@ export default {
               passCode: '123456',
               passwd: this.password,
               nickname: this.nickname,
-              avatar: this.avatar,
               gender: this.getGender(),
               introduce: this.introduction,
               state: this.state,
@@ -197,10 +266,9 @@ export default {
             this.confirmDialog = true;
             if (response.data.code === 10000) {
               this.responseMessage = this.localeMsg.successMsg;
-              localStorage.avatar = this.avatar;
-              this.userAvatar = this.avatar;
               this.password = '';
               this.$refs.pwdForm.resetValidation();
+              this.contentIsChanged = false;
             } else {
               this.responseMessage = this.localeMsg.failureMsg;
             }
@@ -231,6 +299,44 @@ export default {
       }
       return 2;
     },
+    // For real-time avatar preview, saving coordinates and image to result
+    avatarOnChange({ coordinates, image }) {
+      this.result = {
+        coordinates,
+        image,
+      };
+    },
+    // Read image and create object URL
+    uploadAvatar(event) {
+      const { files } = event.target;
+      if (files && files[0]) {
+        this.previewAvatar = URL.createObjectURL(files[0]);
+      }
+    },
+    // Clears all the inputs when clicking on 'Cancel'
+    closeUpdateAvatarDialog() {
+      this.updateAvatarDialog = false;
+      this.previewAvatar = this.userAvatar;
+      this.$refs.uploadAvatar.value = null;
+    },
+    uploadAvatarToServer() {
+      this.isUploading = true;
+      const { canvas } = this.$refs.cropper.getResult();
+      if (canvas) {
+        const formData = new FormData();
+        canvas.toBlob((blob) => {
+          formData.append('file', blob);
+          util.post('https://api.cpgroup.top:8080/admin/object/upload/avatar', formData, this.$router).then((res) => {
+            if (res.data.code === 10000) {
+              this.userAvatar = res.data.data.url;
+              localStorage.avatar = this.userAvatar;
+            }
+            this.updateAvatarDialog = false;
+            this.isUploading = false;
+          });
+        });
+      }
+    },
   },
 };
 </script>
@@ -245,55 +351,20 @@ export default {
   padding: 20px;
   background: white;
   border-radius: 2px;
-  .avatar {
+  .user-info-avatar {
     align-self: center;
     margin-right: 10px;
   }
-  .name {
+  .user-info-name {
     font-size: 1.28rem;
     font-weight: 420;
   }
 }
-
-.stat-container {
-  margin: 15px 0;
-  padding: 0 10px 20px 10px;
-  border-radius: 2px;
-  background: white;
-  .card {
-    margin: 0 12px;
-    padding: 12px 0 12px 20px;
-    border-radius: 4px;
-    background: #ddf1fc;
-    .tit {
-      display: flex;
-      font-size: 1.1rem;
-      font-weight: 400;
-      color: rgb(97, 96, 96);
-    }
-    .stat {
-      font-size: 1.3rem;
-      font-weight: 480;
-      color: #3188fa;
-    }
-    .yesterday {
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: rgb(97, 96, 96);
-      span {
-        font-size: 0.9rem;
-        font-weight: 480;
-        color: #3188fa;
-        margin-left: 4px;
-      }
-    }
-  }
+.cropper {
+  width: 250px;
+  height: 250px;
 }
-
-.sth-container {
-  margin: 15px 0;
-  padding: 0 10px 20px 10px;
-  border-radius: 2px;
-  background: white;
+.preview {
+  border-radius: 50%;
 }
 </style>
