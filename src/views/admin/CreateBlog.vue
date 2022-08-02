@@ -60,7 +60,7 @@
                   <label>{{ localeMsg.content }}</label>
                 </v-col>
                 <v-col>
-                  <Editor :content="editingContent" v-model="content" :editorBool="true" :inCreate="true" />
+                  <Editor v-model="content" :prevContent="prevContent" :inCreatePage="true" />
                 </v-col>
               </v-row>
 
@@ -148,7 +148,7 @@ export default {
       successDialog: false,
       failureDialog: false,
       warningDialog: false,
-      editingContent: '',
+      prevContent: '',
       timer: null,
     };
   },
@@ -175,7 +175,7 @@ export default {
   created() {
     util.checkAccess('blogs', this.$router);
     if (localStorage.content) {
-      this.editingContent = localStorage.content;
+      this.prevContent = localStorage.content;
     }
     if (localStorage.title) {
       this.title = localStorage.title;
