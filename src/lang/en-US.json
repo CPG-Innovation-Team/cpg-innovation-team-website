@@ -121,6 +121,12 @@
         "wrongPwd": "Wrong password, failed to save changes",
         "successMsg": "The information is saved!",
         "failureMsg": "The information failed to save"
+      },
+      "avatarDialog": {
+        "editAvatar": "Edit Avatar",
+        "previewAvatar": "Avatar Preview",
+        "replaceAvatar": "Replace Avatar",
+        "cancelBtn": "Cancel"
       }
     },
     "changePwd": {

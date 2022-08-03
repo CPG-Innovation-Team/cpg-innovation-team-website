@@ -32,7 +32,7 @@
                 </v-hover>
                 <v-dialog max-width="600" v-model="updateAvatarDialog">
                   <v-card>
-                    <v-card-title>编辑头像</v-card-title>
+                    <v-card-title>{{ localeMsg.editAvatar }}</v-card-title>
                     <v-card-text>
                       <v-row align="center">
                         <v-col>
@@ -46,13 +46,13 @@
                             @change="avatarOnChange"
                         /></v-col>
                         <v-col align="center">
-                          <v-card-text>头像预览</v-card-text>
+                          <v-card-text>{{ localeMsg.previewAvatar }}</v-card-text>
                           <preview
-                            class="preview"
+                            class="cropper-preview"
                             :width="120"
                             :height="120"
-                            :image="result.image"
-                            :coordinates="result.coordinates"
+                            :image="croppedImg.image"
+                            :coordinates="croppedImg.coordinates"
                           />
                           <v-card-text> 120x120px</v-card-text>
                         </v-col>
@@ -64,11 +64,11 @@
                         hidden
                         @change="uploadAvatar($event)"
                       />
-                      <v-btn class="mt-4" text @click="$refs.uploadAvatar.click()">更换头像</v-btn>
+                      <v-btn class="mt-4" text @click="$refs.uploadAvatar.click()">{{ localeMsg.replaceAvatar }}</v-btn>
                     </v-card-text>
                     <v-card-actions class="justify-center">
-                      <v-btn text @click="closeUpdateAvatarDialog"> 取消</v-btn>
-                      <v-btn depressed color="primary" @click="uploadAvatarToServer"> 保存</v-btn>
+                      <v-btn text @click="closeUpdateAvatarDialog"> {{ localeMsg.cancelBtn }}</v-btn>
+                      <v-btn depressed color="primary" @click="uploadAvatarToServer"> {{ localeMsg.saveBtn }}</v-btn>
                     </v-card-actions>
                     <v-overlay v-if="isUploading" absolute color="black">
                       <v-progress-circular indeterminate color="amber"></v-progress-circular>
@@ -172,7 +172,7 @@ export default {
         required: (v) => !!v || this.localeMsg.required,
       },
       updateAvatarDialog: false,
-      result: {
+      croppedImg: {
         coordinates: null,
         image: null,
       },
@@ -204,6 +204,10 @@ export default {
         wrongPwd: this.$t('admin.profile.response.wrongPwd'),
         successMsg: this.$t('admin.profile.response.successMsg'),
         failureMsg: this.$t('admin.profile.response.failureMsg'),
+        editAvatar: this.$t('admin.profile.avatarDialog.editAvatar'),
+        previewAvatar: this.$t('admin.profile.avatarDialog.previewAvatar'),
+        replaceAvatar: this.$t('admin.profile.avatarDialog.replaceAvatar'),
+        cancelBtn: this.$t('admin.profile.avatarDialog.cancelBtn'),
       };
     },
   },
@@ -299,9 +303,9 @@ export default {
       }
       return 2;
     },
-    // For real-time avatar preview, saving coordinates and image to result
+    // For real-time avatar preview, saving coordinates and image to croppedImg
     avatarOnChange({ coordinates, image }) {
-      this.result = {
+      this.croppedImg = {
         coordinates,
         image,
       };
@@ -364,7 +368,7 @@ export default {
   width: 250px;
   height: 250px;
 }
-.preview {
+.cropper-preview {
   border-radius: 50%;
 }
 </style>
