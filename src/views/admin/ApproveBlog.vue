@@ -53,7 +53,7 @@
         </v-row>
         <v-card-title> {{ localeMsg.content }} </v-card-title>
         <v-card-text>
-          <Editor v-model="blog.content" :content="blog.content" :editorBool="false" :inCreate="false" />
+          <Editor v-model="blog.content" :prevContent="blog.content" :toolbar="false" />
         </v-card-text>
       </v-card>
 
