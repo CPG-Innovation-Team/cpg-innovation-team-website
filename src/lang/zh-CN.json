@@ -121,6 +121,12 @@
         "wrongPwd": "密码错误，修改失败",
         "successMsg": "信息修改成功",
         "failureMsg": "信息修改失败"
+      },
+      "avatarDialog": {
+        "editAvatar": "编辑头像",
+        "previewAvatar": "头像预览",
+        "replaceAvatar": "更换头像",
+        "cancelBtn": "取消"
       }
     },
     "changePwd": {

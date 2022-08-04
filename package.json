@@ -23,6 +23,7 @@
     "rollbar": "^2.24.0",
     "tinymce": "^6.0.2",
     "vue": "^2.6.11",
+    "vue-advanced-cropper": "^1.11.1",
     "vue-baidu-map": "^0.21.22",
     "vue-chartjs": "^3.5.1",
     "vue-dompurify-html": "^2.5.0",

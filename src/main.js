@@ -10,7 +10,11 @@ import '../node_modules/flag-icons/css/flag-icons.css';
 
 Vue.config.productionTip = false;
 
-Vue.use(VueDOMPurifyHTML);
+Vue.use(VueDOMPurifyHTML, {
+  default: {
+    ADD_TAGS: ['iframe'],
+  },
+});
 
 if (process.env.VUE_APP_ROLLBAR_ACCESS_TOKEN) {
   Vue.prototype.$rollbar = new Rollbar({
