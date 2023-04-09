@@ -20,52 +20,12 @@
     <v-main>
       <div class="team-title">团队介绍</div>
       <div class="team-profile-container">
-        <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-chenxi.jpg" alt="Chenxi" />
-          <div class="team-profile-name">陈曦</div>
+        <div class="team-profile" v-for="member in members" :key="member.name">
+          <img class="team-profile-image" :src="member.image" :alt="member.name" />
+          <div class="team-profile-name">{{ member.name }}</div>
           <div class="team-profile-position">
-            <p>前端开发部</p>
-            <p>开发工程师</p>
-          </div>
-        </div>
-        <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-tony.png" alt="Tony" />
-          <div class="team-profile-name">Tony 蒋元博</div>
-          <div class="team-profile-position">
-            <p>前端开发部</p>
-            <p>开发工程师</p>
-          </div>
-        </div>
-        <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-david.jpg" alt="David" />
-          <div class="team-profile-name">David 刘明洋</div>
-          <div class="team-profile-position">
-            <p>前端开发部</p>
-            <p>前端开发工程师</p>
-          </div>
-        </div>
-        <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-grace.jpg" alt="Grace" />
-          <div class="team-profile-name">Grace 陈昕悦</div>
-          <div class="team-profile-position">
-            <p>前端开发部</p>
-            <p>前端开发工程师</p>
-          </div>
-        </div>
-        <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-alice.png" alt="Alice" />
-          <div class="team-profile-name">Alice 刘涵</div>
-          <div class="team-profile-position">
-            <p>产品研发部</p>
-            <p>产品经理</p>
-          </div>
-        </div>
-        <div class="team-profile">
-          <img class="team-profile-image" src="../assets/img-jack.png" alt="Jack" />
-          <div class="team-profile-name">Jack 林子轩</div>
-          <div class="team-profile-position">
-            <p>产品研发部</p>
-            <p>产品经理</p>
+            <p>{{ member.department }}</p>
+            <p>{{ member.position }}</p>
           </div>
         </div>
       </div>
@@ -76,9 +36,58 @@
 <script>
 import HeaderNav from '../components/HeaderNav.vue';
 
+const avatar1 = require('../assets/img-chenxi.jpg');
+const avatar2 = require('../assets/img-tony.png');
+const avatar3 = require('../assets/img-david.jpg');
+const avatar4 = require('../assets/img-grace.jpg');
+const avatar5 = require('../assets/img-alice.png');
+const avatar6 = require('../assets/img-jack.png');
+
 export default {
   components: {
     HeaderNav,
+  },
+  data() {
+    return {
+      members: [
+        {
+          name: '陈曦',
+          image: avatar1,
+          department: '前端开发部',
+          position: '开发工程师',
+        },
+        {
+          name: 'Tony 蒋元博',
+          image: avatar2,
+          department: '前端开发部',
+          position: '开发工程师',
+        },
+        {
+          name: 'David 刘明洋',
+          image: avatar3,
+          department: '前端开发部',
+          position: '前端开发工程师',
+        },
+        {
+          name: 'Grace 陈昕悦',
+          image: avatar4,
+          department: '前端开发部',
+          position: '前端开发工程师',
+        },
+        {
+          name: 'Alice 刘涵',
+          image: avatar5,
+          department: '产品研发部',
+          position: '产品经理',
+        },
+        {
+          name: 'Jack 林子轩',
+          image: avatar6,
+          department: '产品研发部',
+          position: '产品经理',
+        },
+      ],
+    };
   },
 };
 </script>
@@ -126,7 +135,7 @@ export default {
 
 .team-profile-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-flow: row wrap;
   margin-left: 15%;
   margin-right: 15%;

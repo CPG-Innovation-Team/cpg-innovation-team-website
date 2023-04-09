@@ -7,36 +7,14 @@
 
       <v-container>
         <v-row class="dropdown-container">
-          <v-col class="d-flex" cols="6" md="3">
+          <v-col v-for="(filter, index) in filters" :key="index" class="d-flex" cols="6" md="3">
             <v-select
               class="career-dropdown"
-              :items="positions"
+              :items="filter.options"
               filled
-              label="职位"
-              v-model="positionVal"
-              @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
-              dense
-            ></v-select>
-          </v-col>
-          <v-col class="d-flex" cols="6" md="3">
-            <v-select
-              class="career-dropdown"
-              :items="cities"
-              filled
-              label="城市"
-              v-model="cityVal"
-              @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
-              dense
-            ></v-select>
-          </v-col>
-          <v-col class="d-flex" cols="6" md="3">
-            <v-select
-              class="career-dropdown"
-              :items="types"
-              filled
-              label="类型"
-              v-model="typeVal"
-              @change="filteredJobs = filter(jobs, positionVal, cityVal, typeVal)"
+              :label="filter.label"
+              v-model="selectedFilters[filter.key]"
+              @change="filterJobs()"
               dense
             ></v-select>
           </v-col>
@@ -87,15 +65,31 @@ const jobs = require('../data/career');
 export default {
   data: () => ({
     util,
-    positionVal: '全部职位',
-    cityVal: '全部城市',
-    typeVal: '全部类型',
-    positions: ['全部职位', '技术类', '人力资源类', '产品类', '设计类'],
-    cities: ['全部城市', '上海', '深圳', '广州', '北京'],
-    types: ['全部类型', '校园招聘', '社会招聘'],
     pageNumber: 1,
     jobs,
     filteredJobs: [],
+    selectedFilters: {
+      position: '全部职位',
+      city: '全部城市',
+      type: '全部类型',
+    },
+    filters: [
+      {
+        label: '职位',
+        key: 'position',
+        options: ['全部职位', '技术类', '人力资源类', '产品类', '设计类'],
+      },
+      {
+        label: '城市',
+        key: 'city',
+        options: ['全部城市', '上海', '深圳', '广州', '北京'],
+      },
+      {
+        label: '类型',
+        key: 'type',
+        options: ['全部类型', '校园招聘', '社会招聘'],
+      },
+    ],
   }),
   components: {
     HeaderNav,
@@ -105,16 +99,16 @@ export default {
     this.pageNumber = parseInt(this.$route.query.page, 10) || 1;
   },
   methods: {
-    filter(arr, positionVal, cityVal, typeVal) {
+    filterJobs() {
+      const { position, city, type } = this.selectedFilters;
       // navigates to the first page when user filters the results
       if (this.pageNumber !== 1) this.handlePageChange(1);
-      return arr.filter((job) => {
-        return (
-          (positionVal === '全部职位' ? true : job.position === positionVal) &&
-          (cityVal === '全部城市' ? true : job.city === cityVal) &&
-          (typeVal === '全部类型' ? true : job.type === typeVal)
-        );
-      });
+      this.filteredJobs = this.jobs.filter(
+        (job) =>
+          (position === '全部职位' ? true : job.position === position) &&
+          (city === '全部城市' ? true : job.city === city) &&
+          (type === '全部类型' ? true : job.type === type)
+      );
     },
     handlePageChange(value) {
       this.pageNumber = value;
