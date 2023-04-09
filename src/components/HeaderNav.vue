@@ -347,11 +347,6 @@ export default {
       }
     }
   }
-  // .language-setting {
-  //   display: flex;
-  //   align-self: center;
-  //   margin-right: 10px;
-  // }
 }
 
 .navbar {
