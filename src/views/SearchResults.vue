@@ -6,7 +6,7 @@
           <v-col cols="1"></v-col>
           <v-col cols="8">
             <div class="search-results-title">{{ this.searchText }} -- 搜索结果</div>
-            <div class="search-results-filter">
+            <div>
               <div class="search-results-num">
                 共找到{{ this.searchResults.length }}条结果, 该标签显示{{ this.filteredResults.length }}条结果
               </div>

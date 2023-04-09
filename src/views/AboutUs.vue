@@ -130,18 +130,5 @@ export default {
     text-align: center;
     font-size: 15px;
   }
-
-  .address-description {
-    margin: 50px;
-    line-height: 30px;
-
-    .address-sub-title {
-      font-size: 18px;
-    }
-
-    .address-body {
-      font-size: 14px;
-    }
-  }
 }
 </style>

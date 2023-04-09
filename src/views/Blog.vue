@@ -339,15 +339,6 @@ export default {
     a {
       text-decoration: none;
     }
-    .recent-title {
-      font-size: 1rem;
-      font-weight: 650;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
     .recent-blog-title {
       font-size: 19px;
     }

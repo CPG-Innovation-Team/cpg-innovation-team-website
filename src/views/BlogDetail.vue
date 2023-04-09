@@ -454,11 +454,6 @@ export default {
     margin-top: -80px;
     text-align: center;
     text-shadow: 0.1em 0.1em 0.3em black;
-    .title-en {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
     .title-cn {
       font-size: 2.6rem;
       margin: 0;
