@@ -49,6 +49,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.language-selection {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  .language-text {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+}
+
 .language-setting {
   display: flex;
   align-self: center;

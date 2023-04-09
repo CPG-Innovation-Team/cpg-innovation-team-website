@@ -364,28 +364,4 @@ export default {
   text-decoration: none;
   color: var(--themeColor);
 }
-
-.language-selection {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  .language-text {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: normal;
-    font-size: 14px;
-    margin-left: 4px;
-  }
-}
-
-.header-search {
-  min-width: 120px;
-  width: 8%;
-}
-
-.redirect-link {
-  text-decoration: none;
-  color: black;
-  font-size: 14px;
-}
 </style>
