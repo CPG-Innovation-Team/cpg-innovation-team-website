@@ -79,35 +79,7 @@
           </v-list-item-group>
         </v-list>
       </v-menu>
-
-      <v-menu offset-y content-class="elevation-0" rounded="14">
-        <template v-slot:activator="{ on, attrs }">
-          <div class="language-setting" v-bind="attrs" v-on="on">
-            <span :class="$t('flag')"></span>
-            <v-icon>mdi-chevron-down</v-icon>
-          </div>
-        </template>
-        <v-list dense>
-          <v-list-item-group color="primary" data-test-id="language-menu">
-            <v-list-item class="pr-2 pl-2">
-              <v-list-item-content class="pa-0" @click="changeLang('zh-CN', '中文', 'cn')">
-                <div class="language-selection">
-                  <span class="fi fi-cn"></span>
-                  <span class="language-text">简体中文</span>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item class="pr-2 pl-2">
-              <v-list-item-content class="pa-0" @click="changeLang('en-US', 'Eng', 'en')">
-                <div class="language-selection">
-                  <span class="fi fi-us"></span>
-                  <span class="language-text">English</span>
-                </div>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-menu>
+      <language-selector @change-lang="handleLangChange" />
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>
@@ -128,14 +100,17 @@
 import jwtDecode from 'jwt-decode';
 import util from '../util';
 import Event from '../Event';
+import LanguageSelector from './LanguageSelector.vue';
 
 const projects = require('../data/project');
 const jobs = require('../data/career');
 
 export default {
   name: 'HeaderNav',
+  components: {
+    LanguageSelector,
+  },
   data: () => ({
-    lang: '中文',
     drawer: false,
     group: null,
     // search
@@ -219,12 +194,7 @@ export default {
         this.announcementContent = util.getAnnouncementENContent(this.announcement);
       }
     },
-    changeLang(locale, lang, flag) {
-      this.$i18n.locale = locale;
-      this.lang = lang;
-      this.flag = flag;
-      document.title = this.$t('title');
-      this.$vuetify.lang.current = locale === 'zh-CN' ? 'zhHans' : 'en';
+    handleLangChange(locale) {
       Event.$emit('change-lang', locale);
     },
     search() {
@@ -377,11 +347,11 @@ export default {
       }
     }
   }
-  .language-setting {
-    display: flex;
-    align-self: center;
-    margin-right: 10px;
-  }
+  // .language-setting {
+  //   display: flex;
+  //   align-self: center;
+  //   margin-right: 10px;
+  // }
 }
 
 .navbar {
